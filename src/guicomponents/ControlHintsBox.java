@@ -32,6 +32,6 @@ public class ControlHintsBox extends GuiComponent { // TODO CONSIDER renaming to
         drawBackground(screen);
         drawBorder(screen);
         screen.setColor(Color.white); // TODO change to a non hard coded value here
-        screen.drawString(hint.toString(), (x + 2) * Display.SCALE, (y + 2) * Display.SCALE); // TODO check hint is not null
+        screen.drawString(hint.toString(), (x + 2) * Display.BIG_SCALE, (y + 2) * Display.BIG_SCALE); // TODO check hint is not null
     }
 }

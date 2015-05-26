@@ -77,13 +77,13 @@ public class MobsBox extends GuiComponent {
 
         for (Iterator<Mob> iterator = friendlies.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), next));
+            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
             pos++;
         }
 
         for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), next));
+            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
             pos++;
         }
     }

@@ -168,7 +168,7 @@ public class Door extends Loopable implements Interactable {
 
         // initialising variables
         ArrayList<String> strings = new ArrayList<String>();
-        int x = (Display.MAP_WIDTH * Display.SCALE) - 200;
+        int x = (Display.MAP_WIDTH * Display.BIG_SCALE) - 200;
         int y = 60;
 
         if(!destroyed){

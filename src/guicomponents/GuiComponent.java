@@ -21,7 +21,7 @@ public abstract class GuiComponent {
         this.width = width;
         this.height = height;
 
-        this.rect = new Rectangle(x * Display.SCALE, y * Display.SCALE, width * Display.SCALE, height * Display.SCALE);
+        this.rect = new Rectangle(x * Display.BIG_SCALE, y * Display.BIG_SCALE, width * Display.BIG_SCALE, height * Display.BIG_SCALE);
     }
 
     public abstract void update();

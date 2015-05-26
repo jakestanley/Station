@@ -137,7 +137,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         // initialising variables
         ArrayList<String> strings = new ArrayList<String>();
-        int x = (Display.MAP_WIDTH * Display.SCALE) - 200;
+        int x = (Display.MAP_WIDTH * Display.BIG_SCALE) - 200;
         int y = 60;
 
         // get strings

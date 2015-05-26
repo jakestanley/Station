@@ -5,7 +5,8 @@ package main;
  */
 public class Display {
 
-    public static int SCALE = 4;
+    public static int BIG_SCALE = 4;
+    public static float SMALL_SCALE = 0.25f;
     public static int FRAME_RATE = 30;
 
     // DISPLAY CONSTANTS // TODO CONSIDER a column based system?
@@ -34,8 +35,15 @@ public class Display {
     public static final int LINE_WIDTH = 2;
 
     // INTERFACE STUFF
-    public static final int HEALTH_BAR_HEIGHT = 20;
+    public static final int MARGIN = 2;
     public static final int TEXT_SPACING = 16;
+
+    // MOB PANEL POSITIONING
+    public static final int HEALTH_BAR_MARGIN = 2;
+    public static final int HEALTH_BAR_HEIGHT = 16;
+    public static final int HEALTH_BAR_WIDTH = 8;
+
+    public static final int MOB_TEXT_MARGIN = (MARGIN + HEALTH_BAR_WIDTH + MARGIN) / 2; // TODO fix so i don't have to divide by two
 
     public static int getRoomBoxY(){
         return 0;

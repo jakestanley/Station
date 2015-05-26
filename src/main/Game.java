@@ -9,7 +9,6 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
 
@@ -72,7 +71,7 @@ public class Game extends BasicGame {
 
             AppGameContainer container = new AppGameContainer(this);
             container.setShowFPS(debug);
-            container.setDisplayMode(Display.DISPLAY_WIDTH * Display.SCALE, Display.DISPLAY_HEIGHT * Display.SCALE, false);
+            container.setDisplayMode(Display.DISPLAY_WIDTH * Display.BIG_SCALE, Display.DISPLAY_HEIGHT * Display.BIG_SCALE, false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
             container.start();
@@ -125,8 +124,8 @@ public class Game extends BasicGame {
 
         selection = NO_SELECTION; // wiping for new update
 
-        mouseX = Mouse.getX() / Display.SCALE;
-        mouseY = Math.abs((Mouse.getY() / Display.SCALE) - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
+        mouseX = Mouse.getX() / Display.BIG_SCALE;
+        mouseY = Math.abs((Mouse.getY() / Display.BIG_SCALE) - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
 
         hoverDoor = map.getDoorMouseOver(mouseX, mouseY);
         if(hoverDoor != null){
@@ -200,7 +199,7 @@ public class Game extends BasicGame {
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
         // SET BACKGROUND AND SCALE
         screen.setBackground(Colours.GRID_BACKGROUND);
-        screen.scale(Display.SCALE, Display.SCALE); // TODO this should only happen once per render
+        screen.scale(Display.BIG_SCALE, Display.BIG_SCALE); // TODO this should only happen once per render
 
         // DRAW GRID
         screen.setColor(Colours.GRID_LINES);
@@ -238,7 +237,7 @@ public class Game extends BasicGame {
             hoverRoom.renderDataBox(screen);
         }
 
-        int writeX = (Display.TILE_WIDTH + 2) * Display.SCALE;
+        int writeX = (Display.TILE_WIDTH + 2) * Display.BIG_SCALE;
 
         // DRAW HOVER ROOM DATA
 
@@ -251,38 +250,6 @@ public class Game extends BasicGame {
 //            } else if (type == Room.TYPE_SQUARE) {
 ////                screen.drawString("Room: square", 10, 70);
 //            }
-            // TODO make this scalable and not static - in its current state, it depends on max health being 100
-            for(int i = 0; i < mobs.size(); i++){ // and here
-                Mob mob = mobs.get(i);
-
-                // get health values
-                float mobHealth = mob.getHealth(); // TODO to int
-                int mobHealthBarMod = (int) (Mob.MAX_HEALTH - mobHealth) / 5; // casting to integer for rough representation on bar // TODO ensure not below zero
-
-                // initialising rectangles
-                Rectangle baseRect = new Rectangle(  writeX + (writeX * i) / 2, writeX,
-                                                     Display.HEALTH_BAR_HEIGHT / 5, Display.HEALTH_BAR_HEIGHT);
-
-                Rectangle healthRect = new Rectangle(writeX + (writeX * i) / 2, writeX + mobHealthBarMod,
-                                                     Display.HEALTH_BAR_HEIGHT / 5, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
-
-                // render base rect
-                screen.setColor(Color.darkGray); // TODO access this from some value resource
-                screen.fill(baseRect);
-
-                // render fills
-                if(mob.getType() == Mob.TYPE_MATE){
-                    screen.setColor(Color.yellow);
-                    screen.fill(healthRect); // actual health bar angle
-                } else {
-                    screen.setColor(Color.red);
-                    screen.fill(healthRect); // actual health bar angle
-                }
-
-                // TODO render the gradient properly and accurately with non static/hard coded values
-                // TODO clean all this shit up to be honest
-
-            }
         }
 
         // SETTING HINT STRING // TODO CONSIDER own method?
@@ -303,8 +270,8 @@ public class Game extends BasicGame {
 
         screen.setColor(Color.white);
         if(debug){
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.MAP_HEIGHT * Display.SCALE) - 50);
-            screen.drawString("Tick: " + tick, 10, (Display.MAP_HEIGHT * Display.SCALE) - 70);
+            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.MAP_HEIGHT * Display.BIG_SCALE) - 50);
+            screen.drawString("Tick: " + tick, 10, (Display.MAP_HEIGHT * Display.BIG_SCALE) - 70);
         }
 
         // TODO draw interfaces
