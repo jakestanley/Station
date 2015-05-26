@@ -63,10 +63,12 @@ public class Values {
 
     public class Strings {
 
+        // HINTS
         public static final String CONTROLS_ROOM = "Q: purge | W: evac | E: priority- | R - priority+ | V - oxygen";
         public static final String CONTROLS_SHIFT_ROOM = ""; // TODO shift controls for room
         public static final String CONTROLS_DOOR = "Q: open | W: close | E: auto | R: bulkhead";
         public static final String CONTROLS_SHIFT_DOOR = "Q: open | W: close | E: auto | R: bulkhead [shift: all]";
+        public static final String HINTS_WILL_APPEAR = "Hints will appear here";
 
     }
 

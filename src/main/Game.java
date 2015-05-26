@@ -289,7 +289,7 @@ public class Game extends BasicGame {
             } else if(selection == DOOR_SELECTION){
                 hint.append(Values.Strings.CONTROLS_DOOR);
             } else {
-                hint.append("");
+                hint.append(Values.String.HINTS_WILL_APPEAR);
             }
         }
 
@@ -406,7 +406,7 @@ public class Game extends BasicGame {
         guiComponents = new ArrayList<GuiComponent>();
 
         // control hints box
-        hint = new StringBuilder(""); // is this the correct way to work with strings?
+        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         guiComponents.add(new ControlHintsBox(hint));
 
         // TODO room tile data box
