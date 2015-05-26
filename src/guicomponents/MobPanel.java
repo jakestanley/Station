@@ -86,14 +86,13 @@ public class MobPanel extends GuiComponent {
 
         // TODO fix ugliness
 
-        // get health values
-        float mobHealth = mob.getHealth(); // TODO to int
         // casting to integer for rough representation on bar as precision is not necessary for this visual element
-        int mobHealthBarMod = (int) (Mob.MAX_HEALTH - mobHealth) / 5; // TODO ensure not below zero and optimise
+        int mobHealthBarMod = (int) ((Mob.MAX_HEALTH - mob.getHealth()) / 6); // TODO ensure not below zero and optimise
+        // TODO solve this work around. not sure why /6 works, but it does.
 
         // initialising rectangles // TODO change these static values, such as 2 and index * n
         Rectangle baseRect = new Rectangle((x + 2) * Display.BIG_SCALE, (y + 2) * Display.BIG_SCALE, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT);
-        Rectangle healthRect = new Rectangle((x + 2) * Display.BIG_SCALE, (y + 2) * Display.BIG_SCALE + mobHealthBarMod, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
+        Rectangle healthRect = new Rectangle((x + 2) * Display.BIG_SCALE, ((y + 2) * Display.BIG_SCALE) + mobHealthBarMod, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
 
         // render base rect
         screen.setColor(Color.darkGray); // TODO access this from some value resource
