@@ -6,7 +6,7 @@ import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
 import main.Door;
 import main.Game;
-import main.Tile;
+import tiles.Tile;
 import mobs.Mob;
 
 import java.awt.*;

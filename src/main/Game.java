@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.ResourceLoader;
+import tiles.Tile;
 
 import java.awt.Font;
 import java.io.InputStream;
@@ -93,7 +94,7 @@ public class Game extends BasicGame {
         // initialising font from .ttf
         try {
 //            InputStream inputStream	= ResourceLoader.getResourceAsStream("res/visitor2.ttf");
-            InputStream inputStream	= ResourceLoader.getResourceAsStream("res/04b03.ttf");
+            InputStream inputStream	= ResourceLoader.getResourceAsStream("res/fonts/04b03.ttf");
             Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             awtFont2 = awtFont2.deriveFont(16f); // set font size
             font = new TrueTypeFont(awtFont2, false);

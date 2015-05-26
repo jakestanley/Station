@@ -8,6 +8,7 @@ import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import planner.Planner;
+import tiles.Tile;
 
 /**
  * Created by stanners on 23/05/2015.

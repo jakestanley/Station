@@ -4,6 +4,9 @@ import exceptions.CorridorDimensionsException;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import tiles.BorderTile;
+import tiles.Tile;
+import tiles.TraversibleTile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -267,14 +270,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
             if(sx == 1){ // if sizeX = 1, do a vertical corridor
                 for(int ly = 0; ly < sy; ly++){
-                    Tile tile = new Tile(this, x, y + ly, type);
+                    Tile tile = new TraversibleTile(x, y + ly, this, type);
                     Game.map.tiles[x][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
                 }
             } else { // else do a horizontal corridor
                 for(int lx = 0; lx < sx; lx++){
-                    Tile tile = new Tile(this, x + lx, y, type);
+                    Tile tile = new TraversibleTile(x + lx, y, this, type);
                     Game.map.tiles[x + lx][y] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
@@ -285,7 +288,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
                 for(int ly = 0; ly < sy; ly++){ // l is local
 
-                    Tile tile = new Tile(this, x + lx, y + ly, type);
+                    Tile tile = new TraversibleTile(x + lx, y + ly, this, type);
                     Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
@@ -318,7 +321,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return integrity;
     }
 
-    public ArrayList<Tile> getCorridorPoints(){ // temporary, for debugging
+    public ArrayList<Tile> getBorderPoints(){
 
         ArrayList<Tile> corridorTiles = new ArrayList<Tile>();
 
@@ -337,7 +340,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             if(y > 0){
                 tile = Game.map.tiles[i][y-1];
                 if(tile.isVoid()){
-                    tile = new Tile(this, i, y-1, Values.Types.META_CORRIDOR_POINT);
+                    tile = new BorderTile(i, y-1, this);
                     Game.map.tiles[i][y-1] = tile;
                     corridorTiles.add(tile);
                 }
@@ -346,7 +349,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             if(maxY < mapHeight){ // TODO
                 tile = Game.map.tiles[i][maxY];
                 if(tile.isVoid()){
-                    tile = new Tile(this, i, maxY, Values.Types.META_CORRIDOR_POINT);
+                    tile = new BorderTile(i, maxY, this);
                     Game.map.tiles[i][maxY] = tile;
                     corridorTiles.add(tile);
                 }
@@ -359,7 +362,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             if(x > 0){
                 tile = Game.map.tiles[x-1][i];
                 if(tile.isVoid()){
-                    tile = new Tile(this, x-1, i, Values.Types.META_CORRIDOR_POINT);
+                    tile = new BorderTile(x-1, i, this);
                     Game.map.tiles[x-1][i] = tile;
                     corridorTiles.add(tile);
                 }
@@ -368,7 +371,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             if(maxX < mapWidth){
                 tile = Game.map.tiles[maxX][i];
                 if(tile.isVoid()){
-                    tile = new Tile(this, maxX, i, Values.Types.META_CORRIDOR_POINT);
+                    tile = new BorderTile(maxX, i, this);
                     Game.map.tiles[maxX][i] = tile;
                     corridorTiles.add(tile);
                 }

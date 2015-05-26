@@ -7,6 +7,8 @@ import mobs.Mob;
 import mobs.Parasite;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import tiles.Tile;
+import tiles.VoidTile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class Map extends Loopable {
         // initialising all tiles as void tiles
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
-                tiles[x][y] = new Tile(x, y); // void tile constructor
+                tiles[x][y] = new VoidTile(x, y); // void tile constructor
             }
         }
 
@@ -54,7 +56,8 @@ public class Map extends Loopable {
     @Override
     public void init(){
         // generate components
-        generateRooms();
+        buildStockMap();
+//        generateRooms();
         generateCorridors();
         generateDoors();
         try {
@@ -223,7 +226,7 @@ public class Map extends Loopable {
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next =  iterator.next();
             if(next.getType() != Values.Types.CORRIDOR_X && next.getType() != Values.Types.CORRIDOR_Y){
-                corridorPointTiles.addAll(next.getCorridorPoints());
+                corridorPointTiles.addAll(next.getBorderPoints());
             }
         }
     }

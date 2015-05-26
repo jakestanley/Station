@@ -6,7 +6,7 @@ import exceptions.ImpossibleGoal;
 import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
 import main.Game;
-import main.Tile;
+import tiles.Tile;
 import org.newdawn.slick.Color;
 import planner.Random;
 
