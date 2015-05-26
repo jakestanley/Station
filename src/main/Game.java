@@ -7,7 +7,6 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
@@ -48,6 +47,7 @@ public class Game extends BasicGame {
     private TrueTypeFont font;
     private ArrayList<GuiComponent> guiComponents;
 
+    private StringBuilder hint; // for control hints box
 
     public Game(String gameName, String[] args){
         super(gameName);
@@ -194,7 +194,7 @@ public class Game extends BasicGame {
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
         // SET BACKGROUND AND SCALE
         screen.setBackground(Colours.GRID_BACKGROUND);
-        screen.scale(Display.SCALE, Display.SCALE);
+        screen.scale(Display.SCALE, Display.SCALE); // TODO this should only happen once per render
 
         // DRAW GRID
         screen.setColor(Colours.GRID_LINES);
@@ -212,9 +212,6 @@ public class Game extends BasicGame {
         screen.setLineWidth(Display.LINE_WIDTH);
         map.render(screen);
 
-        // DRAW ROOM SELECTION DATA BOX // TODO click to hold selection
-        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.MAP_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42, 42, Color.black, 78, 78, Color.black)); // TODO make values non static. just fix gradient fills in general
-
         // DRAW HOVER BOXES
         if(hoverDoor != null){ // render hover door hover box
             hoverDoor.renderHoverBox(screen);
@@ -226,7 +223,7 @@ public class Game extends BasicGame {
 
         // DRAW STRINGS
         screen.setColor(Color.white);
-        screen.scale(0.25f, 0.25f);
+        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
         screen.setFont(font);
 
         if(hoverDoor != null){ // render hover door hover box
@@ -282,15 +279,17 @@ public class Game extends BasicGame {
             }
         }
 
-        // DRAW INFO STRINGS // TODO work out where to render these
-        screen.setColor(Color.white);
+        // SETTING HINT STRING // TODO CONSIDER own method?
+        hint.setLength(0);
         if(shift){
-            screen.drawString(Values.Strings.CONTROLS_SHIFT_DOOR, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+            hint.append(Values.Strings.CONTROLS_SHIFT_DOOR);
         } else {
             if(selection == ROOM_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_ROOM, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+                hint.append(Values.Strings.CONTROLS_ROOM);
             } else if(selection == DOOR_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_DOOR, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+                hint.append(Values.Strings.CONTROLS_DOOR);
+            } else {
+                hint.append("");
             }
         }
 
@@ -304,6 +303,7 @@ public class Game extends BasicGame {
 
         // TODO draw interfaces
 
+        // DRAW COMPONENTS
         renderComponents(screen);
 
     }
@@ -404,7 +404,16 @@ public class Game extends BasicGame {
         // TODO
 
         guiComponents = new ArrayList<GuiComponent>();
-        guiComponents.add(new ControlHintsBox());
+
+        // control hints box
+        hint = new StringBuilder(""); // is this the correct way to work with strings?
+        guiComponents.add(new ControlHintsBox(hint));
+
+        // TODO room tile data box
+
+        // TODO crew info box
+
+        // TODO message box
 
     }
 
