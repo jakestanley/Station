@@ -2,6 +2,7 @@ package main;
 
 import guicomponents.ControlHintsBox;
 import guicomponents.GuiComponent;
+import guicomponents.MessageBox;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -408,12 +409,11 @@ public class Game extends BasicGame {
         // control hints box
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         guiComponents.add(new ControlHintsBox(hint));
+        guiComponents.add(new MessageBox());
 
         // TODO room tile data box
 
         // TODO crew info box
-
-        // TODO message box
 
     }
 
