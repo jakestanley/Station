@@ -290,7 +290,7 @@ public class Game extends BasicGame {
             } else if(selection == DOOR_SELECTION){
                 hint.append(Values.Strings.CONTROLS_DOOR);
             } else {
-                hint.append(Values.String.HINTS_WILL_APPEAR);
+                hint.append(Values.Strings.HINTS_WILL_APPEAR);
             }
         }
 
