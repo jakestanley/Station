@@ -5,8 +5,7 @@ import main.Display;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-
-import java.awt.*;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  * Created by stanners on 26/05/2015.
