@@ -21,7 +21,7 @@ public abstract class GuiComponent {
         this.rect = new Rectangle(x, y, width, height);
     }
 
-    public abstract void update(Graphics screen);
+    public abstract void update();
 
     public abstract void render(Graphics screen);
 
