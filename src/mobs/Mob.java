@@ -207,9 +207,11 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     }
 
     private void die(){
-        System.out.println(name + " died");
-        alive = false;
-        colour = Color.lightGray;
+        if(alive){
+            System.out.println(name + " died");
+            alive = false;
+            colour = Color.lightGray;
+        }
     }
 
 }
