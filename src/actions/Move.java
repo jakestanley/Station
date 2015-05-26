@@ -3,7 +3,7 @@ package actions;
 import exceptions.IllegalAction;
 import main.Door;
 import main.Game;
-import main.Tile;
+import tiles.Tile;
 import mobs.Mob;
 
 /**

@@ -2,6 +2,7 @@ package main;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;

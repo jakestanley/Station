@@ -28,7 +28,7 @@ public class Values {
         public static final int INVIGORATOR     = 14;
 
         // META DEBUG TYPES
-        public static final int META_CORRIDOR_POINT = 70;
+        public static final int META_BORDER = 70;
 
     }
 
