@@ -106,6 +106,12 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     public void update() {
         baseDamage();
         specificDamage();
+
+        // death check
+        if(health <= 0){
+            health = 0;
+            die();
+        }
     }
 
     public void moveTo(int tx, int ty){
@@ -169,10 +175,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
 
              // TODO CONSIDER is -- mutator right for floats?
-        if(health < 0){
-            health = 0;
-            die();
-        }
+
         // TODO mob should process damage done to itself via looking at the room its in, and what is in the room with it.
         // if there's a parasite there, it's likely to take damage from that.
         // if there's no oxygen, it's likely to take damage there also, so it can get real bad real quick.
