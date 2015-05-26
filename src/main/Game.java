@@ -191,12 +191,12 @@ public class Game extends BasicGame {
         screen.setColor(Colours.GRID_LINES);
         screen.setLineWidth(1);
         // draw horizontal lines going down
-        for(int v = 0; v < Display.DISPLAY_HEIGHT; v++){
-            screen.drawLine(0, v*Display.TILE_WIDTH, Display.DISPLAY_WIDTH, v*Display.TILE_WIDTH);
+        for(int v = 0; v < Display.MAP_HEIGHT; v++){
+            screen.drawLine(0, v*Display.TILE_WIDTH, Display.MAP_WIDTH, v*Display.TILE_WIDTH);
         }
         // draw vertical lines going across
-        for(int h = 0; h < Display.DISPLAY_WIDTH; h++){
-            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.DISPLAY_HEIGHT);
+        for(int h = 0; h < Display.MAP_WIDTH; h++){
+            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
         }
 
         // DRAW MAP
@@ -204,7 +204,7 @@ public class Game extends BasicGame {
         map.render(screen);
 
         // DRAW ROOM SELECTION DATA BOX // TODO click to hold selection
-        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.DISPLAY_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42,42,Color.black, 78,78, Color.black)); // TODO make values non static. just fix gradient fills in general
+        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.MAP_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42,42,Color.black, 78,78, Color.black)); // TODO make values non static. just fix gradient fills in general
 
         // DRAW HOVER BOXES
         if(hoverDoor != null){ // render hover door hover box
@@ -276,12 +276,12 @@ public class Game extends BasicGame {
         // DRAW INFO STRINGS // TODO work out where to render these
         screen.setColor(Color.white);
         if(shift){
-            screen.drawString(Values.Strings.CONTROLS_SHIFT_DOOR, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+            screen.drawString(Values.Strings.CONTROLS_SHIFT_DOOR, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
         } else {
             if(selection == ROOM_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_ROOM, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+                screen.drawString(Values.Strings.CONTROLS_ROOM, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
             } else if(selection == DOOR_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_DOOR, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
+                screen.drawString(Values.Strings.CONTROLS_DOOR, 20, (Display.MAP_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
             }
         }
 
@@ -289,8 +289,8 @@ public class Game extends BasicGame {
 
         screen.setColor(Color.white);
         if(debug){
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.DISPLAY_HEIGHT * Display.SCALE) - 50);
-            screen.drawString("Tick: " + tick, 10, (Display.DISPLAY_HEIGHT * Display.SCALE) - 70);
+            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.MAP_HEIGHT * Display.SCALE) - 50);
+            screen.drawString("Tick: " + tick, 10, (Display.MAP_HEIGHT * Display.SCALE) - 70);
         }
     }
 

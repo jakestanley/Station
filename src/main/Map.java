@@ -33,8 +33,8 @@ public class Map extends Loopable {
         System.out.println("Initialising map");
 
         // initialise tile array
-        width = Display.DISPLAY_WIDTH / Display.TILE_WIDTH;
-        height = Display.DISPLAY_HEIGHT / Display.TILE_WIDTH;
+        width = Display.MAP_WIDTH / Display.TILE_WIDTH;
+        height = Display.MAP_HEIGHT / Display.TILE_WIDTH;
         System.out.println("Map size is " + width + "x" + height);
         tiles = new Tile[width][height];
 
