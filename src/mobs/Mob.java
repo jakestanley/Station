@@ -119,6 +119,8 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
     }
 
+    public abstract boolean isHostile();
+
     public abstract int getType();
 
     public abstract void act() throws NoAction;
