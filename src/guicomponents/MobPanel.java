@@ -50,8 +50,6 @@ public class MobPanel extends GuiComponent {
 
     public boolean mouseOver(Input input) { // TODO an abstractly or statically accessible method for this
 
-        // TODO set hint text
-
         float mouseX = input.getMouseX() / Display.SCALE;
         float mouseY = input.getMouseY() / Display.SCALE;
 
@@ -62,7 +60,7 @@ public class MobPanel extends GuiComponent {
 
             // set background selected colour
             backgroundColour = Colours.GUI_BACKGROUND_SELECTED;
-            System.out.println("Mouse over");
+//            System.out.println("Mouse over");
             return true;
         } else {
             // set regular background colour
