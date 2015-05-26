@@ -2,6 +2,7 @@ package guicomponents;
 
 import main.Colours;
 import main.Display;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -11,6 +12,7 @@ import org.newdawn.slick.geom.Rectangle;
 public abstract class GuiComponent {
 
     protected int x, y, width, height; // start point and end point
+    protected Color backgroundColour = Colours.GUI_BACKGROUND;
     private Rectangle rect;
 
     public GuiComponent(int x, int y, int width, int height){
@@ -27,7 +29,7 @@ public abstract class GuiComponent {
     public abstract void render(Graphics screen);
 
     protected void drawBackground(Graphics screen){
-        screen.setColor(Colours.GUI_BACKGROUND);
+        screen.setColor(backgroundColour);
         screen.fill(rect);
     }
 
