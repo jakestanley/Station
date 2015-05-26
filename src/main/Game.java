@@ -3,6 +3,7 @@ package main;
 import guicomponents.ControlHintsBox;
 import guicomponents.GuiComponent;
 import guicomponents.MessageBox;
+import guicomponents.MobsBox;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -31,6 +32,7 @@ public class Game extends BasicGame {
     public static boolean pause = false;
     public static boolean won = false;
     public static int MAX_TICK = 30; // if this is lower than the highest animation loop length, shit will get fucked up
+    public static GameContainer container;
     public static Map map;
     public static Random random;
 
@@ -42,7 +44,7 @@ public class Game extends BasicGame {
     // ROOM STUFF
     private Room hoverRoom;
     private Door hoverDoor;
-    private ArrayList<Mob> mobs;
+    private ArrayList<Mob> mobs; // TODO remove this as it may be redundant and confusing
 
     // INTERFACE STUFF
     private TrueTypeFont font;
@@ -86,11 +88,11 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
 
+        this.container = gameContainer;
+
         hoverRoom = null;
         hoverDoor = null;
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
-
-        initComponents();
 
         map = new Map();
         map.init();
@@ -98,6 +100,9 @@ public class Game extends BasicGame {
         mouseX = 0;
         mouseY = 0;
         tick = 0;
+
+        initComponents();
+
 
         // initialising font from .ttf
         try {
@@ -409,6 +414,7 @@ public class Game extends BasicGame {
         // control hints box
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         guiComponents.add(new ControlHintsBox(hint));
+        guiComponents.add(new MobsBox(map.getMobs(), Game.container.getInput()));
         guiComponents.add(new MessageBox());
 
         // TODO room tile data box

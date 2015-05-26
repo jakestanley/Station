@@ -263,7 +263,7 @@ public class Map extends Loopable {
 
     private void generateMobs() throws NoSpawnableArea {
 
-        int crewCount = 4;
+        int crewCount = 7;
         int hostileCount = 1;
 
         // generate crew
