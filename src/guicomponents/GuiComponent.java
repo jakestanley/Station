@@ -1,6 +1,7 @@
 package guicomponents;
 
 import main.Colours;
+import main.Display;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -18,7 +19,7 @@ public abstract class GuiComponent {
         this.width = width;
         this.height = height;
 
-        this.rect = new Rectangle(x, y, width, height);
+        this.rect = new Rectangle(x * Display.SCALE, y * Display.SCALE, width * Display.SCALE, height * Display.SCALE);
     }
 
     public abstract void update();
@@ -31,6 +32,7 @@ public abstract class GuiComponent {
     }
 
     protected void drawBorder(Graphics screen){
+    // TODO make it so this doesn't draw a border on the screen edges. should be easy to detect screen edge using x
         screen.setColor(Colours.GUI_BORDER);
         screen.draw(rect);
     }
