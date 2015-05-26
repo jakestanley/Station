@@ -1,5 +1,7 @@
 package main;
 
+import guicomponents.ControlHintsBox;
+import guicomponents.GuiComponent;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -42,7 +44,10 @@ public class Game extends BasicGame {
     private Door hoverDoor;
     private ArrayList<Mob> mobs;
 
-    TrueTypeFont font;
+    // INTERFACE STUFF
+    private TrueTypeFont font;
+    private ArrayList<GuiComponent> guiComponents;
+
 
     public Game(String gameName, String[] args){
         super(gameName);
@@ -83,6 +88,8 @@ public class Game extends BasicGame {
         hoverRoom = null;
         hoverDoor = null;
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
+
+        initComponents();
 
         map = new Map();
         map.init();
@@ -179,6 +186,8 @@ public class Game extends BasicGame {
 
         }
 
+        updateComponents();
+
     }
 
     @Override
@@ -204,7 +213,7 @@ public class Game extends BasicGame {
         map.render(screen);
 
         // DRAW ROOM SELECTION DATA BOX // TODO click to hold selection
-        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.MAP_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42,42,Color.black, 78,78, Color.black)); // TODO make values non static. just fix gradient fills in general
+        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.MAP_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42, 42, Color.black, 78, 78, Color.black)); // TODO make values non static. just fix gradient fills in general
 
         // DRAW HOVER BOXES
         if(hoverDoor != null){ // render hover door hover box
@@ -292,6 +301,11 @@ public class Game extends BasicGame {
             screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.MAP_HEIGHT * Display.SCALE) - 50);
             screen.drawString("Tick: " + tick, 10, (Display.MAP_HEIGHT * Display.SCALE) - 70);
         }
+
+        // TODO draw interfaces
+
+        renderComponents(screen);
+
     }
 
     public ArrayList<Mob> getMobsByRoom(Room room){
@@ -383,6 +397,28 @@ public class Game extends BasicGame {
             } else if(hoverRoom != null){
                 hoverRoom.vPress();
             }
+        }
+    }
+
+    private void initComponents(){
+        // TODO
+
+        guiComponents = new ArrayList<GuiComponent>();
+        guiComponents.add(new ControlHintsBox());
+
+    }
+
+    private void updateComponents(){
+        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
+            GuiComponent next = iterator.next();
+            next.update();
+        }
+    }
+
+    private void renderComponents(Graphics screen){
+        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
+            GuiComponent next =  iterator.next();
+            next.render(screen);
         }
     }
 
