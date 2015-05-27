@@ -211,15 +211,7 @@ public class Game extends BasicGame {
 
         renderBackground(screen);
 
-        // SET LINE WIDTH FOR DRAWING ANY LINES
-        screen.setLineWidth(Display.LINE_WIDTH);
-        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
-
-        renderRooms(screen);
-
-        renderMobs(screen);
-
-        renderHoverBoxes(screen);
+        renderMap(screen);
 
         renderComponents(screen);
 
@@ -372,6 +364,12 @@ public class Game extends BasicGame {
             screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
         }
 
+    }
+
+    private void renderMap(Graphics screen){
+        // SET LINE WIDTH FOR DRAWING ANY LINES
+        screen.setLineWidth(Display.LINE_WIDTH);
+        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
     }
 
     private void renderRooms(Graphics screen){

@@ -56,11 +56,11 @@ public class Map extends Loopable {
     @Override
     public void init(){
         // generate components
-        buildStockMap();
-//        generateRooms();
-        generateCorridors();
-        generateDoors();
         try {
+            buildStockMap();
+//        generateRooms();
+            generateCorridors();
+            generateDoors();
             generateMobs();
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
