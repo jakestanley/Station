@@ -188,74 +188,9 @@ public class Game extends BasicGame {
 
         }
 
-        updateComponents();
-
-    }
-
-    @Override
-    public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
-
-        // SET SCALE. TODO CONSIDER Why do I even need to change the scale?
-//        screen.scale(Display.BIG_SCALE, Display.BIG_SCALE); // TODO this should only happen once per render
-
-        // DRAW BACKGROUND
-        screen.setBackground(Colours.GRID_BACKGROUND);
-
-        // DRAW GRID
-        screen.setColor(Colours.GRID_LINES);
-        screen.setLineWidth(1);
-
-        // draw horizontal lines going down
-        for(int v = 0; v < Display.MAP_HEIGHT; v++){
-            screen.drawLine(0, v*Display.TILE_WIDTH, Display.MAP_WIDTH, v*Display.TILE_WIDTH);
-        }
-        // draw vertical lines going across
-        for(int h = 0; h < Display.MAP_WIDTH; h++){
-            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
-        }
-
-        // DRAW MAP
-        screen.setLineWidth(Display.LINE_WIDTH);
-        map.render(screen);
-
-        // DRAW HOVER BOXES
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderHoverBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderHoverBox(screen);
-        }
-
-        // TODO reorganise this method, it's so damn ugly
-
-        // DRAW STRINGS
-        screen.setColor(Color.white);
-//        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
-        screen.setFont(font);
-
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderDataBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderDataBox(screen);
-        }
-
-        int writeX = Display.TILE_WIDTH + Display.MARGIN;
-
-        // DRAW HOVER ROOM DATA
-
-        // TODO sort
-
-        if (hoverRoom != null) {
-            int type = hoverRoom.getType();
-//            if (type == Room.CORRIDOR) { // TODO something else here
-////                screen.drawString("Room: corridor", 10, 70);
-//            } else if (type == Room.TYPE_SQUARE) {
-////                screen.drawString("Room: square", 10, 70);
-//            }
-        }
-
-        // SETTING HINT STRING // TODO CONSIDER own method?
+        // RENDER HINTS TEXT
         hint.setLength(0);
-        if(shift){
+        if(shift){ // TODO check that it's cleared first.
             hint.append(Values.Strings.CONTROLS_SHIFT_DOOR);
         } else {
             if(selection == ROOM_SELECTION){
@@ -267,13 +202,32 @@ public class Game extends BasicGame {
             }
         }
 
-        // DRAW DEBUG STRINGS
+        updateComponents();
 
-        screen.setColor(Color.white);
-        if(debug){
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
-            screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
-        }
+    }
+
+    @Override
+    public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
+
+        renderBackground(screen);
+
+        // SET LINE WIDTH FOR DRAWING ANY LINES
+        screen.setLineWidth(Display.LINE_WIDTH);
+        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
+
+        renderRooms(screen);
+
+        renderMobs(screen);
+
+        renderHoverBoxes(screen);
+
+        renderComponents(screen);
+
+        renderComponentsData(screen);
+
+        renderDebugComponents(screen);
+
+
 
         // TODO draw interfaces
 
@@ -296,7 +250,7 @@ public class Game extends BasicGame {
         return mobs;
     }
 
-    public void processKeyboardInput(GameContainer container){ // TODO make this more efficient
+    public void processKeyboardInput(GameContainer container){ // TODO make this more efficient. any other controls?
         Input input = container.getInput();
 
         if(input.isKeyDown(Input.KEY_RSHIFT) || input.isKeyDown(Input.KEY_LSHIFT)) { // RSHIFT is the best, ergonomically
@@ -305,7 +259,7 @@ public class Game extends BasicGame {
             shift = false;
         }
 
-        if(input.isKeyPressed(Input.KEY_P)){
+        if(input.isKeyPressed(Input.KEY_P)){ // TODO change to space
             pause = !pause;
         }
 
@@ -399,11 +353,99 @@ public class Game extends BasicGame {
         }
     }
 
-    private void renderComponents(Graphics screen){
+    private void renderBackground(Graphics screen){
+
+        // DRAW BACKGROUND
+        screen.setBackground(Colours.GRID_BACKGROUND);
+
+        // DRAW GRID
+        screen.setColor(Colours.GRID_LINES);
+        screen.setLineWidth(Display.GRID_LINES);
+
+        // draw horizontal lines going down
+        for(int v = 0; v < Display.MAP_HEIGHT; v++){
+            screen.drawLine(0, v * Display.TILE_WIDTH, Display.MAP_WIDTH, v * Display.TILE_WIDTH);
+        }
+
+        // draw vertical lines going across
+        for(int h = 0; h < Display.MAP_WIDTH; h++){
+            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
+        }
+
+    }
+
+    private void renderRooms(Graphics screen){
+        // TODO
+    }
+
+    private void renderMobs(Graphics screen){
+        // TODO
+    }
+
+    private void renderHoverBoxes(Graphics screen){ // TODO tidy, etc
+
+        // DRAW HOVER BOXES
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderHoverBox(screen);
+        } else if(hoverRoom != null){
+            hoverRoom.renderHoverBox(screen);
+        }
+
+        // TODO reorganise this method, it's so damn ugly
+
+        // DRAW STRINGS
+        screen.setColor(Color.white);
+//        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
+        screen.setFont(font);
+
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderDataBox(screen);
+        } else if(hoverRoom != null){
+            hoverRoom.renderDataBox(screen);
+        }
+
+        int writeX = Display.TILE_WIDTH + Display.MARGIN;
+
+        // DRAW HOVER ROOM DATA
+
+        // TODO sort
+
+        if (hoverRoom != null) {
+            int type = hoverRoom.getType();
+//            if (type == Room.CORRIDOR) { // TODO something else here
+////                screen.drawString("Room: corridor", 10, 70);
+//            } else if (type == Room.TYPE_SQUARE) {
+////                screen.drawString("Room: square", 10, 70);
+//            }
+        }
+    }
+
+    private void renderComponents(Graphics screen){ // GUI // TODO CONSIDER renaming? // TODO should be for backgrounds and borders only, so we can turn it off easily in case something goes wrong but we still want the overlaid stuff.
+
+        // render components
         for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
             GuiComponent next =  iterator.next();
             next.render(screen);
         }
+    }
+
+    private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
+
+        // TODO
+
+    }
+
+    private void renderDebugComponents(Graphics screen){
+
+        // check that we're in production mode
+        if(debug){
+            // DRAW DEBUG STRINGS
+            screen.setColor(Color.white); // TODO non-static colour
+
+            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
+            screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
+        }
+
     }
 
     public static void main(String args[]){

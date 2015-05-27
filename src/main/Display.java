@@ -3,7 +3,7 @@ package main;
 /**
  * Created by stanners on 22/05/2015.
  */
-public class Display {
+public class Display { // TODO put these variables in some kind of order/categorisation that makes more sense
 
     public static int FRAME_RATE = 30;
 
@@ -31,6 +31,7 @@ public class Display {
     public static final int DOOR_WIDTH = 16;
     public static final int MOB_WIDTH = 8; // TODO make this dynamic
     public static final int LINE_WIDTH = 2;
+    public static final int GRID_LINES = 1;
 
     // INTERFACE STUFF
     public static final int MARGIN = 8;
