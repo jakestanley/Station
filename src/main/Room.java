@@ -264,6 +264,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         tiles = new ArrayList<Tile>();
 
         if(type == Values.Types.CORRIDOR_X || type == Values.Types.CORRIDOR_Y){ // if its a corridor // TODO clean up
+            System.out.println("generating corridor tiles");
             if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
                 throw new CorridorDimensionsException(sx, sy);
             }
