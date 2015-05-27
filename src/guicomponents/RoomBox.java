@@ -1,5 +1,6 @@
 package guicomponents;
 
+import main.Colours;
 import main.Display;
 import org.newdawn.slick.Graphics;
 
@@ -22,5 +23,9 @@ public class RoomBox extends GuiComponent {
     public void render(Graphics screen) {
         drawBackground(screen);
         drawBorder(screen);
+
+        screen.setColor(Colours.GUI_TEXT);
+        screen.drawString("Test", (x + Display.MARGIN) * Display.BIG_SCALE, (y + Display.MARGIN) * Display.BIG_SCALE);
+
     }
 }
