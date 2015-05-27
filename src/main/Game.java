@@ -1,9 +1,6 @@
 package main;
 
-import guicomponents.ControlHintsBox;
-import guicomponents.GuiComponent;
-import guicomponents.MessageBox;
-import guicomponents.MobsBox;
+import guicomponents.*;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -381,6 +378,7 @@ public class Game extends BasicGame {
         // control hints box
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         guiComponents.add(new ControlHintsBox(hint));
+        guiComponents.add(new RoomBox());
         guiComponents.add(new MobsBox(map.getMobs(), Game.container.getInput()));
         guiComponents.add(new MessageBox());
 
