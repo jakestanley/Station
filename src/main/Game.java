@@ -68,7 +68,7 @@ public class Game extends BasicGame {
 
             AppGameContainer container = new AppGameContainer(this);
             container.setShowFPS(debug);
-            container.setDisplayMode(Display.DISPLAY_WIDTH * Display.BIG_SCALE, Display.DISPLAY_HEIGHT * Display.BIG_SCALE, false);
+            container.setDisplayMode(Display.DISPLAY_WIDTH, Display.DISPLAY_HEIGHT, false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
             container.start();
@@ -121,8 +121,8 @@ public class Game extends BasicGame {
 
         selection = NO_SELECTION; // wiping for new update
 
-        mouseX = Mouse.getX() / Display.BIG_SCALE;
-        mouseY = Math.abs((Mouse.getY() / Display.BIG_SCALE) - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
+        mouseX = Mouse.getX();
+        mouseY = Math.abs(Mouse.getY() - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
 
         hoverDoor = map.getDoorMouseOver(mouseX, mouseY);
         if(hoverDoor != null){
@@ -194,13 +194,17 @@ public class Game extends BasicGame {
 
     @Override
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
-        // SET BACKGROUND AND SCALE
+
+        // SET SCALE. TODO CONSIDER Why do I even need to change the scale?
+//        screen.scale(Display.BIG_SCALE, Display.BIG_SCALE); // TODO this should only happen once per render
+
+        // DRAW BACKGROUND
         screen.setBackground(Colours.GRID_BACKGROUND);
-        screen.scale(Display.BIG_SCALE, Display.BIG_SCALE); // TODO this should only happen once per render
 
         // DRAW GRID
         screen.setColor(Colours.GRID_LINES);
         screen.setLineWidth(1);
+
         // draw horizontal lines going down
         for(int v = 0; v < Display.MAP_HEIGHT; v++){
             screen.drawLine(0, v*Display.TILE_WIDTH, Display.MAP_WIDTH, v*Display.TILE_WIDTH);
@@ -225,7 +229,7 @@ public class Game extends BasicGame {
 
         // DRAW STRINGS
         screen.setColor(Color.white);
-        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
+//        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
         screen.setFont(font);
 
         if(hoverDoor != null){ // render hover door hover box
@@ -234,7 +238,7 @@ public class Game extends BasicGame {
             hoverRoom.renderDataBox(screen);
         }
 
-        int writeX = (Display.TILE_WIDTH + 2) * Display.BIG_SCALE;
+        int writeX = Display.TILE_WIDTH + Display.MARGIN;
 
         // DRAW HOVER ROOM DATA
 
@@ -267,8 +271,8 @@ public class Game extends BasicGame {
 
         screen.setColor(Color.white);
         if(debug){
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.MAP_HEIGHT * Display.BIG_SCALE) - 50);
-            screen.drawString("Tick: " + tick, 10, (Display.MAP_HEIGHT * Display.BIG_SCALE) - 70);
+            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
+            screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
         }
 
         // TODO draw interfaces

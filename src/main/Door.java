@@ -155,10 +155,10 @@ public class Door extends Loopable implements Interactable {
     @Override
     public void renderHoverBox(Graphics screen) { // TODO animate the hover boxes?
         screen.setColor(Color.white);
-        if(horizontal){
-            screen.drawRect(sx - 3, sy - 2, (Display.DOOR_WIDTH * 2) + 2, Display.DOOR_WIDTH); // TODO make the hover box animated. fix the box
+        if(horizontal){ // TODO check these variables and replace hard coded variables
+            screen.drawRect(sx - 12, sy - 8, (Display.DOOR_WIDTH * 2) + Display.MARGIN, Display.DOOR_WIDTH); // TODO make the hover box animated. fix the box
         } else {
-            screen.drawRect(sx - 2, sy - 3, Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + 2); // TODO make the hover box animated. fix the box
+            screen.drawRect(sx - 8, sy - 12, Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + Display.MARGIN); // TODO make the hover box animated. fix the box
         }
 
     }
@@ -168,7 +168,7 @@ public class Door extends Loopable implements Interactable {
 
         // initialising variables
         ArrayList<String> strings = new ArrayList<String>();
-        int x = (Display.MAP_WIDTH * Display.BIG_SCALE) - 200;
+        int x = Display.MAP_WIDTH - 200; // TODO change hard coded value
         int y = 60;
 
         if(!destroyed){

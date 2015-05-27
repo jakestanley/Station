@@ -197,10 +197,10 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
         screen.setColor(Colours.HOVER_SELECT);
 
-        int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
+        int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2; // TODO CONSIDER making this a constant?
 
         // TODO make this more responsive/dynamic based on scale
-        Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin - 1, (ty * Display.TILE_WIDTH) + margin - 1, Display.MOB_WIDTH + 2, Display.MOB_WIDTH + 2);
+        Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin - 4, (ty * Display.TILE_WIDTH) + margin - 4, Display.MOB_WIDTH + 8, Display.MOB_WIDTH + 8); // TODO replace these hard coded values
 
         screen.draw(rect);
         renderHoverBox = false; // reset after

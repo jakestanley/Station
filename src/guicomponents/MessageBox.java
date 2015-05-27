@@ -47,7 +47,7 @@ public class MessageBox extends GuiComponent { // TODO consider that update may 
 
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i).getMessage();
-            screen.drawString(message, (x + 2) * Display.BIG_SCALE, (y + 2 + (i * Display.TEXT_PANEL_HEIGHT)) * Display.BIG_SCALE); // TODO check hint is not null
+            screen.drawString(message, x + Display.MARGIN, y + Display.MARGIN + (i * Display.TEXT_PANEL_HEIGHT)); // TODO check hint is not null
         }
     }
 }

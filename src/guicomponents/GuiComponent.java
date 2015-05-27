@@ -1,7 +1,6 @@
 package guicomponents;
 
 import main.Colours;
-import main.Display;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -21,7 +20,7 @@ public abstract class GuiComponent {
         this.width = width;
         this.height = height;
 
-        this.rect = new Rectangle(x * Display.BIG_SCALE, y * Display.BIG_SCALE, width * Display.BIG_SCALE, height * Display.BIG_SCALE);
+        this.rect = new Rectangle(x, y, width, height);
     }
 
     public abstract void update();

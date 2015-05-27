@@ -25,7 +25,7 @@ public class RoomBox extends GuiComponent {
         drawBorder(screen);
 
         screen.setColor(Colours.GUI_TEXT);
-        screen.drawString("Test", (x + Display.MARGIN) * Display.BIG_SCALE, (y + Display.MARGIN) * Display.BIG_SCALE);
+        screen.drawString("Test", x + Display.MARGIN, y + Display.MARGIN);
 
     }
 }

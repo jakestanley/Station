@@ -24,7 +24,7 @@ public class MobPanel extends GuiComponent {
         this.index = index;
         this.mob = mob;
         name = mob.getName();
-        detection = new Rectangle(Display.LEFT_COLUMN_WIDTH, y, Display.RIGHT_COLUMN_WIDTH, Display.TEXT_PANEL_HEIGHT); // TODO consider set scale for now? hmm
+        detection = new Rectangle(Display.LEFT_COLUMN_WIDTH, y, Display.RIGHT_COLUMN_WIDTH, Display.TEXT_PANEL_HEIGHT);
 //        System.out.println("Mob panel has dimensions: " + x + ", " + y + ", " + (x + width) + ", " + (y + height));
 //        System.out.println("y render: " + y);
         System.out.println("mob panel index: " + index);
@@ -43,22 +43,22 @@ public class MobPanel extends GuiComponent {
 
 
         renderHealthBar(screen);
-        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
+//        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
 
         // DRAW TOP AND BOTTOM BORDERS
         screen.setColor(Colours.GUI_BORDER);
-        screen.drawLine(x * scale, y * scale, (x + width) * scale, y * scale);
-        screen.drawLine(x * scale, (y + height) * scale, (x + width) * scale, (y + height) * scale);
+        screen.drawLine(x, y, x + width, y);
+        screen.drawLine(x, y + height, x + width, y + height);
 
         // DRAW TEXT
         screen.setColor(Colours.GUI_TEXT);
-        screen.drawString(name, (x + Display.MOB_TEXT_MARGIN) * scale, (y + 2) * scale); // TODO 2 should be a variable like MARGIN or HEALTH_BAR_MARGIN?
+        screen.drawString(name, x + Display.MOB_TEXT_MARGIN, y + 8); // TODO 2 should be a variable like MARGIN or HEALTH_BAR_MARGIN?
     }
 
     public boolean mouseOver(Input input) { // TODO an abstractly or statically accessible method for this
 
-        float mouseX = input.getMouseX() / Display.BIG_SCALE;
-        float mouseY = input.getMouseY() / Display.BIG_SCALE;
+        float mouseX = input.getMouseX();
+        float mouseY = input.getMouseY();
 
 //        System.out.println("MOUSE: " + mouseX + ", " + mouseY);
 
@@ -91,8 +91,8 @@ public class MobPanel extends GuiComponent {
         // TODO solve this work around. not sure why /6 works, but it does.
 
         // initialising rectangles // TODO change these static values, such as 2 and index * n
-        Rectangle baseRect = new Rectangle((x + 2) * Display.BIG_SCALE, (y + 2) * Display.BIG_SCALE, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT);
-        Rectangle healthRect = new Rectangle((x + 2) * Display.BIG_SCALE, ((y + 2) * Display.BIG_SCALE) + mobHealthBarMod, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
+        Rectangle baseRect = new Rectangle(x + Display.MARGIN, y + Display.MARGIN, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT);
+        Rectangle healthRect = new Rectangle(x + Display.MARGIN, y + Display.MARGIN + mobHealthBarMod, Display.HEALTH_BAR_WIDTH, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
 
         // render base rect
         screen.setColor(Color.darkGray); // TODO access this from some value resource
