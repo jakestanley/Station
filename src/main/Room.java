@@ -166,9 +166,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             strings.add("Oxygen: OFF");
         }
 
-        // set color
-        screen.setColor(Color.white);
-
         // iterate through and present strings
         for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {
             String next = iterator.next();

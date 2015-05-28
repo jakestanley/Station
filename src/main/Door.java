@@ -196,9 +196,6 @@ public class Door extends Loopable implements Interactable {
             strings.add("Bulkhead: READY");
         }
 
-        // set color
-        screen.setColor(Color.white);
-
         // iterate through and present strings
         for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {
             String next = iterator.next();
