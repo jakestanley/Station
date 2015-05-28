@@ -76,6 +76,11 @@ public class Mate extends Mob {
     }
 
     @Override
+    public void populateDataBoxStrings() {
+        strings.add("random string: " + Game.random.nextFloat());
+    }
+
+    @Override
     public void specificDamage() {
         // TODO specific damage done only to subclasses
     }
@@ -84,4 +89,33 @@ public class Mate extends Mob {
         return Values.names[Game.random.nextInt(Values.names.length)];
     }
 
+    @Override
+    public boolean mouseOver(int mouseX, int mouseY) {
+        return false;
+    }
+
+    @Override
+    public void qPress() {
+
+    }
+
+    @Override
+    public void wPress() {
+
+    }
+
+    @Override
+    public void ePress() {
+
+    }
+
+    @Override
+    public void rPress() {
+
+    }
+
+    @Override
+    public void vPress() {
+
+    }
 }

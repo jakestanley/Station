@@ -27,6 +27,8 @@ public class Door extends Loopable implements Interactable {
     private int sx, sy, ex, ey, timer; // start and end coordinates
     private float integrity;
 
+    private ArrayList<String> strings;
+
     public Door(Tile start, Tile end){
         super(0, Display.DOOR_WIDTH + 1); // start from frame zero if starting closed. door has a frame of animation for each pixel
 
@@ -35,6 +37,7 @@ public class Door extends Loopable implements Interactable {
         this.open = false;
         this.bulkhead = false;
         this.destroyed = false;
+        this.strings = new ArrayList<String>();
 
         this.integrity = BASE_STRENGTH;
 
@@ -105,7 +108,37 @@ public class Door extends Loopable implements Interactable {
 
     @Override
     public void update(){
+
         autoClose();
+
+        // generating strings for data box // TODO optimise so this only happens when necessary
+        strings = new ArrayList<String>();
+
+        if(!destroyed){
+            strings.add("Integrity: " + integrity + "%");
+        } else {
+            strings.add("Integrity: DESTROYED");
+        }
+
+        // get strings
+        if(open){
+            strings.add("Status: OPEN");
+        } else {
+            strings.add("Status: CLOSED");
+        }
+
+        if(locked){
+            strings.add("Lock: LOCKED");
+        } else {
+            strings.add("Lock: UNLOCKED");
+        }
+
+        if(bulkhead){
+            strings.add("Bulkhead: ENGAGED");
+        } else {
+            strings.add("Bulkhead: READY");
+        }
+
     }
 
     public boolean isOpen(){
@@ -166,35 +199,9 @@ public class Door extends Loopable implements Interactable {
     @Override
     public void renderDataBox(Graphics screen){ // TODO also render data box
 
-        // initialising variables
-        ArrayList<String> strings = new ArrayList<String>();
-        int x = Display.MAP_WIDTH + Display.MARGIN;
-        int y = Display.MARGIN;
-
-        if(!destroyed){
-            strings.add("Integrity: " + integrity + "%");
-        } else {
-            strings.add("Integrity: DESTROYED");
-        }
-
-        // get strings
-        if(open){
-            strings.add("Status: OPEN");
-        } else {
-            strings.add("Status: CLOSED");
-        }
-
-        if(locked){
-            strings.add("Lock: LOCKED");
-        } else {
-            strings.add("Lock: UNLOCKED");
-        }
-
-        if(bulkhead){
-            strings.add("Bulkhead: ENGAGED");
-        } else {
-            strings.add("Bulkhead: READY");
-        }
+        // initialise variables
+        int x = dbx;
+        int y = dby;
 
         // iterate through and present strings
         for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {

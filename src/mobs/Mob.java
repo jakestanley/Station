@@ -10,6 +10,9 @@ import org.newdawn.slick.geom.Rectangle;
 import planner.Planner;
 import tiles.Tile;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Created by stanners on 23/05/2015.
  */
@@ -43,6 +46,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     protected boolean haste = false; // opening a door doesn't use a turn
     protected int minOpHealth, minOpOxygen; // TODO more variables
     protected float health, resilience;
+    protected ArrayList<String> strings;
 
     // problem solving and path finding
     protected Planner planner;
@@ -108,6 +112,10 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
             health = 0;
             die();
         }
+
+        strings = new ArrayList<String>();
+        populateDataBoxStrings();
+
     }
 
     public void moveTo(int tx, int ty){
@@ -131,6 +139,8 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     public abstract int getType();
 
     public abstract void act() throws NoAction;
+
+    public abstract void populateDataBoxStrings(); // todo before commit.
 
     public int getX(){
         return tx;
@@ -213,6 +223,21 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         screen.draw(rect);
 
     }
+
+    @Override
+    public void renderDataBox(Graphics screen) {
+
+        // initialising variables
+        int x = dbx;
+        int y = dby;
+
+        // iterate through and present strings
+        for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {
+            String next = iterator.next();
+            screen.drawString(next, x, y); // TODO make this more efficient
+            y = y + Display.TEXT_SPACING;
+        }
+
     }
 
     private void die(){

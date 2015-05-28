@@ -401,6 +401,8 @@ public class Game extends BasicGame {
             hoverDoor.renderHoverBox(screen);
         } else if(hoverRoom != null){
             hoverRoom.renderHoverBox(screen);
+        } else if(hoverMob != null){
+            hoverMob.renderHoverBox(screen);
         }
 
     }
@@ -425,7 +427,7 @@ public class Game extends BasicGame {
         } else if(hoverRoom != null){
             hoverRoom.renderDataBox(screen);
         } else if(hoverMob != null){
-            // TODO
+            hoverMob.renderDataBox(screen);;
         }
 
     }

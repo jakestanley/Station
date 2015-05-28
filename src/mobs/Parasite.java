@@ -6,9 +6,9 @@ import exceptions.ImpossibleGoal;
 import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
 import main.Game;
-import tiles.Tile;
 import org.newdawn.slick.Color;
 import planner.Random;
+import tiles.Tile;
 
 /**
  * Created by stanners on 23/05/2015.
@@ -81,8 +81,43 @@ public class Parasite extends Mob {
     }
 
     @Override
+    public void populateDataBoxStrings() {
+        strings.add("random string: " + Game.random.nextFloat());
+    }
+
+    @Override
     public void specificDamage() {
         // TODO specific damage only done to subclasses
+    }
+
+    @Override
+    public boolean mouseOver(int mouseX, int mouseY) {
+        return false;
+    }
+
+    @Override
+    public void qPress() {
+
+    }
+
+    @Override
+    public void wPress() {
+
+    }
+
+    @Override
+    public void ePress() {
+
+    }
+
+    @Override
+    public void rPress() {
+
+    }
+
+    @Override
+    public void vPress() {
+
     }
 
 }

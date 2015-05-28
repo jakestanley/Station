@@ -40,6 +40,8 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     private float oxygen, integrity, ventRate, refillRate, consumptionRate;
     private boolean purge, evacuate, support; // support is life support, which is oxygen
 
+    private ArrayList<String> strings;
+
     public Room(int x, int y, int sx, int sy, int type){ // TODO room type
 
         super(0, 0); // for now TODO reconsider
@@ -51,6 +53,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         this.integrity = MAX_INTEGRITY;
         this.oxygen = MAX_OXYGEN;
+        this.strings = new ArrayList<String>();
 
         purge = false; // oxygen purge on/off
         evacuate = false; // evacuation alarm on/off
@@ -116,31 +119,8 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             oxygen = 0;
         }
 
-        // TODO process integrity. how is the ship damaged?
-
-    }
-
-    @Override
-    public void renderHoverBox(Graphics screen){ // TODO make this not shit
-
-        int x = this.x * Display.TILE_WIDTH;
-        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
-
-        screen.setColor(Color.white);
-        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
-    }
-
-    @Override
-    public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
-
-        // neater separation of concerns with text generation and presentation iteration loop
-
-        // initialising variables
-        ArrayList<String> strings = new ArrayList<String>();
-        int x = Display.MAP_WIDTH + Display.MARGIN;
-        int y = Display.MARGIN;
-
-        // get strings
+        // generating strings for data box // TODO optimise so this only happens when necessary
+        strings = new ArrayList<String>();
         strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
         strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
         strings.add("Oxygen: " + oxygen + "%");
@@ -165,6 +145,24 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         } else {
             strings.add("Oxygen: OFF");
         }
+
+    }
+
+    @Override
+    public void renderHoverBox(Graphics screen){ // TODO make this not shit
+
+        int x = this.x * Display.TILE_WIDTH;
+        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
+
+        screen.setColor(Color.white);
+        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
+    }
+
+    public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
+
+        // initialising variables
+        int x = dbx;
+        int y = dby;
 
         // iterate through and present strings
         for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {

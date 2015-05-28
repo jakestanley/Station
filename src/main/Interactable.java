@@ -7,6 +7,9 @@ import org.newdawn.slick.Graphics;
  */
 public interface Interactable {
 
+    int dbx = Display.MAP_WIDTH + Display.MARGIN;
+    int dby = Display.MARGIN;
+
     public boolean mouseOver(int mouseX, int mouseY);
 
     public void renderHoverBox(Graphics screen);
