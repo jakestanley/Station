@@ -137,8 +137,8 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         // initialising variables
         ArrayList<String> strings = new ArrayList<String>();
-        int x = Display.MAP_WIDTH - 200; // TODO change hard coded value
-        int y = 60; // TODO don't use a hard coded value
+        int x = Display.MAP_WIDTH + Display.MARGIN;
+        int y = Display.MARGIN;
 
         // get strings
         strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
