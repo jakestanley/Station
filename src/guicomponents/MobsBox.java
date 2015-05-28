@@ -3,7 +3,6 @@ package guicomponents;
 import main.Display;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,29 +15,15 @@ public class MobsBox extends GuiComponent {
     private ArrayList<Mob> friendlies;
     private ArrayList<Mob> hostiles;
     private ArrayList<MobPanel> panels;
-    private Mob hoverMob = null;
-    private Input input;
+    private Mob selectedMob;
 
-    public MobsBox(ArrayList<Mob> mobs, Input input){
+    public MobsBox(ArrayList<Mob> mobs){
         super(Display.LEFT_COLUMN_WIDTH, Display.getMobsBoxY(), Display.RIGHT_COLUMN_WIDTH, Display.MOBS_BOX_HEIGHT);
-        System.out.println("mob count: " + mobs.size());
-        this.input = input;
         buildPanels(mobs);
     }
 
     @Override
     public void update() {
-
-        hoverMob = null;
-
-        for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
-            MobPanel next = iterator.next();
-            if(next.mouseOver(input)){
-                next.setSelected();
-            }
-        }
-
-        // TODO get more data functionality
 
     }
 
@@ -53,6 +38,21 @@ public class MobsBox extends GuiComponent {
             next.render(screen);
         }
 
+    }
+
+    public Mob getMobMouseOver(int mouseX, int mouseY){
+
+        selectedMob = null;
+
+        for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
+            MobPanel next = iterator.next();
+            if(next.mouseOver(mouseX, mouseY)){
+                next.setSelected();
+                selectedMob = next.getMob();
+            }
+        }
+
+        return selectedMob;
     }
 
     private void buildPanels(ArrayList<Mob> mobs){

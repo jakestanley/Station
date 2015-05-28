@@ -5,7 +5,6 @@ import main.Display;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -41,7 +40,6 @@ public class MobPanel extends GuiComponent {
         // DRAW BACKGROUND
         drawBackground(screen); // TODO optimise. not necessary if unselected
 
-
         renderHealthBar(screen);
 //        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
 
@@ -55,15 +53,12 @@ public class MobPanel extends GuiComponent {
         screen.drawString(name, x + Display.MOB_TEXT_MARGIN, y + 8); // TODO 2 should be a variable like MARGIN or HEALTH_BAR_MARGIN?
     }
 
-    public boolean mouseOver(Input input) { // TODO an abstractly or statically accessible method for this
-
-        float mouseX = input.getMouseX();
-        float mouseY = input.getMouseY();
+    public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this
 
 //        System.out.println("MOUSE: " + mouseX + ", " + mouseY);
 
         if (mouseX > detection.getMinX() && mouseX < detection.getMaxX() &&
-                mouseY > detection.getMinY() && mouseY < detection.getMaxY()){
+                mouseY > detection.getMinY() && mouseY <= detection.getMaxY()){
 
             // set background selected colour
             backgroundColour = Colours.GUI_BACKGROUND_SELECTED;
@@ -78,6 +73,10 @@ public class MobPanel extends GuiComponent {
 
     public void setSelected(){
         mob.setSelected();
+    }
+
+    public Mob getMob(){
+        return mob;
     }
 
     private void renderHealthBar(Graphics screen){

@@ -23,6 +23,8 @@ public class Game extends BasicGame {
     public static final int NO_SELECTION = 0;
     public static final int ROOM_SELECTION = 1;
     public static final int DOOR_SELECTION = 2; // TODO CONSIDER that this won't work until i sort out the overcrowding? revise.
+    public static final int NAUT_SELECTION = 3;
+    public static final int HOSTILE_SELECTION = 4;
 
     public static boolean debug = false;
     public static boolean pause = false;
@@ -40,10 +42,17 @@ public class Game extends BasicGame {
     // ROOM STUFF
     private Room hoverRoom;
     private Door hoverDoor;
+    private Mob hoverMob;
     private ArrayList<Mob> mobs; // TODO remove this as it may be redundant and confusing
 
-    // INTERFACE STUFF
+    // FONTS
     private TrueTypeFont font;
+
+    // GUI COMPONENTS
+    private ControlHintsBox hintsBox;
+    private RoomBox roomBox;
+    private MobsBox mobsBox;
+    private MessageBox messageBox;
     private ArrayList<GuiComponent> guiComponents;
 
     private StringBuilder hint; // for control hints box
@@ -86,8 +95,6 @@ public class Game extends BasicGame {
 
         this.container = gameContainer;
 
-        hoverRoom = null;
-        hoverDoor = null;
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
 
         map = new Map();
@@ -119,35 +126,8 @@ public class Game extends BasicGame {
 
         // TODO work out a solid, efficient order
 
-        selection = NO_SELECTION; // wiping for new update
-
-        mouseX = Mouse.getX();
-        mouseY = Math.abs(Mouse.getY() - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
-
-        hoverDoor = map.getDoorMouseOver(mouseX, mouseY);
-        if(hoverDoor != null){
-            selection = DOOR_SELECTION;
-        } else {
-            hoverRoom = map.getRoomMouseOver(mouseX, mouseY);
-
-            if(hoverRoom != null){
-                selection = ROOM_SELECTION;
-                mobs = getMobsByRoom(hoverRoom); // not in tick block as selection can change before tick
-                if(!mouseOverRoom){
-//                System.out.println("Mouse is over a room");
-                    mouseOverRoom = !mouseOverRoom;
-//                System.out.println("Mobs in this room: " + mobs.size());
-                }
-                // TODO prepare data for room box
-
-            } else if(hoverRoom == null){ // TODO allow hovering over a door. prioritise door hover over room hover as door selection target is significantly smaller than that of rooms
-                if(mouseOverRoom){
-//                System.out.println("Mouse is no longer over a room");
-                    mouseOverRoom = !mouseOverRoom;
-                }
-            }
-
-        }
+        // process hover checks
+        processHoverChecks();
 
         // process keyboard input
         processKeyboardInput(container);
@@ -197,8 +177,12 @@ public class Game extends BasicGame {
                 hint.append(Values.Strings.CONTROLS_ROOM);
             } else if(selection == DOOR_SELECTION){
                 hint.append(Values.Strings.CONTROLS_DOOR);
+            } else if(selection == NAUT_SELECTION){
+                hint.append(Values.Strings.CONTROLS_NAUT);
+            } else if(selection == HOSTILE_SELECTION){
+                hint.append(Values.Strings.CONTROLS_HOSTILE);
             } else {
-                hint.append(Values.Strings.HINTS_WILL_APPEAR);
+                hint.append(Values.Strings.HINTS_WILL_APPEAR); // TODO rename to all controls, or something
             }
         }
 
@@ -242,6 +226,35 @@ public class Game extends BasicGame {
             }
         }
         return mobs;
+    }
+
+    public void processHoverChecks(){
+
+        // NULLIFY EXISTING VALUES FROM LAST LOOP
+        hoverRoom = null;
+        hoverDoor = null;
+        hoverMob = null;
+
+        // CLEAR SELECTION VARIABLE
+        selection = NO_SELECTION;
+
+        // GET MOUSE COORDINATE VALUES
+        mouseX = Mouse.getX();
+        mouseY = Math.abs(Mouse.getY() - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
+
+        // GET HOVER OBJECTS
+        if((hoverMob = mobsBox.getMobMouseOver(mouseX, mouseY)) != null){
+            if(Mob.TYPE_MATE == hoverMob.getType()){
+                selection = NAUT_SELECTION;
+            } else {
+                selection = HOSTILE_SELECTION;
+            }
+        } else if((hoverDoor = map.getDoorMouseOver(mouseX, mouseY)) != null){
+            selection = DOOR_SELECTION;
+        } else if((hoverRoom = map.getRoomMouseOver(mouseX, mouseY)) != null){
+            selection = ROOM_SELECTION;
+        }
+
     }
 
     public void processKeyboardInput(GameContainer container){ // TODO make this more efficient. any other controls?
@@ -323,20 +336,24 @@ public class Game extends BasicGame {
     }
 
     private void initComponents(){
-        // TODO
 
+        // INITIALISE COMPONENT LIST
         guiComponents = new ArrayList<GuiComponent>();
 
-        // control hints box
+        // INITIALISE HINT STRING
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
-        guiComponents.add(new ControlHintsBox(hint));
-        guiComponents.add(new RoomBox());
-        guiComponents.add(new MobsBox(map.getMobs(), Game.container.getInput()));
-        guiComponents.add(new MessageBox());
 
-        // TODO room tile data box
+        // INITIALISE COMPONENTS
+        hintsBox = new ControlHintsBox(hint);
+        roomBox = new RoomBox();
+        mobsBox = new MobsBox(map.getMobs(), Game.container.getInput());
+        messageBox = new MessageBox();
 
-        // TODO crew info box
+        // POPULATE COMPONENT LIST
+        guiComponents.add(hintsBox = new ControlHintsBox(hint));
+        guiComponents.add(roomBox = new RoomBox());
+        guiComponents.add(mobsBox = new MobsBox(map.getMobs(), Game.container.getInput()));
+        guiComponents.add(messageBox = new MessageBox());
 
     }
 
