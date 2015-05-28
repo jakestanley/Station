@@ -50,7 +50,7 @@ public class Game extends BasicGame {
 
     // GUI COMPONENTS
     private ControlHintsBox hintsBox;
-    private RoomBox roomBox;
+    private InfoBox infoBox;
     private MobsBox mobsBox;
     private MessageBox messageBox;
     private ArrayList<GuiComponent> guiComponents;
@@ -345,15 +345,15 @@ public class Game extends BasicGame {
 
         // INITIALISE COMPONENTS
         hintsBox = new ControlHintsBox(hint);
-        roomBox = new RoomBox();
-        mobsBox = new MobsBox(map.getMobs(), Game.container.getInput());
+        infoBox = new InfoBox();
+        mobsBox = new MobsBox(map.getMobs());
         messageBox = new MessageBox();
 
         // POPULATE COMPONENT LIST
-        guiComponents.add(hintsBox = new ControlHintsBox(hint));
-        guiComponents.add(roomBox = new RoomBox());
-        guiComponents.add(mobsBox = new MobsBox(map.getMobs(), Game.container.getInput()));
-        guiComponents.add(messageBox = new MessageBox());
+        guiComponents.add(hintsBox);
+        guiComponents.add(infoBox);
+        guiComponents.add(mobsBox);
+        guiComponents.add(messageBox);
 
     }
 
