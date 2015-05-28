@@ -39,7 +39,7 @@ public class Random extends Planner {
 
             Tile currentTile = mob.getTile();
             if(tx < 0 || ty < 0){
-                throw new ImpossibleGoal("Tried to access array with sub zero values");
+                throw new ImpossibleGoal("Tried to access array with sub zero values"); // TODO prevent this from happening
             }
 
             Tile nextTile = Game.map.tiles[tx][ty]; // TODO fix this workaround
@@ -71,7 +71,6 @@ public class Random extends Planner {
         if(count > 0){
             actions = options.get(Game.random.nextInt(options.size()));
         } else {
-            System.err.println("Cannot move mob as there are no valid moves. FIRST.");
             throw new ImpossibleGoal("Cannot move mob as there are no valid moves. SECOND");
         }
 

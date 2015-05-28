@@ -10,7 +10,7 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Tile { // TODO extend these
 
-    protected Color backgroundColour    = Color.black; // black for generic rooms by default TODO change this depending on room type?
+    protected Color backgroundColour    = Color.black; // black for generic rooms by default
     protected Color borderColour        = Color.yellow; // TODO consider a different border colour. draw borders separately?
 
     private Room room; // room the tile belongs to
