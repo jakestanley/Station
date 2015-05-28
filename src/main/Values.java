@@ -96,6 +96,22 @@ public class Values {
         public static final String MENTAL_HORRIFIED = "horrified";
         public static final String MENTAL_TERROR_STRICKEN = "terror-stricken";
 
+        public static final String CORRIDOR        = "corridor";
+        public static final String BRIDGE          = "bridge";
+        public static final String LIFESUPPORT     = "life support";
+        public static final String HANGAR          = "hangar";
+        public static final String TELEPORT        = "teleport";
+        public static final String CARGOHOLD       = "cargo hold";
+        public static final String ESCAPEPOD       = "escape pod";
+        public static final String CAFETERIA       = "cafeteria";
+        public static final String KITCHEN         = "kitchen";
+        public static final String BATHROOM        = "toilet";
+        public static final String QUARTERS        = "crew quarters";
+        public static final String GENERIC         = "generic"; // TODO ?
+        public static final String INVIGORATOR     = "invigorator";
+
+        public static final String UNDEFINED       = "UNDEFINED";
+
 
     }
 

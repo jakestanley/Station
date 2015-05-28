@@ -1,5 +1,6 @@
 package main;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import exceptions.CorridorDimensionsException;
 import mobs.Mob;
 import org.newdawn.slick.Color;
@@ -39,6 +40,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     private int priority;
     private float oxygen, integrity, ventRate, refillRate, consumptionRate;
     private boolean purge, evacuate, support; // support is life support, which is oxygen
+    private String typeString;
 
     private ArrayList<String> strings;
 
@@ -68,6 +70,21 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         this.type = type;
 
+        // SET ROOM TYPE STRING
+        if(Values.Types.CORRIDOR_X == type){
+            typeString = Values.Strings.CORRIDOR;
+        } else if(Values.Types.CORRIDOR_Y == type){
+            typeString = Values.Strings.CORRIDOR;
+        } else if(Values.Types.BRIDGE == type){
+            typeString = Values.Strings.BRIDGE;
+        } else if(Values.Types.LIFESUPPORT == type){
+            typeString = Values.Strings.LIFESUPPORT;
+        } else if(Values.Types.HANGAR == type){
+            typeString = Values.Strings.HANGAR;
+        } else {
+            typeString = Values.Strings.UNDEFINED;
+        }
+
         try {
             generateTiles(sx, sy);
         } catch (CorridorDimensionsException e) { // TODO a bit drastic, but let's nip these errors in the bud early
@@ -94,6 +111,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     public void populateDataBoxStrings(){
         // generating strings for data box // TODO optimise so this only happens when necessary
         strings = new ArrayList<String>();
+
+        strings.add(StringUtils.capitalize(typeString));
+
         strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
         strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
         strings.add("Oxygen: " + oxygen + "%");
