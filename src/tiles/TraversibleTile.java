@@ -1,5 +1,6 @@
 package tiles;
 
+import main.Colours;
 import main.Display;
 import main.Room;
 import main.Values;
@@ -16,6 +17,12 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
     public TraversibleTile(int x, int y, Room room, int type){
         super(x, y, room);
         this.type = type;
+
+        if(Values.Types.BRIDGE == type){
+            backgroundColour = Colours.Tiles.BG_BRIDGE;
+        } else if(Values.Types.LIFESUPPORT == type){
+            backgroundColour = Colours.Tiles.BG_LIFESUPPORT;
+        }
     }
 
     @Override
