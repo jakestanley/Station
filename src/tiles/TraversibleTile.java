@@ -68,4 +68,8 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
         return type;
     }
 
+    public boolean hasPathTo(Room target){ // see if a tile is connected to a room
+        return false; // TODO
+    }
+
 }
