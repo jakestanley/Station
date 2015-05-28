@@ -24,7 +24,6 @@ public class InfoBox extends GuiComponent {
         drawBorder(screen);
 
         screen.setColor(Colours.GUI_TEXT);
-        screen.drawString("Test", x + Display.MARGIN, y + Display.MARGIN);
 
     }
 }
