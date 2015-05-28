@@ -67,7 +67,7 @@ public class Values {
         public static final String CONTROLS_ROOM = "[room] Q: purge | W: evac | E: priority- | R - priority+ | V - oxygen";
         public static final String CONTROLS_DOOR = "[door] Q: open | W: close | E: auto | R: bulkhead";
         public static final String CONTROLS_SHIFT_DOOR = "[all doors] Q: open | W: close | E: auto | R: bulkhead"; // TODO rename to just CONTROLS_SHIFT, OR HINTS_SHIFT?
-        public static final String HINTS_WILL_APPEAR = "Hints will appear here";
+        public static final String HINTS_WILL_APPEAR = "SPACE: pause | SHIFT: all doors | HOVER: control door or room";
 
     }
 

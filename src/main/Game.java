@@ -253,7 +253,7 @@ public class Game extends BasicGame {
             shift = false;
         }
 
-        if(input.isKeyPressed(Input.KEY_P)){ // TODO change to space
+        if(input.isKeyPressed(Input.KEY_SPACE)){
             pause = !pause;
         }
 
