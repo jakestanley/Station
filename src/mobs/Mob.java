@@ -28,7 +28,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     private boolean alive, renderHoverBox = false;
     private Tile tile;
     private Room room;
-    private int tx, ty;
+    private int tx, ty, fear;
 
     protected String name;
 
@@ -55,6 +55,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
         this.tile = Game.map.tiles[tx][ty]; // TODO consider not even having a tile variable. need to know basis?
         this.room = tile.getRoom();
+        this.fear = Values.Attributes.MENTAL_INDIFFERENT;
         if(this.tile.isVoid()){
             System.err.println("Mob spawned in a void tile");
         }
@@ -189,6 +190,22 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
     public void setSelected(){
         renderHoverBox = true;
+    }
+
+    public void fearIntensify(){
+        if(fear != Values.Attributes.MENTAL_STATE_MAX_LEVEL){
+            fear++;
+        }
+    }
+
+    public void fearReduce(){
+        if(fear > 0){
+            fear--;
+        }
+    }
+
+    public int getFear(){
+        return fear;
     }
 
     private void renderHoverBox(Graphics screen){ // TODO make more responsive
