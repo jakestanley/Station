@@ -30,6 +30,10 @@ public class Values {
         // META DEBUG TYPES
         public static final int META_BORDER = 70;
 
+    }
+
+    public class Attributes {
+
         // MENTAL STATES
         public static final int MENTAL_INDIFFERENT = 0;
         public static final int MENTAL_STARTLED = 1;
@@ -39,6 +43,7 @@ public class Values {
         public static final int MENTAL_FRIGHTENED = 5;
         public static final int MENTAL_HORRIFIED = 6;
         public static final int MENTAL_TERROR_STRICKEN = 7;
+        public static final int MENTAL_STATE_MAX_LEVEL = 7;
 
     }
 
