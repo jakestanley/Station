@@ -71,10 +71,6 @@ public class MobPanel extends GuiComponent {
         }
     }
 
-    public void setSelected(){
-        mob.setSelected();
-    }
-
     public Mob getMob(){
         return mob;
     }

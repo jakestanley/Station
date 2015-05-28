@@ -13,7 +13,7 @@ import tiles.Tile;
 /**
  * Created by stanners on 23/05/2015.
  */
-public abstract class Mob extends Loopable { // TODO make abstract as its not to be instantiated directly
+public abstract class Mob extends Loopable implements Interactable { // TODO make abstract as its not to be instantiated directly
 
     public static final int TYPE_MATE = 1;
     public static final int TYPE_PARASITE = 2;
@@ -25,7 +25,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     public static final float MAX_RESILIENCE = 0.9f; // max possible resilience
 //    public static final boolean huep = 2; // TODO CONSIDER a "haste" flag.
 
-    private boolean alive, renderHoverBox = false;
+    private boolean alive;
     private Tile tile;
     private Room room;
     private int tx, ty, fear;
@@ -92,14 +92,9 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         screen.setColor(colour);
         int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
 
-        // TODO make this more responsive/dynamic based on scale
         Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin, (ty * Display.TILE_WIDTH) + margin, Display.MOB_WIDTH, Display.MOB_WIDTH);
         ShapeFill fill = new GradientFill((tx * Display.TILE_WIDTH) + margin + 1, (ty * Display.TILE_WIDTH) + margin + 1, colour, Display.MOB_WIDTH - 1, Display.MOB_WIDTH - 1, colour);
         screen.fill(rect, fill);
-
-        if(renderHoverBox){
-            renderHoverBox(screen);
-        }
 
     }
 
@@ -188,10 +183,6 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         return name;
     }
 
-    public void setSelected(){
-        renderHoverBox = true;
-    }
-
     public void fearIntensify(){
         if(fear != Values.Attributes.MENTAL_STATE_MAX_LEVEL){
             fear++;
@@ -208,7 +199,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         return fear;
     }
 
-    private void renderHoverBox(Graphics screen){ // TODO make more responsive
+    public void renderHoverBox(Graphics screen){ // TODO make more responsive
 
 //        System.out.println("Render mob hover box called");
 
@@ -220,7 +211,8 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin - 4, (ty * Display.TILE_WIDTH) + margin - 4, Display.MOB_WIDTH + 8, Display.MOB_WIDTH + 8); // TODO replace these hard coded values
 
         screen.draw(rect);
-        renderHoverBox = false; // reset after
+
+    }
     }
 
     private void die(){

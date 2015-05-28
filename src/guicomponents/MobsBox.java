@@ -47,7 +47,6 @@ public class MobsBox extends GuiComponent {
         for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
             MobPanel next = iterator.next();
             if(next.mouseOver(mouseX, mouseY)){
-                next.setSelected();
                 selectedMob = next.getMob();
             }
         }
