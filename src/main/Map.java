@@ -57,8 +57,8 @@ public class Map extends Loopable {
     public void init(){
         // generate components
         try {
-            buildStockMap();
-//        generateRooms();
+//            buildStockMap();
+            generateRooms();
             generateCorridors();
             generateDoors();
             generateMobs();
@@ -149,7 +149,8 @@ public class Map extends Loopable {
             x = Game.random.nextInt(width - sx);
             y = Game.random.nextInt(height - sy);
         }
-        rooms.add(new Room(x, y, sx, sy, Values.Types.BRIDGE));
+        bridge = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+        rooms.add(bridge);
 
         x = -1;
 
@@ -166,7 +167,8 @@ public class Map extends Loopable {
             x = Game.random.nextInt(width - sx);
             y = Game.random.nextInt(height - sy);
         }
-        rooms.add(new Room(x, y, sx, sy, Values.Types.LIFESUPPORT));
+        lifeSupport = new Room(x, y, sx, sy, Values.Types.LIFESUPPORT);
+        rooms.add(lifeSupport);
 
         x = -1;
 
@@ -183,9 +185,46 @@ public class Map extends Loopable {
             x = Game.random.nextInt(width - sx);
             y = Game.random.nextInt(height - sy);
         }
-        rooms.add(new Room(x, y, sx, sy, Values.Types.HANGAR));
+        hangar = new Room(x, y, sx, sy, Values.Types.HANGAR);
+        rooms.add(hangar);
+
+        x = -1;
+
+        // place the hangar
+        Room junction1 = null;
+        while(roomClash(x, y, sx, sy)){
+            sx = 1;
+            sy = 1;
+            x = Game.random.nextInt(width - sx);
+            y = Game.random.nextInt(height - sy);
+        }
+        junction1 = new Room(x, y, sx, sy, Values.Types.GENERIC);
+        rooms.add(junction1);
+
+        // place the hangar
+        Room junction2 = null;
+        while(roomClash(x, y, sx, sy)){
+            sx = 1;
+            sy = 1;
+            x = Game.random.nextInt(width - sx);
+            y = Game.random.nextInt(height - sy);
+        }
+        junction2 = new Room(x, y, sx, sy, Values.Types.GENERIC);
+        rooms.add(junction2);
+
+        // place the hangar
+        Room junction3 = null;
+        while(roomClash(x, y, sx, sy)){
+            sx = 1;
+            sy = 1;
+            x = Game.random.nextInt(width - sx);
+            y = Game.random.nextInt(height - sy);
+        }
+        junction3 = new Room(x, y, sx, sy, Values.Types.GENERIC);
+        rooms.add(junction3);
 
         // TODO add more rooms and particularly corridors. they might be tricky
+        // TODO more dynamic amounts of rooms, etc
 
 
 
