@@ -25,7 +25,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     public static final float MAX_RESILIENCE = 0.9f; // max possible resilience
 //    public static final boolean huep = 2; // TODO CONSIDER a "haste" flag.
 
-    private boolean alive;
+    private boolean alive, renderHoverBox = false;
     private Tile tile;
     private Room room;
     private int tx, ty;
@@ -87,7 +87,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
     protected abstract void generateSpecificStats();
 
     @Override
-    public void render(Graphics screen){
+    public void render(Graphics screen){ // TODO optimise
         screen.setColor(colour);
         int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
 
@@ -95,12 +95,23 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin, (ty * Display.TILE_WIDTH) + margin, Display.MOB_WIDTH, Display.MOB_WIDTH);
         ShapeFill fill = new GradientFill((tx * Display.TILE_WIDTH) + margin + 1, (ty * Display.TILE_WIDTH) + margin + 1, colour, Display.MOB_WIDTH - 1, Display.MOB_WIDTH - 1, colour);
         screen.fill(rect, fill);
+
+        if(renderHoverBox){
+            renderHoverBox(screen);
+        }
+
     }
 
     @Override
     public void update() {
         baseDamage();
         specificDamage();
+
+        // death check
+        if(health <= 0){
+            health = 0;
+            die();
+        }
     }
 
     public void moveTo(int tx, int ty){
@@ -118,6 +129,8 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         this.tile = Game.map.tiles[tx][ty];
 
     }
+
+    public abstract boolean isHostile();
 
     public abstract int getType();
 
@@ -162,10 +175,7 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
 
 
              // TODO CONSIDER is -- mutator right for floats?
-        if(health < 0){
-            health = 0;
-            die();
-        }
+
         // TODO mob should process damage done to itself via looking at the room its in, and what is in the room with it.
         // if there's a parasite there, it's likely to take damage from that.
         // if there's no oxygen, it's likely to take damage there also, so it can get real bad real quick.
@@ -177,10 +187,31 @@ public abstract class Mob extends Loopable { // TODO make abstract as its not to
         return name;
     }
 
+    public void setSelected(){
+        renderHoverBox = true;
+    }
+
+    private void renderHoverBox(Graphics screen){ // TODO make more responsive
+
+//        System.out.println("Render mob hover box called");
+
+        screen.setColor(Colours.HOVER_SELECT);
+
+        int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2; // TODO CONSIDER making this a constant?
+
+        // TODO make this more responsive/dynamic based on scale
+        Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin - 4, (ty * Display.TILE_WIDTH) + margin - 4, Display.MOB_WIDTH + 8, Display.MOB_WIDTH + 8); // TODO replace these hard coded values
+
+        screen.draw(rect);
+        renderHoverBox = false; // reset after
+    }
+
     private void die(){
-        System.out.println(name + " died");
-        alive = false;
-        colour = Color.lightGray;
+        if(alive){
+            System.out.println(name + " died");
+            alive = false;
+            colour = Color.lightGray;
+        }
     }
 
 }

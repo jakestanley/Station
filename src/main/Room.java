@@ -127,7 +127,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
 
         screen.setColor(Color.white);
-        screen.drawRect(x - 2, y - 2, (sx * Display.TILE_WIDTH) + 4, (sy * Display.TILE_WIDTH) + 4); // TODO make the hover box animated. fix the box
+        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
     }
 
     @Override
@@ -137,8 +137,8 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         // initialising variables
         ArrayList<String> strings = new ArrayList<String>();
-        int x = (Display.DISPLAY_WIDTH * Display.SCALE) - 200;
-        int y = 60;
+        int x = Display.MAP_WIDTH - 200; // TODO change hard coded value
+        int y = 60; // TODO don't use a hard coded value
 
         // get strings
         strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
@@ -264,6 +264,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         tiles = new ArrayList<Tile>();
 
         if(type == Values.Types.CORRIDOR_X || type == Values.Types.CORRIDOR_Y){ // if its a corridor // TODO clean up
+            System.out.println("generating corridor tiles");
             if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
                 throw new CorridorDimensionsException(sx, sy);
             }

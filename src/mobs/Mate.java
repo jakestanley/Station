@@ -39,6 +39,11 @@ public class Mate extends Mob {
     }
 
     @Override
+    public boolean isHostile() {
+        return false;
+    }
+
+    @Override
     public int getType() {
         return TYPE_MATE;
     }

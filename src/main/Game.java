@@ -1,12 +1,11 @@
 package main;
 
+import guicomponents.*;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.fills.GradientFill;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
 
@@ -29,6 +28,7 @@ public class Game extends BasicGame {
     public static boolean pause = false;
     public static boolean won = false;
     public static int MAX_TICK = 30; // if this is lower than the highest animation loop length, shit will get fucked up
+    public static GameContainer container;
     public static Map map;
     public static Random random;
 
@@ -40,9 +40,13 @@ public class Game extends BasicGame {
     // ROOM STUFF
     private Room hoverRoom;
     private Door hoverDoor;
-    private ArrayList<Mob> mobs;
+    private ArrayList<Mob> mobs; // TODO remove this as it may be redundant and confusing
 
-    TrueTypeFont font;
+    // INTERFACE STUFF
+    private TrueTypeFont font;
+    private ArrayList<GuiComponent> guiComponents;
+
+    private StringBuilder hint; // for control hints box
 
     public Game(String gameName, String[] args){
         super(gameName);
@@ -64,7 +68,7 @@ public class Game extends BasicGame {
 
             AppGameContainer container = new AppGameContainer(this);
             container.setShowFPS(debug);
-            container.setDisplayMode(Display.DISPLAY_WIDTH * Display.SCALE, Display.DISPLAY_HEIGHT * Display.SCALE, false);
+            container.setDisplayMode(Display.DISPLAY_WIDTH, Display.DISPLAY_HEIGHT, false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
             container.start();
@@ -80,6 +84,8 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
 
+        this.container = gameContainer;
+
         hoverRoom = null;
         hoverDoor = null;
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
@@ -90,6 +96,9 @@ public class Game extends BasicGame {
         mouseX = 0;
         mouseY = 0;
         tick = 0;
+
+        initComponents();
+
 
         // initialising font from .ttf
         try {
@@ -112,8 +121,8 @@ public class Game extends BasicGame {
 
         selection = NO_SELECTION; // wiping for new update
 
-        mouseX = Mouse.getX() / Display.SCALE;
-        mouseY = Math.abs((Mouse.getY() / Display.SCALE) - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
+        mouseX = Mouse.getX();
+        mouseY = Math.abs(Mouse.getY() - Display.DISPLAY_HEIGHT); // corrects the mouse y coordinate
 
         hoverDoor = map.getDoorMouseOver(mouseX, mouseY);
         if(hoverDoor != null){
@@ -179,119 +188,44 @@ public class Game extends BasicGame {
 
         }
 
+        // RENDER HINTS TEXT
+        hint.setLength(0);
+        if(shift){ // TODO check that it's cleared first.
+            hint.append(Values.Strings.CONTROLS_SHIFT_DOOR);
+        } else {
+            if(selection == ROOM_SELECTION){
+                hint.append(Values.Strings.CONTROLS_ROOM);
+            } else if(selection == DOOR_SELECTION){
+                hint.append(Values.Strings.CONTROLS_DOOR);
+            } else {
+                hint.append(Values.Strings.HINTS_WILL_APPEAR);
+            }
+        }
+
+        updateComponents();
+
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
-        // SET BACKGROUND AND SCALE
-        screen.setBackground(Colours.GRID_BACKGROUND);
-        screen.scale(Display.SCALE, Display.SCALE);
 
-        // DRAW GRID
-        screen.setColor(Colours.GRID_LINES);
-        screen.setLineWidth(1);
-        // draw horizontal lines going down
-        for(int v = 0; v < Display.DISPLAY_HEIGHT; v++){
-            screen.drawLine(0, v*Display.TILE_WIDTH, Display.DISPLAY_WIDTH, v*Display.TILE_WIDTH);
-        }
-        // draw vertical lines going across
-        for(int h = 0; h < Display.DISPLAY_WIDTH; h++){
-            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.DISPLAY_HEIGHT);
-        }
+        renderBackground(screen);
 
-        // DRAW MAP
-        screen.setLineWidth(Display.LINE_WIDTH);
-        map.render(screen);
+        renderMap(screen);
 
-        // DRAW ROOM SELECTION DATA BOX // TODO click to hold selection
-        screen.fill(new Rectangle(Display.TILE_WIDTH, Display.TILE_WIDTH, Display.DISPLAY_WIDTH - (2 * Display.TILE_WIDTH), Display.TILE_WIDTH), new GradientFill(42,42,Color.black, 78,78, Color.black)); // TODO make values non static. just fix gradient fills in general
+        renderComponents(screen);
 
-        // DRAW HOVER BOXES
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderHoverBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderHoverBox(screen);
-        }
+        renderComponentsData(screen);
 
-        // TODO reorganise this method, it's so damn ugly
+        renderDebugComponents(screen);
 
-        // DRAW STRINGS
-        screen.setColor(Color.white);
-        screen.scale(0.25f, 0.25f);
-        screen.setFont(font);
 
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderDataBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderDataBox(screen);
-        }
 
-        int writeX = (Display.TILE_WIDTH + 2) * Display.SCALE;
+        // TODO draw interfaces
 
-        // DRAW HOVER ROOM DATA
+        // DRAW COMPONENTS
+        renderComponents(screen);
 
-        // TODO sort
-
-        if (hoverRoom != null) {
-            int type = hoverRoom.getType();
-//            if (type == Room.CORRIDOR) { // TODO something else here
-////                screen.drawString("Room: corridor", 10, 70);
-//            } else if (type == Room.TYPE_SQUARE) {
-////                screen.drawString("Room: square", 10, 70);
-//            }
-            // TODO make this scalable and not static - in its current state, it depends on max health being 100
-            for(int i = 0; i < mobs.size(); i++){ // and here
-                Mob mob = mobs.get(i);
-
-                // get health values
-                float mobHealth = mob.getHealth(); // TODO to int
-                int mobHealthBarMod = (int) (Mob.MAX_HEALTH - mobHealth) / 5; // casting to integer for rough representation on bar // TODO ensure not below zero
-
-                // initialising rectangles
-                Rectangle baseRect = new Rectangle(  writeX + (writeX * i) / 2, writeX,
-                                                     Display.HEALTH_BAR_HEIGHT / 5, Display.HEALTH_BAR_HEIGHT);
-
-                Rectangle healthRect = new Rectangle(writeX + (writeX * i) / 2, writeX + mobHealthBarMod,
-                                                     Display.HEALTH_BAR_HEIGHT / 5, Display.HEALTH_BAR_HEIGHT - mobHealthBarMod);
-
-                // render base rect
-                screen.setColor(Color.darkGray); // TODO access this from some value resource
-                screen.fill(baseRect);
-
-                // render fills
-                if(mob.getType() == Mob.TYPE_MATE){
-                    screen.setColor(Color.yellow);
-                    screen.fill(healthRect); // actual health bar angle
-                } else {
-                    screen.setColor(Color.red);
-                    screen.fill(healthRect); // actual health bar angle
-                }
-
-                // TODO render the gradient properly and accurately with non static/hard coded values
-                // TODO clean all this shit up to be honest
-
-            }
-        }
-
-        // DRAW INFO STRINGS // TODO work out where to render these
-        screen.setColor(Color.white);
-        if(shift){
-            screen.drawString(Values.Strings.CONTROLS_SHIFT_DOOR, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
-        } else {
-            if(selection == ROOM_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_ROOM, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
-            } else if(selection == DOOR_SELECTION){
-                screen.drawString(Values.Strings.CONTROLS_DOOR, 20, (Display.DISPLAY_HEIGHT * Display.SCALE) - 20); // TODO put somewhere cleaner and more responsive/less hardcoded/static
-            }
-        }
-
-        // DRAW DEBUG STRINGS
-
-        screen.setColor(Color.white);
-        if(debug){
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, (Display.DISPLAY_HEIGHT * Display.SCALE) - 50);
-            screen.drawString("Tick: " + tick, 10, (Display.DISPLAY_HEIGHT * Display.SCALE) - 70);
-        }
     }
 
     public ArrayList<Mob> getMobsByRoom(Room room){
@@ -308,7 +242,7 @@ public class Game extends BasicGame {
         return mobs;
     }
 
-    public void processKeyboardInput(GameContainer container){ // TODO make this more efficient
+    public void processKeyboardInput(GameContainer container){ // TODO make this more efficient. any other controls?
         Input input = container.getInput();
 
         if(input.isKeyDown(Input.KEY_RSHIFT) || input.isKeyDown(Input.KEY_LSHIFT)) { // RSHIFT is the best, ergonomically
@@ -317,7 +251,7 @@ public class Game extends BasicGame {
             shift = false;
         }
 
-        if(input.isKeyPressed(Input.KEY_P)){
+        if(input.isKeyPressed(Input.KEY_P)){ // TODO change to space
             pause = !pause;
         }
 
@@ -384,6 +318,132 @@ public class Game extends BasicGame {
                 hoverRoom.vPress();
             }
         }
+    }
+
+    private void initComponents(){
+        // TODO
+
+        guiComponents = new ArrayList<GuiComponent>();
+
+        // control hints box
+        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
+        guiComponents.add(new ControlHintsBox(hint));
+        guiComponents.add(new RoomBox());
+        guiComponents.add(new MobsBox(map.getMobs(), Game.container.getInput()));
+        guiComponents.add(new MessageBox());
+
+        // TODO room tile data box
+
+        // TODO crew info box
+
+    }
+
+    private void updateComponents(){
+        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
+            GuiComponent next = iterator.next();
+            next.update();
+        }
+    }
+
+    private void renderBackground(Graphics screen){
+
+        // DRAW BACKGROUND
+        screen.setBackground(Colours.GRID_BACKGROUND);
+
+        // DRAW GRID
+        screen.setColor(Colours.GRID_LINES);
+        screen.setLineWidth(Display.GRID_LINES);
+
+        // draw horizontal lines going down
+        for(int v = 0; v < Display.MAP_HEIGHT; v++){
+            screen.drawLine(0, v * Display.TILE_WIDTH, Display.MAP_WIDTH, v * Display.TILE_WIDTH);
+        }
+
+        // draw vertical lines going across
+        for(int h = 0; h < Display.MAP_WIDTH; h++){
+            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
+        }
+
+    }
+
+    private void renderMap(Graphics screen){
+        // SET LINE WIDTH FOR DRAWING ANY LINES
+        screen.setLineWidth(Display.LINE_WIDTH);
+        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
+    }
+
+    private void renderRooms(Graphics screen){
+        // TODO
+    }
+
+    private void renderMobs(Graphics screen){
+        // TODO
+    }
+
+    private void renderHoverBoxes(Graphics screen){ // TODO tidy, etc
+
+        // DRAW HOVER BOXES
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderHoverBox(screen);
+        } else if(hoverRoom != null){
+            hoverRoom.renderHoverBox(screen);
+        }
+
+        // TODO reorganise this method, it's so damn ugly
+
+        // DRAW STRINGS
+        screen.setColor(Color.white);
+//        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
+        screen.setFont(font);
+
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderDataBox(screen);
+        } else if(hoverRoom != null){
+            hoverRoom.renderDataBox(screen);
+        }
+
+        int writeX = Display.TILE_WIDTH + Display.MARGIN;
+
+        // DRAW HOVER ROOM DATA
+
+        // TODO sort
+
+        if (hoverRoom != null) {
+            int type = hoverRoom.getType();
+//            if (type == Room.CORRIDOR) { // TODO something else here
+////                screen.drawString("Room: corridor", 10, 70);
+//            } else if (type == Room.TYPE_SQUARE) {
+////                screen.drawString("Room: square", 10, 70);
+//            }
+        }
+    }
+
+    private void renderComponents(Graphics screen){ // GUI // TODO CONSIDER renaming? // TODO should be for backgrounds and borders only, so we can turn it off easily in case something goes wrong but we still want the overlaid stuff.
+
+        // render components
+        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
+            GuiComponent next =  iterator.next();
+            next.render(screen);
+        }
+    }
+
+    private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
+
+        // TODO
+
+    }
+
+    private void renderDebugComponents(Graphics screen){
+
+        // check that we're in production mode
+        if(debug){
+            // DRAW DEBUG STRINGS
+            screen.setColor(Color.white); // TODO non-static colour
+
+            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
+            screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
+        }
+
     }
 
     public static void main(String args[]){

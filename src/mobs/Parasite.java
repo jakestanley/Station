@@ -40,6 +40,11 @@ public class Parasite extends Mob {
     }
 
     @Override
+    public boolean isHostile() {
+        return true;
+    }
+
+    @Override
     public int getType() {
         return TYPE_PARASITE;
     }

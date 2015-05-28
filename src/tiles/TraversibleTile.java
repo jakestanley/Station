@@ -15,6 +15,7 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
 
     public TraversibleTile(int x, int y, Room room, int type){
         super(x, y, room);
+        this.type = type;
     }
 
     @Override

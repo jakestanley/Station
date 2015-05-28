@@ -33,8 +33,8 @@ public class Map extends Loopable {
         System.out.println("Initialising map");
 
         // initialise tile array
-        width = Display.DISPLAY_WIDTH / Display.TILE_WIDTH;
-        height = Display.DISPLAY_HEIGHT / Display.TILE_WIDTH;
+        width = Display.MAP_WIDTH / Display.TILE_WIDTH;
+        height = Display.MAP_HEIGHT / Display.TILE_WIDTH;
         System.out.println("Map size is " + width + "x" + height);
         tiles = new Tile[width][height];
 
@@ -56,11 +56,11 @@ public class Map extends Loopable {
     @Override
     public void init(){
         // generate components
-        buildStockMap();
-//        generateRooms();
-        generateCorridors();
-        generateDoors();
         try {
+            buildStockMap();
+//        generateRooms();
+            generateCorridors();
+            generateDoors();
             generateMobs();
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
@@ -263,7 +263,7 @@ public class Map extends Loopable {
 
     private void generateMobs() throws NoSpawnableArea {
 
-        int crewCount = 4;
+        int crewCount = 7;
         int hostileCount = 1;
 
         // generate crew
