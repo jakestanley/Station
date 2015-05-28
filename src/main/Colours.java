@@ -18,6 +18,7 @@ public class Colours {
     public static final class Tiles {
 
         public static final Color BG_BRIDGE = new Color(150, 0, 0);
+        public static final Color BG_LIFESUPPORT = new Color(135, 206, 250); // TODO pick a better colour
         public static final Color BG_META_CORRIDOR_POINT = new Color(254,254,254);
 
     }
