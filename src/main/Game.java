@@ -207,13 +207,6 @@ public class Game extends BasicGame {
 
         renderDebugComponents(screen);
 
-
-
-        // TODO draw interfaces
-
-        // DRAW COMPONENTS
-        renderComponents(screen);
-
     }
 
     public ArrayList<Mob> getMobsByRoom(Room room){
@@ -410,33 +403,6 @@ public class Game extends BasicGame {
             hoverRoom.renderHoverBox(screen);
         }
 
-        // TODO reorganise this method, it's so damn ugly
-
-        // DRAW STRINGS
-        screen.setColor(Color.white);
-//        screen.scale(0.25f, 0.25f); // TODO this should only happen once per render
-        screen.setFont(font);
-
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderDataBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderDataBox(screen);
-        }
-
-        int writeX = Display.TILE_WIDTH + Display.MARGIN;
-
-        // DRAW HOVER ROOM DATA
-
-        // TODO sort
-
-        if (hoverRoom != null) {
-            int type = hoverRoom.getType();
-//            if (type == Room.CORRIDOR) { // TODO something else here
-////                screen.drawString("Room: corridor", 10, 70);
-//            } else if (type == Room.TYPE_SQUARE) {
-////                screen.drawString("Room: square", 10, 70);
-//            }
-        }
     }
 
     private void renderComponents(Graphics screen){ // GUI // TODO CONSIDER renaming? // TODO should be for backgrounds and borders only, so we can turn it off easily in case something goes wrong but we still want the overlaid stuff.
@@ -450,7 +416,17 @@ public class Game extends BasicGame {
 
     private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
 
-        // TODO
+        // DRAW STRINGS
+        screen.setColor(Colours.GUI_TEXT);
+
+        // DRAW HOVER DOOR INFORMATION
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderDataBox(screen);
+        } else if(hoverRoom != null){
+            hoverRoom.renderDataBox(screen);
+        } else if(hoverMob != null){
+            // TODO
+        }
 
     }
 
