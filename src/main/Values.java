@@ -30,6 +30,16 @@ public class Values {
         // META DEBUG TYPES
         public static final int META_BORDER = 70;
 
+        // MENTAL STATES
+        public static final int MENTAL_INDIFFERENT = 0;
+        public static final int MENTAL_STARTLED = 1;
+        public static final int MENTAL_WORRIED = 2;
+        public static final int MENTAL_SCARED = 3;
+        public static final int MENTAL_PANICKED = 4;
+        public static final int MENTAL_FRIGHTENED = 5;
+        public static final int MENTAL_HORRIFIED = 6;
+        public static final int MENTAL_TERROR_STRICKEN = 7;
+
     }
 
     public class Dimensions {
@@ -70,6 +80,17 @@ public class Values {
         public static final String CONTROLS_HOSTILE = "[hostile] order controls here. should be ATTACK! or something.";
         public static final String CONTROLS_SHIFT_DOOR = "[all doors] Q: open | W: close | E: auto | R: bulkhead"; // TODO rename to just CONTROLS_SHIFT, OR HINTS_SHIFT?
         public static final String HINTS_WILL_APPEAR = "SPACE: pause | SHIFT: all doors | HOVER: control door or room";
+
+        // MENTAL STATES
+        public static final String MENTAL_INDIFFERENT = "indifferent";
+        public static final String MENTAL_STARTLED = "startled";
+        public static final String MENTAL_WORRIED = "worried";
+        public static final String MENTAL_SCARED = "scared";
+        public static final String MENTAL_PANICKED = "panicked";
+        public static final String MENTAL_FRIGHTENED = "frightened";
+        public static final String MENTAL_HORRIFIED = "horrified";
+        public static final String MENTAL_TERROR_STRICKEN = "terror-stricken";
+
 
     }
 
