@@ -113,7 +113,6 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
             die();
         }
 
-        strings = new ArrayList<String>();
         populateDataBoxStrings();
 
     }

@@ -9,6 +9,8 @@ import main.Values;
 import org.newdawn.slick.Color;
 import planner.Random;
 
+import java.util.ArrayList;
+
 /**
  * Created by stanners on 23/05/2015.
  */
@@ -77,6 +79,7 @@ public class Mate extends Mob {
 
     @Override
     public void populateDataBoxStrings() {
+        strings = new ArrayList<String>();
         strings.add("random string: " + Game.random.nextFloat());
     }
 

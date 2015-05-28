@@ -91,6 +91,35 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         }
     }
 
+    public void populateDataBoxStrings(){
+        // generating strings for data box // TODO optimise so this only happens when necessary
+        strings = new ArrayList<String>();
+        strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
+        strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
+        strings.add("Oxygen: " + oxygen + "%");
+        strings.add("Integrity: " + integrity + "%");
+
+        if(purge){
+            strings.add("Purge: ON");
+        } else {
+            strings.add("Purge: OFF");
+        }
+
+        if(evacuate){
+            strings.add("Alarm: ON");
+        } else {
+            strings.add("Alarm: OFF");
+        }
+
+        strings.add("Repair: " + priorities[priority]);
+
+        if(support){
+            strings.add("Oxygen: ON");
+        } else {
+            strings.add("Oxygen: OFF");
+        }
+    }
+
     @Override
     public void update(){
 
@@ -117,33 +146,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             oxygen = MAX_OXYGEN;
         } else if(oxygen < 0){
             oxygen = 0;
-        }
-
-        // generating strings for data box // TODO optimise so this only happens when necessary
-        strings = new ArrayList<String>();
-        strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
-        strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
-        strings.add("Oxygen: " + oxygen + "%");
-        strings.add("Integrity: " + integrity + "%");
-
-        if(purge){
-            strings.add("Purge: ON");
-        } else {
-            strings.add("Purge: OFF");
-        }
-
-        if(evacuate){
-            strings.add("Alarm: ON");
-        } else {
-            strings.add("Alarm: OFF");
-        }
-
-        strings.add("Repair: " + priorities[priority]);
-
-        if(support){
-            strings.add("Oxygen: ON");
-        } else {
-            strings.add("Oxygen: OFF");
         }
 
     }

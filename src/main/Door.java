@@ -106,11 +106,7 @@ public class Door extends Loopable implements Interactable {
 
     }
 
-    @Override
-    public void update(){
-
-        autoClose();
-
+    public void populateDataBoxStrings(){
         // generating strings for data box // TODO optimise so this only happens when necessary
         strings = new ArrayList<String>();
 
@@ -138,6 +134,12 @@ public class Door extends Loopable implements Interactable {
         } else {
             strings.add("Bulkhead: READY");
         }
+    }
+
+    @Override
+    public void update(){
+
+        autoClose();
 
     }
 

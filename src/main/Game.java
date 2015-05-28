@@ -168,19 +168,23 @@ public class Game extends BasicGame {
 
         }
 
-        // RENDER HINTS TEXT
+        // UPDATE HINT STRING AND RENDER BOXES
         hint.setLength(0);
         if(shift){ // TODO check that it's cleared first.
             hint.append(Values.Strings.CONTROLS_SHIFT_DOOR);
         } else {
             if(selection == ROOM_SELECTION){
                 hint.append(Values.Strings.CONTROLS_ROOM);
+                hoverRoom.populateDataBoxStrings();
             } else if(selection == DOOR_SELECTION){
                 hint.append(Values.Strings.CONTROLS_DOOR);
+                hoverDoor.populateDataBoxStrings();
             } else if(selection == NAUT_SELECTION){
                 hint.append(Values.Strings.CONTROLS_NAUT);
+                hoverMob.populateDataBoxStrings();
             } else if(selection == HOSTILE_SELECTION){
                 hint.append(Values.Strings.CONTROLS_HOSTILE);
+                hoverMob.populateDataBoxStrings();
             } else {
                 hint.append(Values.Strings.HINTS_WILL_APPEAR); // TODO rename to all controls, or something
             }

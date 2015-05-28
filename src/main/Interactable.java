@@ -12,6 +12,8 @@ public interface Interactable {
 
     public boolean mouseOver(int mouseX, int mouseY);
 
+    public void populateDataBoxStrings();
+
     public void renderHoverBox(Graphics screen);
 
     public void renderDataBox(Graphics screen);

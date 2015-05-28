@@ -10,6 +10,8 @@ import org.newdawn.slick.Color;
 import planner.Random;
 import tiles.Tile;
 
+import java.util.ArrayList;
+
 /**
  * Created by stanners on 23/05/2015.
  */
@@ -82,6 +84,7 @@ public class Parasite extends Mob {
 
     @Override
     public void populateDataBoxStrings() {
+        strings = new ArrayList<String>();
         strings.add("random string: " + Game.random.nextFloat());
     }
 
