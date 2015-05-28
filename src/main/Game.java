@@ -213,6 +213,8 @@ public class Game extends BasicGame {
 
         renderMap(screen);
 
+        renderHoverBoxes(screen);
+
         renderComponents(screen);
 
         renderComponentsData(screen);
