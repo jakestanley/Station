@@ -38,7 +38,7 @@ public class Random extends Planner {
             int ty = (int) next.getY(); // TODO replace this quick and dirty business
 
             Tile currentTile = mob.getTile();
-            if(tx < 0 || ty < 0 || tx > Game.map.getWidth() || ty > Game.map.getHeight()){
+            if(tx < 0 || ty < 0 || tx > Game.map.getWidth() - 1 || ty > Game.map.getHeight() - 1){
                 throw new ImpossibleGoal("Tried to array out of bounds values"); // TODO prevent this from happening
             }
 

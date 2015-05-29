@@ -26,7 +26,7 @@ public class MobPanel extends GuiComponent {
         detection = new Rectangle(Display.LEFT_COLUMN_WIDTH, y, Display.RIGHT_COLUMN_WIDTH, Display.TEXT_PANEL_HEIGHT);
 //        System.out.println("Mob panel has dimensions: " + x + ", " + y + ", " + (x + width) + ", " + (y + height));
 //        System.out.println("y render: " + y);
-        System.out.println("mob panel index: " + index);
+//        System.out.println("mob panel index: " + index);
     }
 
     @Override

@@ -9,6 +9,8 @@ public class Values {
                                     "Nixon", "Ronald", "Ford", "Carter", "Johnson", "Teddy", "Grant", "Lincoln",
                                     "Adams", "Jackson"};
 
+    public static int SEARCH_TIME_LIMIT = 250;
+
     public class Types {
 
         public static final int VOID            = 0; // TODO add more for edges, etc
