@@ -262,8 +262,17 @@ public class Map extends Loopable {
 
     private void generateCorridors() {
 
+        // build a list of rooms that aren't corridors
+        ArrayList<Room> nonCorridorRooms = new ArrayList<Room>();
+        nonCorridorRooms.addAll(rooms);
+        for (int i = 0; i < nonCorridorRooms.size(); i++) {
+            if(nonCorridorRooms.get(i).isCorridor()){
+                nonCorridorRooms.remove(i);
+            }
+        }
+
         // GENERATE CORRIDOR POINTS (probably not necessary, it should be easy to get these.
-        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Room> iterator = nonCorridorRooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             if (next.getType() != Values.Types.CORRIDOR_X && next.getType() != Values.Types.CORRIDOR_Y) {
                 corridorPointTiles.addAll(next.getBorderPoints());
@@ -271,27 +280,26 @@ public class Map extends Loopable {
         }
 
         // GENERATE CORRIDORS FOR EACH ROOM
-//        for (int i = 0; i < rooms.size(); i++) {
+//        for (int i = 0; i < nonCorridorRooms.size(); i++) {
 
 // TODO tidy up after seeing if the basics work
-//        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) { // primitive for now
-            Room start = rooms.get(0); //            Room start = rooms.get(i); // Room start = iterator.next();
-            Room end = rooms.get(1); //            Room end = null; // TODO room connections should be random
-//            if (rooms.get(i + 1) != null) { // if(iterator.hasNext()){
-//                end = rooms.get(i + 1); // end = iterator.next();
+        // iterate through non corridor rooms, making arbitrary connections
+        for (Iterator<Room> iterator = nonCorridorRooms.iterator(); iterator.hasNext(); ) { // primitive for now
+            Room start = iterator.next(); // Room start = nonCorridorRooms.get(i); //
+            Room end = null; // TODO room connections should be random
+                if(iterator.hasNext()){//            if (nonCorridorRooms.get(i + 1) != null) { //
+                end = iterator.next(); // end = nonCorridorRooms.get(i + 1); //
                 ArrayList<Tile> path = getCorridorPath(start, end);
                 if (path.isEmpty()) {
                     System.out.println("Could not find a path connecting these rooms"); // TODO give rooms names
                 } else {
-                    // remove first and last // TODO optimise
-//                    path.remove(0);
-//                    path.remove(path.size()-1);
-
                     // do the tiles
                     for (Iterator<Tile> tileIterator = path.iterator(); tileIterator.hasNext(); ) {
                         Tile next = tileIterator.next();
                         int tileX = next.getX();
                         int tileY = next.getY();
+
+                        // if tile is void, add a corridor room - TODO optimise this
                         if(tiles[tileX][tileY].isVoid()){ // TODO resolve workaround
                             rooms.add(new Room(tileX, tileY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change
                         }
@@ -299,8 +307,8 @@ public class Map extends Loopable {
                 }
             }
 
-//        }
-//    }
+        }
+    }
 
     private void generateDoors(){
 
@@ -367,9 +375,13 @@ public class Map extends Loopable {
         // iterate through all starting tiles finding the shortest route
         for (Iterator<int[]> iterator = start.getEdgeTileCoordinates().iterator(); iterator.hasNext(); ) {
 
+
+
             // get an edge tile
             int[] edgeTileCoordinate = iterator.next();
             Tile startTile = tiles[edgeTileCoordinate[0]][edgeTileCoordinate[1]];
+
+            System.out.println("Finding path from " + start.getTypeString() + " [" + edgeTileCoordinate[0] + ", " + edgeTileCoordinate[1] + "] to " + end.getTypeString());
 
             // initialise list of tiles explored this search
             ArrayList<Tile> explored = new ArrayList<Tile>();
@@ -385,10 +397,13 @@ public class Map extends Loopable {
             potentialRoutes.add(firstRoute);
 
             boolean routeFound = false;
+            long startTime = System.currentTimeMillis(); // get the time
+            long currentTime = startTime;
 
             // iterate through the routes trying to find a path
             int potentialRoutesSize = potentialRoutes.size();
-            for(int i = 0; i < potentialRoutesSize && !routeFound; i++){
+            for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < 100) ; i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
+//                System.out.println("Analysing new route");
 //            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
                 ArrayList<Tile> route = potentialRoutes.get(i);
 
@@ -426,7 +441,9 @@ public class Map extends Loopable {
 
                 // iterate through the potential tiles
                 for (Iterator<Tile> pti = potentialTiles.iterator(); pti.hasNext(); ) {
+                    currentTime = System.currentTimeMillis();
                     Tile nextTile = pti.next();
+//                    System.out.println("Analysing [" + nextTile.getX() + ", " + nextTile.getY() + "]");
 
                     // if the next tile hasn't been explored
                     if(!explored.contains(nextTile)){
@@ -464,7 +481,8 @@ public class Map extends Loopable {
             // TODO find the shortest path and set that as the return
         }
 
-        if(paths.get(0) == null){
+        if(paths.isEmpty()){
+            System.out.println("Could not find a path from " + start.getTypeString() + " to " + end.getTypeString() + " in reasonable time");
             return new ArrayList<Tile>(); // return empty array list // TODO optimise
         } else {
             ArrayList<Tile> shortestPath = null;
