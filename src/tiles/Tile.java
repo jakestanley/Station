@@ -55,4 +55,6 @@ public abstract class Tile { // TODO extend these
 
     public abstract int getType();
 
+    public abstract boolean hasPathTo(Room room); // bit dodgy, but this is for TraversibleTile only
+
 }

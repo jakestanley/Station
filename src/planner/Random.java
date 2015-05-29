@@ -38,8 +38,8 @@ public class Random extends Planner {
             int ty = (int) next.getY(); // TODO replace this quick and dirty business
 
             Tile currentTile = mob.getTile();
-            if(tx < 0 || ty < 0){
-                throw new ImpossibleGoal("Tried to access array with sub zero values"); // TODO prevent this from happening
+            if(tx < 0 || ty < 0 || tx > Game.map.getWidth() || ty > Game.map.getHeight()){
+                throw new ImpossibleGoal("Tried to array out of bounds values"); // TODO prevent this from happening
             }
 
             Tile nextTile = Game.map.tiles[tx][ty]; // TODO fix this workaround

@@ -50,4 +50,9 @@ public class BorderTile extends Tile {
         return Values.Types.META_BORDER;
     }
 
+    @Override
+    public boolean hasPathTo(Room room) {
+        return false;
+    }
+
 }

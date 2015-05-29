@@ -334,6 +334,48 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return sy;
     }
 
+    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test
+        ArrayList<int[]> coordinates = new ArrayList<int[]>();
+
+        int maxX = x + sx;
+        int maxY = y + sy;
+
+        // get the top and bottom edges
+        for(int i = x; i < maxX; i++){
+
+            int[] top = new int[2];
+            top[0] = i;
+            top[1] = y;
+
+            int[] bottom = new int[2];
+            bottom[0] = i;
+            bottom[1] = maxY;
+
+            // add both to edge
+            coordinates.add(top);
+            coordinates.add(bottom);
+
+        }
+
+        // get the left and right edges
+        for(int i = y + 1; i < maxY - 1; i++){
+
+            int[] left = new int[2];
+            left[0] = x;
+            left[1] = i;
+
+            int[] right = new int[2];
+            right[0] = maxX;
+            right[1] = i;
+
+            coordinates.add(left);
+            coordinates.add(right);
+
+        }
+
+        return coordinates;
+
+    }
 
     public float getIntegrity(){
         return integrity;

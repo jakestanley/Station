@@ -1,5 +1,6 @@
 package tiles;
 
+import main.Room;
 import main.Values;
 import org.newdawn.slick.Graphics;
 
@@ -30,5 +31,10 @@ public class VoidTile extends Tile {
     @Override
     public int getType() {
         return Values.Types.VOID;
+    }
+
+    @Override
+    public boolean hasPathTo(Room room) {
+        return false;
     }
 }

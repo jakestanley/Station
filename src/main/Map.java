@@ -260,15 +260,40 @@ public class Map extends Loopable {
         return false;
     }
 
-    private void generateCorridors(){
-        // generate corridors
+    private void generateCorridors() {
+
+        // GENERATE CORRIDOR POINTS (probably not necessary, it should be easy to get these.
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
-            Room next =  iterator.next();
-            if(next.getType() != Values.Types.CORRIDOR_X && next.getType() != Values.Types.CORRIDOR_Y){
+            Room next = iterator.next();
+            if (next.getType() != Values.Types.CORRIDOR_X && next.getType() != Values.Types.CORRIDOR_Y) {
                 corridorPointTiles.addAll(next.getBorderPoints());
             }
         }
-    }
+
+        // GENERATE CORRIDORS FOR EACH ROOM
+//        for (int i = 0; i < rooms.size(); i++) {
+
+// TODO tidy up after seeing if the basics work
+//        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) { // primitive for now
+            Room start = rooms.get(0); //            Room start = rooms.get(i); // Room start = iterator.next();
+            Room end = rooms.get(1); //            Room end = null; // TODO room connections should be random
+//            if (rooms.get(i + 1) != null) { // if(iterator.hasNext()){
+//                end = rooms.get(i + 1); // end = iterator.next();
+                ArrayList<Tile> path = getCorridorPath(start, end);
+                if (path.isEmpty()) {
+                    System.out.println("Could not find a path connecting these rooms"); // TODO give rooms names
+                } else {
+                    for (Iterator<Tile> tileIterator = path.iterator(); tileIterator.hasNext(); ) {
+                        Tile next = tileIterator.next();
+                        int tileX = next.getX();
+                        int tileY = next.getY();
+                        rooms.add(new Room(tileX, tileY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                    }
+                }
+            }
+
+//        }
+//    }
 
     private void generateDoors(){
 
@@ -322,6 +347,122 @@ public class Map extends Loopable {
             }
             mobs.add(new Parasite(randomTile.getX(), randomTile.getY()));
         }
+
+    }
+
+    // uses breadth first traversal to find a route from a random corridor point on here to a random corridor point
+    private ArrayList<Tile> getCorridorPath(Room start, Room end){ // TODO optimise
+
+        System.out.println("Get corridor path called");
+
+        ArrayList<ArrayList<Tile>> paths = new ArrayList<ArrayList<Tile>>();
+
+        // iterate through all starting tiles finding the shortest route
+        for (Iterator<int[]> iterator = start.getEdgeTileCoordinates().iterator(); iterator.hasNext(); ) {
+
+            // get an edge tile
+            int[] edgeTileCoordinate = iterator.next();
+            Tile startTile = tiles[edgeTileCoordinate[0]][edgeTileCoordinate[1]];
+
+            // initialise list of tiles explored this search
+            ArrayList<Tile> explored = new ArrayList<Tile>();
+
+            // initialise the list of routes to explore
+            ArrayList<ArrayList<Tile>> potentialRoutes = new ArrayList<ArrayList<Tile>>();
+
+            // make route and add this tile to it
+            ArrayList<Tile> firstRoute = new ArrayList<Tile>();
+            firstRoute.add(startTile);
+
+            // add this route to the potential routes list (the to do list)
+            potentialRoutes.add(firstRoute);
+
+            boolean routeFound = false;
+
+            // iterate through the routes trying to find a path
+            int potentialRoutesSize = potentialRoutes.size();
+            for(int i = 0; i < potentialRoutesSize && !routeFound; i++){
+//            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
+                ArrayList<Tile> route = potentialRoutes.get(i);
+
+                // get the last tile from the currently analysing route and add it to the explored list
+                Tile lastTile = route.get(route.size() - 1);
+                explored.add(lastTile);
+
+                // get tile coordinates
+                int x = lastTile.getX();
+                int y = lastTile.getY();
+
+                // initialise tiles and put them in an arraylist
+                Tile northTile = null, eastTile = null, southTile = null, westTile = null;
+                ArrayList<Tile> potentialTiles = new ArrayList<Tile>();
+
+                if(y > 0){
+                    northTile = Game.map.tiles[x][y-1];
+                    potentialTiles.add(northTile);
+                }
+
+                if(y < Game.map.getHeight()-1){
+                    southTile = Game.map.tiles[x][y+1];
+                    potentialTiles.add(southTile);
+                }
+
+                if(x > 0){
+                    westTile = Game.map.tiles[x-1][y];
+                    potentialTiles.add(westTile);
+                }
+
+                if(x < Game.map.getWidth()-1){
+                    eastTile = Game.map.tiles[x+1][y];
+                    potentialTiles.add(eastTile);
+                }
+
+                // iterate through the potential tiles
+                for (Iterator<Tile> pti = potentialTiles.iterator(); pti.hasNext(); ) {
+                    Tile nextTile = pti.next();
+
+                    // if the next tile hasn't been explored
+                    if(!explored.contains(nextTile)){
+
+                        // build a new route // TODO CONSIDER is this inefficient if the route is likely to be discarded now?
+                        ArrayList<Tile> nextPotentialRoute = new ArrayList<Tile>();
+                        nextPotentialRoute.addAll(route); // add all tiles from currently analysing route
+                        nextPotentialRoute.add(nextTile); // add the next tile to that route
+
+                        // if next tile is a void tile, add it to the route list
+                        int tileType = nextTile.getType();
+                        if(Values.Types.VOID == tileType || Values.Types.META_BORDER == tileType){
+                            potentialRoutes.add(nextPotentialRoute);
+                            potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
+                        } else if(nextTile.hasPathTo(end)){
+                            paths.add(nextPotentialRoute);
+                            routeFound = true;
+                        } else if(nextTile.getRoom() == end){
+                            paths.add(nextPotentialRoute);
+                            routeFound = true;
+                        }
+                    }
+
+                }
+
+
+            }
+
+
+
+        }
+
+        for (Iterator<ArrayList<Tile>> iterator = paths.iterator(); iterator.hasNext(); ) {
+            ArrayList<Tile> next =  iterator.next();
+            // TODO find the shortest path and set that as the return
+        }
+
+        if(paths.get(0) == null){
+            return new ArrayList<Tile>(); // return empty array list // TODO optimise
+        } else {
+            return paths.get(0); // TODO return the shortest path instead of any
+        }
+
 
     }
 
