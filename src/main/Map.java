@@ -283,11 +283,18 @@ public class Map extends Loopable {
                 if (path.isEmpty()) {
                     System.out.println("Could not find a path connecting these rooms"); // TODO give rooms names
                 } else {
+                    // remove first and last // TODO optimise
+//                    path.remove(0);
+//                    path.remove(path.size()-1);
+
+                    // do the tiles
                     for (Iterator<Tile> tileIterator = path.iterator(); tileIterator.hasNext(); ) {
                         Tile next = tileIterator.next();
                         int tileX = next.getX();
                         int tileY = next.getY();
-                        rooms.add(new Room(tileX, tileY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                        if(tiles[tileX][tileY].isVoid()){ // TODO resolve workaround
+                            rooms.add(new Room(tileX, tileY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                        }
                     }
                 }
             }
