@@ -70,7 +70,7 @@ public class Mate extends Mob {
             System.err.println("Caught illegal action exception");
             illegalAction.printStackTrace(); // TODO why is it illegal?
         } catch (ImpossibleGoal impossibleGoal) {
-            System.err.println("Caught impossible goal exception");
+//            System.err.println("Caught impossible goal exception"); // TODO comment back in
         } catch (NullPointerException nullPointerException){
             System.out.println("No action available for " + name);
         }
