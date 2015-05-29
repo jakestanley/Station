@@ -264,6 +264,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return type;
     }
 
+    public String getTypeString(){
+        return typeString;
+    }
+
     /**
      * Gets a random tile from this room. TODO remove after testing or make into something more useful
      * @return
@@ -332,6 +336,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     public int getSy() {
         return sy;
+    }
+
+    public boolean isCorridor(){
+        if (Values.Types.CORRIDOR_Y == type || Values.Types.CORRIDOR_X == type){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test
