@@ -467,7 +467,21 @@ public class Map extends Loopable {
         if(paths.get(0) == null){
             return new ArrayList<Tile>(); // return empty array list // TODO optimise
         } else {
-            return paths.get(0); // TODO return the shortest path instead of any
+            ArrayList<Tile> shortestPath = null;
+            int shortestPathSize = 0;
+            for (Iterator<ArrayList<Tile>> iterator = paths.iterator(); iterator.hasNext(); ) {
+                ArrayList<Tile> path = iterator.next();
+                if(shortestPath == null){
+                    shortestPath = path;
+                    shortestPathSize = path.size();
+                } else {
+                    if(path.size() < shortestPathSize){ // OPTIMISE
+                        shortestPath = path;
+                        shortestPathSize = path.size();
+                    }
+                }
+            }
+            return shortestPath;
         }
 
 
