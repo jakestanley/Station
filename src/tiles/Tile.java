@@ -1,5 +1,6 @@
 package tiles;
 
+import main.Colours;
 import main.Display;
 import main.Room;
 import org.newdawn.slick.Color;
@@ -10,8 +11,8 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class Tile { // TODO extend these
 
-    protected Color backgroundColour    = Color.black; // black for generic rooms by default
-    protected Color borderColour        = Color.yellow; // TODO consider a different border colour. draw borders separately?
+    protected Color backgroundColour    = Colours.Tiles.BG_DEFAULT; // black for generic rooms by default
+    protected Color borderColour        = Colours.Tiles.BORDER; // TODO consider a different border colour. draw borders separately?
 
     private Room room; // room the tile belongs to
     protected int x, y;
@@ -54,5 +55,7 @@ public abstract class Tile { // TODO extend these
     public abstract boolean isVoid();
 
     public abstract int getType();
+
+    public abstract boolean hasPathTo(Room room); // bit dodgy, but this is for TraversibleTile only
 
 }

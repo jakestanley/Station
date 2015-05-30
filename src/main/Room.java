@@ -66,7 +66,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         ventRate           = BASE_PURGE_RATE / (sx * sy);
         refillRate         = BASE_REFILL_RATE / (sx * sy);
         consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
-        System.out.println("Consumption rate: " + consumptionRate);
+//        System.out.println("Consumption rate: " + consumptionRate);
 
         this.type = type;
 
@@ -264,6 +264,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return type;
     }
 
+    public String getTypeString(){
+        return typeString;
+    }
+
     /**
      * Gets a random tile from this room. TODO remove after testing or make into something more useful
      * @return
@@ -280,7 +284,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         tiles = new ArrayList<Tile>();
 
-        if(type == Values.Types.CORRIDOR_X || type == Values.Types.CORRIDOR_Y){ // if its a corridor // TODO clean up
+        if(isCorridor()){ // if its a corridor // TODO clean up
             System.out.println("generating corridor tiles");
             if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
                 throw new CorridorDimensionsException(sx, sy);
@@ -334,6 +338,56 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return sy;
     }
 
+    public boolean isCorridor(){
+        if (Values.Types.CORRIDOR_Y == type || Values.Types.CORRIDOR_X == type){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test
+        ArrayList<int[]> coordinates = new ArrayList<int[]>();
+
+        int maxX = x + sx;
+        int maxY = y + sy;
+
+        // get the top and bottom edges
+        for(int i = x; i < maxX; i++){
+
+            int[] top = new int[2];
+            top[0] = i;
+            top[1] = y;
+
+            int[] bottom = new int[2];
+            bottom[0] = i;
+            bottom[1] = maxY;
+
+            // add both to edge
+            coordinates.add(top);
+            coordinates.add(bottom);
+
+        }
+
+        // get the left and right edges
+        for(int i = y + 1; i < maxY - 1; i++){
+
+            int[] left = new int[2];
+            left[0] = x;
+            left[1] = i;
+
+            int[] right = new int[2];
+            right[0] = maxX;
+            right[1] = i;
+
+            coordinates.add(left);
+            coordinates.add(right);
+
+        }
+
+        return coordinates;
+
+    }
 
     public float getIntegrity(){
         return integrity;

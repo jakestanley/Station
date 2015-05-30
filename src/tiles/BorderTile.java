@@ -1,12 +1,10 @@
 package tiles;
 
-import main.Display;
 import main.Game;
 import main.Room;
 import main.Values;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Rectangle;
 
 /**
  * Created by stanners on 25/05/2015.
@@ -32,15 +30,15 @@ public class BorderTile extends Tile {
     public void render(Graphics screen) {
         if(Game.debug){
 
-            int x = this.x * Display.TILE_WIDTH;
-            int y = this.y * Display.TILE_WIDTH;
-
-            // get rectangle shape
-            Rectangle rect = new Rectangle(x, y, Display.TILE_WIDTH, Display.TILE_WIDTH);
-
-            // draw background
-            screen.setColor(backgroundColour);
-            screen.fill(rect);
+//            int x = this.x * Display.TILE_WIDTH;
+//            int y = this.y * Display.TILE_WIDTH;
+//
+//            // get rectangle shape
+//            Rectangle rect = new Rectangle(x, y, Display.TILE_WIDTH, Display.TILE_WIDTH);
+//
+//            // draw background
+//            screen.setColor(backgroundColour);
+//            screen.fill(rect);
 
         }
     }
@@ -48,6 +46,11 @@ public class BorderTile extends Tile {
     @Override
     public int getType() {
         return Values.Types.META_BORDER;
+    }
+
+    @Override
+    public boolean hasPathTo(Room room) {
+        return false;
     }
 
 }
