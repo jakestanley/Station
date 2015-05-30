@@ -66,7 +66,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         ventRate           = BASE_PURGE_RATE / (sx * sy);
         refillRate         = BASE_REFILL_RATE / (sx * sy);
         consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
-        System.out.println("Consumption rate: " + consumptionRate);
+//        System.out.println("Consumption rate: " + consumptionRate);
 
         this.type = type;
 
@@ -284,7 +284,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         tiles = new ArrayList<Tile>();
 
-        if(type == Values.Types.CORRIDOR_X || type == Values.Types.CORRIDOR_Y){ // if its a corridor // TODO clean up
+        if(isCorridor()){ // if its a corridor // TODO clean up
             System.out.println("generating corridor tiles");
             if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
                 throw new CorridorDimensionsException(sx, sy);

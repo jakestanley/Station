@@ -133,13 +133,10 @@ public class Map extends Loopable {
         return null;
     }
 
-    private void generateRooms(){ // TODO ensure rooms don't clash
+    private void generateRooms(){
 
         // initialise local variables
         int x = -1, y = 0, sx = 0, sy = 0;
-
-//        buildStockMap(); // TODO after map generation is working properly
-        // TODO consider avoiding the very edges if possible? should the map be larger?
 
         // place the bridge. don't really need the checks first, but doing them for niceness. TODO CONSIDER remove later?
         Room bridge = null;
@@ -188,45 +185,28 @@ public class Map extends Loopable {
         hangar = new Room(x, y, sx, sy, Values.Types.HANGAR);
         rooms.add(hangar);
 
-        x = -1;
-
-        // place the hangar
-        Room junction1 = null;
+        Room invigorator = null; // TODO remove these, they're useless
         while(roomClash(x, y, sx, sy)){
-            sx = 1;
-            sy = 1;
+            sx = Values.Dimensions.INVIGORATOR;
+            sy = sx;
             x = Game.random.nextInt(width - sx);
             y = Game.random.nextInt(height - sy);
         }
-        junction1 = new Room(x, y, sx, sy, Values.Types.GENERIC);
-        rooms.add(junction1);
+        invigorator = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+        rooms.add(invigorator);
 
-        // place the hangar
-        Room junction2 = null;
+        Room invigorator2 = null; // TODO remove these, they're useless
         while(roomClash(x, y, sx, sy)){
-            sx = 1;
-            sy = 1;
+            sx = Values.Dimensions.INVIGORATOR;
+            sy = sx;
             x = Game.random.nextInt(width - sx);
             y = Game.random.nextInt(height - sy);
         }
-        junction2 = new Room(x, y, sx, sy, Values.Types.GENERIC);
-        rooms.add(junction2);
-
-        // place the hangar
-        Room junction3 = null;
-        while(roomClash(x, y, sx, sy)){
-            sx = 1;
-            sy = 1;
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        junction3 = new Room(x, y, sx, sy, Values.Types.GENERIC);
-        rooms.add(junction3);
+        invigorator2 = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+        rooms.add(invigorator2);
 
         // TODO add more rooms and particularly corridors. they might be tricky
         // TODO more dynamic amounts of rooms, etc
-
-
 
     }
 
@@ -262,8 +242,11 @@ public class Map extends Loopable {
 
     private void generateCorridors() {
 
+        long startTime = System.currentTimeMillis();
+
         // build a list of rooms that aren't corridors
         ArrayList<Room> nonCorridorRooms = new ArrayList<Room>();
+        ArrayList<Tile> corridorTiles = new ArrayList<Tile>(); // TODO CONSIDER getting coordinate arrays instead?
         nonCorridorRooms.addAll(rooms);
         for (int i = 0; i < nonCorridorRooms.size(); i++) {
             if(nonCorridorRooms.get(i).isCorridor()){
@@ -271,7 +254,7 @@ public class Map extends Loopable {
             }
         }
 
-        // GENERATE CORRIDOR POINTS (probably not necessary, it should be easy to get these.
+        // generate corridor points. this should be handled in Room
         for (Iterator<Room> iterator = nonCorridorRooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             if (next.getType() != Values.Types.CORRIDOR_X && next.getType() != Values.Types.CORRIDOR_Y) {
@@ -279,37 +262,117 @@ public class Map extends Loopable {
             }
         }
 
-        // GENERATE CORRIDORS FOR EACH ROOM
-        // TODO tidy up after seeing if the basics work
-        // iterate through non corridor rooms, making arbitrary connections
-        for (Iterator<Room> startRoomIterator = nonCorridorRooms.iterator(); startRoomIterator.hasNext(); ) { // primitive for now
+        // generate a list of room pairs
+        ArrayList<Room[]> roomPairs = new ArrayList<Room[]>();
+        for (Iterator<Room> startRoomIterator = nonCorridorRooms.iterator(); startRoomIterator.hasNext(); ) {
             Room start = startRoomIterator.next();
             for (Iterator<Room> endRoomIterator = nonCorridorRooms.iterator(); endRoomIterator.hasNext(); ) {
                 Room end = endRoomIterator.next();
-                if(start != end && !hasTraversablePath(start.getRandomTile(), end)){
+                if(start != end){
+                    Room[] roomPair = new Room[2];
+                    roomPair[0] = start;
+                    roomPair[1] = end;
+                    roomPairs.add(roomPair);
+                }
+            }
+        }
 
+        // GENERATE CORRIDORS FOR EACH ROOM
+        // TODO tidy up after seeing if the basics work
+        // iterate through non corridor rooms, making arbitrary connections
+        while(!roomPairs.isEmpty()){ // while still unmatched pairs
+
+            // initialise shortest paths list
+            ArrayList<ArrayList<Tile>> shortestPaths = new ArrayList<ArrayList<Tile>>();
+
+            // iterate over the list of room pairs and build up the shortest routes
+            for (Iterator<Room[]> roomPairIterator = roomPairs.iterator(); roomPairIterator.hasNext(); ) {
+                Room[] roomPair =  roomPairIterator.next();
+                Room start = roomPair[0];
+                Room end = roomPair[1];
+                if(hasTraversablePath(start.getRandomTile(), end)){ // if this pair has been matched, remove it
+                    roomPairIterator.remove();
+                } else {
                     ArrayList<Tile> path = getCorridorPath(start, end);
                     if (path.isEmpty()) {
                         System.out.println("Could not find a path connecting these rooms"); // TODO give rooms names
                     } else {
-                        // do the tiles
-                        for (Iterator<Tile> tileIterator = path.iterator(); tileIterator.hasNext(); ) {
-                            Tile next = tileIterator.next();
-                            int tileX = next.getX();
-                            int tileY = next.getY();
-
-                            // if tile is void, add a corridor room - TODO optimise this
-                            if(tiles[tileX][tileY].isVoid()){ // TODO resolve workaround
-                                rooms.add(new Room(tileX, tileY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change
-                            }
-                        }
+                        shortestPaths.add(path);
+//                        for (Iterator<Tile> iterator = path.iterator(); iterator.hasNext(); ) {
+//                            Tile next = iterator.next();
+//                            if (!corridorTiles.contains(next) && next.isVoid()) { // remove void tiles and repeated tiles
+//                                corridorTiles.add(next);
+//                            }
+//                        }
                     }
                 }
             }
 
+            if(!shortestPaths.isEmpty()){
+                ArrayList<Tile> shortestPath = shortestPaths.get(0);
+                for (Iterator<ArrayList<Tile>> iterator = shortestPaths.iterator(); iterator.hasNext(); ) {
+                    ArrayList<Tile> next = iterator.next();
+                    if(next.size() < shortestPath.size()){
+                        shortestPath = next;
+                    }
+                }
 
-
+                for (Iterator<Tile> iterator = shortestPath.iterator(); iterator.hasNext(); ) {
+                    Tile next = iterator.next();
+                    if(next.isVoid()){
+                        rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                    }
+                }
             }
+
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Corridor generation took " + (endTime - startTime)/1000 + " second");
+
+        // iterate through corridor tiles building rooms
+//        while(!corridorTiles.isEmpty()){ // TODO optimise
+//
+//            System.out.println("Remaining corridor tiles: " + corridorTiles.size());
+//
+//            Tile firstTile = corridorTiles.get(0);
+//
+//            int drawX = firstTile.getX();
+//            int drawY = firstTile.getY();
+//
+//            if(corridorTiles.size() > 1) {
+//
+//                int roomX = 1;
+//                int roomY = 1;
+//
+//                Tile secondTile = corridorTiles.get(1);
+//
+//                // see what direction the corridor tiles are going in and draw rooms accordingly
+//                if(firstTile.getX() == secondTile.getX() && (Math.abs(firstTile.getY()) - Math.abs(secondTile.getY())) == 1){ // if x is the same, and y is one more or less, draw a vertical corridor
+//                    while(corridorTiles.get(0).getX() == corridorTiles.get(1).getX() && (Math.abs(corridorTiles.get(0).getY()) - Math.abs(corridorTiles.get(1).getY())) == 1){ // while this condition persists, increment and delete
+//                        roomX++; // increment room Y size
+//                        corridorTiles.remove(0);
+//                    }
+//                } else if(firstTile.getY() == secondTile.getY() && (Math.abs(firstTile.getX()) - Math.abs(secondTile.getX())) == 1){ // if y is the same, and x is one more or less, draw a horizontal corridor
+//                    while(corridorTiles.get(0).getY() == corridorTiles.get(1).getY() && (Math.abs(corridorTiles.get(0).getX()) - Math.abs(corridorTiles.get(1).getX())) == 1){
+//                        roomY++; // increment room X size
+//                        corridorTiles.remove(0);
+//                    }
+//                }
+//
+//                rooms.add(new Room(drawX, drawY, roomX, roomY, Values.Types.CORRIDOR_X));
+//                corridorTiles.remove(0);
+//
+//            } else {
+//                // draw a simple junction
+//                rooms.add(new Room(drawX, drawY, 1, 1, Values.Types.CORRIDOR_X)); // TODO change to just "CORRIDOR"
+//                corridorTiles.remove(0);
+//            }
+//
+//
+//
+//        }
 
 
     }
@@ -323,14 +386,16 @@ public class Map extends Loopable {
                     // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
                     if(h > 0){ // if not on north bound
                         Tile northTile = tiles[w][h-1];
-                        if(northTile.isTraversable() && northTile.getType() != Values.Types.CORRIDOR_X && currentTile.getRoom() != northTile.getRoom()){
+//                        if(northTile.isTraversable() && northTile.getType() != Values.Types.CORRIDOR_X && currentTile.getRoom() != northTile.getRoom()){
+                        if(northTile.isTraversable() && currentTile.getRoom() != northTile.getRoom()){
                             doors.add(new Door(currentTile, northTile));
                         }
                     }
 
                     if(w > 0){ // if not on west bound
                         Tile westTile = tiles[w-1][h];
-                        if(westTile.isTraversable() && westTile.getType() != Values.Types.CORRIDOR_Y && currentTile.getRoom() != westTile.getRoom()){
+//                        if(westTile.isTraversable() && westTile.getType() != Values.Types.CORRIDOR_Y && currentTile.getRoom() != westTile.getRoom()){
+                        if(westTile.isTraversable() && currentTile.getRoom() != westTile.getRoom()){
                             doors.add(new Door(currentTile, westTile));
                         }
                     }
