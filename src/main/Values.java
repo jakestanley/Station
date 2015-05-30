@@ -9,8 +9,9 @@ public class Values {
                                     "Nixon", "Ronald", "Ford", "Carter", "Johnson", "Teddy", "Grant", "Lincoln",
                                     "Adams", "Jackson"};
 
-    public static int SEARCH_TIME_LIMIT = 50;
-    public static int SEARCH_TIME_LIMIT_HIGH = 250;
+    public static int SEARCH_TIME_LIMIT = 10;
+    public static int SEARCH_TIME_LIMIT_MAX = 100;
+    public static int SEARCH_INCREMENT_TIME = 5; // seconds
 
     public class Types {
 

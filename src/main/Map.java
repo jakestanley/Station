@@ -1,5 +1,6 @@
 package main;
 
+import exceptions.LongCorridorGeneration;
 import exceptions.NoAction;
 import exceptions.NoSpawnableArea;
 import mobs.Mate;
@@ -22,6 +23,7 @@ public class Map extends Loopable {
     public static Tile[][] tiles; // TODO need to move tiles into here so I can manage getting to tiles with the AI. should this be static?
 
     private int width, height;
+    private int timeout = Values.SEARCH_TIME_LIMIT;
     private ArrayList<Room> rooms;
     private ArrayList<Mob> mobs;
     private ArrayList<Door> doors;
@@ -65,6 +67,8 @@ public class Map extends Loopable {
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
             System.exit(0);
+        } catch (LongCorridorGeneration longCorridorGeneration) {
+            System.err.println("Couldn't generate corridors. Took too long!");
         }
     }
 
@@ -240,9 +244,10 @@ public class Map extends Loopable {
         return false;
     }
 
-    private void generateCorridors() {
+    private void generateCorridors() throws LongCorridorGeneration {
 
         long startTime = System.currentTimeMillis();
+        long restartTime = startTime;
 
         // build a list of rooms that aren't corridors
         ArrayList<Room> nonCorridorRooms = new ArrayList<Room>();
@@ -320,16 +325,29 @@ public class Map extends Loopable {
                 for (Iterator<Tile> iterator = shortestPath.iterator(); iterator.hasNext(); ) {
                     Tile next = iterator.next();
                     if(next.isVoid()){
+                        corridorTiles.add(next);
                         rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO change
                     }
                 }
+
+                long curTime = System.currentTimeMillis();
+                if((curTime - restartTime)/1000 > Values.SEARCH_INCREMENT_TIME){
+                    System.out.println("Time limit reached. Increasing timeout");
+                    if(timeout > Values.SEARCH_TIME_LIMIT_MAX){
+                        throw new LongCorridorGeneration();
+                    } else {
+                        timeout = timeout + Values.SEARCH_TIME_LIMIT;
+                        restartTime = System.currentTimeMillis();
+                    }
+                }
+
             }
 
         }
 
         long endTime = System.currentTimeMillis();
 
-        System.out.println("Corridor generation took " + (endTime - startTime)/1000 + " second");
+        System.out.println("Corridor generation took " + (endTime - startTime)/1000 + " second. Max timeout: " + timeout + "ms");
 
         // iterate through corridor tiles building rooms
 //        while(!corridorTiles.isEmpty()){ // TODO optimise
@@ -448,7 +466,7 @@ public class Map extends Loopable {
             int[] edgeTileCoordinate = iterator.next();
             Tile startTile = tiles[edgeTileCoordinate[0]][edgeTileCoordinate[1]];
 
-            System.out.println("Finding path from " + start.getTypeString() + " [" + edgeTileCoordinate[0] + ", " + edgeTileCoordinate[1] + "] to " + end.getTypeString());
+//            System.out.println("Finding path from " + start.getTypeString() + " [" + edgeTileCoordinate[0] + ", " + edgeTileCoordinate[1] + "] to " + end.getTypeString());
 
             // initialise list of tiles explored this search
             ArrayList<Tile> explored = new ArrayList<Tile>();
@@ -469,7 +487,7 @@ public class Map extends Loopable {
 
             // iterate through the routes trying to find a path
             int potentialRoutesSize = potentialRoutes.size();
-            for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < Values.SEARCH_TIME_LIMIT); i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
+            for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < timeout); i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
 //                System.out.println("Analysing new route");
 //            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
                 ArrayList<Tile> route = potentialRoutes.get(i);
@@ -536,10 +554,7 @@ public class Map extends Loopable {
 
                 }
 
-
             }
-
-
 
         }
 
@@ -571,7 +586,7 @@ public class Map extends Loopable {
 
         ArrayList<ArrayList<Tile>> paths = new ArrayList<ArrayList<Tile>>();
 
-        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString());
+//        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString());
 
         // initialise list of tiles explored this search
         ArrayList<Tile> explored = new ArrayList<Tile>();
@@ -592,7 +607,7 @@ public class Map extends Loopable {
 
         // iterate through the routes trying to find a path
         int potentialRoutesSize = potentialRoutes.size();
-        for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < Values.SEARCH_TIME_LIMIT) ; i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
+        for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < timeout) ; i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
 //                System.out.println("Analysing new route");
 //            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
             ArrayList<Tile> route = potentialRoutes.get(i);
