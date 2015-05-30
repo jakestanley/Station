@@ -405,7 +405,7 @@ public class Map extends Loopable {
                     if(h > 0){ // if not on north bound
                         Tile northTile = tiles[w][h-1];
 //                        if(northTile.isTraversable() && northTile.getType() != Values.Types.CORRIDOR_X && currentTile.getRoom() != northTile.getRoom()){
-                        if(northTile.isTraversable() && currentTile.getRoom() != northTile.getRoom()){
+                        if(northTile.isTraversable() && currentTile.getRoom() != northTile.getRoom() && !(currentTile.getRoom().isCorridor() && northTile.getRoom().isCorridor())){
                             doors.add(new Door(currentTile, northTile));
                         }
                     }
@@ -413,7 +413,7 @@ public class Map extends Loopable {
                     if(w > 0){ // if not on west bound
                         Tile westTile = tiles[w-1][h];
 //                        if(westTile.isTraversable() && westTile.getType() != Values.Types.CORRIDOR_Y && currentTile.getRoom() != westTile.getRoom()){
-                        if(westTile.isTraversable() && currentTile.getRoom() != westTile.getRoom()){
+                        if(westTile.isTraversable() && currentTile.getRoom() != westTile.getRoom() && !(currentTile.getRoom().isCorridor() && westTile.getRoom().isCorridor())){
                             doors.add(new Door(currentTile, westTile));
                         }
                     }
