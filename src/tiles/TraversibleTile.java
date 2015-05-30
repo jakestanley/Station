@@ -21,6 +21,8 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
             backgroundColour = Colours.Tiles.BG_BRIDGE;
         } else if(Values.Types.LIFESUPPORT == type){
             backgroundColour = Colours.Tiles.BG_LIFESUPPORT;
+        } else if(Values.Types.HANGAR == type){
+            backgroundColour = Colours.Tiles.BG_HANGAR;
         }
     }
 
