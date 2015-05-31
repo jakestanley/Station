@@ -27,6 +27,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     public static final int LOWEST_PRIORITY = 0;
     public static final int DEFAULT_PRIORITY = 2;
     public static final int HIGHEST_PRIORITY = 4;
+    public static final int EVAC_PULSE_FLOOR = 20;
+    public static final int EVAC_PULSE_CEILING = 100;
+    public static final int EVAC_PULSE_INCREMENTS = 5;
 
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
@@ -38,6 +41,8 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     private int sy;
     private int type;
     private int priority;
+    private int evacPulse;
+    private boolean pulseUp;
     private float oxygen, integrity, ventRate, refillRate, consumptionRate;
     private boolean purge, evacuate, support; // support is life support, which is oxygen
     private String typeString;
@@ -102,10 +107,40 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     @Override
     public void render(Graphics screen){
 
+        Color pulseBgColor = null;
+
+        if(evacuate){
+            if(pulseUp){
+                if(evacPulse < EVAC_PULSE_CEILING){
+                    evacPulse = evacPulse + EVAC_PULSE_INCREMENTS;
+                } else {
+                    pulseUp = false;
+                    evacPulse = evacPulse - EVAC_PULSE_INCREMENTS;
+                }
+            } else {
+                if(evacPulse > EVAC_PULSE_FLOOR){
+                    evacPulse = evacPulse - EVAC_PULSE_INCREMENTS;
+                } else {
+                    pulseUp = true;
+                    evacPulse = evacPulse + EVAC_PULSE_INCREMENTS;
+                }
+
+            }
+            pulseBgColor = new Color(255,evacPulse,evacPulse);
+        }
+
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
+
+            if(evacuate){
+                next.setBackgroundColour(pulseBgColor);
+            }
+
             next.render(screen);
         }
+
+
+
     }
 
     public void populateDataBoxStrings(){
@@ -231,6 +266,15 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     private void toggleEvacuate(){
         evacuate = !evacuate; // TODO print instructions on the bottom
+        if(evacuate){
+            evacPulse = EVAC_PULSE_FLOOR;
+            pulseUp = true;
+        } else {
+            for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
+                Tile next = iterator.next();
+                next.resetBackgroundColor();
+            }
+        }
     }
 
     private void decreaseRepairPriority(){
@@ -344,6 +388,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         } else {
             return false;
         }
+    }
+
+    public boolean isEvacuate(){
+        return evacuate;
     }
 
     public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test

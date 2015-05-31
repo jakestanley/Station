@@ -13,6 +13,7 @@ public abstract class Tile { // TODO extend these
 
     protected Color backgroundColour    = Colours.Tiles.BG_DEFAULT; // black for generic rooms by default
     protected Color borderColour        = Colours.Tiles.BORDER; // TODO consider a different border colour. draw borders separately?
+    protected Color originalBackgroundColour = Colours.Tiles.BG_DEFAULT;
 
     private Room room; // room the tile belongs to
     protected int x, y;
@@ -34,6 +35,14 @@ public abstract class Tile { // TODO extend these
         }
 
         return false;
+    }
+
+    public void setBackgroundColour(Color color){
+        backgroundColour = color;
+    }
+
+    public void resetBackgroundColor(){
+        backgroundColour = originalBackgroundColour;
     }
 
     public int getX(){
