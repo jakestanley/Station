@@ -2,10 +2,12 @@ package planner;
 
 import actions.Action;
 import exceptions.ImpossibleGoal;
+import main.Game;
 import mobs.Mob;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by stanners on 24/05/2015.
@@ -37,6 +39,15 @@ public abstract class Planner {
         moves.add(new Point(cx, cy)); // don't go anywhere. this shouldn't be relevant unless random or waiting
         moves.add(new Point(cx, cy + 1));
         moves.add(new Point(cx + 1, cy));
+
+        // remove invalid points
+        for (Iterator<Point> iterator = moves.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            if(!Game.map.tiles[(int) next.getX()][(int) next.getY()].isTraversable()){
+                iterator.remove();
+            }
+        }
+
         return moves;
     }
 
