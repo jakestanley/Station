@@ -278,8 +278,10 @@ public class Door extends Loopable implements Interactable {
     }
 
     private void engageBulkhead(){ // TODO bulkhead engage animation
-        integrity = integrity + BULKHEAD_STRENGTH;
-        bulkhead = true;
+        if(!bulkhead){
+            integrity = integrity + BULKHEAD_STRENGTH;
+            bulkhead = true;
+        }
         closeLock();
     }
 
