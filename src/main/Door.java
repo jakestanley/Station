@@ -90,18 +90,22 @@ public class Door extends Loopable implements Interactable {
             screen.setColor(DOOR_STANDARD_COLOUR);
         }
 
-        if(frame != frames){
-            if(horizontal){
-                screen.drawLine(sx + (frame), sy, ex, ey);
-            } else {
-                screen.drawLine(sx, sy + (frame), ex, ey);
-            }
-        }
+        if(!destroyed) {
 
-        if(open && frame != frames){
-            frame++;
-        } else if(!open && frame != 0){
-            frame--;
+            if (frame != frames) {
+                if (horizontal) {
+                    screen.drawLine(sx + (frame), sy, ex, ey);
+                } else {
+                    screen.drawLine(sx, sy + (frame), ex, ey);
+                }
+            }
+
+            if (open && frame != frames) {
+                frame++;
+            } else if (!open && frame != 0) {
+                frame--;
+            }
+
         }
 
     }
@@ -144,7 +148,11 @@ public class Door extends Loopable implements Interactable {
     }
 
     public boolean isOpen(){
-        return open;
+        if(destroyed){
+            return true;
+        } else {
+            return open;
+        }
     }
 
     public boolean isLocked(){
@@ -239,6 +247,15 @@ public class Door extends Loopable implements Interactable {
         // TODO something with this
     }
 
+    public void damage(){ // TODO possibly another way
+        // TODO more functionality
+        if(integrity == 0){
+            destroyed = true;
+        } else {
+            integrity = integrity - 10;
+        }
+    }
+
     private void openLock(){
         if(!bulkhead){
             open = true;
@@ -264,13 +281,6 @@ public class Door extends Loopable implements Interactable {
         integrity = integrity + BULKHEAD_STRENGTH;
         bulkhead = true;
         closeLock();
-    }
-
-    private void damage(){ // TODO possibly another way
-        // TODO more functionality
-        if(integrity == 0){
-            destroyed = true;
-        }
     }
 
 }

@@ -1,6 +1,7 @@
 package planner;
 
 import actions.Action;
+import actions.AttackDoor;
 import actions.Move;
 import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
@@ -60,6 +61,8 @@ public class Random extends Planner {
                     } else {
                         actions.add(new Move(mob, tx, ty));
                     }
+                } else if(!door.isOpen() && !mob.canOpen()){
+                    actions.add(new AttackDoor(mob, door));
                 }
                 options.add(actions); // TODO get better names for these list variables
 

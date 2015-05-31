@@ -13,6 +13,7 @@ public abstract class Action {
     public static final int ACTION_OPEN_DOOR = 1;
     public static final int ACTION_CLOSE_DOOR = 2;
     public static final int ACTION_WAIT = 3;
+    public static final int ACTION_ATTACK = 3;
 
     public Mob mob;
     public int type;
