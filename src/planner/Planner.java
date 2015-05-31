@@ -12,9 +12,13 @@ import java.util.ArrayList;
  */
 public abstract class Planner {
 
-    protected static final int GOAL_DESTINATION = 0; // TODO CONSIDER naming renaming GOAL to TARGET?
-    protected static final int GOAL_RANDOM = 1;
-    protected static final int GOAL_WAIT = 2;
+    public static final int GOAL_DESTINATION = 0; // TODO CONSIDER naming renaming GOAL to TARGET?
+    public static final int GOAL_RANDOM = 1;
+    public static final int GOAL_WAIT = 2;
+    public static final int GOAL_EVACUATE = 3;
+    public static final int GOAL_SAFETY = 4;
+
+    public static final String[] goals = {"destination", "random", "wait", "evacuate", "safety"}; // TODO other stuff this way rather than comparisons
 
     public int type;
     protected Mob mob;
@@ -50,16 +54,24 @@ public abstract class Planner {
 
 //        String actionString = mob.getName() + " picked next action: "; // TODO something with this
 //
-//        if(action.type == Action.ACTION_OPEN_DOOR){
+//        if(action.type == Action.OPEN_DOOR){
 //            actionString = actionString + "open door";
-//        } else if(action.type == Action.ACTION_MOVE){
+//        } else if(action.type == Action.MOVE){
 //            actionString = actionString + "move";
-//        } else if(action.type == Action.ACTION_WAIT){
+//        } else if(action.type == Action.WAIT){
 //            actionString = actionString + "wait";
 //        }
 
         return action;
 
+    }
+
+    public int getType(){
+        return type;
+    }
+
+    public String getGoalString(){
+        return goals[type];
     }
 
     public abstract void calculate() throws ImpossibleGoal;

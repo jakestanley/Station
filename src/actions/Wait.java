@@ -10,7 +10,7 @@ import mobs.Mob;
 public class Wait extends Action {
 
     public Wait(Mob mob){
-        super(mob, ACTION_WAIT);
+        super(mob, WAIT);
     }
 
     @Override

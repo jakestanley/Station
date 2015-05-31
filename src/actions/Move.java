@@ -14,7 +14,7 @@ public class Move extends Action { // TODO validate
     private int tx, ty;
 
     public Move(Mob mob, int tx, int ty){ // where to?
-        super(mob, ACTION_MOVE);
+        super(mob, MOVE);
         this.tx = tx;
         this.ty = ty;
     }
@@ -27,6 +27,10 @@ public class Move extends Action { // TODO validate
         Tile tile1, tile2;
         tile1 = mob.getTile();
         tile2 = Game.map.tiles[tx][ty];
+
+        if(!tile2.isTraversable()){
+            throw new IllegalAction("Tried to move to an non-traversible tile");
+        }
 
 //        System.out.println("Moving from [" + tile1.getX() + ", " + tile1.getY() + "] to [" + tile2.getX() + ", " + tile2.getY() + "]");
 

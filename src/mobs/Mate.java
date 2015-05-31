@@ -1,13 +1,15 @@
 package mobs;
 
-import actions.Action;
 import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.UnnecessaryAction;
 import main.Game;
 import main.Values;
 import org.newdawn.slick.Color;
+import planner.Evacuate;
+import planner.Planner;
 import planner.Random;
+import actions.Action;
 
 import java.util.ArrayList;
 
@@ -51,11 +53,41 @@ public class Mate extends Mob {
     }
 
     @Override
+    public void evaluate() {
+        System.out.println("Evaluating options");
+
+        // if the goal has been reached, clear the planner
+        if(planner != null){
+            if(planner.achieved()){
+                planner = null;
+            }
+        }
+
+        // run planner override conditions
+        // TODO make sure this doesn't make a loop. check destination is safe before checking, e.g don't evacuate if has a destination
+        // TODO fear levels and escape to safety threshold
+
+        // if evacuate alarm is on and can evacuate
+        if(room.isEvacuate() && Game.map.hasEvacuatableRoom()){
+            if(planner == null){
+                planner = new Evacuate(this);
+            } else if (Planner.GOAL_EVACUATE != planner.getType()){
+                planner = new Evacuate(this);
+            }
+        }
+
+        // if still has no planner, generate a planner
+        if(planner == null){
+            // TODO
+        }
+    }
+
+    @Override
     public void act() {
 
         // mates just wander aimlessly for now. need to make them open doors
         if(planner == null){
-            planner = new Random(this);
+            planner = new Random(this); // move randomly if there is no planner
         }
 
         try {
@@ -64,7 +96,6 @@ public class Mate extends Mob {
             action.executeAction();
         } catch (UnnecessaryAction unnecessaryAction) {
             System.err.println("Caught unnecessary action exception");
-            unnecessaryAction.printStackTrace();
             act(); // call act again if the action was unnecessary, e.g opening an already open door
         } catch (IllegalAction illegalAction) {
             System.err.println("Caught illegal action exception");
@@ -121,4 +152,14 @@ public class Mate extends Mob {
     public void vPress() {
 
     }
+
+    @Override
+    public String getGoalString(){
+        if(planner == null){
+            return "no goal";
+        } else {
+            return planner.getGoalString();
+        }
+    }
+
 }

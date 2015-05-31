@@ -42,6 +42,11 @@ public class Parasite extends Mob {
     }
 
     @Override
+    public String getGoalString() {
+        return "";
+    }
+
+    @Override
     public boolean isHostile() {
         return true;
     }
@@ -49,6 +54,11 @@ public class Parasite extends Mob {
     @Override
     public int getType() {
         return TYPE_PARASITE;
+    }
+
+    @Override
+    public void evaluate() {
+
     }
 
     @Override

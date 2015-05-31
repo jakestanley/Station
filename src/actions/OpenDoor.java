@@ -13,7 +13,7 @@ public class OpenDoor extends Action { // TODO some handling for if the door is 
     private Door door;
 
     public OpenDoor(Mob mob, Door door){
-        super(mob, ACTION_OPEN_DOOR);
+        super(mob, OPEN_DOOR);
         this.door = door;
     }
 

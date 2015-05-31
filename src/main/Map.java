@@ -117,6 +117,20 @@ public class Map extends Loopable {
 
     }
 
+    public boolean hasEvacuatableRoom(){
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            if(!next.isEvacuate()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Room> getRooms(){
+        return rooms;
+    }
+
     public Room getRoomMouseOver(int mouseX, int mouseY){ // TODO display mobs in room when hovering over
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
@@ -581,7 +595,7 @@ public class Map extends Loopable {
 
     }
 
-    private ArrayList<Tile> getTraversiblePath(Tile start, Room end){ // less time allowed for this search
+    public ArrayList<Tile> getTraversiblePath(Tile start, Room end){ // less time allowed for this search
         System.out.println("Get traversible path called");
 
         ArrayList<ArrayList<Tile>> paths = new ArrayList<ArrayList<Tile>>();
@@ -710,6 +724,7 @@ public class Map extends Loopable {
             Mob mob =  iterator.next();
             if(mob.alive()){ // TODO remove this and just have it in Mob::update if possible
                 try {
+                    mob.evaluate();
                     mob.act();
                 } catch (NoAction noAction) {
                     System.err.println(mob.getName() + " can't find anywhere to go");

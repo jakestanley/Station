@@ -30,7 +30,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
     private boolean alive;
     private Tile previousTile, tile;
-    private Room room;
+    protected Room room;
     private int tx, ty, fear;
 
     protected String name;
@@ -156,9 +156,13 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
     }
 
+    public abstract String getGoalString();
+
     public abstract boolean isHostile();
 
     public abstract int getType();
+
+    public abstract void evaluate(); // selects a new goal if necessary
 
     public abstract void act() throws NoAction;
 

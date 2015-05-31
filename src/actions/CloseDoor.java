@@ -13,7 +13,7 @@ public class CloseDoor extends Action {
     private Door door;
 
     public CloseDoor(Mob mob, Door door){
-        super(mob, ACTION_CLOSE_DOOR);
+        super(mob, CLOSE_DOOR);
         this.door = door;
     }
 
