@@ -29,7 +29,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 //    public static final boolean huep = 2; // TODO CONSIDER a "haste" flag.
 
     private boolean alive;
-    private Tile tile;
+    private Tile previousTile, tile;
     private Room room;
     private int tx, ty, fear;
 
@@ -52,12 +52,13 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     protected Planner planner;
 
     public Mob(int tx, int ty){
-        super(0, 4); // TODO change to non static values
+        super(0, Display.TILE_WIDTH-1); // TODO change to non static values
         this.alive = true;
         this.tx = tx;
         this.ty = ty;
 
         this.tile = Game.map.tiles[tx][ty]; // TODO consider not even having a tile variable. need to know basis?
+        this.previousTile = tile;
         this.room = tile.getRoom();
         this.fear = Values.Attributes.MENTAL_INDIFFERENT;
         if(this.tile.isVoid()){
@@ -72,7 +73,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     }
 
     public Mob(int tx, int ty, int health){ // TODO flesh out this constructor
-        super(0, 4);
+        super(0, Display.TILE_WIDTH - 1);
         this.tx = tx;
         this.ty = ty;
         if(health > MAX_HEALTH){
@@ -93,7 +94,25 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
     @Override
     public void render(Graphics screen){ // TODO optimise
-        screen.setColor(colour);
+
+//        if(frame != frames){
+//            frame++;
+//        }
+//
+//        int ax = 0;
+//        int ay = 0;
+//
+//        if(tile.getX() > previousTile.getX()){ // if going right
+//            ax = -(frames - frame);
+//        } else if(tile.getX() < previousTile.getX()){ // if going left
+//            ax = (frames - frame);
+//        } else if(tile.getY() > previousTile.getY()){ // if going down
+//            ay = -(frames - frame);
+//        } else if(tile.getY() > previousTile.getY()){ // if going up
+//            ay = (frames - frame);
+//        }
+
+        screen.setColor(colour); // TODO change to other method of colouring
         int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
 
         Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin, (ty * Display.TILE_WIDTH) + margin, Display.MOB_WIDTH, Display.MOB_WIDTH);
@@ -104,6 +123,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
     @Override
     public void update() {
+
         baseDamage();
         specificDamage();
 
@@ -129,7 +149,10 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         this.ty = ty;
 
         // setting new tile
+        previousTile = this.tile;
         this.tile = Game.map.tiles[tx][ty];
+
+        frame = 0;
 
     }
 
@@ -214,9 +237,8 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
         screen.setColor(Colours.HOVER_SELECT);
 
-        int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2; // TODO CONSIDER making this a constant?
+        int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
 
-        // TODO make this more responsive/dynamic based on scale
         Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin - 4, (ty * Display.TILE_WIDTH) + margin - 4, Display.MOB_WIDTH + 8, Display.MOB_WIDTH + 8); // TODO replace these hard coded values
 
         screen.draw(rect);
