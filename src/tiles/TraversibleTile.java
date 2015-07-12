@@ -3,6 +3,7 @@ package tiles;
 import main.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import main.Room;
 
 import java.util.ArrayList;
 
@@ -13,16 +14,19 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
 
     private int type;
 
-    public TraversibleTile(int x, int y, Room room, int type){
-        super(x, y, room);
+    public TraversibleTile(int x, int y, Room room, int type, int function){ // TODO put "function" somewhere useful
+        super(x, y, room, function);
         this.type = type;
 
         if(Values.Types.BRIDGE == type){
             backgroundColour = Colours.Tiles.BG_BRIDGE;
+            backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
         } else if(Values.Types.LIFESUPPORT == type){
             backgroundColour = Colours.Tiles.BG_LIFESUPPORT;
+            backgroundColourNormal = Colours.Tiles.BG_LIFESUPPORT;
         } else if(Values.Types.HANGAR == type){
             backgroundColour = Colours.Tiles.BG_HANGAR;
+            backgroundColourNormal = Colours.Tiles.BG_HANGAR;
         }
     }
 
@@ -65,6 +69,8 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
             screen.setColor(borderColour);
             screen.draw(rect);
         }
+
+//        if(function)
 
 
 

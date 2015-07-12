@@ -14,7 +14,7 @@ public class Destination extends Planner {
 
     @Override
     public void calculate() throws ImpossibleGoal {
-        // TODO
+        // TODO breadth first traversal to get path
 
     }
 

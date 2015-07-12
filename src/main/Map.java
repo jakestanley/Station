@@ -8,6 +8,7 @@ import mobs.Mob;
 import mobs.Parasite;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import rooms.Corridor;
 import tiles.Tile;
 import tiles.VoidTile;
 
@@ -115,6 +116,20 @@ public class Map extends Loopable {
             next.update();
         }
 
+    }
+
+    public boolean hasEvacuatableRoom(){
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            if(!next.isEvacuate()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Room> getRooms(){
+        return rooms;
     }
 
     public Room getRoomMouseOver(int mouseX, int mouseY){ // TODO display mobs in room when hovering over
@@ -322,13 +337,21 @@ public class Map extends Loopable {
                     }
                 }
 
+                // TODO change iteration to build only one room
+                ArrayList<Tile> currentCorridorTiles = new ArrayList<Tile>();
                 for (Iterator<Tile> iterator = shortestPath.iterator(); iterator.hasNext(); ) {
                     Tile next = iterator.next();
                     if(next.isVoid()){
                         corridorTiles.add(next);
-                        rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                        currentCorridorTiles.add(next);
+
+//                        rooms.add(corridor);
+//                        rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO remove
                     }
                 }
+
+                Corridor corridor = new Corridor(currentCorridorTiles); // TODO expand
+                rooms.add(corridor);
 
                 long curTime = System.currentTimeMillis();
                 if((curTime - restartTime)/1000 > Values.SEARCH_INCREMENT_TIME){
@@ -581,7 +604,7 @@ public class Map extends Loopable {
 
     }
 
-    private ArrayList<Tile> getTraversiblePath(Tile start, Room end){ // less time allowed for this search
+    public ArrayList<Tile> getTraversiblePath(Tile start, Room end){ // less time allowed for this search
         System.out.println("Get traversible path called");
 
         ArrayList<ArrayList<Tile>> paths = new ArrayList<ArrayList<Tile>>();
@@ -710,6 +733,7 @@ public class Map extends Loopable {
             Mob mob =  iterator.next();
             if(mob.alive()){ // TODO remove this and just have it in Mob::update if possible
                 try {
+                    mob.evaluate();
                     mob.act();
                 } catch (NoAction noAction) {
                     System.err.println(mob.getName() + " can't find anywhere to go");

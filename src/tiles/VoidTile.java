@@ -10,7 +10,7 @@ import org.newdawn.slick.Graphics;
 public class VoidTile extends Tile {
 
     public VoidTile(int x, int y){
-        super(x, y, null);
+        super(x, y, null, 0);
     }
 
     @Override

@@ -81,6 +81,6 @@ public class Random extends Planner {
 
     @Override
     public boolean achieved() {
-        return false;
+        return true; // TODO make more dynamic
     }
 }

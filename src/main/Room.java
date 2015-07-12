@@ -30,19 +30,26 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
-    private ArrayList<Tile> tiles;
+    protected ArrayList<Tile> tiles;
     private int x;
     private int y;
 
     private int sx;
     private int sy;
-    private int type;
-    private int priority;
-    private float oxygen, integrity, ventRate, refillRate, consumptionRate;
-    private boolean purge, evacuate, support; // support is life support, which is oxygen
-    private String typeString;
+    protected int type;
+    protected int priority;
+    protected float oxygen, integrity, ventRate, refillRate, consumptionRate;
+    protected boolean purge, evacuate, support, selected; // support is life support, which is oxygen
+    protected String typeString;
 
-    private ArrayList<String> strings;
+    protected ArrayList<String> strings;
+
+    /**
+     * Specific superconstructor for corridors
+     */
+    public Room(){
+        super(0, 0);
+    }
 
     public Room(int x, int y, int sx, int sy, int type){ // TODO room type
 
@@ -50,7 +57,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
         this.x = x;
         this.y = y;
-        this.sx = sx; // TODO oxygen decay time should vary depending on room size
+        this.sx = sx;
         this.sy = sy;
 
         this.integrity = MAX_INTEGRITY;
@@ -60,10 +67,11 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         purge = false; // oxygen purge on/off
         evacuate = false; // evacuation alarm on/off
         support = true;
+        selected = false;
 
         priority = DEFAULT_PRIORITY;
 
-        ventRate           = BASE_PURGE_RATE / (sx * sy);
+        ventRate           = BASE_PURGE_RATE / (sx * sy); // TODO consider isn't this just tiles.length?
         refillRate         = BASE_REFILL_RATE / (sx * sy);
         consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
 //        System.out.println("Consumption rate: " + consumptionRate);
@@ -99,13 +107,41 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     }
 
+    public void select(){ // TODO tidy this up
+        this.selected = true;
+    }
+
     @Override
     public void render(Graphics screen){
 
+        Color pulseBgColor = null;
+        Color pulseBorderColor = null;
+
+        if(evacuate || selected){
+            int pulse = Game.pulse.getPulse();
+            pulseBgColor        = new Color(255, pulse, pulse);
+            pulseBorderColor    = new Color(255 - pulse, 255 - pulse, 255 - pulse);
+        }
+
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
+
+            if(evacuate){
+                next.setBackgroundColour(pulseBgColor);
+            }
+
+            if(selected){
+                next.setBorderColour(pulseBorderColor);
+            } else {
+                next.resetBorderColour();
+            }
+
             next.render(screen);
+
         }
+
+        selected = false;
+
     }
 
     public void populateDataBoxStrings(){
@@ -171,13 +207,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     }
 
     @Override
-    public void renderHoverBox(Graphics screen){ // TODO make this not shit
+    public void renderHoverBox(Graphics screen){ // TODO remove?
 
-        int x = this.x * Display.TILE_WIDTH;
-        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
+//        int x = this.x * Display.TILE_WIDTH;
+//        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
+//
+//        screen.setColor(Color.white);
+//        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
 
-        screen.setColor(Color.white);
-        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
     }
 
     public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
@@ -218,7 +255,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     @Override
     public void vPress() {
         toggleSupport(); // TODO RECONSIDER naming here
-
     }
 
     private void togglePurge(){
@@ -231,6 +267,12 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     private void toggleEvacuate(){
         evacuate = !evacuate; // TODO print instructions on the bottom
+        if(!evacuate){ // TODO CONSIDER is this not an inefficient and expensive operation?
+            for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
+                Tile next = iterator.next();
+                next.resetBackgroundColour();
+            }
+        }
     }
 
     private void decreaseRepairPriority(){
@@ -250,7 +292,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
             if(next.mouseOver(mouseX, mouseY)){
-                return true;
+                selected = true;
             }
         }
         return over;
@@ -292,14 +334,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
             if(sx == 1){ // if sizeX = 1, do a vertical corridor
                 for(int ly = 0; ly < sy; ly++){
-                    Tile tile = new TraversibleTile(x, y + ly, this, type);
+                    Tile tile = new TraversibleTile(x, y + ly, this, type, 0);
                     Game.map.tiles[x][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
                 }
             } else { // else do a horizontal corridor
                 for(int lx = 0; lx < sx; lx++){
-                    Tile tile = new TraversibleTile(x + lx, y, this, type);
+                    Tile tile = new TraversibleTile(x + lx, y, this, type, 0);
                     Game.map.tiles[x + lx][y] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
@@ -310,7 +352,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
                 for(int ly = 0; ly < sy; ly++){ // l is local
 
-                    Tile tile = new TraversibleTile(x + lx, y + ly, this, type);
+                    Tile tile = new TraversibleTile(x + lx, y + ly, this, type, 0);
                     Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
@@ -344,6 +386,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         } else {
             return false;
         }
+    }
+
+    public boolean isEvacuate(){
+        return evacuate;
     }
 
     public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test

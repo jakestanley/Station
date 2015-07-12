@@ -51,6 +51,7 @@ public class MobPanel extends GuiComponent {
         // DRAW TEXT
         screen.setColor(Colours.GUI_TEXT);
         screen.drawString(name, x + Display.MOB_TEXT_MARGIN, y + 8); // TODO 2 should be a variable like MARGIN or HEALTH_BAR_MARGIN?
+        screen.drawString(mob.getGoalString(), x + Display.MOB_TEXT_MARGIN + 120, y + 8); // TODO add non statics
     }
 
     public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this

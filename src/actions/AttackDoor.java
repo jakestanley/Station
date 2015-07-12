@@ -12,8 +12,8 @@ public class AttackDoor extends Action {
 
     private Door door;
 
-    public AttackDoor(Mob mob, Door door){
-        super(mob, ACTION_ATTACK);
+    public AttackDoor(Mob mob, Door door){ // TODO change to Component, and make doors and components related
+        super(mob, ATTACK);
         this.door = door;
     }
 

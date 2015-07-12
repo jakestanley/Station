@@ -17,11 +17,14 @@ import java.util.ArrayList;
  */
 public class Parasite extends Mob {
 
+    ArrayList<Tile> exploredTiles;
+
     public Parasite(int x, int y){
         super(x, y);
         name = "Parasite";
         colour = Color.red;
         canOpen = false;
+        exploredTiles = new ArrayList<Tile>();
     }
 
     @Override
@@ -42,6 +45,11 @@ public class Parasite extends Mob {
     }
 
     @Override
+    public String getGoalString() {
+        return "";
+    }
+
+    @Override
     public boolean isHostile() {
         return true;
     }
@@ -49,6 +57,11 @@ public class Parasite extends Mob {
     @Override
     public int getType() {
         return TYPE_PARASITE;
+    }
+
+    @Override
+    public void evaluate() {
+
     }
 
     @Override
@@ -89,8 +102,18 @@ public class Parasite extends Mob {
     }
 
     @Override
-    public void specificDamage() {
-        // TODO specific damage only done to subclasses
+    public void specificDamage() { // TODO specific damage only done to subclasses
+        // TODO put this in a more appropriate place
+
+        // add this tile to explored tiles if not already explored
+        if(!exploredTiles.contains(getTile())){ // can query this tile and surrounding tiles, e.g for doors
+            exploredTiles.add(getTile());
+        }
+
+    }
+
+    public ArrayList<Tile> getExploredTiles(){
+        return exploredTiles;
     }
 
     @Override
