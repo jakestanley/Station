@@ -212,13 +212,13 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 //        int x = this.x * Display.TILE_WIDTH;
 //        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
 //
-//        screen.setColor(Color.white);
+        screen.setColor(Color.white);
 //        screen.drawRect(x - Display.MARGIN, y - Display.MARGIN, (sx * Display.TILE_WIDTH) + 16, (sy * Display.TILE_WIDTH) + 16); // TODO make the hover box animated. fix the box. make these not hard coded
 
     }
 
     public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
-
+        System.out.println("renderDataBox called");
         // initialising variables
         int x = dbx;
         int y = dby;
@@ -292,6 +292,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
             if(next.mouseOver(mouseX, mouseY)){
+                over = true; // TODO tidy and clean this confusing crap up
                 selected = true;
             }
         }
