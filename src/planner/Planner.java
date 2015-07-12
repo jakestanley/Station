@@ -43,7 +43,11 @@ public abstract class Planner {
         // remove invalid points
         for (Iterator<Point> iterator = moves.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
-            if(!Game.map.tiles[(int) next.getX()][(int) next.getY()].isTraversable()){
+            int nextX = (int) next.getX();
+            int nextY = (int) next.getY();
+            if(nextX < 0 || nextY < 0){ // prevents array out of bounds exception
+                iterator.remove();
+            } else if(!Game.map.tiles[nextX][nextY].isTraversable()){
                 iterator.remove();
             }
         }

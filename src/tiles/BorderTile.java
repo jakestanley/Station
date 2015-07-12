@@ -12,7 +12,7 @@ import org.newdawn.slick.Graphics;
 public class BorderTile extends Tile {
 
     public BorderTile(int x, int y, Room room){
-        super(x, y, room);
+        super(x, y, room, 0);
         backgroundColour = Color.white;
     }
 

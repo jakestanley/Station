@@ -8,6 +8,7 @@ import mobs.Mob;
 import mobs.Parasite;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import rooms.Corridor;
 import tiles.Tile;
 import tiles.VoidTile;
 
@@ -336,13 +337,21 @@ public class Map extends Loopable {
                     }
                 }
 
+                // TODO change iteration to build only one room
+                ArrayList<Tile> currentCorridorTiles = new ArrayList<Tile>();
                 for (Iterator<Tile> iterator = shortestPath.iterator(); iterator.hasNext(); ) {
                     Tile next = iterator.next();
                     if(next.isVoid()){
                         corridorTiles.add(next);
-                        rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO change
+                        currentCorridorTiles.add(next);
+
+//                        rooms.add(corridor);
+//                        rooms.add(new Room(next.getX(), next.getY(), 1, 1, Values.Types.CORRIDOR_X)); // TODO remove
                     }
                 }
+
+                Corridor corridor = new Corridor(currentCorridorTiles); // TODO expand
+                rooms.add(corridor);
 
                 long curTime = System.currentTimeMillis();
                 if((curTime - restartTime)/1000 > Values.SEARCH_INCREMENT_TIME){

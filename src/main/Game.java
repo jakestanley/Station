@@ -33,6 +33,7 @@ public class Game extends BasicGame {
     public static GameContainer container;
     public static Map map;
     public static Random random;
+    public static Pulse pulse;
 
     // TODO sort and categorise variables
     private static boolean mouseOverRoom = true, shift = false;
@@ -125,6 +126,7 @@ public class Game extends BasicGame {
     public void update(GameContainer container, int i) throws SlickException {
 
         // TODO work out a solid, efficient order
+        pulse.update();
 
         // process hover checks
         processHoverChecks();
@@ -246,11 +248,12 @@ public class Game extends BasicGame {
             if(Mob.TYPE_MATE == hoverMob.getType()){
                 selection = NAUT_SELECTION;
             } else {
-                selection = HOSTILE_SELECTION;
+                selection = HOSTILE_SELECTION; // crosses? o lol
             }
         } else if((hoverDoor = map.getDoorMouseOver(mouseX, mouseY)) != null){
             selection = DOOR_SELECTION;
         } else if((hoverRoom = map.getRoomMouseOver(mouseX, mouseY)) != null){
+            hoverRoom.select();
             selection = ROOM_SELECTION;
         }
 
@@ -451,6 +454,7 @@ public class Game extends BasicGame {
 
     public static void main(String args[]){
         random = new Random();
+        pulse = new Pulse();
         Game game = new Game("Game Template", args);
     }
 
