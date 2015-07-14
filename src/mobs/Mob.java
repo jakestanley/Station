@@ -94,7 +94,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     protected abstract void generateSpecificStats();
 
     @Override
-    public void render(Graphics screen){ // TODO optimise
+    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) { // TODO optimise
 
 //        if(frame != frames){
 //            frame++;
@@ -116,7 +116,7 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         screen.setColor(colour); // TODO change to other method of colouring
         int margin = (Display.TILE_WIDTH - Display.MOB_WIDTH) / 2;
 
-        Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin, (ty * Display.TILE_WIDTH) + margin, Display.MOB_WIDTH, Display.MOB_WIDTH);
+        Rectangle rect = new Rectangle((tx * Display.TILE_WIDTH) + margin + (viewOffsetX * Display.TILE_WIDTH), (ty * Display.TILE_WIDTH) + margin + viewOffsetY * Display.TILE_WIDTH, Display.MOB_WIDTH, Display.MOB_WIDTH);
         ShapeFill fill = new GradientFill((tx * Display.TILE_WIDTH) + margin + 1, (ty * Display.TILE_WIDTH) + margin + 1, colour, Display.MOB_WIDTH - 1, Display.MOB_WIDTH - 1, colour);
         screen.fill(rect, fill);
 

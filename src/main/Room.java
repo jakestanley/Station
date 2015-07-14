@@ -79,18 +79,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         this.type = type;
 
         // SET ROOM TYPE STRING
-        if(Values.Types.CORRIDOR_X == type){
-            typeString = Values.Strings.CORRIDOR;
-        } else if(Values.Types.CORRIDOR_Y == type){
-            typeString = Values.Strings.CORRIDOR;
-        } else if(Values.Types.BRIDGE == type){
-            typeString = Values.Strings.BRIDGE;
-        } else if(Values.Types.LIFESUPPORT == type){
-            typeString = Values.Strings.LIFESUPPORT;
-        } else if(Values.Types.HANGAR == type){
-            typeString = Values.Strings.HANGAR;
+        if(Values.Types.CORRIDOR_X == type || Values.Types.CORRIDOR_Y == type){
+            typeString = Values.Strings.rooms[Values.Types.CORRIDOR];
         } else {
-            typeString = Values.Strings.UNDEFINED;
+            typeString = Values.Strings.rooms[type];
         }
 
         try {
@@ -112,7 +104,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     }
 
     @Override
-    public void render(Graphics screen){
+    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
 
         Color pulseBgColor = null;
         Color pulseBorderColor = null;
@@ -136,7 +128,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
                 next.resetBorderColour();
             }
 
-            next.render(screen);
+            next.render(screen, viewOffsetX, viewOffsetY);
 
         }
 
@@ -207,7 +199,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     }
 
     @Override
-    public void renderHoverBox(Graphics screen){ // TODO remove?
+    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY){ // TODO remove?
 
 //        int x = this.x * Display.TILE_WIDTH;
 //        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
@@ -287,11 +279,11 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         }
     }
 
-    public boolean mouseOver(int mouseX, int mouseY){
+    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY){
         boolean over = false;
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
                 over = true; // TODO tidy and clean this confusing crap up
                 selected = true;
             }

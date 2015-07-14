@@ -24,7 +24,7 @@ public class VoidTile extends Tile {
     }
 
     @Override
-    public void render(Graphics screen) {
+    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
         // do nothing.
     }
 

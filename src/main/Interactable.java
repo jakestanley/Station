@@ -10,11 +10,11 @@ public interface Interactable {
     int dbx = Display.MAP_WIDTH + Display.MARGIN;
     int dby = Display.MARGIN;
 
-    public boolean mouseOver(int mouseX, int mouseY);
+    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY);
 
     public void populateDataBoxStrings();
 
-    public void renderHoverBox(Graphics screen);
+    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY);
 
     public void renderDataBox(Graphics screen);
 

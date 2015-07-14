@@ -40,8 +40,8 @@ public class Corridor extends Room {
         refillRate = 1; //        refillRate         = BASE_REFILL_RATE / (sx * sy);
         consumptionRate = 1; //        consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
 
-        this.type = Values.Types.CORRIDOR_X; // TODO set type. corridor x/y no longer relevant
-        typeString = Values.Strings.CORRIDOR; // TODO consider maintenance shaft as another type? then this would need to be in an if/else
+        this.type = Values.Types.CORRIDOR; // TODO set type. corridor x/y no longer relevant
+        typeString = Values.Strings.rooms[this.type]; // TODO consider maintenance shaft as another type? then this would need to be in an if/else
 
         generateTiles(cTiles);
 

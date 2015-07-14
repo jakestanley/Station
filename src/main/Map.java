@@ -19,14 +19,25 @@ import java.util.Iterator;
 /**
  * Created by stanners on 22/05/2015.
  */
-public class Map extends Loopable {
+public class Map extends Loopable { // TODO abstract functionality out of map. this is such a mess of a class
 
     public static Tile[][] tiles; // TODO need to move tiles into here so I can manage getting to tiles with the AI. should this be static?
 
+    private int viewOffsetX;
+
+    public int getViewOffsetY() {
+        return viewOffsetY;
+    }
+
+    public int getViewOffsetX() {
+        return viewOffsetX;
+    }
+
+    private int viewOffsetY;
     private int width, height;
     private int timeout = Values.SEARCH_TIME_LIMIT;
     private ArrayList<Room> rooms;
-    private ArrayList<Mob> mobs;
+    private ArrayList<Mob>  mobs;
     private ArrayList<Door> doors;
     private ArrayList<Tile> corridorPointTiles;
 
@@ -34,6 +45,10 @@ public class Map extends Loopable {
         super(0, 0); // frame doesn't really apply to map, but i guess it could do? TODO consider animated superclass?
 
         System.out.println("Initialising map");
+
+        // initialise view offsets
+        viewOffsetX = 0;
+        viewOffsetY = 0;
 
         // initialise tile array
         width = Display.MAP_WIDTH / Display.TILE_WIDTH;
@@ -56,43 +71,61 @@ public class Map extends Loopable {
 
     }
 
+    public void increaseViewOffsetX(){
+        viewOffsetX++;
+    }
+
+    public void decreaseViewOffsetX(){
+        viewOffsetX--;
+    }
+
+    public void increaseViewOffsetY(){
+        viewOffsetY++;
+    }
+
+    public void decreaseViewOffsetY(){
+        viewOffsetY--;
+    }
+
     @Override
     public void init(){
         // generate components
         try {
+            buildStaticShip();
 //            buildStockMap();
-            generateRooms();
-            generateCorridors();
+//            generateRooms();
+//            generateCorridors();
             generateDoors();
             generateMobs();
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
             System.exit(0);
-        } catch (LongCorridorGeneration longCorridorGeneration) {
-            System.err.println("Couldn't generate corridors. Took too long!");
+//        } catch (LongCorridorGeneration longCorridorGeneration) {
+//            System.err.println("Couldn't generate corridors. Took too long!");
         }
     }
 
     @Override
-    public void render(Graphics screen){
+    public void render(Graphics screen, int unusedX, int unusedY) { // TODO make this not ugly as shit. my code is starting to lok awulffe
+
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next =  iterator.next();
-            next.render(screen);
+            next.render(screen, viewOffsetX, viewOffsetY);
         }
 
         for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            next.render(screen);
+            next.render(screen, viewOffsetX, viewOffsetY);
         }
 
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next =  iterator.next();
-            next.render(screen);
+            next.render(screen, viewOffsetX, viewOffsetY);
         }
 
         for (Iterator<Tile> iterator = corridorPointTiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
-            next.render(screen);
+            next.render(screen, viewOffsetX, viewOffsetY);
         }
 
     }
@@ -135,7 +168,7 @@ public class Map extends Loopable {
     public Room getRoomMouseOver(int mouseX, int mouseY){ // TODO display mobs in room when hovering over
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
                 return next;
             }
         }
@@ -145,7 +178,7 @@ public class Map extends Loopable {
     public Door getDoorMouseOver(int mouseX, int mouseY){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
                 return next;
             }
         }
@@ -235,6 +268,11 @@ public class Map extends Loopable {
         rooms.add(new Room(10, 5, 1, 1, Values.Types.GENERIC));
         rooms.add(new Room(10, 6, 1, 3, Values.Types.CORRIDOR_Y));
         rooms.add(new Room(9, 9, 4, 4,  Values.Types.BRIDGE));
+    }
+
+    private void buildStaticShip(){
+        rooms.add(new Room(4, 1, 3, 3, Values.Types.BRIDGE)); // bridge
+        rooms.add(new Room(5, 4, 1, 1, Values.Types.GENERIC)); // corridor
     }
 
     private boolean roomClash(int x, int y, int sx, int sy){

@@ -27,7 +27,7 @@ public class BorderTile extends Tile {
     }
 
     @Override
-    public void render(Graphics screen) {
+    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
         if(Game.debug){
 
 //            int x = this.x * Display.TILE_WIDTH;

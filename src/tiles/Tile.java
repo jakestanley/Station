@@ -33,10 +33,10 @@ public abstract class Tile { // TODO extend these
         this.health = MAX_HEALTH;
     }
 
-    public boolean mouseOver(int mouseX, int mouseY){
+    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY){
 
-        int vx = this.x * Display.TILE_WIDTH;
-        int vy = this.y * Display.TILE_WIDTH;
+        int vx = this.x * Display.TILE_WIDTH + (viewOffsetX * Display.TILE_WIDTH);
+        int vy = this.y * Display.TILE_WIDTH + (viewOffsetY * Display.TILE_WIDTH);
 
         if((mouseX >= vx) && (mouseX <= (vx + Display.TILE_WIDTH)) && (mouseY >= vy) && (mouseY <= (vy + Display.TILE_WIDTH))){
             return true;
@@ -73,7 +73,7 @@ public abstract class Tile { // TODO extend these
         return room;
     }
 
-    public abstract void render(Graphics screen);
+    public abstract void render(Graphics screen, int viewOffsetX, int viewOffsetY);
 
     public abstract boolean isTraversable();
 

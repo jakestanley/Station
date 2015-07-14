@@ -13,23 +13,38 @@ public class Values {
     public static int SEARCH_TIME_LIMIT_MAX = 100;
     public static int SEARCH_INCREMENT_TIME = 5; // seconds
 
-    public class Types {
+    public class Types { // TODO remove unused rooms when necessary
 
-        public static final int VOID            = 0; // TODO add more for edges, etc
-        public static final int CORRIDOR_X      = 1;
-        public static final int CORRIDOR_Y      = 2;
-        public static final int BRIDGE          = 3; // TODO bridge must be at the centre, or a reasonable distance from the parasite spawn
-        public static final int LIFESUPPORT     = 4; // very important room. safety and wellbeing of the crew alarmingly compromised if this is damaged. some stations tend to have a backup system.
-        public static final int HANGAR          = 5; // big room, similar to cargo hold. values are different for names only, really
-        public static final int TELEPORT        = 6; // small room with lots of dangerous equipment
-        public static final int CARGOHOLD       = 7; // big room full of not very much. slow to drain oxygen from
-        public static final int ESCAPEPOD       = 8; // TODO escape pods have to be at the edge and can only have one entrance
-        public static final int CAFETERIA       = 9; // large room in which many crew congregate
-        public static final int KITCHEN         = 10; // TODO consider having cafeteria only
-        public static final int BATHROOM        = 11; // TODO consider making this a part of quarters?
-        public static final int QUARTERS        = 12; // TODO make more appropriate room types
-        public static final int GENERIC         = 13;
-        public static final int INVIGORATOR     = 14;
+        public static final int VOID                = 0; // TODO add more for edges, etc
+        public static final int CORRIDOR_X          = 1; // deprecated TODO remove
+        public static final int CORRIDOR_Y          = 2; // deprecated TODO remove
+        public static final int BRIDGE              = 3; // TODO bridge must be at the centre, or a reasonable distance from the parasite spawn
+        public static final int LIFESUPPORT         = 4; // very important room. safety and wellbeing of the crew alarmingly compromised if this is damaged. some stations tend to have a backup system.
+        public static final int HANGAR              = 5; // big room, similar to cargo hold. values are different for names only, really
+        public static final int TELEPORT            = 6; // small room with lots of dangerous equipment
+        public static final int CARGO_BAY           = 7; // big room full of not very much. slow to drain oxygen from
+        public static final int ESCAPE_POD          = 8; // TODO escape pods have to be at the edge and can only have one entrance
+        public static final int CANTEEN             = 9; // large room in which many crew congregate
+        public static final int KITCHEN             = 10; // TODO consider having cafeteria only
+        public static final int BATHROOM            = 11; // TODO consider making this a part of quarters?
+        public static final int QUARTERS            = 12; // larger quarters mean happier crew TODO make more appropriate room types
+        public static final int GENERIC             = 13; // TODO use in place of corridor?
+        public static final int MEDICAL             = 14;
+        public static final int CORRIDOR            = 15;
+        public static final int WEAPONS_CONTROL     = 16; // can only fire as many weapons as panels are administered at a time. more crew and a bigger weapons control module means more firepower!
+        public static final int TURRET_MOUNT        = 17;
+        public static final int TORPEDO_MOUNT       = 18;
+        public static final int RCS_THRUSTER        = 19;
+        public static final int ENGINE_ROOM         = 20;
+        public static final int HYPERWARP_ROOM      = 21;
+        public static final int REACTOR_ROOM        = 22;
+        public static final int ARMOURY             = 23;
+        public static final int SURVEILLANCE        = 24;
+        public static final int PUB                 = 25; // leisure area
+        public static final int SHIELD_GENERATOR    = 26;
+        public static final int WARP_FUEL_TANK      = 27; // warp tank has to cool and refuel before it can launch again. it does not charge.
+        public static final int REGULAR_FUEL_TANK   = 28; // there is no max speed.
+        public static final int ELEVATOR            = 29;
 
         // META DEBUG TYPES
         public static final int META_BORDER = 70;
@@ -51,10 +66,10 @@ public class Values {
 
     }
 
-    public class Dimensions {
+    public class Dimensions { // TODO consider revising
 
         // BRIDGE (SQUARE)
-        public static final int BRIDGE = 4;
+        public static final int BRIDGE = 4; // TODO consider 5x5 or 3x3
 
         // INVIGORATOR (SQUARE)
         public static final int INVIGORATOR = 2;
@@ -80,7 +95,7 @@ public class Values {
 
     }
 
-    public class Strings {
+    public static class Strings {
 
         // HINTS
         public static final String CONTROLS_ROOM = "[room] Q: purge | W: evac | E: priority- | R - priority+ | V - oxygen";
@@ -100,21 +115,16 @@ public class Values {
         public static final String MENTAL_HORRIFIED = "horrified";
         public static final String MENTAL_TERROR_STRICKEN = "terror-stricken";
 
-        public static final String CORRIDOR        = "corridor";
-        public static final String BRIDGE          = "bridge";
-        public static final String LIFESUPPORT     = "life support";
-        public static final String HANGAR          = "hangar";
-        public static final String TELEPORT        = "teleport";
-        public static final String CARGOHOLD       = "cargo hold";
-        public static final String ESCAPEPOD       = "escape pod";
-        public static final String CAFETERIA       = "cafeteria";
-        public static final String KITCHEN         = "kitchen";
-        public static final String BATHROOM        = "toilet";
-        public static final String QUARTERS        = "crew quarters";
-        public static final String GENERIC         = "generic"; // TODO ?
-        public static final String INVIGORATOR     = "invigorator";
-
         public static final String UNDEFINED       = "UNDEFINED";
+
+        // ROOMS
+        public static final String[] rooms = {
+                "void", "_corridor_x", "_corridor_y", "bridge", "life support", "hangar", "teleport", "cargo bay",
+                "escape pod", "canteen", "kitchen", "bathroom", "quarters", "generic", "medical", "corridor",
+                "weapons control", "turrent mount", "torpedo mount", "_rcs_thruster", "engine room", "hyperwarp room",
+                "reactor room", "armoury", "surveillance", "pub", "shield generator", "warp fuel tank",
+                "regular fuel tank", "elevator"
+        };
 
 
     }

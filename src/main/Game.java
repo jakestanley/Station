@@ -335,6 +335,19 @@ public class Game extends BasicGame {
                 hoverRoom.vPress();
             }
         }
+        if(input.isKeyPressed(Input.KEY_UP)){
+            map.increaseViewOffsetY();
+        }
+        if(input.isKeyPressed(Input.KEY_DOWN)){
+            map.decreaseViewOffsetY();
+        }
+        if(input.isKeyPressed(Input.KEY_LEFT)){
+            map.increaseViewOffsetX();
+        }
+        if(input.isKeyPressed(Input.KEY_RIGHT)){
+            map.decreaseViewOffsetX();
+        }
+
     }
 
     private void initComponents(){
@@ -390,7 +403,7 @@ public class Game extends BasicGame {
     private void renderMap(Graphics screen){
         // SET LINE WIDTH FOR DRAWING ANY LINES
         screen.setLineWidth(Display.LINE_WIDTH);
-        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
+        map.render(screen, 0, 0); // TODO break down map rendering functionality into this class? code is all over the place
     }
 
     private void renderRooms(Graphics screen){
@@ -405,11 +418,11 @@ public class Game extends BasicGame {
 
         // DRAW HOVER BOXES
         if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderHoverBox(screen);
+            hoverDoor.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
         } else if(hoverRoom != null){
-            hoverRoom.renderHoverBox(screen);
+//            hoverRoom.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
         } else if(hoverMob != null){
-            hoverMob.renderHoverBox(screen);
+            hoverMob.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
         }
 
     }

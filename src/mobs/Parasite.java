@@ -7,6 +7,7 @@ import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
 import main.Game;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import planner.Random;
 import tiles.Tile;
 
@@ -102,6 +103,11 @@ public class Parasite extends Mob {
     }
 
     @Override
+    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY) {
+
+    }
+
+    @Override
     public void specificDamage() { // TODO specific damage only done to subclasses
         // TODO put this in a more appropriate place
 
@@ -117,7 +123,7 @@ public class Parasite extends Mob {
     }
 
     @Override
-    public boolean mouseOver(int mouseX, int mouseY) {
+    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY) {
         return false;
     }
 

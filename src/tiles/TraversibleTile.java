@@ -49,11 +49,11 @@ public class TraversibleTile extends Tile { // TODO CONSIDER will there be other
     }
 
     @Override
-    public void render(Graphics screen) {
+    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
 
         // get dimensions
-        int x = this.x * Display.TILE_WIDTH;
-        int y = this.y * Display.TILE_WIDTH;
+        int x = this.x * Display.TILE_WIDTH + (viewOffsetX * Display.TILE_WIDTH);
+        int y = this.y * Display.TILE_WIDTH + (viewOffsetY * Display.TILE_WIDTH);
 
         // get appropriate rectangle shape
         if(isCorridor()){ // TODO render corridor appropriately instead
