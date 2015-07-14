@@ -9,7 +9,7 @@ public class Display { // TODO put these variables in some kind of order/categor
 
     // DISPLAY CONSTANTS - OLD SCALING METHOD SYSTEM WAS CONVOLUTED AND STRESSFUL
     public static final int DISPLAY_WIDTH = 1024; // OLD WIDTH WAS 256
-    public static final int DISPLAY_HEIGHT = 576; // OLD HEIGHT WAS 144
+    public static final int DISPLAY_HEIGHT = 768; // OLD HEIGHT WAS 144
 
     // INTERFACE CONSTANTS
     public static final int LEFT_COLUMN_WIDTH = 640; // columns
@@ -18,15 +18,15 @@ public class Display { // TODO put these variables in some kind of order/categor
 
     public static final int CONTROL_HINTS_BOX_WIDTH = LEFT_COLUMN_WIDTH; // TODO remove this, ultimately
 
-    public static final int ROOM_BOX_HEIGHT = 160;
+    public static final int ROOM_BOX_HEIGHT = 256;
 
-    public static final int MOBS_BOX_HEIGHT = 256;
+    public static final int MOBS_BOX_HEIGHT = 362;
 
     public static final int MESSAGE_BOX_HEIGHT = 160; // SHOULD GIVE ROOM FOR FIVE MESSAGES
 
     // MAP CONSTANTS
     public static final int MAP_WIDTH = 640; // TODO ultimately work in percentages
-    public static final int MAP_HEIGHT = 544;
+    public static final int MAP_HEIGHT = 736;
     public static final int TILE_WIDTH = 32;
     public static final int DOOR_WIDTH = 16;
     public static final int MOB_WIDTH = 8; // TODO make this dynamic
