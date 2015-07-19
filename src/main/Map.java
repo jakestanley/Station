@@ -22,17 +22,6 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 
     public static Tile[][] tiles; // TODO need to move tiles into here so I can manage getting to tiles with the AI. should this be static?
 
-    private int viewOffsetX;
-
-    public int getViewOffsetY() {
-        return viewOffsetY;
-    }
-
-    public int getViewOffsetX() {
-        return viewOffsetX;
-    }
-
-    private int viewOffsetY;
     private int width, height;
     private int timeout = Values.SEARCH_TIME_LIMIT;
     private ArrayList<Room> rooms;
@@ -44,10 +33,6 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         super(0, 0); // frame doesn't really apply to map, but i guess it could do? TODO consider animated superclass?
 
         System.out.println("Initialising map");
-
-        // initialise view offsets
-        viewOffsetX = 0;
-        viewOffsetY = 0;
 
         // initialise tile array
         this.width = width;
