@@ -247,6 +247,12 @@ public class Game extends BasicGame {
 
         renderBackground(screen);
 
+        renderTileBackgrounds(screen);
+
+        renderGrid(screen);
+
+        renderWalls(screen);
+
         renderMap(screen);
 
         renderHoverBoxes(screen);
@@ -429,6 +435,15 @@ public class Game extends BasicGame {
         // DRAW BACKGROUND
         screen.setBackground(Colours.GRID_BACKGROUND);
 
+
+
+    }
+
+    private void renderTileBackgrounds(Graphics screen){
+
+    }
+
+    private void renderGrid(Graphics screen){
         // DRAW GRID
         screen.setColor(Colours.GRID_LINES);
         screen.setLineWidth(Display.GRID_LINES);
@@ -442,6 +457,9 @@ public class Game extends BasicGame {
         for(int h = 0; h < Display.MAP_WIDTH; h++){
             screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
         }
+    }
+
+    private void renderWalls(Graphics screen){
 
     }
 
