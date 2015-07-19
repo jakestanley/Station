@@ -74,14 +74,16 @@ public class Door extends Loopable implements Interactable {
 
     }
 
-    @Override
-    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
+    public void render(Graphics screen) {
+
+        int voX = Game.vc.getViewOffsetX();
+        int voY = Game.vc.getViewOffsetY();
 
         screen.setColor(DOOR_BG_COLOUR);
         if(horizontal){
-            screen.drawLine(sx + (viewOffsetX * Display.TILE_WIDTH), sy + (viewOffsetY * Display.TILE_WIDTH), ex + (viewOffsetX * Display.TILE_WIDTH), ey + (viewOffsetY * Display.TILE_WIDTH));
+            screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
         } else {
-            screen.drawLine(sx + (viewOffsetX * Display.TILE_WIDTH), sy + (viewOffsetY * Display.TILE_WIDTH), ex + (viewOffsetX * Display.TILE_WIDTH), ey + (viewOffsetY * Display.TILE_WIDTH));
+            screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
         }
 
         if(bulkhead){ // TODO CONSIDER drawing a thicker door for bulkheads
@@ -94,9 +96,9 @@ public class Door extends Loopable implements Interactable {
 
             if (frame != frames) {
                 if (horizontal) {
-                    screen.drawLine(sx + (frame) + (viewOffsetX * Display.TILE_WIDTH), sy + (viewOffsetY * Display.TILE_WIDTH), ex + (viewOffsetX * Display.TILE_WIDTH), ey + (viewOffsetY * Display.TILE_WIDTH));
+                    screen.drawLine(sx + (frame) + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
                 } else {
-                    screen.drawLine(sx + (viewOffsetX * Display.TILE_WIDTH), sy + (frame) + (viewOffsetY * Display.TILE_WIDTH), ex + (viewOffsetX * Display.TILE_WIDTH), ey + (viewOffsetY * Display.TILE_WIDTH));
+                    screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (frame) + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
                 }
             }
 
@@ -177,14 +179,17 @@ public class Door extends Loopable implements Interactable {
         }
     }
 
-    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY) {
+    public boolean mouseOver(int mouseX, int mouseY) {
+
+        int voX = Game.vc.getViewOffsetX();
+        int voY = Game.vc.getViewOffsetY();
 
         Rectangle detection;
 
         if(horizontal){
-            detection = new Rectangle(sx - 3 + (viewOffsetX * Display.TILE_WIDTH), sy - 2 + (viewOffsetY * Display.TILE_WIDTH), (Display.DOOR_WIDTH * 2) + 2, Display.DOOR_WIDTH);
+            detection = new Rectangle(sx - 3 + (voX * Display.TILE_WIDTH), sy - 2 + (voY * Display.TILE_WIDTH), (Display.DOOR_WIDTH * 2) + 2, Display.DOOR_WIDTH);
         } else {
-            detection = new Rectangle(sx - 2 + (viewOffsetX * Display.TILE_WIDTH), sy - 3 + (viewOffsetY * Display.TILE_WIDTH), Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + 2);
+            detection = new Rectangle(sx - 2 + (voX * Display.TILE_WIDTH), sy - 3 + (voY * Display.TILE_WIDTH), Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + 2);
         }
 
         if (mouseX >= detection.getMinX() && mouseX <= detection.getMaxX() &&
@@ -195,13 +200,16 @@ public class Door extends Loopable implements Interactable {
         return false;
     }
 
-    @Override
-    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY) { // TODO animate the hover boxes?
+    public void renderHoverBox(Graphics screen) { // TODO animate the hover boxes?
+
+        int voX = Game.vc.getViewOffsetX();
+        int voY = Game.vc.getViewOffsetY();
+
         screen.setColor(Color.white);
         if(horizontal){ // TODO check these variables and replace hard coded variables
-            screen.drawRect(sx - 12 + (viewOffsetX * Display.TILE_WIDTH), sy - 8 + (viewOffsetY * Display.TILE_WIDTH), (Display.DOOR_WIDTH * 2) + Display.MARGIN, Display.DOOR_WIDTH); // TODO make the hover box animated. fix the box
+            screen.drawRect(sx - 12 + (voX * Display.TILE_WIDTH), sy - 8 + (voY * Display.TILE_WIDTH), (Display.DOOR_WIDTH * 2) + Display.MARGIN, Display.DOOR_WIDTH); // TODO make the hover box animated. fix the box
         } else {
-            screen.drawRect(sx - 8 + (viewOffsetX * Display.TILE_WIDTH), sy - 12 + (viewOffsetY * Display.TILE_WIDTH), Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + Display.MARGIN); // TODO make the hover box animated. fix the box
+            screen.drawRect(sx - 8 + (voX * Display.TILE_WIDTH), sy - 12 + (voY * Display.TILE_WIDTH), Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + Display.MARGIN); // TODO make the hover box animated. fix the box
         }
 
     }
