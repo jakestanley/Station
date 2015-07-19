@@ -5,7 +5,7 @@ import main.Room;
 import main.Values;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
-import tiles.TraversibleTile;
+import tiles.VisibleTile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class Corridor extends Room {
             Tile next = iterator.next();
             int x = next.getX();
             int y = next.getY();
-            Tile tTile = new TraversibleTile(x, y, this, type, 0);
+            Tile tTile = new VisibleTile(x, y, this, type);
             Game.map.tiles[x][y] = tTile; // switch out from the array
             tiles.add(tTile);
         }
