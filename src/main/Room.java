@@ -7,7 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import tiles.BorderTile;
 import tiles.Tile;
-import tiles.TraversibleTile;
+import tiles.VisibleTile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -103,8 +103,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         this.selected = true;
     }
 
-    @Override
-    public void render(Graphics screen, int viewOffsetX, int viewOffsetY) {
+    public void render(Graphics screen) {
+
+        System.out.println("Room::render called");
 
         Color pulseBgColor = null;
         Color pulseBorderColor = null;
@@ -116,7 +117,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         }
 
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
-            Tile next =  iterator.next();
+            VisibleTile next = (VisibleTile) iterator.next();
 
             if(evacuate){
                 next.setBackgroundColour(pulseBgColor);
@@ -128,7 +129,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
                 next.resetBorderColour();
             }
 
-            next.render(screen, viewOffsetX, viewOffsetY);
+            next.render(screen);
 
         }
 
@@ -199,7 +200,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     }
 
     @Override
-    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY){ // TODO remove?
+    public void renderHoverBox(Graphics screen){ // TODO remove?
 
 //        int x = this.x * Display.TILE_WIDTH;
 //        int y = this.y * Display.TILE_WIDTH; // TODO make this more optimal
@@ -261,7 +262,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         evacuate = !evacuate; // TODO print instructions on the bottom
         if(!evacuate){ // TODO CONSIDER is this not an inefficient and expensive operation?
             for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
-                Tile next = iterator.next();
+                VisibleTile next = (VisibleTile) iterator.next();
                 next.resetBackgroundColour();
             }
         }
@@ -279,11 +280,12 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         }
     }
 
-    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY){
+    public boolean mouseOver(int mouseX, int mouseY){
+
         boolean over = false;
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
             Tile next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
+            if(next.mouseOver(mouseX, mouseY)){
                 over = true; // TODO tidy and clean this confusing crap up
                 selected = true;
             }
@@ -327,14 +329,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
             if(sx == 1){ // if sizeX = 1, do a vertical corridor
                 for(int ly = 0; ly < sy; ly++){
-                    Tile tile = new TraversibleTile(x, y + ly, this, type, 0);
+                    Tile tile = new VisibleTile(x, y + ly, this, type);
                     Game.map.tiles[x][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
                 }
             } else { // else do a horizontal corridor
                 for(int lx = 0; lx < sx; lx++){
-                    Tile tile = new TraversibleTile(x + lx, y, this, type, 0);
+                    Tile tile = new VisibleTile(x + lx, y, this, type);
                     Game.map.tiles[x + lx][y] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
@@ -345,7 +347,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
             for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
                 for(int ly = 0; ly < sy; ly++){ // l is local
 
-                    Tile tile = new TraversibleTile(x + lx, y + ly, this, type, 0);
+                    Tile tile = new VisibleTile(x + lx, y + ly, this, type);
                     Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
                     tiles.add(tile); // add to the list of tracked tiles for this room
 //                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
