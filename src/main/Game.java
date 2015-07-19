@@ -99,6 +99,48 @@ public class Game extends BasicGame {
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
 
         map = new Map();
+        String shipPath = "res/ships/the_tortuga.csv"; // TODO make this non-static
+
+        BufferedReader br = null;
+
+        String cvsSplitBy = ",";
+
+        try {
+
+            br = new BufferedReader(new FileReader(shipPath));
+            String line = br.readLine();
+            if(line != null){
+                String[] strings = line.split(cvsSplitBy);
+                System.out.println("Strings.length: " + strings.length);
+                int x = Integer.parseInt(strings[0]);
+                int y = Integer.parseInt(strings[1]);
+                boolean[] tileBools = new boolean[x*y];
+                for(int i = 0; i < (strings.length - 2); i++){
+                    boolean isTraversible = (Integer.parseInt(strings[i+2]) != 0);
+                    tileBools[i] = isTraversible;
+                }
+
+
+            } else {
+                System.err.println("Couldn't get ship design from file");
+                System.exit(0);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        System.out.println("Done");
         map.init();
 
         mouseX = 0;
