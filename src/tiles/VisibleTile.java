@@ -64,7 +64,7 @@ public class VisibleTile extends Tile {
     }
 
     public void render(Graphics screen){
-        System.out.println("VisibleTile::render called");
+//        System.out.println("VisibleTile::render called");
         renderBackground(screen);
         renderWalls(screen);
     }

@@ -105,7 +105,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     public void render(Graphics screen) {
 
-        System.out.println("Room::render called");
+//        System.out.println("Room::render called");
 
         Color pulseBgColor = null;
         Color pulseBorderColor = null;
