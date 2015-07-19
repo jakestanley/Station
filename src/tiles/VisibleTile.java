@@ -63,6 +63,12 @@ public class VisibleTile extends Tile {
         updateWalls();
     }
 
+    public void render(Graphics screen){
+        System.out.println("VisibleTile::render called");
+        renderBackground(screen);
+        renderWalls(screen);
+    }
+
     public void renderBackground(Graphics screen){
 
         int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
