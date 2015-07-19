@@ -55,7 +55,7 @@ public class Mate extends Mob {
 
     @Override
     public void evaluate() {
-        System.out.println("Evaluating options");
+//        System.out.println("Evaluating options");
 
         // if the goal has been reached, clear the planner
         if(planner != null){

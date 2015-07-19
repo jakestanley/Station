@@ -103,6 +103,14 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         this.selected = true;
     }
 
+    public void updateFrame(){
+
+    }
+
+    public void updateTick(){
+
+    }
+
     public void render(Graphics screen) {
 
 //        System.out.println("Room::render called");

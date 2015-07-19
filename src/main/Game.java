@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
+import tiles.VisibleTile;
 
 import java.awt.Font;
 import java.io.*;
@@ -431,16 +432,15 @@ public class Game extends BasicGame {
     }
 
     private void renderBackground(Graphics screen){
-
         // DRAW BACKGROUND
         screen.setBackground(Colours.GRID_BACKGROUND);
-
-
-
     }
 
     private void renderTileBackgrounds(Graphics screen){
-
+        for (Iterator<Tile> iterator = map.visibleTiles.iterator(); iterator.hasNext(); ) {
+            VisibleTile next = (VisibleTile) iterator.next();
+            next.renderBackground(screen);
+        }
     }
 
     private void renderGrid(Graphics screen){
@@ -460,17 +460,17 @@ public class Game extends BasicGame {
     }
 
     private void renderWalls(Graphics screen){
-
+        for (Iterator<Tile> iterator = map.visibleTiles.iterator(); iterator.hasNext(); ) {
+            VisibleTile next = (VisibleTile) iterator.next();
+            next.updateWalls(); // TODO put this somewhere else
+            next.renderWalls(screen);
+        }
     }
 
     private void renderMap(Graphics screen){
         // SET LINE WIDTH FOR DRAWING ANY LINES
         screen.setLineWidth(Display.LINE_WIDTH);
         map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
-    }
-
-    private void renderRooms(Graphics screen){
-        // TODO
     }
 
     private void renderMobs(Graphics screen){

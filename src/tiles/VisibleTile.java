@@ -56,11 +56,11 @@ public class VisibleTile extends Tile {
     } // TODO remove?
 
     public void updateFrame(){ // what to update every frame
-
+        updateWalls();
     }
 
     public void updateTick(){ // what to update every game tick
-        updateWalls();
+
     }
 
     public void render(Graphics screen){
@@ -83,7 +83,7 @@ public class VisibleTile extends Tile {
 
     public void renderWalls(Graphics screen) {
 
-        screen.setLineWidth(4); // TODO set non hard coded value
+        screen.setLineWidth(6); // TODO set non hard coded value
         screen.setColor(Color.white);
 
         int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);

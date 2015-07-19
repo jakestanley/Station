@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import rooms.Corridor;
 import tiles.Tile;
+import tiles.VisibleTile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import java.util.Iterator;
 public class Map extends Loopable { // TODO abstract functionality out of map. this is such a mess of a class
 
     public static Tile[][] tiles; // TODO need to move tiles into here so I can manage getting to tiles with the AI. should this be static?
+
+    public ArrayList<Tile> visibleTiles;
 
     private int width, height;
     private int timeout = Values.SEARCH_TIME_LIMIT;
@@ -43,20 +46,25 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 
         int tileIndex = 0;
 
-        ArrayList<Tile> globalRoomTiles = new ArrayList<Tile>();
+        // initialise arraylist
+        visibleTiles = new ArrayList<Tile>();
 
         // initialising all tiles as void tiles
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
-                tiles[x][y] = new Tile(x, y); // void tile constructor
-                if(tileBools[tileIndex]){
-                    globalRoomTiles.add(tiles[x][y]);
+
+                if(tileBools[tileIndex]){ // TODO optimise
+                    VisibleTile t = new VisibleTile(x, y, null, 0);
+                    visibleTiles.add(t);
+                } else {
+                    Tile t = new Tile(x, y);
+                    tiles[x][y] = t; // void tile constructor
                 }
                 tileIndex++;
             }
         }
 
-        Corridor globalRoom = new Corridor(globalRoomTiles);
+        Corridor globalRoom = new Corridor(visibleTiles);
 
         // initialise component lists
         rooms = new ArrayList<Room>();

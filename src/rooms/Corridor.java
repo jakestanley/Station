@@ -3,7 +3,6 @@ package rooms;
 import main.Game;
 import main.Room;
 import main.Values;
-import org.newdawn.slick.Graphics;
 import tiles.Tile;
 import tiles.VisibleTile;
 
@@ -52,16 +51,13 @@ public class Corridor extends Room {
         return false;
     }
 
-    public void renderHoverBox(Graphics screen){
-
-    }
-
     public void generateTiles(ArrayList<Tile> cTiles){
+        System.out.println("Initialising tiles cor");
         for (Iterator<Tile> iterator = cTiles.iterator(); iterator.hasNext(); ) {
             Tile next = iterator.next();
             int x = next.getX();
             int y = next.getY();
-            Tile tTile = new VisibleTile(x, y, this, type);
+            VisibleTile tTile = new VisibleTile(x, y, this, type);
             Game.map.tiles[x][y] = tTile; // switch out from the array
             tiles.add(tTile);
         }
