@@ -34,6 +34,7 @@ public class Game extends BasicGame {
     public static Map map;
     public static Random random;
     public static Pulse pulse;
+    public static ViewController vc;
 
     // TODO sort and categorise variables
     private static boolean mouseOverRoom = true, shift = false;
@@ -60,6 +61,8 @@ public class Game extends BasicGame {
 
     public Game(String gameName, String[] args){
         super(gameName);
+
+        vc = new ViewController(); // TODO rename to ScrollController?
 
         for(int i = 0; i < args.length; i++){
             System.out.println(args[i]);
@@ -461,11 +464,11 @@ public class Game extends BasicGame {
 
         // DRAW HOVER BOXES
         if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
+            hoverDoor.renderHoverBox(screen);
         } else if(hoverRoom != null){
 //            hoverRoom.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
         } else if(hoverMob != null){
-            hoverMob.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
+            hoverMob.renderHoverBox(screen);
         }
 
     }
