@@ -17,7 +17,7 @@ public abstract class Loopable {
 
     public abstract void init();
 
-    public abstract void render(Graphics screen, int viewOffsetX, int viewOffsetY);
+    public abstract void render(Graphics screen);
 
     public abstract void update();
 

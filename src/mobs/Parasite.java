@@ -69,7 +69,7 @@ public class Parasite extends Mob {
     public void act() throws NoAction {
 
         if(planner == null){
-            Tile target = Game.map.getBridge().getRandomTile();
+//            Tile target = Game.map.getBridge().getRandomTile();
 //            planner = new Destination(this, target.getX(), target.getY());
             planner = new Random(this);
         }
@@ -103,7 +103,7 @@ public class Parasite extends Mob {
     }
 
     @Override
-    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY) {
+    public void renderHoverBox(Graphics screen) {
 
     }
 
@@ -123,7 +123,7 @@ public class Parasite extends Mob {
     }
 
     @Override
-    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY) {
+    public boolean mouseOver(int mouseX, int mouseY) {
         return false;
     }
 

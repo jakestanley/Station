@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import rooms.Corridor;
 import tiles.Tile;
-import tiles.VoidTile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     private ArrayList<Door> doors;
     private ArrayList<Tile> corridorPointTiles;
 
-    public Map(){
+    public Map(int width, int height, boolean[] tileBools){
         super(0, 0); // frame doesn't really apply to map, but i guess it could do? TODO consider animated superclass?
 
         System.out.println("Initialising map");
@@ -51,17 +50,28 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         viewOffsetY = 0;
 
         // initialise tile array
-        width = Display.MAP_WIDTH / Display.TILE_WIDTH;
-        height = Display.MAP_HEIGHT / Display.TILE_WIDTH;
+        this.width = width;
+        this.height = height;
+
         System.out.println("Map size is " + width + "x" + height);
         tiles = new Tile[width][height];
+
+        int tileIndex = 0;
+
+        ArrayList<Tile> globalRoomTiles = new ArrayList<Tile>();
 
         // initialising all tiles as void tiles
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
-                tiles[x][y] = new VoidTile(x, y); // void tile constructor
+                tiles[x][y] = new Tile(x, y); // void tile constructor
+                if(tileBools[tileIndex]){
+                    globalRoomTiles.add(tiles[x][y]);
+                }
+                tileIndex++;
             }
         }
+
+        Corridor globalRoom = new Corridor(globalRoomTiles);
 
         // initialise component lists
         rooms = new ArrayList<Room>();
@@ -69,32 +79,17 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         doors = new ArrayList<Door>();
         corridorPointTiles = new ArrayList<Tile>();
 
-    }
+        rooms.add(globalRoom);
 
-    public void increaseViewOffsetX(){
-        viewOffsetX++;
-    }
-
-    public void decreaseViewOffsetX(){
-        viewOffsetX--;
-    }
-
-    public void increaseViewOffsetY(){
-        viewOffsetY++;
-    }
-
-    public void decreaseViewOffsetY(){
-        viewOffsetY--;
     }
 
     @Override
     public void init(){
         // generate components
         try {
-            buildStaticShip();
-//            buildStockMap();
 //            generateRooms();
 //            generateCorridors();
+            initialiseTiles();
             generateDoors();
             generateMobs();
         } catch(NoSpawnableArea e) {
@@ -106,27 +101,31 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     }
 
     @Override
-    public void render(Graphics screen, int unusedX, int unusedY) { // TODO make this not ugly as shit. my code is starting to lok awulffe
+    public void render(Graphics screen) { // TODO make this not ugly as shit. my code is starting to lok awulffe
 
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next =  iterator.next();
-            next.render(screen, viewOffsetX, viewOffsetY);
+            next.render(screen);
         }
 
         for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            next.render(screen, viewOffsetX, viewOffsetY);
+            next.render(screen);
         }
 
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next =  iterator.next();
-            next.render(screen, viewOffsetX, viewOffsetY);
+            next.render(screen);
         }
 
-        for (Iterator<Tile> iterator = corridorPointTiles.iterator(); iterator.hasNext(); ) {
-            Tile next =  iterator.next();
-            next.render(screen, viewOffsetX, viewOffsetY);
-        }
+//        for (Iterator<Tile> iterator = corridorPointTiles.iterator(); iterator.hasNext(); ) { // TODO consider removing
+//            Tile next =  iterator.next();
+//            next.render(screen);
+//        }
+
+    }
+
+    public void initialiseTiles(){
 
     }
 
@@ -168,7 +167,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     public Room getRoomMouseOver(int mouseX, int mouseY){ // TODO display mobs in room when hovering over
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
-            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
+            if(next.mouseOver(mouseX, mouseY)){
                 return next;
             }
         }
@@ -178,7 +177,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     public Door getDoorMouseOver(int mouseX, int mouseY){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY, viewOffsetX, viewOffsetY)){
+            if(next.mouseOver(mouseX, mouseY)){
                 return next;
             }
         }
@@ -600,8 +599,8 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                         nextPotentialRoute.add(nextTile); // add the next tile to that route
 
                         // if next tile is a void tile, add it to the route list
-                        int tileType = nextTile.getType();
-                        if(Values.Types.VOID == tileType || Values.Types.META_BORDER == tileType){
+
+                        if(nextTile.isVoid()){
                             potentialRoutes.add(nextPotentialRoute);
                             potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
 //                        } else if(hasTraversablePath(nextTile, end)){

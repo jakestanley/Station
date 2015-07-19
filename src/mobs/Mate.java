@@ -116,7 +116,7 @@ public class Mate extends Mob {
     }
 
     @Override
-    public void renderHoverBox(Graphics screen, int viewOffsetX, int viewOffsetY) {
+    public void renderHoverBox(Graphics screen) {
 
     }
 
@@ -130,7 +130,7 @@ public class Mate extends Mob {
     }
 
     @Override
-    public boolean mouseOver(int mouseX, int mouseY, int viewOffsetX, int viewOffsetY) {
+    public boolean mouseOver(int mouseX, int mouseY) {
         return false;
     }
 

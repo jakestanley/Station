@@ -10,7 +10,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
 
 import java.awt.Font;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -101,7 +101,6 @@ public class Game extends BasicGame {
 
         mobs = new ArrayList<Mob>(); // TODO make better. this shouldn't need to be here
 
-        map = new Map();
         String shipPath = "res/ships/the_tortuga.csv"; // TODO make this non-static
 
         BufferedReader br = null;
@@ -122,7 +121,7 @@ public class Game extends BasicGame {
                     boolean isTraversible = (Integer.parseInt(strings[i+2]) != 0);
                     tileBools[i] = isTraversible;
                 }
-
+                map = new Map(x, y, tileBools);
 
             } else {
                 System.err.println("Couldn't get ship design from file");
@@ -449,7 +448,7 @@ public class Game extends BasicGame {
     private void renderMap(Graphics screen){
         // SET LINE WIDTH FOR DRAWING ANY LINES
         screen.setLineWidth(Display.LINE_WIDTH);
-        map.render(screen, 0, 0); // TODO break down map rendering functionality into this class? code is all over the place
+        map.render(screen); // TODO break down map rendering functionality into this class? code is all over the place
     }
 
     private void renderRooms(Graphics screen){

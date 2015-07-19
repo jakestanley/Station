@@ -47,6 +47,11 @@ public class Corridor extends Room {
 
     }
 
+    @Override
+    public boolean mouseOver(int mouseX, int mouseY) { // TODO
+        return false;
+    }
+
     public void renderHoverBox(Graphics screen){
 
     }
