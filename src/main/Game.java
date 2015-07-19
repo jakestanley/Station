@@ -377,17 +377,18 @@ public class Game extends BasicGame {
                 hoverRoom.vPress();
             }
         }
-        if(input.isKeyPressed(Input.KEY_UP)){
-            map.increaseViewOffsetY();
+
+        if(input.isKeyDown(Input.KEY_UP)){
+            vc.increaseViewOffsetY();
         }
-        if(input.isKeyPressed(Input.KEY_DOWN)){
-            map.decreaseViewOffsetY();
+        if(input.isKeyDown(Input.KEY_DOWN)){
+            vc.decreaseViewOffsetY();
         }
-        if(input.isKeyPressed(Input.KEY_LEFT)){
-            map.increaseViewOffsetX();
+        if(input.isKeyDown(Input.KEY_LEFT)){
+            vc.increaseViewOffsetX();
         }
-        if(input.isKeyPressed(Input.KEY_RIGHT)){
-            map.decreaseViewOffsetX();
+        if(input.isKeyDown(Input.KEY_RIGHT)){
+            vc.decreaseViewOffsetX();
         }
 
     }
