@@ -24,9 +24,20 @@ public class VisibleTile extends Tile {
     protected Color backgroundColour        = Colours.Tiles.BG_DEFAULT; // black for generic rooms by default
     protected Color backgroundColourNormal  = Colours.Tiles.BG_DEFAULT;
 
+    public VisibleTile(int x, int y, Room room){
+        super(x,y,room); // TODO
+
+        this.isVoid = true; // TODO get function from room
+
+        backgroundColour = Colours.Tiles.BG_BRIDGE; // TODO come up with an efficient way to get the colours
+        backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
+
+    }
+
     public VisibleTile(int x, int y, Room room, int function){
         super(x,y,room); // TODO
 
+        this.isVoid = true;
         this.function = function;
 
         if(Values.Types.BRIDGE == type){
@@ -71,6 +82,8 @@ public class VisibleTile extends Tile {
 
     public void renderBackground(Graphics screen){
 
+        System.out.println("rendering a tile's background");
+
         int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
         int drawY = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
 
@@ -82,6 +95,8 @@ public class VisibleTile extends Tile {
     }
 
     public void renderWalls(Graphics screen) {
+
+        updateWalls();
 
         screen.setLineWidth(6); // TODO set non hard coded value
         screen.setColor(Color.white);
