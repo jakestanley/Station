@@ -65,7 +65,7 @@ public class GameController extends BasicGame {
         guiController.renderGrid(screen);
 
         mapController.renderBackgrounds(screen);
-//        mapController.renderWalls(screen);
+        mapController.renderWalls(screen);
 
     }
 }

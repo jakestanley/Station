@@ -86,8 +86,19 @@ public class MapController {
         return room;
     }
 
-    public Room getRoom(Point point){
+    public int getWidth(){
+        return width;
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public Tile getTile(int x, int y){ // TODO resolve inconsistencies between using points and int pairs
+        return tiles[x][y];
+    }
+
+    public Room getRoom(Point point){
         return null;
     }
 

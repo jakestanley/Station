@@ -95,12 +95,13 @@ public class VisibleTile extends Tile {
     public void renderWalls(Graphics screen) {
 
         updateWalls();
+        ViewController vc = GameController.viewController;
 
         screen.setLineWidth(6); // TODO set non hard coded value
         screen.setColor(Color.white);
 
-        int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
-        int drawY = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
+        int drawX = this.x * Display.TILE_WIDTH + (vc.getViewOffsetX() * Display.TILE_WIDTH);
+        int drawY = this.y * Display.TILE_WIDTH + (vc.getViewOffsetY() * Display.TILE_WIDTH);
 
         if(hasNorthWall){
             Line northWall = new Line(drawX, drawY, drawX + Display.TILE_WIDTH, drawY);
@@ -142,24 +143,24 @@ public class VisibleTile extends Tile {
 
     public void updateWalls(){ // TODO CONSIDER moving this into somewhere else or a separate wall class. This should only be updated when walls change
         if(y > 0){
-            Tile northTile = Game.map.tiles[x][y-1];
+            Tile northTile = GameController.mapController.getTile(x, y - 1);
             hasNorthWall = northTile.isVoid() || (northTile.getRoom() != this.getRoom());
         }
 
-        if(y < Game.map.getHeight()-1){
-            Tile southTile = Game.map.tiles[x][y+1];
+        if(y < GameController.mapController.getHeight()-1){
+            Tile southTile = GameController.mapController.getTile(x, y + 1);
             hasSouthWall = southTile.isVoid() || (southTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }
 
         if(x > 0){
-            Tile westTile = Game.map.tiles[x-1][y];
+            Tile westTile = GameController.mapController.getTile(x-1, y);
             hasWestWall = westTile.isVoid() || (westTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }
 
-        if(x < Game.map.getWidth()-1){
-            Tile eastTile = Game.map.tiles[x+1][y];
+        if(x < GameController.mapController.getWidth()-1){
+            Tile eastTile = GameController.mapController.getTile(x+1, y);
             hasEastWall = eastTile.isVoid() || (eastTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }
