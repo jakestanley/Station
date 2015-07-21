@@ -27,7 +27,7 @@ public class VisibleTile extends Tile {
     public VisibleTile(int x, int y, Room room){
         super(x,y,room); // TODO
 
-        this.isVoid = true; // TODO get function from room
+        this.isVoid = false; // TODO get function from room
 
         backgroundColour = Colours.Tiles.BG_BRIDGE; // TODO come up with an efficient way to get the colours
         backgroundColourNormal = Colours.Tiles.BG_BRIDGE;

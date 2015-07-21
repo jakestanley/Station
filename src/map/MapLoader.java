@@ -30,12 +30,12 @@ public class MapLoader {
             if (line != null) {
                 String[] strings = line.split(cvsSplitBy);
                 System.out.println("Strings.length: " + strings.length);
-                int x = Integer.parseInt(strings[0]);
-                int y = Integer.parseInt(strings[1]);
-                boolean[] tileBools = new boolean[x * y];
+                width = Integer.parseInt(strings[0]);
+                height = Integer.parseInt(strings[1]);
+                booleans = new boolean[width * height];
                 for (int i = 0; i < (strings.length - 2); i++) {
                     boolean isTraversible = (Integer.parseInt(strings[i + 2]) != 0);
-                    tileBools[i] = isTraversible;
+                    booleans[i] = isTraversible;
                 }
 
             } else {
