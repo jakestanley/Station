@@ -9,6 +9,7 @@ import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,6 +32,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
     protected ArrayList<Tile> tiles;
+    protected ArrayList<Point> points;
     private int x;
     private int y;
 
@@ -49,6 +51,11 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
      */
     public Room(){
         super(0, 0);
+    }
+
+    public Room(ArrayList<Point> points){ // TODO , int type
+        super(0, 0); // TODO remove the requirement for this
+        this.points = points;
     }
 
     public Room(int x, int y, int sx, int sy, int type){ // TODO room type
