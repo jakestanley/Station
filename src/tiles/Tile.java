@@ -11,12 +11,14 @@ public class Tile { // TODO extend these
 
     protected static final float MAX_HEALTH = 100;
 
+    protected boolean isVoid;
     protected int x, y;
     protected float health;
     protected Room room; // room the tile belongs to
 
     // void tile constructor
     public Tile(int x, int y){
+        this.isVoid = true;
         this.x = x;
         this.y = y;
     }
@@ -58,7 +60,7 @@ public class Tile { // TODO extend these
     }
 
     public boolean isVoid(){
-        return (getRoom() == null);
+        return isVoid;
     }
 
     public boolean isTraversable(){ // TODO remove
