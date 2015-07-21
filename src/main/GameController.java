@@ -13,9 +13,10 @@ public class GameController extends BasicGame {
     public static boolean debug;
     public static boolean disableMobs;
 
-    public static GuiController guiController;
-    public static MapController mapController;
-    public static MobController mobController;
+    public static ViewController    viewController;
+    public static GuiController     guiController;
+    public static MapController     mapController;
+    public static MobController     mobController;
 
     public GameController(String gameName, boolean debug, boolean disableMobs){
         super(gameName);
@@ -47,14 +48,15 @@ public class GameController extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         // Initialise controllers
-        guiController = new GuiController();
-        mapController = new MapController("the_tortuga.csv");
-        mobController = new MobController();
+        viewController  = new ViewController();
+        guiController   = new GuiController();
+        mapController   = new MapController("the_tortuga.csv");
+        mobController   = new MobController();
     }
 
     @Override
     public void update(GameContainer gameContainer, int i) throws SlickException {
-
+        InputController.processInput(gameContainer);
     }
 
     @Override

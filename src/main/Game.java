@@ -1,9 +1,7 @@
 package main;
 
-import map.MapController;
 import guicomponents.*;
 import mobs.Mob;
-import mobs.MobController;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;

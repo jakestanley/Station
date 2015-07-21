@@ -82,10 +82,8 @@ public class VisibleTile extends Tile {
 
     public void renderBackground(Graphics screen){
 
-        System.out.println("rendering a tile's background");
-
-        int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
-        int drawY = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
+        int drawX = this.x * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetX() * Display.TILE_WIDTH);
+        int drawY = this.y * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetY() * Display.TILE_WIDTH);
 
         Rectangle rect = new Rectangle(drawX, drawY, Display.TILE_WIDTH, Display.TILE_WIDTH);
 
@@ -142,7 +140,7 @@ public class VisibleTile extends Tile {
         borderColour = borderColourNormal;
     }
 
-    public void updateWalls(){
+    public void updateWalls(){ // TODO CONSIDER moving this into somewhere else or a separate wall class. This should only be updated when walls change
         if(y > 0){
             Tile northTile = Game.map.tiles[x][y-1];
             hasNorthWall = northTile.isVoid() || (northTile.getRoom() != this.getRoom());
