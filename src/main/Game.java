@@ -1,7 +1,9 @@
 package main;
 
+import map.MapController;
 import guicomponents.*;
 import mobs.Mob;
+import mobs.MobController;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Color;
@@ -529,9 +531,25 @@ public class Game extends BasicGame {
     }
 
     public static void main(String args[]){
-        random = new Random();
-        pulse = new Pulse();
-        Game game = new Game("Game Template", args);
+//        random = new Random();
+//        pulse = new Pulse();
+//        Game game = new Game("Game Template", args);
+
+        // Process arguments
+        boolean debug = false;
+        boolean disableMobs = false;
+
+        for(int i = 0; i < args.length; i++){
+            if(args[i].equalsIgnoreCase("-debug")){
+                debug = true;
+            } else if(args[i].equalsIgnoreCase("-mobsOff")){
+                disableMobs = true;
+            }
+        }
+
+        // Initialise GameController
+        GameController gameController = new GameController("Space Commander: Battlecruiser", debug, disableMobs);
+
     }
 
 }
