@@ -49,9 +49,10 @@ public class GameController extends BasicGame {
     public void init(GameContainer gameContainer) throws SlickException {
         // Initialise controllers
         viewController  = new ViewController();
+        mobController   = new MobController();
         guiController   = new GuiController();
         mapController   = new MapController("the_tortuga.csv");
-        mobController   = new MobController();
+
     }
 
     @Override
@@ -66,6 +67,9 @@ public class GameController extends BasicGame {
 
         mapController.renderBackgrounds(screen);
         mapController.renderWalls(screen);
+
+        guiController.renderBackgrounds(screen);
+        guiController.renderContent(screen);
 
     }
 }

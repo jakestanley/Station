@@ -4,7 +4,6 @@ import guicomponents.*;
 import mobs.Mob;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
@@ -150,8 +149,6 @@ public class Game extends BasicGame {
         mouseY = 0;
         tick = 0;
 
-        initComponents();
-
 
         // initialising font from .ttf
         try {
@@ -237,8 +234,6 @@ public class Game extends BasicGame {
             }
         }
 
-        updateComponents();
-
     }
 
     @Override
@@ -255,14 +250,6 @@ public class Game extends BasicGame {
         renderWalls(screen);
 
         renderMap(screen);
-
-        renderHoverBoxes(screen);
-
-        renderComponents(screen);
-
-        renderComponentsData(screen);
-
-        renderDebugComponents(screen);
 
     }
 
@@ -402,34 +389,7 @@ public class Game extends BasicGame {
 
     }
 
-    private void initComponents(){
 
-        // INITIALISE COMPONENT LIST
-        guiComponents = new ArrayList<GuiComponent>();
-
-        // INITIALISE HINT STRING
-        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
-
-        // INITIALISE COMPONENTS
-        hintsBox = new ControlHintsBox(hint);
-        infoBox = new InfoBox();
-        mobsBox = new MobsBox(map.getMobs());
-        messageBox = new MessageBox();
-
-        // POPULATE COMPONENT LIST
-        guiComponents.add(hintsBox);
-        guiComponents.add(infoBox);
-        guiComponents.add(mobsBox);
-        guiComponents.add(messageBox);
-
-    }
-
-    private void updateComponents(){
-        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
-            GuiComponent next = iterator.next();
-            next.update();
-        }
-    }
 
     private void renderBackground(Graphics screen){
         // DRAW BACKGROUND
@@ -477,56 +437,9 @@ public class Game extends BasicGame {
         // TODO
     }
 
-    private void renderHoverBoxes(Graphics screen){ // TODO tidy, etc
 
-        // DRAW HOVER BOXES
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderHoverBox(screen);
-        } else if(hoverRoom != null){
-//            hoverRoom.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
-        } else if(hoverMob != null){
-            hoverMob.renderHoverBox(screen);
-        }
 
-    }
 
-    private void renderComponents(Graphics screen){ // GUI // TODO CONSIDER renaming? // TODO should be for backgrounds and borders only, so we can turn it off easily in case something goes wrong but we still want the overlaid stuff.
-
-        // render components
-        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
-            GuiComponent next =  iterator.next();
-            next.render(screen);
-        }
-    }
-
-    private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
-
-        // DRAW STRINGS
-        screen.setColor(Colours.GUI_TEXT);
-
-        // DRAW HOVER DOOR INFORMATION
-        if(hoverDoor != null){ // render hover door hover box
-            hoverDoor.renderDataBox(screen);
-        } else if(hoverRoom != null){
-            hoverRoom.renderDataBox(screen);
-        } else if(hoverMob != null){
-            hoverMob.renderDataBox(screen);;
-        }
-
-    }
-
-    private void renderDebugComponents(Graphics screen){
-
-        // check that we're in production mode
-        if(debug){
-            // DRAW DEBUG STRINGS
-            screen.setColor(Color.white); // TODO non-static colour
-
-            screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
-            screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
-        }
-
-    }
 
     public static void main(String args[]){
 //        random = new Random();

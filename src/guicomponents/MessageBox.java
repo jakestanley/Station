@@ -40,10 +40,7 @@ public class MessageBox extends GuiComponent { // TODO consider that update may 
         }
     }
 
-    @Override
-    public void render(Graphics screen) {
-        drawBackground(screen);
-        drawBorder(screen);
+    public void renderBody(Graphics screen) {
 
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i).getMessage();

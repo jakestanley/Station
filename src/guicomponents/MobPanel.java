@@ -35,10 +35,7 @@ public class MobPanel extends GuiComponent {
     }
 
     @Override
-    public void render(Graphics screen) {
-
-        // DRAW BACKGROUND
-        drawBackground(screen); // TODO optimise. not necessary if unselected
+    public void renderBody(Graphics screen) {
 
         renderHealthBar(screen);
 //        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here

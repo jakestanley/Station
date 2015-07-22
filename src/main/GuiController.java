@@ -1,14 +1,42 @@
 package main;
 
+import guicomponents.*;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by stanners on 21/07/2015.
  */
 public class GuiController {
 
+    private ArrayList<GuiComponent> components;
+
+    private ControlHintsBox     hintsBox;
+    private InfoBox             infoBox;
+    private MobsBox             mobsBox;
+    private MessageBox          messageBox;
+
+    private StringBuilder hint;
+
     public GuiController(){
-        // TODO this
+
+        components = new ArrayList<GuiComponent>();
+
+        hintsBox = new ControlHintsBox(hint);
+        infoBox = new InfoBox();
+        mobsBox = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
+        messageBox = new MessageBox();
+
+        components.add(hintsBox);
+        components.add(infoBox);
+        components.add(mobsBox);
+        components.add(messageBox);
+
+        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
+
     }
 
     public void setBackground(Graphics screen){
@@ -17,8 +45,7 @@ public class GuiController {
 
     public void renderGrid(Graphics screen){
 
-        // DRAW GRID
-        screen.setColor(Colours.GRID_LINES);
+        screen.setColor(Colours.GRID_LINES); // TODO fix these values
         screen.setLineWidth(Display.GRID_LINES);
 
         // draw horizontal lines going down
@@ -30,6 +57,64 @@ public class GuiController {
         for(int h = 0; h < Display.MAP_WIDTH; h++){
             screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
         }
+
+    }
+
+    private void updateComponents(){
+//        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
+//            GuiComponent next = iterator.next();
+//            next.update();
+//        }
+    }
+
+    public void renderBackgrounds(Graphics screen){
+        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
+            GuiComponent next =  iterator.next();
+            next.renderBackground(screen);
+        }
+    }
+
+    public void renderContent(Graphics screen){
+        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
+            GuiComponent next =  iterator.next();
+            next.renderBody(screen);
+        }
+    }
+
+    private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
+
+//        // DRAW STRINGS
+//        screen.setColor(Colours.GUI_TEXT);
+//
+//        // DRAW HOVER DOOR INFORMATION
+//        if(hoverDoor != null){ // render hover door hover box
+//            hoverDoor.renderDataBox(screen); // TODO move this into update, get hover stuff from gamecontroller or something
+//        } else if(hoverRoom != null){
+//            hoverRoom.renderDataBox(screen);
+//        } else if(hoverMob != null){
+//            hoverMob.renderDataBox(screen);;
+//        }
+
+    }
+
+    private void renderHoverBoxes(Graphics screen){ // TODO tidy, etc
+
+//        // DRAW HOVER BOXES
+//        if(hoverDoor != null){ // render hover door hover box
+//            hoverDoor.renderHoverBox(screen);
+//        } else if(hoverRoom != null){
+////            hoverRoom.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
+//        } else if(hoverMob != null){
+//            hoverMob.renderHoverBox(screen);
+//        }
+
+    }
+
+    private void renderDebugComponents(Graphics screen){ // TODO
+
+        screen.setColor(Color.white); // TODO non-static colour
+        // screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
+        // screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
 
     }
 

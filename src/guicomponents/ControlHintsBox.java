@@ -28,10 +28,10 @@ public class ControlHintsBox extends GuiComponent { // TODO CONSIDER renaming to
     }
 
     @Override
-    public void render(Graphics screen) {
-        drawBackground(screen);
-        drawBorder(screen);
+    public void renderBody(Graphics screen) {
+
         screen.setColor(Color.white); // TODO change to a non hard coded value here
         screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
+
     }
 }

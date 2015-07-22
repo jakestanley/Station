@@ -28,14 +28,12 @@ public class MobsBox extends GuiComponent {
     }
 
     @Override
-    public void render(Graphics screen) {
-        drawBackground(screen);
-        drawBorder(screen);
+    public void renderBody(Graphics screen) {
 
         // draw panels
         for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
             MobPanel next = iterator.next();
-            next.render(screen);
+            next.renderBody(screen);
         }
 
     }
