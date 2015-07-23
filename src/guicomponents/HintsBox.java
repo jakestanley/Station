@@ -7,19 +7,21 @@ import org.newdawn.slick.Graphics;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class ControlHintsBox extends GuiComponent { // TODO CONSIDER renaming to HintsBox ?
+public class HintsBox extends GuiComponent {
 
     private StringBuilder hint;
 
-    public ControlHintsBox(StringBuilder hint){ // TODO pass some variables here
+    public HintsBox(StringBuilder hint){ // TODO pass some variables here
         super(0, Display.MAP_HEIGHT, Display.CONTROL_HINTS_BOX_WIDTH, Display.TEXT_PANEL_HEIGHT);
+        setMessage(hint);
+    }
 
+    public void setMessage(StringBuilder hint){
         if(hint == null){
             this.hint = new StringBuilder("HINT REFERENCE IS NULL");
         } else {
             this.hint = hint;
         }
-
     }
 
     @Override

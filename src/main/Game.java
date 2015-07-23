@@ -51,7 +51,7 @@ public class Game extends BasicGame {
     private TrueTypeFont font;
 
     // GUI COMPONENTS
-    private ControlHintsBox hintsBox;
+    private HintsBox hintsBox;
     private InfoBox infoBox;
     private MobsBox mobsBox;
     private MessageBox messageBox;
@@ -436,10 +436,6 @@ public class Game extends BasicGame {
     private void renderMobs(Graphics screen){
         // TODO
     }
-
-
-
-
 
     public static void main(String args[]){
 //        random = new Random();

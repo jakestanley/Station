@@ -14,7 +14,7 @@ public class GuiController {
 
     private ArrayList<GuiComponent> components;
 
-    private ControlHintsBox     hintsBox;
+    private HintsBox hintsBox;
     private InfoBox             infoBox;
     private MobsBox             mobsBox;
     private MessageBox          messageBox;
@@ -25,7 +25,7 @@ public class GuiController {
 
         components = new ArrayList<GuiComponent>();
 
-        hintsBox = new ControlHintsBox(hint);
+        hintsBox = new HintsBox(hint);
         infoBox = new InfoBox();
         mobsBox = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
         messageBox = new MessageBox();
