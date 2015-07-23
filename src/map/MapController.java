@@ -14,6 +14,7 @@ import java.util.Iterator;
  */
 public class MapController {
 
+    private boolean refreshCache;
     private int width, height;
     private boolean[] booleans;
     private Tile[][] tiles;
@@ -25,6 +26,7 @@ public class MapController {
         MapTemplate mapTemplate = MapLoader.loadMap(mapFileName);
 
         // Initialise variables
+        refreshCache = false;
         width = mapTemplate.getWidth();
         height = mapTemplate.getHeight();
         booleans = mapTemplate.getBooleans();
@@ -128,7 +130,7 @@ public class MapController {
         }
     }
 
-    public void renderWalls(Graphics screen){
+    public void renderWalls(Graphics screen){ // TODO cache these in an arraylist and use an iterator if it proves to be quicker. run tests. re-cache on changing tiles
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
                 if(!tiles[x][y].isVoid()){
