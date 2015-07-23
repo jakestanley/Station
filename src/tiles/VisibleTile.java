@@ -11,6 +11,8 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public class VisibleTile extends Tile {
 
+    public static int WALL_THICKNESS = 3;
+
     private boolean hasNorthWall = false;
     private boolean hasEastWall = false;
     private boolean hasSouthWall = false;
@@ -97,7 +99,7 @@ public class VisibleTile extends Tile {
         updateWalls();
         ViewController vc = GameController.viewController;
 
-        screen.setLineWidth(6); // TODO set non hard coded value
+        screen.setLineWidth(WALL_THICKNESS);
         screen.setColor(Color.white);
 
         int drawX = this.x * Display.TILE_WIDTH + (vc.getViewOffsetX() * Display.TILE_WIDTH);
