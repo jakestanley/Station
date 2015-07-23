@@ -11,7 +11,7 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public class VisibleTile extends Tile {
 
-    public static int WALL_THICKNESS = 3;
+    public static int WALL_THICKNESS = 2;
 
     private boolean hasNorthWall = false;
     private boolean hasEastWall = false;
@@ -53,11 +53,6 @@ public class VisibleTile extends Tile {
             backgroundColourNormal = Colours.Tiles.BG_HANGAR;
         }
 
-    }
-
-    @Override
-    public boolean isTraversable() { // TODO consider changing to isSolid ?
-        return true; // TODO chaaaange
     }
 
     public int getType() {

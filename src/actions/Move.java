@@ -28,8 +28,8 @@ public class Move extends Action { // TODO validate
         tile1 = mob.getTile();
         tile2 = Game.map.tiles[tx][ty];
 
-        if(!tile2.isTraversable()){
-            throw new IllegalAction("Tried to move to an non-traversible tile");
+        if(tile2.isVoid()){
+            throw new IllegalAction("Tried to move to a void tile");
         }
 
 //        System.out.println("Moving from [" + tile1.getX() + ", " + tile1.getY() + "] to [" + tile2.getX() + ", " + tile2.getY() + "]");

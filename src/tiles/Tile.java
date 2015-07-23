@@ -63,8 +63,4 @@ public class Tile { // TODO extend these
         return isVoid;
     }
 
-    public boolean isTraversable(){ // TODO remove
-        return !isVoid();
-    }
-
 }

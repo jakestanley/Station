@@ -45,7 +45,7 @@ public class Random extends Planner {
 
             Tile nextTile = Game.map.tiles[tx][ty]; // TODO fix this workaround
 
-            if((tx >= 0) && (ty >= 0) && nextTile.isTraversable()){ // TODO also check that the border tiles aren't too big, as there are upper limits too
+            if((tx >= 0) && (ty >= 0) && !nextTile.isVoid()){ // TODO also check that the border tiles aren't too big, as there are upper limits too
 
                 Door door = Game.map.getDoorByTiles(currentTile, nextTile); // TODO sort
 

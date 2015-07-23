@@ -1,5 +1,6 @@
 package map;
 
+import main.Door;
 import main.Room;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
@@ -19,6 +20,7 @@ public class MapController {
     private boolean[] booleans;
     private Tile[][] tiles;
     private ArrayList<Room> rooms;
+    private ArrayList<Door> doors;
 
     public MapController(String mapFileName){
 
@@ -32,6 +34,7 @@ public class MapController {
         booleans = mapTemplate.getBooleans();
         tiles = new Tile[width][height];
         rooms = new ArrayList<Room>();
+        doors = new ArrayList<Door>();
 
         // Initialise tiles
         initialiseTiles();
@@ -80,7 +83,7 @@ public class MapController {
         testRoomPoints.add(new Point(12,11));
         testRoomPoints.add(new Point(10,12));
         testRoomPoints.add(new Point(11,12));
-        testRoomPoints.add(new Point(12,12));
+        testRoomPoints.add(new Point(12, 12));
         createRoom(testRoomPoints);
     }
 
@@ -98,6 +101,31 @@ public class MapController {
             int y = (int) next.getY();
             tiles[x][y] = new VisibleTile(x, y, room);
 
+        }
+
+        // generate doors // TODO CONSIDER should all doors update?
+        for(int w = 0; w < width; w++){
+            for(int h = 0; h < height; h++){
+                Tile currentTile = tiles[w][h];
+                if(!currentTile.isVoid()){
+                    // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
+                    if(h > 0){ // if not on north bound
+                        Tile northTile = tiles[w][h-1];
+                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom() && !(currentTile.getRoom().isCorridor() && northTile.getRoom().isCorridor())){
+                            doors.add(new Door(currentTile, northTile));
+                        }
+                    }
+
+                    if(w > 0){ // if not on west bound
+                        Tile westTile = tiles[w-1][h];
+                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom() && !(currentTile.getRoom().isCorridor() && westTile.getRoom().isCorridor())){
+                            doors.add(new Door(currentTile, westTile));
+                        }
+                    }
+
+                }
+
+            }
         }
 
         return room;
@@ -138,6 +166,13 @@ public class MapController {
                     visibleTile.renderWalls(screen);
                 }
             }
+        }
+    }
+
+    public void renderDoors(Graphics screen){
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next = iterator.next();
+            next.render(screen);
         }
     }
 

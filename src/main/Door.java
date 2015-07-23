@@ -76,8 +76,8 @@ public class Door extends Loopable implements Interactable {
 
     public void render(Graphics screen) {
 
-        int voX = Game.vc.getViewOffsetX();
-        int voY = Game.vc.getViewOffsetY();
+        int voX = GameController.viewController.getViewOffsetX();
+        int voY = GameController.viewController.getViewOffsetY();
 
         screen.setColor(DOOR_BG_COLOUR);
         if(horizontal){

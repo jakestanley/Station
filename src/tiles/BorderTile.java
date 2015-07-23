@@ -12,11 +12,6 @@ public class BorderTile extends Tile {
     }
 
     @Override
-    public boolean isTraversable() {
-        return false;
-    }
-
-    @Override
     public boolean isVoid() { // TODO check
         return true;
     }

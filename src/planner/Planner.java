@@ -47,7 +47,7 @@ public abstract class Planner {
             int nextY = (int) next.getY();
             if(nextX < 0 || nextY < 0){ // prevents array out of bounds exception
                 iterator.remove();
-            } else if(!Game.map.tiles[nextX][nextY].isTraversable()){
+            } else if(Game.map.tiles[nextX][nextY].isVoid()){
                 iterator.remove();
             }
         }

@@ -83,7 +83,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 //            generateRooms();
 //            generateCorridors();
             initialiseTiles();
-            generateDoors();
+//            generateDoors();
             generateMobs();
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
@@ -447,38 +447,38 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 
 
     }
-
-    private void generateDoors(){
-
-        for(int w = 0; w < width; w++){
-            for(int h = 0; h < height; h++){
-                Tile currentTile = tiles[w][h];
-                if(currentTile.isTraversable()){
-                    // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
-                    if(h > 0){ // if not on north bound
-                        Tile northTile = tiles[w][h-1];
-//                        if(northTile.isTraversable() && northTile.getType() != Values.Types.CORRIDOR_X && currentTile.getRoom() != northTile.getRoom()){
-                        if(northTile.isTraversable() && currentTile.getRoom() != northTile.getRoom() && !(currentTile.getRoom().isCorridor() && northTile.getRoom().isCorridor())){
-                            doors.add(new Door(currentTile, northTile));
-                        }
-                    }
-
-                    if(w > 0){ // if not on west bound
-                        Tile westTile = tiles[w-1][h];
-//                        if(westTile.isTraversable() && westTile.getType() != Values.Types.CORRIDOR_Y && currentTile.getRoom() != westTile.getRoom()){
-                        if(westTile.isTraversable() && currentTile.getRoom() != westTile.getRoom() && !(currentTile.getRoom().isCorridor() && westTile.getRoom().isCorridor())){
-                            doors.add(new Door(currentTile, westTile));
-                        }
-                    }
-
-                }
-
-            }
-        }
-
-        System.out.println("Detected " + doors.size() + " doors");
-
-    }
+//
+//    private void generateDoors(){
+//
+//        for(int w = 0; w < width; w++){
+//            for(int h = 0; h < height; h++){
+//                Tile currentTile = tiles[w][h];
+//                if(!currentTile.isVoid()){
+//                    // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
+//                    if(h > 0){ // if not on north bound
+//                        Tile northTile = tiles[w][h-1];
+////                        if(northTile.isTraversable() && northTile.getType() != Values.Types.CORRIDOR_X && currentTile.getRoom() != northTile.getRoom()){
+//                        if(!northTile.isV() && currentTile.getRoom() != northTile.getRoom() && !(currentTile.getRoom().isCorridor() && northTile.getRoom().isCorridor())){
+//                            doors.add(new Door(currentTile, northTile));
+//                        }
+//                    }
+//
+//                    if(w > 0){ // if not on west bound
+//                        Tile westTile = tiles[w-1][h];
+////                        if(westTile.isTraversable() && westTile.getType() != Values.Types.CORRIDOR_Y && currentTile.getRoom() != westTile.getRoom()){
+//                        if(westTile.isTraversable() && currentTile.getRoom() != westTile.getRoom() && !(currentTile.getRoom().isCorridor() && westTile.getRoom().isCorridor())){
+//                            doors.add(new Door(currentTile, westTile));
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//        }
+//
+//        System.out.println("Detected " + doors.size() + " doors");
+//
+//    }
 
     private void generateMobs() throws NoSpawnableArea {
 
@@ -715,7 +715,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                     if(nextTile.getRoom() == end){
                         paths.add(nextPotentialRoute);
                         routeFound = true;
-                    } else if(nextTile.isTraversable()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
+                    } else if(!nextTile.isVoid()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
                         potentialRoutes.add(nextPotentialRoute);
                         potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
                     }
@@ -889,7 +889,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
                 Tile t = tiles[x][y];
-                if(t.isTraversable()){
+                if(!t.isVoid()){
                     nonVoidTiles.add(t);
                 }
             }
@@ -924,7 +924,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                     Point next =  pointIterator.next();
                     int moveX = (int) next.getX();
                     int moveY = (int) next.getY(); // TODO replace this quick and dirty business
-                    if((moveX >= 0) && (moveY >= 0) && (Game.map.tiles[moveX][moveY].isTraversable())){ // TODO also check that the border tiles aren't too big, as there are upper limits too
+                    if((moveX >= 0) && (moveY >= 0) && (!Game.map.tiles[moveX][moveY].isVoid())){ // TODO also check that the border tiles aren't too big, as there are upper limits too
                         valid.add(next);
                     }
                 }
