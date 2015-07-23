@@ -64,7 +64,22 @@ public class MapController {
 
         // Add all tiles as first room
         createRoom(points);
+        createTestRoom();
+    }
 
+    private void createTestRoom(){ // TODO remove this method
+        // Create additional test room
+        ArrayList<Point> testRoomPoints = new ArrayList<Point>();
+        testRoomPoints.add(new Point(10,10));
+        testRoomPoints.add(new Point(11,10));
+        testRoomPoints.add(new Point(12,10));
+        testRoomPoints.add(new Point(10,11));
+        testRoomPoints.add(new Point(11,11));
+        testRoomPoints.add(new Point(12,11));
+        testRoomPoints.add(new Point(10,12));
+        testRoomPoints.add(new Point(11,12));
+        testRoomPoints.add(new Point(12,12));
+        createRoom(testRoomPoints);
     }
 
     public Room createRoom(ArrayList<Point> points){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
