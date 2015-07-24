@@ -3,6 +3,7 @@ package planner;
 import exceptions.ImpossibleGoal;
 import main.Door;
 import main.Game;
+import main.GameController;
 import main.Room;
 import mobs.Mob;
 import actions.Move;
@@ -41,7 +42,7 @@ public class Evacuate extends Planner {
             for(int i = 0; i < path.size(); i++){
                 if(i < path.size() - 1){
                     Tile t = path.get(i+1);
-                    Door door = Game.map.getDoorByTiles(path.get(i), path.get(i+1));
+                    Door door = GameController.mapController.getDoor(path.get(i).getPoint(), path.get(i+1).getPoint());
                     if(door != null){
                         actions.add(new OpenDoor(mob, door));
                         actions.add(new Move(mob, t.getX(), t.getY()));
@@ -56,6 +57,6 @@ public class Evacuate extends Planner {
 
     @Override
     public boolean achieved() {
-        return !mob.getTile().getRoom().isEvacuate();
+        return !mob.getRoom().isEvacuate();
     }
 }

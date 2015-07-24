@@ -2,22 +2,22 @@ package mobs;
 
 import exceptions.NoAction;
 import main.*;
+import optimisation.Cacher;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.ShapeFill;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 import planner.Planner;
-import main.Room;
-import tiles.Tile;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * Created by stanners on 23/05/2015.
  */
-public abstract class Mob extends Loopable implements Interactable { // TODO make abstract as its not to be instantiated directly
+public abstract class Mob extends Loopable implements Interactable, Cacher { // TODO make abstract as its not to be instantiated directly
 
     public static final int TYPE_MATE = 1;
     public static final int TYPE_PARASITE = 2;
@@ -26,15 +26,14 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     public static final int BASE_MIN_OXYGEN = 20; // TODO make this different for different crew members? crew members could be randomly generated and their abilities could vary.
     public static final int BASE_MIN_HEALTH = 20; // TODO CONSIDER that mobs need a certain amount of health to move/act?
     public static final float BASE_RESILIENCE = 0; // percentage of damage ignored
-    public static final float MAX_RESILIENCE = 0.9f; // max possible resilience
+    public static final float MAX_RESILIENCE = 0.9f; // max current// sible resilience
 //    public static final boolean huep = 2; // TODO CONSIDER a "haste" flag.
 
-    private boolean alive;
-    private Tile previousTile, tile;
-    protected Room room;
-    private int tx, ty, fear;
-
     protected String name;
+    protected Point previous, current;
+    protected Room room;
+    private boolean alive; // TODO sort private/public/protected orders
+    private int tx, ty, fear; // TODO CONSIDER removing replacing tx,ty with a point.
 
     public boolean canOpen() {
         return canOpen;
@@ -52,17 +51,16 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     // problem solving and path finding
     protected Planner planner;
 
-    public Mob(int tx, int ty){
+    public Mob(Point point){
         super(0, Display.TILE_WIDTH-1); // TODO change to non static values
-        this.alive = true;
-        this.tx = tx;
-        this.ty = ty;
+        alive = true;
+        current = point;
+        previous = point;
+        room = GameController.mapController.getRoom(point);
+        fear = Values.Attributes.MENTAL_INDIFFERENT;
 
-        this.tile = Game.map.tiles[tx][ty]; // TODO consider not even having a tile variable. need to know basis?
-        this.previousTile = tile;
-        this.room = tile.getRoom();
-        this.fear = Values.Attributes.MENTAL_INDIFFERENT;
-        if(this.tile.isVoid()){
+        // Check for spawn in void tile
+        if(GameController.mapController.getTile(current).isVoid()){
             System.err.println("Mob spawned in a void tile");
         }
 
@@ -84,7 +82,15 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         }
     }
 
-    private void generateBaseStats(){ // TODO make this more user based
+    public void refreshCache(){
+        room = GameController.mapController.getRoom(current);
+    }
+
+    public Room getRoom(){
+        return room;
+    }
+
+    private void generateBaseStats(){ // TODO make this more user based // TODO sort the order of these private and public methods
         // TODO HASTE stat
         health         = MAX_HEALTH;
         minOpOxygen    = BASE_MIN_OXYGEN;
@@ -96,8 +102,8 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
     @Override
     public void render(Graphics screen) { // TODO optimise
 
-        int voX = Game.vc.getViewOffsetX();
-        int voY = Game.vc.getViewOffsetY();
+        int voX = GameController.viewController.getViewOffsetX();
+        int voY = GameController.viewController.getViewOffsetY();
 
 //        if(frame != frames){
 //            frame++;
@@ -106,13 +112,17 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 //        int ax = 0;
 //        int ay = 0;
 //
-//        if(tile.getX() > previousTile.getX()){ // if going right
+//        if(current
+//.getX() > previous.getX()){ // if going right
 //            ax = -(frames - frame);
-//        } else if(tile.getX() < previousTile.getX()){ // if going left
+//        } else if(current
+//.getX() < previous.getX()){ // if going left
 //            ax = (frames - frame);
-//        } else if(tile.getY() > previousTile.getY()){ // if going down
+//        } else if(current
+//.getY() > previous.getY()){ // if going down
 //            ay = -(frames - frame);
-//        } else if(tile.getY() > previousTile.getY()){ // if going up
+//        } else if(current
+//.getY() > previous.getY()){ // if going up
 //            ay = (frames - frame);
 //        }
 
@@ -143,18 +153,19 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
 
     public void moveTo(int tx, int ty){
 
-        Room newRoom = Game.map.tiles[tx][ty].getRoom();
+        Room newRoom = GameController.mapController.getRoom(new Point(tx, ty)); // TODO replace with points
 
         // if entering a new room
         if(this.room != newRoom){
             this.room = newRoom; // set new room
         }
-        this.tx = tx;
+
+        this.tx = tx; // these will be removed soon
         this.ty = ty;
 
-        // setting new tile
-        previousTile = this.tile;
-        this.tile = Game.map.tiles[tx][ty];
+        // setting new position
+        previous = this.current;
+        this.current = new Point(tx, ty);
 
         frame = 0;
 
@@ -180,8 +191,8 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         return ty;
     }
 
-    public Tile getTile(){
-        return tile;
+    public Point getPoint(){
+        return current;
     }
 
     public float getHealth(){
@@ -197,7 +208,6 @@ public abstract class Mob extends Loopable implements Interactable { // TODO mak
         // calculate base damage done
         float damage = 1 - resilience;
 
-        Room room = getTile().getRoom();
         float roomOxygen = room.getOxygen();
 
         if(getType() == Mob.TYPE_PARASITE) {

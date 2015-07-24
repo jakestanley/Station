@@ -2,7 +2,6 @@ package main;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,14 +21,14 @@ public class Door extends Loopable implements Interactable {
     public static final Color   DOOR_BULKHEAD_COLOR = Color.darkGray;
     public static final Color   DOOR_BG_COLOUR = Color.black; // TODO CONSIDER black for background?
 
-    private Tile start, end;
+    private Point start, end;
     private boolean horizontal, locked, open, bulkhead, destroyed;
     private int sx, sy, ex, ey, timer; // start and end coordinates
     private float integrity;
 
     private ArrayList<String> strings;
 
-    public Door(Tile start, Tile end){
+    public Door(Point start, Point end){
         super(0, Display.DOOR_WIDTH + 1); // start from frame zero if starting closed. door has a frame of animation for each pixel
 
         this.start = start;
@@ -48,29 +47,29 @@ public class Door extends Loopable implements Interactable {
         }
 
         if(horizontal){ // if it's a horizontal door, it will be on the north side
-            sx = start.getX() * Display.TILE_WIDTH + (Display.DOOR_WIDTH / 2);
-            sy = start.getY() * Display.TILE_WIDTH;
+            sx = ((int) start.getX()) * Display.TILE_WIDTH + (Display.DOOR_WIDTH / 2);
+            sy = ((int) start.getY()) * Display.TILE_WIDTH;
             ex = sx + Display.DOOR_WIDTH;
             ey = sy;
         } else { // if it's a vertical door, it will be on the west side
-            sx = start.getX() * Display.TILE_WIDTH;
-            sy = start.getY() * Display.TILE_WIDTH + (Display.DOOR_WIDTH / 2);
+            sx = ((int) start.getX()) * Display.TILE_WIDTH;
+            sy = ((int) start.getY()) * Display.TILE_WIDTH + (Display.DOOR_WIDTH / 2);
             ex = sx;
             ey = sy + Display.DOOR_WIDTH;
         }
 
     }
 
-    public Tile getStartTile(){
+    public Point getStartPoint(){
         return start;
     }
 
-    public Tile getEndTile(){
+    public Point getEndPoint(){
         return end;
     }
 
     @Override
-    public void init() {
+    public void init() { // TODO remove this requirement
 
     }
 

@@ -1,5 +1,6 @@
 package mobs;
 
+import actions.Action;
 import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.UnnecessaryAction;
@@ -10,8 +11,8 @@ import org.newdawn.slick.Graphics;
 import planner.Evacuate;
 import planner.Planner;
 import planner.Random;
-import actions.Action;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -19,8 +20,8 @@ import java.util.ArrayList;
  */
 public class Mate extends Mob {
 
-    public Mate(int x, int y){
-        super(x, y);
+    public Mate(Point point){
+        super(point);
         name = generateName();
         colour = Color.green;
         canOpen = true;

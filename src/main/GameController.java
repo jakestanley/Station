@@ -4,6 +4,8 @@ import map.MapController;
 import mobs.MobController;
 import org.newdawn.slick.*;
 
+import java.util.Random;
+
 /**
  * Created by stanners on 21/07/2015.
  */
@@ -13,6 +15,7 @@ public class GameController extends BasicGame {
     public static boolean debug;
     public static boolean disableMobs;
 
+    public static Random            random;
     public static ViewController    viewController;
     public static GuiController     guiController;
     public static MapController     mapController;
@@ -47,12 +50,14 @@ public class GameController extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+        // Initialise meta components
+        random          = new Random();
+
         // Initialise controllers
         viewController  = new ViewController();
+        mapController   = new MapController("the_tortuga.csv");
         mobController   = new MobController();
         guiController   = new GuiController();
-        mapController   = new MapController("the_tortuga.csv");
-
     }
 
     @Override

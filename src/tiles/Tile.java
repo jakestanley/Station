@@ -4,6 +4,8 @@ import main.Display;
 import main.Game;
 import main.Room;
 
+import java.awt.*;
+
 /**
  * Created by stanners on 22/05/2015.
  */
@@ -49,6 +51,10 @@ public class Tile { // TODO extend these
 
     public int getY(){
         return y;
+    }
+
+    public Point getPoint(){
+        return new Point(x, y);
     }
 
     public Room getRoom(){

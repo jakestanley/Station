@@ -7,6 +7,7 @@ import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
 import main.Door;
 import main.Game;
+import main.GameController;
 import tiles.Tile;
 import mobs.Mob;
 
@@ -38,7 +39,7 @@ public class Random extends Planner {
             int tx = (int) next.getX();
             int ty = (int) next.getY(); // TODO replace this quick and dirty business
 
-            Tile currentTile = mob.getTile();
+            Tile currentTile = GameController.mapController.getTile(mob.getPoint()); // TODO replace this quick and dirty business
             if(tx < 0 || ty < 0 || tx > Game.map.getWidth() - 1 || ty > Game.map.getHeight() - 1){
                 throw new ImpossibleGoal("Tried to array out of bounds values"); // TODO prevent this from happening
             }
@@ -47,7 +48,7 @@ public class Random extends Planner {
 
             if((tx >= 0) && (ty >= 0) && !nextTile.isVoid()){ // TODO also check that the border tiles aren't too big, as there are upper limits too
 
-                Door door = Game.map.getDoorByTiles(currentTile, nextTile); // TODO sort
+                Door door = GameController.mapController.getDoor(currentTile.getPoint(), nextTile.getPoint()); // TODO sort
 
                 ArrayList<Action> actions = new ArrayList<Action>();
                 if(door == null){ // if there's no door, go straight through

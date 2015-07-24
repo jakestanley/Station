@@ -1,6 +1,7 @@
 package map;
 
 import main.Door;
+import main.Game;
 import main.Room;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
@@ -111,15 +112,15 @@ public class MapController {
                     // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
                     if(h > 0){ // if not on north bound
                         Tile northTile = tiles[w][h-1];
-                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom() && !(currentTile.getRoom().isCorridor() && northTile.getRoom().isCorridor())){
-                            doors.add(new Door(currentTile, northTile));
+                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom()){
+                            doors.add(new Door(currentTile.getPoint(), northTile.getPoint())); // TODO clean up this QD business
                         }
                     }
 
                     if(w > 0){ // if not on west bound
                         Tile westTile = tiles[w-1][h];
-                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom() && !(currentTile.getRoom().isCorridor() && westTile.getRoom().isCorridor())){
-                            doors.add(new Door(currentTile, westTile));
+                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom()){
+                            doors.add(new Door(currentTile.getPoint(), westTile.getPoint())); // TODO clean up this QD business
                         }
                     }
 
@@ -139,11 +140,44 @@ public class MapController {
         return height;
     }
 
-    public Tile getTile(int x, int y){ // TODO resolve inconsistencies between using points and int pairs
+    public Tile getTile(int x, int y){ // TODO resolve inconsistencies between using points and int pairs, and consider using Point here
         return tiles[x][y];
     }
 
+    public Tile getTile(Point point){
+        return tiles[(int) point.getX()][(int) point.getY()];
+    }
+
+    public Point getSpawnPoint(){ // TODO use the cache!!!
+        ArrayList<Point> nonVoidTiles = new ArrayList<Point>();
+        for(int x = 0; x < tiles.length; x++){
+            for(int y = 0; y < tiles[x].length; y++){
+                Tile t = tiles[x][y];
+                if(!t.isVoid()){
+                    nonVoidTiles.add(t.getPoint());
+                }
+            }
+        }
+        int size = nonVoidTiles.size();
+        if(size < 1){
+            return null;
+        }
+        return nonVoidTiles.get(Game.random.nextInt(nonVoidTiles.size()));
+    }
+
     public Room getRoom(Point point){
+        return null;
+    }
+
+    public Door getDoor(Point point1, Point point2){
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door door =  iterator.next();
+            if( (door.getStartPoint().equals(point1) && door.getEndPoint().equals(point2)) ||
+                    (door.getStartPoint().equals(point2) && door.getEndPoint().equals(point1))){
+//                System.out.println("Door match");
+                return door;
+            }
+        }
         return null;
     }
 

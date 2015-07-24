@@ -3,9 +3,7 @@ package main;
 import exceptions.LongCorridorGeneration;
 import exceptions.NoAction;
 import exceptions.NoSpawnableArea;
-import mobs.Mate;
 import mobs.Mob;
-import mobs.Parasite;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import rooms.Corridor;
@@ -486,22 +484,22 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         int hostileCount = 1;
 
         // generate crew
-        for(int i = 0; i < crewCount; i++){
-            Tile randomTile = getRandomTraversibleTile();
-            if(randomTile == null){
-                throw new NoSpawnableArea();
-            }
-            mobs.add(new Mate(randomTile.getX(), randomTile.getY()));
-        }
-
-        // generate hostiles
-        for(int i = 0; i < hostileCount; i++){
-            Tile randomTile = getRandomTraversibleTile();
-            if(randomTile == null){
-                throw new NoSpawnableArea();
-            }
-            mobs.add(new Parasite(randomTile.getX(), randomTile.getY()));
-        }
+//        for(int i = 0; i < crewCount; i++){
+//            Tile randomTile = getRandomTraversibleTile();
+//            if(randomTile == null){
+//                throw new NoSpawnableArea();
+//            }
+//            mobs.add(new Mate(randomTile.getX(), randomTile.getY()));
+//        }
+//
+//        // generate hostiles
+//        for(int i = 0; i < hostileCount; i++){
+//            Tile randomTile = getRandomTraversibleTile();
+//            if(randomTile == null){
+//                throw new NoSpawnableArea();
+//            }
+//            mobs.add(new Parasite(randomTile.getX(), randomTile.getY()));
+//        }
 
     }
 
@@ -788,22 +786,22 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         ArrayList<Mob> roomMobs = new ArrayList<Mob>();
         for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
             Mob mob = iterator.next();
-            if(mob.getTile().getRoom() == room){
-                roomMobs.add(mob);
-            }
+//            if(mob.getTile().getRoom() == room){
+//                roomMobs.add(mob);
+//            }
         }
         return roomMobs;
     }
 
     public ArrayList<Mob> getMobsInRoomByType(Room room, int type){
-        ArrayList<Mob> mobs = new ArrayList<Mob>();
-        for (Iterator<Mob> iterator = getMobsInRoom(room).iterator(); iterator.hasNext(); ) {
-            Mob next =  iterator.next();
-            if(next.getType() == type && next.getTile().getRoom() == room){
-                mobs.add(next);
-            }
-        }
-        return mobs;
+//        ArrayList<Mob> mobs = new ArrayList<Mob>();
+//        for (Iterator<Mob> iterator = getMobsInRoom(room).iterator(); iterator.hasNext(); ) {
+//            Mob next =  iterator.next();
+//            if(next.getType() == type && next.getTile().getRoom() == room){
+//                mobs.add(next);
+//            }
+//        }
+        return null;
     }
 
     public Room getBridge(){ // TODO ensure only one bridge per station/ship
@@ -825,17 +823,17 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         }
     }
 
-    public Door getDoorByTiles(Tile tile1, Tile tile2){
-        for (Iterator<Door> iterator = getDoors().iterator(); iterator.hasNext(); ) {
-            Door door =  iterator.next();
-            if( (door.getStartTile() == tile1 && door.getEndTile() == tile2) ||
-                    (door.getStartTile() == tile2 && door.getEndTile() == tile1)){
-//                System.out.println("Door match");
-                return door;
-            }
-        }
-        return null;
-    }
+//    public Door getDoorByTiles(Tile tile1, Tile tile2){
+//        for (Iterator<Door> iterator = getDoors().iterator(); iterator.hasNext(); ) {
+//            Door door =  iterator.next();
+//            if( (door.getStartPoint() == tile1 && door.getEndPoint() == tile2) ||
+//                    (door.getStartPoint() == tile2 && door.getEndPoint() == tile1)){
+////                System.out.println("Door match");
+//                return door;
+//            }
+//        }
+//        return null;
+//    }
 
     public ArrayList<Door> getDoors(){
         return doors;
