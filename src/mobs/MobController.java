@@ -1,11 +1,13 @@
 package mobs;
 
+import exceptions.NoAction;
 import exceptions.NoSpawnableArea;
 import main.GameController;
-import tiles.Tile;
+import org.newdawn.slick.Graphics;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by stanners on 21/07/2015.
@@ -16,35 +18,86 @@ public class MobController {
 
     public MobController(){
         mobs = new ArrayList<Mob>();
+        generateMobs();
+    }
+
+    private void generateMobs(){
+        // specify target crew count
+        int crewCount = 7;
+        int hostileCount = 2;
+
+        try {
+
+            // generate crew
+            for (int i = 0; i < crewCount; i++) {
+                spawnMob(true);
+            }
+
+            // generate hostiles
+            for (int i = 0; i < hostileCount; i++) {
+                spawnMob(false);
+            }
+
+        } catch(NoSpawnableArea nsa){
+
+            System.out.println("MapController returned null when trying to get a spawnable area for a mob");
+            nsa.printStackTrace();
+
+        }
+
+    }
+
+    private void spawnMob(boolean friendly) throws NoSpawnableArea {
+        Point spawn = GameController.mapController.getSpawnPoint();
+        if(spawn == null){
+            throw new NoSpawnableArea();
+        }
+        if(friendly){
+            mobs.add(new Mate(spawn));
+        } else {
+            mobs.add(new Parasite(spawn));
+        }
     }
 
     public ArrayList<Mob> getMobs(){ // TODO CONSIDER is this necessary?
         return mobs;
     }
 
-    private void generateMobs() throws NoSpawnableArea {
-        // specify target crew count
-        int crewCount = 7;
-        int hostileCount = 2;
-
-        // generate crew
-        for(int i = 0; i < crewCount; i++){
-            Point spawn = GameController.mapController.getSpawnPoint();
-            if(spawn == null){
-                throw new NoSpawnableArea();
-            }
-            mobs.add(new Mate(spawn));
+    public void updateMobs(){
+        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            next.update();
         }
+    }
 
-        // generate hostiles
-        for(int i = 0; i < hostileCount; i++){
-            Point spawn = GameController.mapController.getSpawnPoint();
-            if(spawn == null){
-                throw new NoSpawnableArea();
+    public void executeMobEvaluations(){
+        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            if(next.alive()){
+                next.evaluate();
             }
-            mobs.add(new Parasite(spawn));
         }
+    }
 
+    public void executeMobActions(){
+        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            if(next.alive()){
+                try {
+                    next.act();
+                } catch (NoAction noAction) {
+                    System.err.println(next.getName() + " can't find anywhere to go");
+                }
+
+            }
+        }
+    }
+
+    public void renderMobs(Graphics screen){
+        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            next.render(screen);
+        }
     }
 
 }

@@ -12,6 +12,9 @@ import java.util.Random;
 
 public class GameController extends BasicGame {
 
+    public static final int MAX_TICK = 30;
+
+    public static int tick = 0;
     public static boolean debug;
     public static boolean disableMobs;
 
@@ -50,6 +53,7 @@ public class GameController extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+
         // Initialise meta components
         random          = new Random();
 
@@ -58,11 +62,22 @@ public class GameController extends BasicGame {
         mapController   = new MapController("the_tortuga.csv");
         mobController   = new MobController();
         guiController   = new GuiController();
+
     }
 
     @Override
     public void update(GameContainer gameContainer, int i) throws SlickException {
-        InputController.processInput(gameContainer);
+        InputController.processInput(gameContainer); // TODO update logic
+        
+        if(tick > MAX_TICK){
+            tick = 0;
+            mobController.updateMobs();
+            mobController.executeMobEvaluations();
+            mobController.executeMobActions();
+        }
+
+        tick++;
+
     }
 
     @Override
@@ -74,8 +89,12 @@ public class GameController extends BasicGame {
         mapController.renderWalls(screen);
         mapController.renderDoors(screen);
 
+        mobController.renderMobs(screen);
+
         guiController.renderBackgrounds(screen);
         guiController.renderContent(screen);
+
+
 
     }
 }

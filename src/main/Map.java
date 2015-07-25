@@ -632,128 +632,13 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 
     }
 
-    public ArrayList<Tile> getTraversiblePath(Tile start, Room end){ // less time allowed for this search
-        System.out.println("Get traversible path called");
-
-        ArrayList<ArrayList<Tile>> paths = new ArrayList<ArrayList<Tile>>();
-
-//        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString());
-
-        // initialise list of tiles explored this search
-        ArrayList<Tile> explored = new ArrayList<Tile>();
-
-        // initialise the list of routes to explore
-        ArrayList<ArrayList<Tile>> potentialRoutes = new ArrayList<ArrayList<Tile>>();
-
-        // make route and add this tile to it
-        ArrayList<Tile> firstRoute = new ArrayList<Tile>();
-        firstRoute.add(start);
-
-        // add this route to the potential routes list (the to do list)
-        potentialRoutes.add(firstRoute);
-
-        boolean routeFound = false;
-        long startTime = System.currentTimeMillis(); // get the time
-        long currentTime = startTime;
-
-        // iterate through the routes trying to find a path
-        int potentialRoutesSize = potentialRoutes.size();
-        for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < timeout) ; i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
-//                System.out.println("Analysing new route");
-//            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
-            ArrayList<Tile> route = potentialRoutes.get(i);
-
-            // get the last tile from the currently analysing route and add it to the explored list
-            Tile lastTile = route.get(route.size() - 1);
-            explored.add(lastTile);
-
-            // get tile coordinates
-            int x = lastTile.getX();
-            int y = lastTile.getY();
-
-            // initialise tiles and put them in an arraylist
-            Tile northTile = null, eastTile = null, southTile = null, westTile = null;
-            ArrayList<Tile> potentialTiles = new ArrayList<Tile>();
-
-            if(y > 0){
-                northTile = Game.map.tiles[x][y-1];
-                potentialTiles.add(northTile);
-            }
-
-            if(y < Game.map.getHeight()-1){
-                southTile = Game.map.tiles[x][y+1];
-                potentialTiles.add(southTile);
-            }
-
-            if(x > 0){
-                westTile = Game.map.tiles[x-1][y];
-                potentialTiles.add(westTile);
-            }
-
-            if(x < Game.map.getWidth()-1){
-                eastTile = Game.map.tiles[x+1][y];
-                potentialTiles.add(eastTile);
-            }
-
-            // iterate through the potential tiles
-            for (Iterator<Tile> pti = potentialTiles.iterator(); pti.hasNext(); ) {
-                currentTime = System.currentTimeMillis();
-                Tile nextTile = pti.next();
-//                    System.out.println("Analysing [" + nextTile.getX() + ", " + nextTile.getY() + "]");
-
-                // if the next tile hasn't been explored
-                if(!explored.contains(nextTile)){ // TODO TILE TRAVERSER STATIC CLASS
-
-                    // build a new route // TODO CONSIDER is this inefficient if the route is likely to be discarded now?
-                    ArrayList<Tile> nextPotentialRoute = new ArrayList<Tile>();
-                    nextPotentialRoute.addAll(route); // add all tiles from currently analysing route
-                    nextPotentialRoute.add(nextTile); // add the next tile to that route
-
-                    // if next tile is a an end tile, add to path and mark as route found
-                    if(nextTile.getRoom() == end){
-                        paths.add(nextPotentialRoute);
-                        routeFound = true;
-                    } else if(!nextTile.isVoid()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
-                        potentialRoutes.add(nextPotentialRoute);
-                        potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
-                    }
-
-                }
-
-            }
-
-
-        }
-
-        // return the shortest path
-        if(paths.isEmpty()){
-            System.out.println("Could not find a path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString() + " in reasonable time");
-            return new ArrayList<Tile>(); // return empty array list // TODO optimise
-        } else {
-            ArrayList<Tile> shortestPath = null;
-            int shortestPathSize = 0;
-            for (Iterator<ArrayList<Tile>> iterator = paths.iterator(); iterator.hasNext(); ) {
-                ArrayList<Tile> path = iterator.next();
-                if(shortestPath == null){
-                    shortestPath = path;
-                    shortestPathSize = path.size();
-                } else {
-                    if(path.size() < shortestPathSize){ // OPTIMISE
-                        shortestPath = path;
-                        shortestPathSize = path.size();
-                    }
-                }
-            }
-            return shortestPath;
-        }
-    }
-
     private boolean hasTraversablePath(Tile start, Room end){
-        if(getTraversiblePath(start, end).isEmpty()){
-            return false;
-        } else {
-            return true;
-        }
+//        if(getTraversiblePath(start, end).isEmpty()){
+//            return false;
+//        } else {
+//            return true;
+//        }
+        return false;
     }
 
     public void moveMobs(){ // TODO mobs should decide themselves where to move based on some algorithm
@@ -907,8 +792,9 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                 // TODO remember cannot move out of bounds or onto void tiles (more coming soon)
                 // only horizontal and vertical moves are allowed
 
-                int mobX = mob.getX();
-                int mobY = mob.getY();
+                Point point = mob.getPoint(); // TODO convert to using point
+                int mobX = (int) point.getX();
+                int mobY = (int) point.getY();
 
                 ArrayList<Point> moves = new ArrayList<Point>(9);
                 moves.add(new Point(mobX - 1, mobY));
@@ -930,8 +816,8 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                 // Clarify legal options
                 int count = valid.size();
                 if(count > 0){
-                    Point p = valid.get(Game.random.nextInt(valid.size()));
-                    mob.moveTo((int) p.getX(), (int) p.getY());
+                    Point p = valid.get(GameController.random.nextInt(valid.size()));
+                    mob.moveTo(p);
                 } else {
                     System.err.println("Cannot move mob as there are no valid moves.");
                 }

@@ -5,11 +5,10 @@ import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
-import main.Game;
+import main.GameController;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import planner.Random;
-import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,13 +31,6 @@ public class Parasite extends Mob {
     @Override
     public void init() {
 
-    }
-
-    public Parasite(int x, int y, int health){ // TODO consider removing
-        super(x, y, health);
-        name = "Parasite";
-        colour = Color.red; // TODO make better colours
-        canOpen = false;
     }
 
     @Override
@@ -100,7 +92,7 @@ public class Parasite extends Mob {
     @Override
     public void populateDataBoxStrings() {
         strings = new ArrayList<String>();
-        strings.add("random string: " + Game.random.nextFloat());
+        strings.add("random string: " + GameController.random.nextFloat());
     }
 
     @Override

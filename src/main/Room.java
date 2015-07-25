@@ -56,6 +56,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     public Room(ArrayList<Point> points){ // TODO , int type
         super(0, 0); // TODO remove the requirement for this
         this.points = points;
+
+        this.integrity = MAX_INTEGRITY;
+        this.oxygen = MAX_OXYGEN;
     }
 
     public Room(int x, int y, int sx, int sy, int type){ // TODO room type
@@ -182,6 +185,16 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         } else {
             strings.add("Oxygen: OFF");
         }
+    }
+
+    public boolean hasPoint(Point point){
+        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            if(next.equals(point)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

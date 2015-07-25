@@ -160,7 +160,7 @@ public class Game extends BasicGame {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } // TODO set font again
 
     }
 
@@ -255,11 +255,11 @@ public class Game extends BasicGame {
 
     public ArrayList<Mob> getMobsByRoom(Room room){
         ArrayList<Mob> mobs = new ArrayList<Mob>();
-        for (Iterator<Tile> iterator = hoverRoom.getRoomTiles().iterator(); iterator.hasNext(); ) {
+        for (Iterator<Tile> iterator = hoverRoom.getRoomTiles().iterator(); iterator.hasNext(); ) { // TODO change this to use points
             Tile tile = iterator.next();
             for (Iterator<Mob> iterator1 = map.getMobs().iterator(); iterator1.hasNext(); ) {
                 Mob mob = iterator1.next();
-                if(mob.getX() == tile.getX() && mob.getY() == tile.getY()){ // !reference comparison. TODO values comparison for niceness. this is dirty but it works
+                if(mob.getPoint().equals(tile.getPoint())){
                     mobs.add(mob);
                 }
             }

@@ -3,6 +3,8 @@ package main;
 import guicomponents.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
+import resources.FontLoader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,9 +14,10 @@ import java.util.Iterator;
  */
 public class GuiController {
 
+    private TrueTypeFont font;
     private ArrayList<GuiComponent> components;
 
-    private HintsBox hintsBox;
+    private HintsBox            hintsBox;
     private InfoBox             infoBox;
     private MobsBox             mobsBox;
     private MessageBox          messageBox;
@@ -23,6 +26,7 @@ public class GuiController {
 
     public GuiController(){
 
+        font = FontLoader.loadFont("04b03.ttf");
         components = new ArrayList<GuiComponent>();
 
         hintsBox = new HintsBox(hint);
@@ -75,13 +79,17 @@ public class GuiController {
     }
 
     public void renderContent(Graphics screen){
+
+        setFont(screen);
+
         for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
             GuiComponent next =  iterator.next();
             next.renderBody(screen);
         }
+
     }
 
-    private void renderComponentsData(Graphics screen){ // TODO is it needed? yes, i need to call the render methods from here, or do i?
+    private void renderComponentsData(Graphics screen){ // TODO remove, incorporate, or break off into something else
 
 //        // DRAW STRINGS
 //        screen.setColor(Colours.GUI_TEXT);
@@ -116,6 +124,16 @@ public class GuiController {
         // screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
         // screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
 
+    }
+
+    /**
+     * Sets the font. If the font is null, then the default Slick font will be used.
+     * @param screen
+     */
+    private void setFont(Graphics screen){ // TODO call in init
+        if(font != null){
+            screen.setFont(font);
+        }
     }
 
 }

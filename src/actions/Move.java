@@ -41,6 +41,8 @@ public class Move extends Action { // TODO validate
                 throw new IllegalAction("Tried to move to tile but there was a closed door in the way.");
             }
         }
-        mob.moveTo(tx, ty);
+
+        mob.moveTo(point2);
+
     }
 }

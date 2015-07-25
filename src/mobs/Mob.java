@@ -33,7 +33,7 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     protected Point previous, current;
     protected Room room;
     private boolean alive; // TODO sort private/public/protected orders
-    private int tx, ty, fear; // TODO CONSIDER removing replacing tx,ty with a point.
+    private int fear; // TODO CONSIDER removing replacing tx,ty with a point.
 
     public boolean canOpen() {
         return canOpen;
@@ -71,18 +71,7 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     }
 
-    public Mob(int tx, int ty, int health){ // TODO flesh out this constructor
-        super(0, Display.TILE_WIDTH - 1);
-        this.tx = tx;
-        this.ty = ty;
-        if(health > MAX_HEALTH){
-            this.health = 100;
-        } else {
-            this.health = health;
-        }
-    }
-
-    public void refreshCache(){
+    public void refresh(){
         room = GameController.mapController.getRoom(current);
     }
 
@@ -102,9 +91,13 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     @Override
     public void render(Graphics screen) { // TODO optimise
 
+        System.out.println("mob RENDER called");
+
         int voX = GameController.viewController.getViewOffsetX();
         int voY = GameController.viewController.getViewOffsetY();
 
+        int tx = (int) current.getX();
+        int ty = (int) current.getY();
 //        if(frame != frames){
 //            frame++;
 //        }
@@ -151,21 +144,18 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     }
 
-    public void moveTo(int tx, int ty){
+    public void moveTo(Point position){ // TODO always create new points?
 
-        Room newRoom = GameController.mapController.getRoom(new Point(tx, ty)); // TODO replace with points
+        Room newRoom = GameController.mapController.getRoom(position); // TODO replace with points
 
         // if entering a new room
         if(this.room != newRoom){
             this.room = newRoom; // set new room
         }
 
-        this.tx = tx; // these will be removed soon
-        this.ty = ty;
-
         // setting new position
         previous = this.current;
-        this.current = new Point(tx, ty);
+        this.current = position;
 
         frame = 0;
 
@@ -182,14 +172,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     public abstract void act() throws NoAction;
 
     public abstract void populateDataBoxStrings(); // todo before commit.
-
-    public int getX(){
-        return tx;
-    }
-
-    public int getY(){
-        return ty;
-    }
 
     public Point getPoint(){
         return current;
@@ -208,7 +190,7 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         // calculate base damage done
         float damage = 1 - resilience;
 
-        float roomOxygen = room.getOxygen();
+        float roomOxygen = room.getOxygen(); // TODO set room
 
         if(getType() == Mob.TYPE_PARASITE) {
 //            System.out.println("Doing parasite damage. Room oxygen: " + roomOxygen + ", min oxygen: " + minOpOxygen);
@@ -252,6 +234,9 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     public void renderHoverBox(Graphics screen){ // TODO make more responsive
 
 //        System.out.println("Render mob hover box called");
+
+        int tx = (int) current.getX();
+        int ty = (int) current.getY();
 
         screen.setColor(Colours.HOVER_SELECT);
 
