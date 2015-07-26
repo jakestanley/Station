@@ -1,17 +1,19 @@
 package mobs;
 
+import actions.Action;
 import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.UnnecessaryAction;
 import main.Game;
+import main.GameController;
 import main.Values;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import planner.Evacuate;
 import planner.Planner;
 import planner.Random;
-import actions.Action;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -19,8 +21,8 @@ import java.util.ArrayList;
  */
 public class Mate extends Mob {
 
-    public Mate(int x, int y){
-        super(x, y);
+    public Mate(Point point){
+        super(point);
         name = generateName();
         colour = Color.green;
         canOpen = true;
@@ -29,13 +31,6 @@ public class Mate extends Mob {
     @Override
     public void init() {
 
-    }
-
-    public Mate(int x, int y, int health){
-        super(x, y, health);
-        name = generateName();
-        colour = Color.green;
-        canOpen = true;
     }
 
     @Override
@@ -112,7 +107,7 @@ public class Mate extends Mob {
     @Override
     public void populateDataBoxStrings() {
         strings = new ArrayList<String>();
-        strings.add("random string: " + Game.random.nextFloat());
+        strings.add("random string: " + GameController.random.nextFloat());
     }
 
     @Override
@@ -126,7 +121,7 @@ public class Mate extends Mob {
     }
 
     public String generateName(){
-        return Values.names[Game.random.nextInt(Values.names.length)];
+        return Values.names[GameController.random.nextInt(Values.names.length)];
     }
 
     @Override

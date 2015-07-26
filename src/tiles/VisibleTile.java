@@ -11,6 +11,8 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public class VisibleTile extends Tile {
 
+    public static int WALL_THICKNESS = 2;
+
     private boolean hasNorthWall = false;
     private boolean hasEastWall = false;
     private boolean hasSouthWall = false;
@@ -24,9 +26,20 @@ public class VisibleTile extends Tile {
     protected Color backgroundColour        = Colours.Tiles.BG_DEFAULT; // black for generic rooms by default
     protected Color backgroundColourNormal  = Colours.Tiles.BG_DEFAULT;
 
+    public VisibleTile(int x, int y, Room room){
+        super(x,y,room); // TODO
+
+        this.isVoid = false; // TODO get function from room
+
+        backgroundColour = Colours.Tiles.BG_BRIDGE; // TODO come up with an efficient way to get the colours
+        backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
+
+    }
+
     public VisibleTile(int x, int y, Room room, int function){
         super(x,y,room); // TODO
 
+        this.isVoid = true;
         this.function = function;
 
         if(Values.Types.BRIDGE == type){
@@ -40,11 +53,6 @@ public class VisibleTile extends Tile {
             backgroundColourNormal = Colours.Tiles.BG_HANGAR;
         }
 
-    }
-
-    @Override
-    public boolean isTraversable() { // TODO consider changing to isSolid ?
-        return true; // TODO chaaaange
     }
 
     public int getType() {
@@ -71,23 +79,33 @@ public class VisibleTile extends Tile {
 
     public void renderBackground(Graphics screen){
 
-        int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
-        int drawY = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
+        int drawX = this.x * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetX() * Display.TILE_WIDTH);
+        int drawY = this.y * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetY() * Display.TILE_WIDTH);
 
         Rectangle rect = new Rectangle(drawX, drawY, Display.TILE_WIDTH, Display.TILE_WIDTH);
 
-        screen.setColor(backgroundColour);
+        // Set colours
+        if(isSelected){
+            screen.setColor(backgroundColour.brighter(2));
+            isSelected = false; // TODO CONSIDER putting this somewhere else
+        } else {
+            screen.setColor(backgroundColour);
+        }
+
         screen.fill(rect);
 
     }
 
     public void renderWalls(Graphics screen) {
 
-        screen.setLineWidth(6); // TODO set non hard coded value
+        updateWalls();
+        ViewController vc = GameController.viewController;
+
+        screen.setLineWidth(WALL_THICKNESS);
         screen.setColor(Color.white);
 
-        int drawX = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
-        int drawY = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
+        int drawX = this.x * Display.TILE_WIDTH + (vc.getViewOffsetX() * Display.TILE_WIDTH);
+        int drawY = this.y * Display.TILE_WIDTH + (vc.getViewOffsetY() * Display.TILE_WIDTH);
 
         if(hasNorthWall){
             Line northWall = new Line(drawX, drawY, drawX + Display.TILE_WIDTH, drawY);
@@ -127,26 +145,26 @@ public class VisibleTile extends Tile {
         borderColour = borderColourNormal;
     }
 
-    public void updateWalls(){
+    public void updateWalls(){ // TODO CONSIDER moving this into somewhere else or a separate wall class. This should only be updated when walls change
         if(y > 0){
-            Tile northTile = Game.map.tiles[x][y-1];
+            Tile northTile = GameController.mapController.getTile(x, y - 1);
             hasNorthWall = northTile.isVoid() || (northTile.getRoom() != this.getRoom());
         }
 
-        if(y < Game.map.getHeight()-1){
-            Tile southTile = Game.map.tiles[x][y+1];
+        if(y < GameController.mapController.getHeight()-1){
+            Tile southTile = GameController.mapController.getTile(x, y + 1);
             hasSouthWall = southTile.isVoid() || (southTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }
 
         if(x > 0){
-            Tile westTile = Game.map.tiles[x-1][y];
+            Tile westTile = GameController.mapController.getTile(x-1, y);
             hasWestWall = westTile.isVoid() || (westTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }
 
-        if(x < Game.map.getWidth()-1){
-            Tile eastTile = Game.map.tiles[x+1][y];
+        if(x < GameController.mapController.getWidth()-1){
+            Tile eastTile = GameController.mapController.getTile(x+1, y);
             hasEastWall = eastTile.isVoid() || (eastTile.getRoom() != this.getRoom());
             // screen.draw(rect);
         }

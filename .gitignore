@@ -4,3 +4,5 @@ libs/
 out/
 res/
 *.iml
+
+*.log

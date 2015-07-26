@@ -10,8 +10,10 @@ import org.newdawn.slick.geom.Rectangle;
  */
 public abstract class GuiComponent {
 
+    protected static final int LINE_WIDTH = 3;
+
     protected int x, y, width, height; // start point and end point
-    protected Color backgroundColour = Colours.GUI_BACKGROUND;
+    protected Color backgroundColour;
     private Rectangle rect;
 
     public GuiComponent(int x, int y, int width, int height){
@@ -20,24 +22,23 @@ public abstract class GuiComponent {
         this.width = width;
         this.height = height;
 
+        this.backgroundColour = Colours.GUI_BACKGROUND;
         this.rect = new Rectangle(x, y, width, height);
     }
 
     public abstract void update();
 
-    public abstract void render(Graphics screen);
+    public void renderBackground(Graphics screen){ // TODO CONSIDER you can override if necessary
 
-    protected void drawBackground(Graphics screen){
         screen.setColor(backgroundColour);
         screen.fill(rect);
-    }
 
-    protected void drawBorder(Graphics screen){
-    // TODO make it so this doesn't draw a border on the screen edges. should be easy to detect screen edge using x
-        screen.setColor(Colours.GUI_BORDER);
+        screen.setLineWidth(LINE_WIDTH);
+        screen.setColor(Colours.GUI_BORDER); // TODO fix borders
         screen.draw(rect);
+
     }
 
-
+    public abstract void renderBody(Graphics screen);
 
 }

@@ -5,12 +5,12 @@ import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
-import main.Game;
+import main.GameController;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import planner.Random;
-import tiles.Tile;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -18,26 +18,19 @@ import java.util.ArrayList;
  */
 public class Parasite extends Mob {
 
-    ArrayList<Tile> exploredTiles;
+    ArrayList<Point> explored;
 
-    public Parasite(int x, int y){
-        super(x, y);
+    public Parasite(Point point){
+        super(point);
         name = "Parasite";
         colour = Color.red;
         canOpen = false;
-        exploredTiles = new ArrayList<Tile>();
+        explored = new ArrayList<Point>();
     }
 
     @Override
     public void init() {
 
-    }
-
-    public Parasite(int x, int y, int health){ // TODO consider removing
-        super(x, y, health);
-        name = "Parasite";
-        colour = Color.red; // TODO make better colours
-        canOpen = false;
     }
 
     @Override
@@ -99,7 +92,7 @@ public class Parasite extends Mob {
     @Override
     public void populateDataBoxStrings() {
         strings = new ArrayList<String>();
-        strings.add("random string: " + Game.random.nextFloat());
+        strings.add("random string: " + GameController.random.nextFloat());
     }
 
     @Override
@@ -112,14 +105,14 @@ public class Parasite extends Mob {
         // TODO put this in a more appropriate place
 
         // add this tile to explored tiles if not already explored
-        if(!exploredTiles.contains(getTile())){ // can query this tile and surrounding tiles, e.g for doors
-            exploredTiles.add(getTile());
+        if(!explored.contains(current)){ // can query this tile and surrounding tiles, e.g for doors
+            explored.add(current);
         }
 
     }
 
-    public ArrayList<Tile> getExploredTiles(){
-        return exploredTiles;
+    public ArrayList<Point> getExplored(){
+        return explored;
     }
 
     @Override

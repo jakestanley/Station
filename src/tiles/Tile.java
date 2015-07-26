@@ -4,6 +4,8 @@ import main.Display;
 import main.Game;
 import main.Room;
 
+import java.awt.*;
+
 /**
  * Created by stanners on 22/05/2015.
  */
@@ -11,22 +13,30 @@ public class Tile { // TODO extend these
 
     protected static final float MAX_HEALTH = 100;
 
+    protected boolean isVoid, isSelected;
     protected int x, y;
     protected float health;
     protected Room room; // room the tile belongs to
 
     // void tile constructor
     public Tile(int x, int y){
+        this.isVoid = true;
+        this.isSelected = false;
         this.x = x;
         this.y = y;
     }
 
-    // regular visible tile superconstructor
+    // regular visible tile superconstructor // TODO OPTIMISE these constructors
     public Tile(int x, int y, Room room){
+        this.isSelected = false;
         this.x = x;
         this.y = y;
         this.room = room;
         this.health = MAX_HEALTH;
+    }
+
+    public void setSelected(boolean selected){
+        isSelected = selected;
     }
 
     public boolean mouseOver(int mouseX, int mouseY){
@@ -49,6 +59,10 @@ public class Tile { // TODO extend these
         return y;
     }
 
+    public Point getPoint(){
+        return new Point(x, y);
+    }
+
     public Room getRoom(){
         return room;
     }
@@ -58,11 +72,7 @@ public class Tile { // TODO extend these
     }
 
     public boolean isVoid(){
-        return (getRoom() == null);
-    }
-
-    public boolean isTraversable(){ // TODO remove
-        return !isVoid();
+        return isVoid;
     }
 
 }

@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.*;
+
 /**
  * Created by stanners on 19/07/2015.
  */
@@ -24,6 +26,10 @@ public class ViewController {
 
     public int getViewOffsetX() {
         return viewOffsetX;
+    }
+
+    public Point getViewOffsetPoint(){
+        return new Point(getViewOffsetX(), getViewOffsetY());
     }
 
     public void increaseViewOffsetX(){

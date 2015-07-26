@@ -19,11 +19,9 @@ public class InfoBox extends GuiComponent {
     }
 
     @Override
-    public void render(Graphics screen) { // TODO CONSIDER what to show by default
-        drawBackground(screen);
-        drawBorder(screen);
+    public void renderBody(Graphics screen) { // TODO CONSIDER what to show by default
 
-        screen.setColor(Colours.GUI_TEXT);
+        screen.setColor(Colours.GUI_TEXT); // TODO
 
     }
 }
