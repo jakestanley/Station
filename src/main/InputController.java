@@ -44,17 +44,13 @@ public class InputController {
         if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
             Point mousePoint = new Point(input.getMouseX(), input.getMouseY());
             if(!leftMouseHeld){
-                // TODO take down the first coordinate
                 leftMouseHeld = true;
-                System.out.println("mouse left clicked");
                 GameController.mouseController.setClickPoint(mousePoint);
             }
             GameController.mouseController.setHoverPoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
         } else {
             if(leftMouseHeld){
-                // TODO take down the release coordinate and send it to some controller. reintroduce RoomController?
                 leftMouseHeld = false;
-                System.out.println("mouse left released");
                 GameController.mouseController.setMouseRelease();
             }
         }
