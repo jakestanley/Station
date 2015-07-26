@@ -1,5 +1,6 @@
 package main;
 
+import map.MouseController;
 import map.MapController;
 import mobs.MobController;
 import org.newdawn.slick.*;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class GameController extends BasicGame {
 
-    public static final int MAX_TICK = 30;
+    public static final int MAX_TICK = 30; // TODO should be 30
 
     public static int tick = 0;
     public static boolean debug;
@@ -23,6 +24,7 @@ public class GameController extends BasicGame {
     public static GuiController     guiController;
     public static MapController     mapController;
     public static MobController     mobController;
+    public static MouseController mouseController;
 
     public GameController(String gameName, boolean debug, boolean disableMobs){
         super(gameName);
@@ -62,13 +64,16 @@ public class GameController extends BasicGame {
         mapController   = new MapController("the_tortuga.csv");
         mobController   = new MobController();
         guiController   = new GuiController();
+        mouseController = new MouseController();
 
     }
 
     @Override
     public void update(GameContainer gameContainer, int i) throws SlickException {
         InputController.processInput(gameContainer); // TODO update logic
-        
+
+        guiController.updateContent();
+
         if(tick > MAX_TICK){
             tick = 0;
             mapController.updateDoors();

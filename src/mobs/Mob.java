@@ -91,8 +91,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     @Override
     public void render(Graphics screen) { // TODO optimise
 
-        System.out.println("mob RENDER called");
-
         int voX = GameController.viewController.getViewOffsetX();
         int voY = GameController.viewController.getViewOffsetY();
 

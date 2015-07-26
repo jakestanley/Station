@@ -22,7 +22,10 @@ public class MapController {
     private ArrayList<Room> rooms;
     private ArrayList<Door> doors;
 
-    public MapController(String mapFileName){
+    // Room creation
+    private ArrayList<Point> dragSelection;
+
+    public MapController(String mapFileName){ // TODO CONSIDER RoomBuilder class - instead of "RoomController"?
 
         // Load map
         MapTemplate mapTemplate = MapLoader.loadMap(mapFileName);
@@ -68,42 +71,43 @@ public class MapController {
         }
 
         // Add all tiles as first room
-        createRoom(points);
-        createTestRoom();
+        createRoom(points, true); // TODO put an appropriate constant somewhere for useVoid
     }
 
-    private void createTestRoom(){ // TODO remove this method
-        // Create additional test room
-        ArrayList<Point> testRoomPoints = new ArrayList<Point>();
-        testRoomPoints.add(new Point(10,10));
-        testRoomPoints.add(new Point(11,10));
-        testRoomPoints.add(new Point(12,10));
-        testRoomPoints.add(new Point(10,11));
-        testRoomPoints.add(new Point(11,11));
-        testRoomPoints.add(new Point(12,11));
-        testRoomPoints.add(new Point(10,12));
-        testRoomPoints.add(new Point(11,12));
-        testRoomPoints.add(new Point(12, 12));
-        createRoom(testRoomPoints);
-    }
-
-    public Room createRoom(ArrayList<Point> points){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
+    public Room createRoom(ArrayList<Point> points, boolean useVoid){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
 
         // create room with points
         Room room = new Room(points);
 
         for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
-            initialiseTile(next);
 
-            // create new visible tiles
-            int x = (int) next.getX();
-            int y = (int) next.getY();
-            tiles[x][y] = new VisibleTile(x, y, room);
+            if(useVoid || !getTile(next).isVoid()){ // if using void tiles is permitted, or it's not a void tile
+
+                // initialise the tile
+                initialiseTile(next);
+
+                // create new visible tiles
+                int x = (int) next.getX();
+                int y = (int) next.getY();
+                tiles[x][y] = new VisibleTile(x, y, room); // TODO CONSIDER change to Point?
+            }
 
         }
 
         rooms.add(room);
+
+        generateDoors();
+
+        return room;
+    }
+
+    public void generateDoors(){
+
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next =  iterator.next();
+            iterator.remove();
+        }
 
         // generate doors // TODO CONSIDER should all doors update? maybe cache could only update select tiles (e.g by association checks?)
         for(int w = 0; w < width; w++){
@@ -129,8 +133,6 @@ public class MapController {
 
             }
         }
-
-        return room;
     }
 
     public int getWidth(){
@@ -224,6 +226,10 @@ public class MapController {
             Door next = iterator.next();
             next.render(screen);
         }
+    }
+
+    public void renderSelection(Graphics screen){
+        // TODO
     }
 
     public ArrayList<Point> getTraversiblePath(Point start, Room end){ // less time allowed for this search
@@ -343,6 +349,36 @@ public class MapController {
             }
             return shortestPath;
         }
+    }
+
+    public void setDragSelection(Point dragStart, Point dragEnd){
+
+        int startX  = (int) dragStart.getX();
+        int endX    = (int) dragEnd.getX();
+        int startY  = (int) dragStart.getY();
+        int endY    = (int) dragEnd.getY();
+
+        this.dragSelection = new ArrayList<Point>();
+
+        System.out.println("Selected points: [" + (int) dragStart.getX() + ", " + (int) dragStart.getY() + "], [" + (int) dragEnd.getX() + ", " + dragEnd.getY() + "]" );
+
+        for(int x = startX; x <= endX; x++){ // TODO RESEARCH is there a Point class that uses ints? could i create my own? it would have to override equals()
+            for(int y = startY; y <= endY; y++){
+                dragSelection.add(new Point(x, y));
+                getTile(x, y).setSelected(true);
+            }
+        }
+
+        System.out.println("drag selection size: " + dragSelection.size());
+    }
+
+    public void releaseDrag(){
+        System.out.println("release drag called at size " + dragSelection.size());
+        for (Iterator<Point> iterator = dragSelection.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            getTile(next).setSelected(false);
+        }
+        createRoom(dragSelection, false); // TODO createRoom needs more arguments
     }
 
 }

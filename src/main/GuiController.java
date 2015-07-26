@@ -64,11 +64,11 @@ public class GuiController {
 
     }
 
-    private void updateComponents(){
-//        for (Iterator<GuiComponent> iterator = guiComponents.iterator(); iterator.hasNext(); ) {
-//            GuiComponent next = iterator.next();
-//            next.update();
-//        }
+    public void updateContent(){
+        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
+            GuiComponent next = iterator.next();
+            next.update();
+        }
     }
 
     public void renderBackgrounds(Graphics screen){

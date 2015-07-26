@@ -84,7 +84,14 @@ public class VisibleTile extends Tile {
 
         Rectangle rect = new Rectangle(drawX, drawY, Display.TILE_WIDTH, Display.TILE_WIDTH);
 
-        screen.setColor(backgroundColour);
+        // Set colours
+        if(isSelected){
+            screen.setColor(backgroundColour.brighter(2));
+            isSelected = false; // TODO CONSIDER putting this somewhere else
+        } else {
+            screen.setColor(backgroundColour);
+        }
+
         screen.fill(rect);
 
     }

@@ -23,8 +23,8 @@ public class MobController {
 
     private void generateMobs(){
         // specify target crew count
-        int crewCount = 7;
-        int hostileCount = 2;
+        int crewCount = 30;
+//        int hostileCount = 2;
 
         try {
 
@@ -34,9 +34,9 @@ public class MobController {
             }
 
             // generate hostiles
-            for (int i = 0; i < hostileCount; i++) {
-                spawnMob(false);
-            }
+//            for (int i = 0; i < hostileCount; i++) {
+//                spawnMob(false);
+//            }
 
         } catch(NoSpawnableArea nsa){
 
