@@ -71,6 +71,7 @@ public class GameController extends BasicGame {
         
         if(tick > MAX_TICK){
             tick = 0;
+            mapController.updateDoors();
             mobController.updateMobs();
             mobController.executeMobEvaluations();
             mobController.executeMobActions();

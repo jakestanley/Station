@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
+ * Don't let this controller get really messy.
  * Created by stanners on 21/07/2015.
  */
 public class MapController {
@@ -104,7 +105,7 @@ public class MapController {
 
         rooms.add(room);
 
-        // generate doors // TODO CONSIDER should all doors update?
+        // generate doors // TODO CONSIDER should all doors update? maybe cache could only update select tiles (e.g by association checks?)
         for(int w = 0; w < width; w++){
             for(int h = 0; h < height; h++){
                 Tile currentTile = tiles[w][h];
@@ -187,6 +188,13 @@ public class MapController {
             }
         }
         return null;
+    }
+
+    public void updateDoors(){
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next = iterator.next();
+            next.update();
+        }
     }
 
     public void renderBackgrounds(Graphics screen){ // TODO consider getting this from somewhere else
