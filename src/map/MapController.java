@@ -364,8 +364,10 @@ public class MapController {
 
         for(int x = startX; x <= endX; x++){ // TODO RESEARCH is there a Point class that uses ints? could i create my own? it would have to override equals()
             for(int y = startY; y <= endY; y++){
-                dragSelection.add(new Point(x, y));
-                getTile(x, y).setSelected(true);
+                if(x > 0 && x < getWidth() && y > 0 && y < getHeight()) {
+                    dragSelection.add(new Point(x, y));
+                    getTile(x, y).setSelected(true);
+                }
             }
         }
 
