@@ -125,7 +125,7 @@ public class Mate extends Mob {
     }
 
     @Override
-    public boolean mouseOver(int mouseX, int mouseY) {
+    public boolean mouseOver(Point mousePoint) {
         return false;
     }
 

@@ -308,7 +308,10 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         }
     }
 
-    public boolean mouseOver(int mouseX, int mouseY){
+    public boolean mouseOver(Point mousePoint){
+
+        int mouseX = (int) mousePoint.getX();
+        int mouseY = (int) mousePoint.getY();
 
         boolean over = false;
         for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {

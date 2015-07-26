@@ -97,6 +97,8 @@ public class GameController extends BasicGame {
 
         mobController.renderMobs(screen);
 
+        mapController.renderHoverBoxes(screen);
+
         guiController.renderBackgrounds(screen);
         guiController.renderContent(screen);
 

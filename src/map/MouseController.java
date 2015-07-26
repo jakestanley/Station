@@ -1,8 +1,9 @@
 package map;
 
-import resources.Converter;
 import main.Display;
+import main.Game;
 import main.GameController;
+import resources.Converter;
 
 import java.awt.*;
 
@@ -11,25 +12,52 @@ import java.awt.*;
  */
 public class MouseController {
 
+    private boolean dragMode;
     private Point clickPoint, hoverPoint;
 
+    public MouseController(){
+        dragMode = false;
+    }
+
     public void setClickPoint(Point mousePoint){
+
+        // Clear map hover objects
+        GameController.mapController.clearHoverObjects();
+
         if(isMouseOverMap(mousePoint)){
-            clickPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
-            hoverPoint = clickPoint;
-            GameController.mapController.setDragSelection(clickPoint, clickPoint);
+
+            if(GameController.mapController.setHoverDoor(mousePoint)){ // if hover door was set
+                GameController.mapController.getHoverDoor().enable(); // enable the door
+            } else { // if door is null, process tile click
+                dragMode = true;
+                clickPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
+                hoverPoint = clickPoint;
+                GameController.mapController.setDragSelection(clickPoint, clickPoint);
+            }
         }
     }
 
     public void setHoverPoint(Point mousePoint){
+
+        // Clear map hover objects
+        GameController.mapController.clearHoverObjects();
+
         if(isMouseOverMap(mousePoint)){
-            hoverPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
-            GameController.mapController.setDragSelection(clickPoint, hoverPoint);
+
+            if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set
+
+            } else if(dragMode){
+                hoverPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
+                GameController.mapController.setDragSelection(clickPoint, hoverPoint);
+            }
         }
     }
 
     public void setMouseRelease() { // TODO CONSIDER MouseController ?
-        GameController.mapController.releaseDrag();
+        if(dragMode){
+            GameController.mapController.releaseDrag();
+            dragMode = false;
+        }
     }
 
     private boolean isMouseOverMap(Point point){

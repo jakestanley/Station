@@ -22,6 +22,8 @@ public class MapController {
     private ArrayList<Room> rooms;
     private ArrayList<Door> doors;
 
+    private Door hoverDoor;
+
     // Room creation
     private ArrayList<Point> dragSelection;
 
@@ -38,6 +40,8 @@ public class MapController {
         tiles = new Tile[width][height];
         rooms = new ArrayList<Room>();
         doors = new ArrayList<Door>();
+
+        hoverDoor = null;
 
         // Initialise tiles
         initialiseTiles();
@@ -180,6 +184,12 @@ public class MapController {
         return null;
     }
 
+    /**
+     * Returns door object based on two tile points
+     * @param point1
+     * @param point2
+     * @return
+     */
     public Door getDoor(Point point1, Point point2){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door door =  iterator.next();
@@ -190,6 +200,25 @@ public class MapController {
             }
         }
         return null;
+    }
+
+    public void clearHoverObjects(){
+        hoverDoor = null;
+    }
+
+    public boolean setHoverDoor(Point mousePoint){
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next = iterator.next();
+            if(next.mouseOver(mousePoint)){
+                hoverDoor = next;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Door getHoverDoor(){
+        return hoverDoor;
     }
 
     public void updateDoors(){
@@ -224,12 +253,16 @@ public class MapController {
     public void renderDoors(Graphics screen){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next = iterator.next();
-            next.render(screen);
+            if(next.isEnabled()){ // if enabled, draw the door.
+                next.render(screen);
+            }
         }
     }
 
-    public void renderSelection(Graphics screen){
-        // TODO
+    public void renderHoverBoxes(Graphics screen){
+        if(hoverDoor != null){
+            hoverDoor.renderHoverBox(screen);
+        }
     }
 
     public ArrayList<Point> getTraversiblePath(Point start, Room end){ // less time allowed for this search

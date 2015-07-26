@@ -6,6 +6,7 @@ import main.Values;
 import tiles.Tile;
 import tiles.VisibleTile;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,7 +15,7 @@ import java.util.Iterator;
  */
 public class Corridor extends Room {
 
-    public Corridor(ArrayList<Tile> cTiles){ // TODO complete this one for corridors
+    public Corridor(ArrayList<Tile> cTiles){ // TODO remove this class
         super();
 
         this.tiles = new ArrayList<Tile>();
@@ -47,7 +48,7 @@ public class Corridor extends Room {
     }
 
     @Override
-    public boolean mouseOver(int mouseX, int mouseY) { // TODO
+    public boolean mouseOver(Point mousePoint) { // TODO
         return false;
     }
 

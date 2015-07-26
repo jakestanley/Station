@@ -22,7 +22,7 @@ public class Door extends Loopable implements Interactable {
     public static final Color   DOOR_BG_COLOUR = Color.black; // TODO CONSIDER black for background?
 
     private Point start, end;
-    private boolean horizontal, locked, open, bulkhead, destroyed;
+    private boolean enabled, horizontal, locked, open, bulkhead, destroyed;
     private int sx, sy, ex, ey, timer; // start and end coordinates
     private float integrity;
 
@@ -31,6 +31,7 @@ public class Door extends Loopable implements Interactable {
     public Door(Point start, Point end){
         super(0, Display.DOOR_WIDTH + 1); // start from frame zero if starting closed. door has a frame of animation for each pixel
 
+        this.enabled = false;
         this.start = start;
         this.end = end;
         this.open = false;
@@ -79,19 +80,19 @@ public class Door extends Loopable implements Interactable {
         int voY = GameController.viewController.getViewOffsetY();
 
         screen.setColor(DOOR_BG_COLOUR);
-        if(horizontal){
+        if (horizontal) {
             screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
         } else {
             screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
         }
 
-        if(bulkhead){ // TODO CONSIDER drawing a thicker door for bulkheads
+        if (bulkhead) { // TODO CONSIDER drawing a thicker door for bulkheads
             screen.setColor(DOOR_BULKHEAD_COLOR);
         } else {
             screen.setColor(DOOR_STANDARD_COLOUR);
         }
 
-        if(!destroyed) {
+        if (!destroyed) {
 
             if (frame != frames) {
                 if (horizontal) {
@@ -108,6 +109,7 @@ public class Door extends Loopable implements Interactable {
             }
 
         }
+
 
     }
 
@@ -143,9 +145,7 @@ public class Door extends Loopable implements Interactable {
 
     @Override
     public void update(){
-
         autoClose();
-
     }
 
     public boolean isOpen(){
@@ -178,10 +178,13 @@ public class Door extends Loopable implements Interactable {
         }
     }
 
-    public boolean mouseOver(int mouseX, int mouseY) {
+    public boolean mouseOver(Point mousePoint) {
 
-        int voX = Game.vc.getViewOffsetX();
-        int voY = Game.vc.getViewOffsetY();
+        int mouseX = (int) mousePoint.getX();
+        int mouseY = (int) mousePoint.getY();
+
+        int voX = GameController.viewController.getViewOffsetX();
+        int voY = GameController.viewController.getViewOffsetY();
 
         Rectangle detection;
 
@@ -201,8 +204,8 @@ public class Door extends Loopable implements Interactable {
 
     public void renderHoverBox(Graphics screen) { // TODO animate the hover boxes?
 
-        int voX = Game.vc.getViewOffsetX();
-        int voY = Game.vc.getViewOffsetY();
+        int voX = GameController.viewController.getViewOffsetX();
+        int voY = GameController.viewController.getViewOffsetY();
 
         screen.setColor(Color.white);
         if(horizontal){ // TODO check these variables and replace hard coded variables
@@ -227,6 +230,14 @@ public class Door extends Loopable implements Interactable {
             y = y + Display.TEXT_SPACING;
         }
 
+    }
+
+    public void enable(){
+        this.enabled = true;
+    }
+
+    public boolean isEnabled(){
+        return enabled;
     }
 
     @Override

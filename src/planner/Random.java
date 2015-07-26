@@ -25,7 +25,7 @@ public class Random extends Planner {
     }
 
     @Override
-    public void calculate() throws ImpossibleGoal {
+    public void calculate() throws ImpossibleGoal { // TODO need to move some of this stuff into superclass
 
         // initialising list of list of next actions
         ArrayList<ArrayList<Action>> options = new ArrayList<ArrayList<Action>>();
@@ -56,7 +56,7 @@ public class Random extends Planner {
                     actions.add(new Move(mob, tx, ty));
                 } else if(door.isOpen()){ // if the door is open, go straight through
                     actions.add(new Move(mob, tx, ty));
-                } else if(!door.isOpen() && mob.canOpen() && !door.isLocked()) { // if the door is shut, but the mob can open it, and it's not locked, open it and go through
+                } else if(!door.isOpen() && mob.canOpen() && !door.isLocked() && door.isEnabled()) { // if the door is shut, but the mob can open it, and it's not locked, and it's enabled open it and go through
                     if (!door.isOpen()) { // if there is a door, check if it's locked
                         actions.add(new OpenDoor(mob, door));
                         actions.add(new Move(mob, tx, ty));

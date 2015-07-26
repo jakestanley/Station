@@ -158,7 +158,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     public Room getRoomMouseOver(int mouseX, int mouseY){ // TODO display mobs in room when hovering over
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+            if(next.mouseOver(new Point())){ // TODO remove. this code will break if run
                 return next;
             }
         }
@@ -168,7 +168,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     public Door getDoorMouseOver(int mouseX, int mouseY){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+            if(next.mouseOver(new Point())){ // TODO remove. this code will break if run
                 return next;
             }
         }

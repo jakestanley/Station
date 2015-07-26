@@ -47,14 +47,13 @@ public class InputController {
                 leftMouseHeld = true;
                 GameController.mouseController.setClickPoint(mousePoint);
             }
-            GameController.mouseController.setHoverPoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
         } else {
             if(leftMouseHeld){
                 leftMouseHeld = false;
                 GameController.mouseController.setMouseRelease();
             }
         }
-
+        GameController.mouseController.setHoverPoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
     }
 
 }
