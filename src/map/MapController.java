@@ -358,22 +358,35 @@ public class MapController {
         int startY  = (int) dragStart.getY();
         int endY    = (int) dragEnd.getY();
 
-        this.dragSelection = new ArrayList<Point>();
+        if(startX > endX){
+            startX  = (int) dragEnd.getX();
+            endX    = (int) dragStart.getX();
+        }
 
-        System.out.println("Selected points: [" + (int) dragStart.getX() + ", " + (int) dragStart.getY() + "], [" + (int) dragEnd.getX() + ", " + dragEnd.getY() + "]" );
+        if(startY > endY){
+            startY  = (int) dragEnd.getY();
+            endY    = (int) dragStart.getY();
+        }
+        
+        this.dragSelection = new ArrayList<Point>();
 
         for(int x = startX; x <= endX; x++){ // TODO RESEARCH is there a Point class that uses ints? could i create my own? it would have to override equals()
             for(int y = startY; y <= endY; y++){
-                dragSelection.add(new Point(x, y));
-                getTile(x, y).setSelected(true);
+                if(x > 0 && x < getWidth() && y > 0 && y < getHeight()) {
+
+                    // Positive point values
+                    int px = x;
+                    int py = y;
+
+                    dragSelection.add(new Point(px, py));
+                    getTile(px, py).setSelected(true);
+                }
             }
         }
 
-        System.out.println("drag selection size: " + dragSelection.size());
     }
 
     public void releaseDrag(){
-        System.out.println("release drag called at size " + dragSelection.size());
         for (Iterator<Point> iterator = dragSelection.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
             getTile(next).setSelected(false);
