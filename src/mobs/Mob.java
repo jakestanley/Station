@@ -29,6 +29,8 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
     public static final float MAX_RESILIENCE = 0.9f; // max current// sible resilience
 //    public static final boolean huep = 2; // TODO CONSIDER a "haste" flag.
 
+    // TODO currentAction and currentPlanner?
+
     protected String name;
     protected Point previous, current;
     protected Room room;

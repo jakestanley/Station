@@ -3,6 +3,8 @@ package tiles;
 import main.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -26,6 +28,8 @@ public class VisibleTile extends Tile {
     protected Color backgroundColour        = Colours.Tiles.BG_DEFAULT; // black for generic rooms by default
     protected Color backgroundColourNormal  = Colours.Tiles.BG_DEFAULT;
 
+    protected Image image;
+
     public VisibleTile(int x, int y, Room room){
         super(x,y,room); // TODO
 
@@ -33,6 +37,14 @@ public class VisibleTile extends Tile {
 
         backgroundColour = Colours.Tiles.BG_BRIDGE; // TODO come up with an efficient way to get the colours
         backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
+
+        try { // TODO clean up. move this crap into an image loader class or something that gets called in init.
+            image = new Image("res/img/tiles/floor.png");
+        } catch (SlickException e){
+            System.err.println("Failed to load image");
+            e.printStackTrace();
+            System.exit(0);
+        }
 
     }
 
@@ -82,17 +94,23 @@ public class VisibleTile extends Tile {
         int drawX = this.x * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetX() * Display.TILE_WIDTH);
         int drawY = this.y * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetY() * Display.TILE_WIDTH);
 
-        Rectangle rect = new Rectangle(drawX, drawY, Display.TILE_WIDTH, Display.TILE_WIDTH);
-
-        // Set colours
-        if(isSelected){
-            screen.setColor(backgroundColour.brighter(2));
-            isSelected = false; // TODO CONSIDER putting this somewhere else
+        if(image != null){
+            image.draw(drawX, drawY);
         } else {
-            screen.setColor(backgroundColour);
-        }
 
-        screen.fill(rect);
+            Rectangle rect = new Rectangle(drawX, drawY, Display.TILE_WIDTH, Display.TILE_WIDTH);
+
+            // Set colours
+            if (isSelected) {
+                screen.setColor(backgroundColour.brighter(2));
+                isSelected = false; // TODO CONSIDER putting this somewhere else
+            } else {
+                screen.setColor(backgroundColour);
+            }
+
+            screen.fill(rect);
+
+        }
 
     }
 
