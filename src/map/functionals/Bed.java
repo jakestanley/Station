@@ -1,5 +1,8 @@
 package map.functionals;
 
+import mobs.Mob;
+import org.newdawn.slick.Graphics;
+
 import java.awt.*;
 
 /**
@@ -12,12 +15,17 @@ public class Bed extends Functional {
     }
 
     @Override
+    public void use(Mob mob) { // TODO CONSIDER what should be returned?
+
+    }
+
+    @Override
     public void update() {
         // TODO
     }
 
     @Override
-    public void render() {
+    public void render(Graphics screen) {
         // TODO
     }
 

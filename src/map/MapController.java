@@ -1,11 +1,13 @@
 package map;
 
 import main.*;
+import map.functionals.Functional;
+import map.functionals.Toilet;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
 import tiles.VisibleTile;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,6 +23,7 @@ public class MapController {
     private Tile[][] tiles;
     private ArrayList<Room> rooms;
     private ArrayList<Door> doors;
+    private ArrayList<Functional> functionals;
 
     private Door hoverDoor;
 
@@ -40,12 +43,18 @@ public class MapController {
         tiles = new Tile[width][height];
         rooms = new ArrayList<Room>();
         doors = new ArrayList<Door>();
+        functionals = new ArrayList<Functional>();
 
         hoverDoor = null;
 
         // Initialise tiles
         initialiseTiles();
+        initialiseTestFunctionals(); // TODO
 
+    }
+
+    private void initialiseTestFunctionals() {
+        functionals.add(new Toilet(new Point(0,0), 0));
     }
 
     private void initialiseTile(Point point){
@@ -256,6 +265,13 @@ public class MapController {
             if(next.isEnabled()){ // if enabled, draw the door.
                 next.render(screen);
             }
+        }
+    }
+
+    public void renderFunctionals(Graphics screen){
+        for (Iterator<Functional> functional = functionals.iterator(); functional.hasNext(); ) {
+            Functional next = functional.next();
+            next.render(screen);
         }
     }
 

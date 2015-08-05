@@ -1,8 +1,11 @@
 package map.functionals;
 
 import mobs.Mob;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import java.awt.*;
+
 
 /**
  * Created by stanners on 27/07/2015.
@@ -16,7 +19,9 @@ public abstract class Functional {
 
     protected Point location;
     protected int orientation;
+    protected float integrity;
     protected boolean isBlocker, isOwnable, isVisible, isUsable;
+    protected Image image;
 
     protected Mob owner;
 
@@ -52,6 +57,6 @@ public abstract class Functional {
 
     public abstract void update();
 
-    public abstract void render();
+    public abstract void render(Graphics screen);
 
 }
