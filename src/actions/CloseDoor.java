@@ -18,7 +18,7 @@ public class CloseDoor extends Action {
     }
 
     @Override
-    public void executeAction() throws IllegalAction, UnnecessaryAction {
+    public void execute() throws IllegalAction, UnnecessaryAction {
         // TODO throw exception if mob isn't next to the door
         if(door.isOpen()){
             door.toggle();

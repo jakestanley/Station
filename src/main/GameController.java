@@ -24,7 +24,8 @@ public class GameController extends BasicGame {
     public static GuiController     guiController;
     public static MapController     mapController;
     public static MobController     mobController;
-    public static MouseController mouseController;
+    public static ActionQueue       actionQueue;
+    public static MouseController   mouseController;
 
     public GameController(String gameName, boolean debug, boolean disableMobs){
         super(gameName);
@@ -64,6 +65,7 @@ public class GameController extends BasicGame {
         mapController   = new MapController("the_tortuga.csv");
         mobController   = new MobController();
         guiController   = new GuiController();
+        actionQueue     = new ActionQueue();
         mouseController = new MouseController();
 
     }

@@ -229,6 +229,10 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         return fear;
     }
 
+    public void dropAction(){
+        // TODO
+    }
+
     public void renderHoverBox(Graphics screen){ // TODO make more responsive
 
 //        System.out.println("Render mob hover box called");

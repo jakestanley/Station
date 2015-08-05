@@ -14,7 +14,7 @@ public class Wait extends Action {
     }
 
     @Override
-    public void executeAction() throws IllegalAction, UnnecessaryAction {
+    public void execute() throws IllegalAction, UnnecessaryAction {
         // TODO do nothing
     }
 }

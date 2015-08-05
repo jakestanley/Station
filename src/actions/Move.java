@@ -21,7 +21,7 @@ public class Move extends Action { // TODO validate
     }
 
     @Override
-    public void executeAction() throws IllegalAction {
+    public void execute() throws IllegalAction {
 
         // TODO check for void tiles here?
 

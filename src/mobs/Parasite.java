@@ -73,7 +73,7 @@ public class Parasite extends Mob {
             if(action == null){
                 throw new NoAction(this);
             }
-            action.executeAction();
+            action.execute();
         } catch (UnnecessaryAction unnecessaryAction) {
             System.err.println("Caught unnecessary action exception");
             unnecessaryAction.printStackTrace();

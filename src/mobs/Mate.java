@@ -89,7 +89,7 @@ public class Mate extends Mob {
         try {
             planner.calculate();
             Action action = planner.getNextAction();
-            action.executeAction();
+            action.execute();
         } catch (UnnecessaryAction unnecessaryAction) {
             System.err.println("Caught unnecessary action exception");
             act(); // call act again if the action was unnecessary, e.g opening an already open door

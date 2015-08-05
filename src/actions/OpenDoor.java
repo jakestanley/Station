@@ -18,7 +18,7 @@ public class OpenDoor extends Action { // TODO some handling for if the door is 
     }
 
     @Override
-    public void executeAction() throws IllegalAction, UnnecessaryAction {
+    public void execute() throws IllegalAction, UnnecessaryAction {
         if(!door.isOpen()){
             door.toggle();
         } else {
