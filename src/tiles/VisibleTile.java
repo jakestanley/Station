@@ -94,7 +94,7 @@ public class VisibleTile extends Tile {
         int drawX = this.x * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetX() * Display.TILE_WIDTH);
         int drawY = this.y * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetY() * Display.TILE_WIDTH);
 
-        if(image != null){
+        if(image != null && !GameController.debug){
             image.draw(drawX, drawY);
         } else {
 
