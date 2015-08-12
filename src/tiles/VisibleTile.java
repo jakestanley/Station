@@ -51,7 +51,7 @@ public class VisibleTile extends Tile {
     public VisibleTile(int x, int y, Room room, int function){
         super(x,y,room); // TODO
 
-        this.isVoid = true;
+        this.isVoid = false;
         this.function = function;
 
         if(Values.Types.BRIDGE == type){

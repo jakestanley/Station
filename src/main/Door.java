@@ -145,6 +145,18 @@ public class Door extends Loopable implements Interactable {
 
     @Override
     public void update(){
+
+        if(this.enabled){
+            Room startRoom  = GameController.mapController.getRoom(getStartPoint());
+            Room endRoom    = GameController.mapController.getRoom(getEndPoint());
+
+
+            System.out.println("huep");
+        }
+
+        if(GameController.mapController.getRoom(getStartPoint()) == GameController.mapController.getRoom(getEndPoint())){
+            this.enabled = false;
+        }
         autoClose();
     }
 

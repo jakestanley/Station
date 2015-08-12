@@ -47,23 +47,30 @@ public class MapController {
 
         hoverDoor = null;
 
-        // Initialise tiles
+    }
+
+    public void init(){
+
         initialiseTiles();
+        createBaseRoom();
+
         initialiseTestFunctionals(); // TODO
 
+    }
+
+    private void initialiseTiles(){
+        for(int x = 0; x < tiles.length; x++) {
+            for (int y = 0; y < tiles[x].length; y++) {
+                tiles[x][y] = new Tile(x, y);
+            }
+        }
     }
 
     private void initialiseTestFunctionals() {
         functionals.add(new Toilet(new Point(0,0), 0));
     }
 
-    private void initialiseTile(Point point){
-        int x = (int) point.getX();
-        int y = (int) point.getY();
-        tiles[x][y] = new Tile(x, y);
-    }
-
-    private void initialiseTiles(){
+    private void createBaseRoom(){
 
         int index = 0;
         ArrayList<Point> points = new ArrayList<Point>();
@@ -71,73 +78,50 @@ public class MapController {
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
                 Point point = new Point(x,y);
-                initialiseTile(point);
 
                 // Add these coordinates to initial room points
                 if(booleans[index]){
                     points.add(point);
                 }
-
                 index++;
-
             }
         }
 
         // Add all tiles as first room
-        createRoom(points, true); // TODO put an appropriate constant somewhere for useVoid
+        rooms.add(new Room(points, true));
+
     }
 
-    public Room createRoom(ArrayList<Point> points, boolean useVoid){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
-
-        // create room with points
-        Room room = new Room(points);
-
-        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
-            Point next = iterator.next();
-
-            if(useVoid || !getTile(next).isVoid()){ // if using void tiles is permitted, or it's not a void tile
-
-                // initialise the tile
-                initialiseTile(next);
-
-                // create new visible tiles
-                int x = (int) next.getX();
-                int y = (int) next.getY();
-                tiles[x][y] = new VisibleTile(x, y, room); // TODO CONSIDER change to Point?
-            }
-
-        }
-
-        rooms.add(room);
-
-        generateDoors();
-
-        return room;
+    public void putTile(Point point, VisibleTile tile){
+        tiles[(int) point.getX()][(int) point.getY()] = tile;
     }
 
-    public void generateDoors(){
+    public void clearDoors(){
 
-        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
-            Door next =  iterator.next();
-            iterator.remove();
-        }
+//        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+//            Door next =  iterator.next();
+//            if(getRoom(next.getStartPoint()) == getRoom(next.getEndPoint())){
+//                iterator.remove();
+//            }
+//        }
 
         // generate doors // TODO CONSIDER should all doors update? maybe cache could only update select tiles (e.g by association checks?)
         for(int w = 0; w < width; w++){
             for(int h = 0; h < height; h++){
                 Tile currentTile = tiles[w][h];
+
                 if(!currentTile.isVoid()){
                     // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
                     if(h > 0){ // if not on north bound
                         Tile northTile = tiles[w][h-1];
-                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom()){
+                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom() && getDoor(new Point(w, h-1), new Point(w, h)) == null){ // TODO clean up
                             doors.add(new Door(currentTile.getPoint(), northTile.getPoint())); // TODO clean up this QD business
                         }
                     }
 
                     if(w > 0){ // if not on west bound
                         Tile westTile = tiles[w-1][h];
-                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom()){
+                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom() && (getDoor(new Point(w-1, h), new Point(w, h)) == null)){
                             doors.add(new Door(currentTile.getPoint(), westTile.getPoint())); // TODO clean up this QD business
                         }
                     }
@@ -188,7 +172,7 @@ public class MapController {
                 return next;
             }
         }
-        System.out.println("failed to get roomm");
+        System.out.println("failed to get room");
         System.exit(0);
         return null;
     }
@@ -238,6 +222,9 @@ public class MapController {
     }
 
     public void renderBackgrounds(Graphics screen){ // TODO consider getting this from somewhere else
+
+        System.out.println("render backgrounds called");
+
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
                 if(!tiles[x][y].isVoid()){
@@ -436,11 +423,16 @@ public class MapController {
     }
 
     public void releaseDrag(){
+
+        // clear selection
         for (Iterator<Point> iterator = dragSelection.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
             getTile(next).setSelected(false);
         }
-        createRoom(dragSelection, false); // TODO createRoom needs more arguments
+
+        // add the room
+        rooms.add(new Room(dragSelection, false)); // TODO more arguments
+
     }
 
 }

@@ -33,11 +33,7 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     protected ArrayList<Tile> tiles;
     protected ArrayList<Point> points;
-    private int x;
-    private int y;
 
-    private int sx;
-    private int sy;
     protected int type;
     protected int priority;
     protected float oxygen, integrity, ventRate, refillRate, consumptionRate;
@@ -46,62 +42,13 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     protected ArrayList<String> strings;
 
-    /**
-     * Specific superconstructor for corridors
-     */
-    public Room(){
-        super(0, 0);
-    }
-
-    public Room(ArrayList<Point> points){ // TODO , int type
+    public Room(ArrayList<Point> points, boolean forceVoid){ // TODO , int type
         super(0, 0); // TODO remove the requirement for this
         this.points = points;
-
         this.integrity = MAX_INTEGRITY;
         this.oxygen = MAX_OXYGEN;
-    }
 
-    public Room(int x, int y, int sx, int sy, int type){ // TODO room type
-
-        super(0, 0); // for now TODO reconsider
-
-        this.x = x;
-        this.y = y;
-        this.sx = sx;
-        this.sy = sy;
-
-        this.integrity = MAX_INTEGRITY;
-        this.oxygen = MAX_OXYGEN;
-        this.strings = new ArrayList<String>();
-
-        purge = false; // oxygen purge on/off
-        evacuate = false; // evacuation alarm on/off
-        support = true;
-        selected = false;
-
-        priority = DEFAULT_PRIORITY;
-
-        ventRate           = BASE_PURGE_RATE / (sx * sy); // TODO consider isn't this just tiles.length?
-        refillRate         = BASE_REFILL_RATE / (sx * sy);
-        consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
-//        System.out.println("Consumption rate: " + consumptionRate);
-
-        this.type = type;
-
-        // SET ROOM TYPE STRING
-        if(Values.Types.CORRIDOR_X == type || Values.Types.CORRIDOR_Y == type){
-            typeString = Values.Strings.rooms[Values.Types.CORRIDOR];
-        } else {
-            typeString = Values.Strings.rooms[type];
-        }
-
-        try {
-            generateTiles(sx, sy);
-        } catch (CorridorDimensionsException e) { // TODO a bit drastic, but let's nip these errors in the bud early
-            System.err.println("Failed to generate a room. Exiting");
-            e.printStackTrace();
-            System.exit(0);
-        }
+        generateTiles(forceVoid);
     }
 
     @Override
@@ -348,182 +295,147 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return tiles;
     }
 
-    private void generateTiles(int sx, int sy) throws CorridorDimensionsException {
-
+    private void generateTiles(boolean forceVoid){
         tiles = new ArrayList<Tile>();
 
-        if(isCorridor()){ // if its a corridor // TODO clean up
-            System.out.println("generating corridor tiles");
-            if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
-                throw new CorridorDimensionsException(sx, sy);
-            }
+        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+            Point next =  iterator.next();
 
-            if(sx == 1){ // if sizeX = 1, do a vertical corridor
-                for(int ly = 0; ly < sy; ly++){
-                    Tile tile = new VisibleTile(x, y + ly, this, type);
-                    Game.map.tiles[x][y + ly] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
-                }
-            } else { // else do a horizontal corridor
-                for(int lx = 0; lx < sx; lx++){
-                    Tile tile = new VisibleTile(x + lx, y, this, type);
-                    Game.map.tiles[x + lx][y] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
-                }
-            }
+            int x = (int) next.getX();
+            int y = (int) next.getY();
 
-        } else { // if its a regular tile
-            for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
-                for(int ly = 0; ly < sy; ly++){ // l is local
-
-                    Tile tile = new VisibleTile(x + lx, y + ly, this, type);
-                    Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
-
-                }
+            // if next tile is not void, or force void is on, add a visible tile
+            if(!GameController.mapController.getTile(next).isVoid() || forceVoid){
+                VisibleTile tile = new VisibleTile(x, y, this, type);
+                GameController.mapController.putTile(next, tile); // switch out from the array // TODO clean up
+                tiles.add(tile); // add to the list of tracked tiles for this room
             }
 
         }
 
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getSx() {
-        return sx;
-    }
-
-    public int getSy() {
-        return sy;
-    }
-
-    public boolean isCorridor(){
-        if (Values.Types.CORRIDOR_Y == type || Values.Types.CORRIDOR_X == type){
-            return true;
-        } else {
-            return false;
+        for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
+            VisibleTile next = (VisibleTile) iterator.next();
+            next.updateWalls();
         }
+
+        System.out.println("Done generating tiles");
+
+    }
+
+    public int getSize() {
+        return tiles.size();
     }
 
     public boolean isEvacuate(){
         return evacuate;
     }
 
-    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test
-        ArrayList<int[]> coordinates = new ArrayList<int[]>();
-
-        int maxX = x + sx;
-        int maxY = y + sy;
-
-        // get the top and bottom edges
-        for(int i = x; i < maxX; i++){
-
-            int[] top = new int[2];
-            top[0] = i;
-            top[1] = y;
-
-            int[] bottom = new int[2];
-            bottom[0] = i;
-            bottom[1] = maxY;
-
-            // add both to edge
-            coordinates.add(top);
-            coordinates.add(bottom);
-
-        }
-
-        // get the left and right edges
-        for(int i = y + 1; i < maxY - 1; i++){
-
-            int[] left = new int[2];
-            left[0] = x;
-            left[1] = i;
-
-            int[] right = new int[2];
-            right[0] = maxX;
-            right[1] = i;
-
-            coordinates.add(left);
-            coordinates.add(right);
-
-        }
-
-        return coordinates;
-
-    }
+//    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO rewrite and test
+//        ArrayList<int[]> coordinates = new ArrayList<int[]>();
+//
+//        int maxX = point;
+//        int maxY = y + sy;
+//
+//        // get the top and bottom edges
+//        for(int i = x; i < maxX; i++){
+//
+//            int[] top = new int[2];
+//            top[0] = i;
+//            top[1] = y;
+//
+//            int[] bottom = new int[2];
+//            bottom[0] = i;
+//            bottom[1] = maxY;
+//
+//            // add both to edge
+//            coordinates.add(top);
+//            coordinates.add(bottom);
+//
+//        }
+//
+//        // get the left and right edges
+//        for(int i = y + 1; i < maxY - 1; i++){
+//
+//            int[] left = new int[2];
+//            left[0] = x;
+//            left[1] = i;
+//
+//            int[] right = new int[2];
+//            right[0] = maxX;
+//            right[1] = i;
+//
+//            coordinates.add(left);
+//            coordinates.add(right);
+//
+//        }
+//
+//        return coordinates;
+//
+//    }
 
     public float getIntegrity(){
         return integrity;
     }
 
-    public ArrayList<Tile> getBorderPoints(){
-
-        ArrayList<Tile> corridorTiles = new ArrayList<Tile>();
-
-        int maxX = x + sx;
-        int maxY = y + sy;
-
-        int mapHeight = Game.map.getHeight();
-        int mapWidth = Game.map.getWidth();
-
-        System.out.println("max y: " + maxY);
-
-        // get top and bottom rows of tiles
-        Tile tile;
-        for(int i = x; i < maxX; i++){
-            tile = null;
-            if(y > 0){
-                tile = Game.map.tiles[i][y-1];
-                if(tile.isVoid()){
-                    tile = new BorderTile(i, y-1, this);
-                    Game.map.tiles[i][y-1] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-            tile = null;
-            if(maxY < mapHeight){ // TODO
-                tile = Game.map.tiles[i][maxY];
-                if(tile.isVoid()){
-                    tile = new BorderTile(i, maxY, this);
-                    Game.map.tiles[i][maxY] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-        }
-
-        // get left and right rows of tiles
-        for(int i = y; i < maxY; i++){
-            tile = null;
-            if(x > 0){
-                tile = Game.map.tiles[x-1][i];
-                if(tile.isVoid()){
-                    tile = new BorderTile(x-1, i, this);
-                    Game.map.tiles[x-1][i] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-            tile = null;
-            if(maxX < mapWidth){
-                tile = Game.map.tiles[maxX][i];
-                if(tile.isVoid()){
-                    tile = new BorderTile(maxX, i, this);
-                    Game.map.tiles[maxX][i] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-        }
-
-        return corridorTiles;
-
-    }
+//    public ArrayList<Tile> getBorderPoints(){ // TODO rewrite and test
+//
+//        ArrayList<Tile> corridorTiles = new ArrayList<Tile>();
+//
+//        int maxX = x + sx;
+//        int maxY = y + sy;
+//
+//        int mapHeight = Game.map.getHeight();
+//        int mapWidth = Game.map.getWidth();
+//
+//        System.out.println("max y: " + maxY);
+//
+//        // get top and bottom rows of tiles
+//        Tile tile;
+//        for(int i = x; i < maxX; i++){
+//            tile = null;
+//            if(y > 0){
+//                tile = Game.map.tiles[i][y-1];
+//                if(tile.isVoid()){
+//                    tile = new BorderTile(i, y-1, this);
+//                    Game.map.tiles[i][y-1] = tile;
+//                    corridorTiles.add(tile);
+//                }
+//            }
+//            tile = null;
+//            if(maxY < mapHeight){ // TODO
+//                tile = Game.map.tiles[i][maxY];
+//                if(tile.isVoid()){
+//                    tile = new BorderTile(i, maxY, this);
+//                    Game.map.tiles[i][maxY] = tile;
+//                    corridorTiles.add(tile);
+//                }
+//            }
+//        }
+//
+//        // get left and right rows of tiles
+//        for(int i = y; i < maxY; i++){
+//            tile = null;
+//            if(x > 0){
+//                tile = Game.map.tiles[x-1][i];
+//                if(tile.isVoid()){
+//                    tile = new BorderTile(x-1, i, this);
+//                    Game.map.tiles[x-1][i] = tile;
+//                    corridorTiles.add(tile);
+//                }
+//            }
+//            tile = null;
+//            if(maxX < mapWidth){
+//                tile = Game.map.tiles[maxX][i];
+//                if(tile.isVoid()){
+//                    tile = new BorderTile(maxX, i, this);
+//                    Game.map.tiles[maxX][i] = tile;
+//                    corridorTiles.add(tile);
+//                }
+//            }
+//        }
+//
+//        return corridorTiles;
+//
+//    }
 
 }

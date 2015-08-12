@@ -63,6 +63,7 @@ public class GameController extends BasicGame {
         // Initialise controllers
         viewController  = new ViewController();
         mapController   = new MapController("the_tortuga.csv");
+        mapController.init();
         mobController   = new MobController();
         guiController   = new GuiController();
         actionQueue     = new ActionQueue();
