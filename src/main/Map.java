@@ -6,7 +6,6 @@ import exceptions.NoSpawnableArea;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
-import rooms.Corridor;
 import tiles.Tile;
 import tiles.VisibleTile;
 
@@ -33,44 +32,44 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
     public Map(int width, int height, boolean[] tileBools){
         super(0, 0); // frame doesn't really apply to map, but i guess it could do? TODO consider animated superclass?
 
-        System.out.println("Initialising map");
-
-        // initialise tile array
-        this.width = width;
-        this.height = height;
-
-        System.out.println("Map size is " + width + "x" + height);
-        tiles = new Tile[width][height];
-
-        int tileIndex = 0;
-
-        // initialise arraylist
-        visibleTiles = new ArrayList<Tile>();
-
-        // initialising all tiles as void tiles
-        for(int x = 0; x < tiles.length; x++){
-            for(int y = 0; y < tiles[x].length; y++){
-
-                if(tileBools[tileIndex]){ // TODO optimise
-                    VisibleTile t = new VisibleTile(x, y, null, 0);
-                    visibleTiles.add(t);
-                } else {
-                    Tile t = new Tile(x, y);
-                    tiles[x][y] = t; // void tile constructor
-                }
-                tileIndex++;
-            }
-        }
-
-        Corridor globalRoom = new Corridor(visibleTiles);
-
-        // initialise component lists
-        rooms = new ArrayList<Room>();
-        mobs = new ArrayList<Mob>();
-        doors = new ArrayList<Door>();
-        corridorPointTiles = new ArrayList<Tile>();
-
-        rooms.add(globalRoom);
+//        System.out.println("Initialising map");
+//
+//        // initialise tile array
+//        this.width = width;
+//        this.height = height;
+//
+//        System.out.println("Map size is " + width + "x" + height);
+//        tiles = new Tile[width][height];
+//
+//        int tileIndex = 0;
+//
+//        // initialise arraylist
+//        visibleTiles = new ArrayList<Tile>();
+//
+//        // initialising all tiles as void tiles
+//        for(int x = 0; x < tiles.length; x++){
+//            for(int y = 0; y < tiles[x].length; y++){
+//
+//                if(tileBools[tileIndex]){ // TODO optimise
+//                    VisibleTile t = new VisibleTile(x, y, null, 0);
+//                    visibleTiles.add(t);
+//                } else {
+//                    Tile t = new Tile(x, y);
+//                    tiles[x][y] = t; // void tile constructor
+//                }
+//                tileIndex++;
+//            }
+//        }
+//
+////        Corridor globalRoom = new Corridor(visibleTiles);
+//
+//        // initialise component lists
+//        rooms = new ArrayList<Room>();
+//        mobs = new ArrayList<Mob>();
+//        doors = new ArrayList<Door>();
+//        corridorPointTiles = new ArrayList<Tile>();
+//
+//        rooms.add(globalRoom);
 
     }
 
@@ -93,21 +92,26 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
 
     @Override
     public void render(Graphics screen) { // TODO make this not ugly as shit. my code is starting to lok awulffe
-
-        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
-            Room next =  iterator.next();
-            next.render(screen);
-        }
-
-        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
-            Mob next = iterator.next();
-            next.render(screen);
-        }
-
-        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
-            Door next =  iterator.next();
-            next.render(screen);
-        }
+//
+//        for (Iterator<Tile> iterator = visibleTiles.iterator(); iterator.hasNext(); ) {
+//            Tile next =  iterator.next();
+//
+//        }
+//
+//        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+//            Room next =  iterator.next();
+////            next.render(screen);
+//        }
+//
+//        for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
+//            Mob next = iterator.next();
+//            next.render(screen);
+//        }
+//
+//        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+//            Door next =  iterator.next();
+//            next.render(screen);
+//        }
 
 //        for (Iterator<Tile> iterator = corridorPointTiles.iterator(); iterator.hasNext(); ) { // TODO consider removing
 //            Tile next =  iterator.next();
@@ -175,95 +179,95 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
         return null;
     }
 
-    private void generateRooms(){
-
-        // initialise local variables
-        int x = -1, y = 0, sx = 0, sy = 0;
-
-        // place the bridge. don't really need the checks first, but doing them for niceness. TODO CONSIDER remove later?
-        Room bridge = null;
-        while(roomClash(x, y, sx, sy)){
-            sx = Values.Dimensions.BRIDGE;
-            sy = sx;
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        bridge = new Room(x, y, sx, sy, Values.Types.BRIDGE);
-        rooms.add(bridge);
-
-        x = -1;
-
-        // place the life support
-        Room lifeSupport = null;
-        while(roomClash(x, y, sx, sy)) {
-            if (Game.random.nextBoolean()) { // make life support vertical
-                sx = Values.Dimensions.LIFE_SUPPORT_Y_X;
-                sy = Values.Dimensions.LIFE_SUPPORT_Y_Y;
-            } else { // make life support horizontal
-                sx = Values.Dimensions.LIFE_SUPPORT_X_X;
-                sy = Values.Dimensions.LIFE_SUPPORT_X_Y;
-            }
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        lifeSupport = new Room(x, y, sx, sy, Values.Types.LIFESUPPORT);
-        rooms.add(lifeSupport);
-
-        x = -1;
-
-        // place the hangar
-        Room hangar = null;
-        while(roomClash(x, y, sx, sy)){
-            if(Game.random.nextBoolean()){ // make hangar vertical
-                sx = Values.Dimensions.HANGAR_Y_X;
-                sy = Values.Dimensions.HANGAR_Y_Y;
-            } else { // make life support horizontal
-                sx = Values.Dimensions.HANGAR_X_X;
-                sy = Values.Dimensions.HANGAR_X_Y;
-            }
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        hangar = new Room(x, y, sx, sy, Values.Types.HANGAR);
-        rooms.add(hangar);
-
-        Room invigorator = null; // TODO remove these, they're useless
-        while(roomClash(x, y, sx, sy)){
-            sx = Values.Dimensions.INVIGORATOR;
-            sy = sx;
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        invigorator = new Room(x, y, sx, sy, Values.Types.BRIDGE);
-        rooms.add(invigorator);
-
-        Room invigorator2 = null; // TODO remove these, they're useless
-        while(roomClash(x, y, sx, sy)){
-            sx = Values.Dimensions.INVIGORATOR;
-            sy = sx;
-            x = Game.random.nextInt(width - sx);
-            y = Game.random.nextInt(height - sy);
-        }
-        invigorator2 = new Room(x, y, sx, sy, Values.Types.BRIDGE);
-        rooms.add(invigorator2);
-
-        // TODO add more rooms and particularly corridors. they might be tricky
-        // TODO more dynamic amounts of rooms, etc
-
-    }
-
-    private void buildStockMap(){
-        rooms.add(new Room(4, 4, 3, 3,  Values.Types.GENERIC)); // TODO appropriate values that are multiples of tile width
-        rooms.add(new Room(7, 5, 3, 1,  Values.Types.CORRIDOR_X)); // TODO remove CORRIDOR_X and CORRIDOR_Y and replace with just CORRIDOR
-        rooms.add(new Room(10, 5, 1, 1, Values.Types.GENERIC));
-        rooms.add(new Room(10, 6, 1, 3, Values.Types.CORRIDOR_Y));
-        rooms.add(new Room(9, 9, 4, 4,  Values.Types.BRIDGE));
-    }
-
-    private void buildStaticShip(){
-        rooms.add(new Room(4, 1, 3, 3, Values.Types.BRIDGE)); // bridge
-        rooms.add(new Room(5, 4, 1, 1, Values.Types.GENERIC)); // corridor
-    }
+//    private void generateRooms(){
+//
+//        // initialise local variables
+//        int x = -1, y = 0, sx = 0, sy = 0;
+//
+//        // place the bridge. don't really need the checks first, but doing them for niceness. TODO CONSIDER remove later?
+//        Room bridge = null;
+//        while(roomClash(x, y, sx, sy)){
+//            sx = Values.Dimensions.BRIDGE;
+//            sy = sx;
+//            x = Game.random.nextInt(width - sx);
+//            y = Game.random.nextInt(height - sy);
+//        }
+//        bridge = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+//        rooms.add(bridge);
+//
+//        x = -1;
+//
+//        // place the life support
+//        Room lifeSupport = null;
+//        while(roomClash(x, y, sx, sy)) {
+//            if (Game.random.nextBoolean()) { // make life support vertical
+//                sx = Values.Dimensions.LIFE_SUPPORT_Y_X;
+//                sy = Values.Dimensions.LIFE_SUPPORT_Y_Y;
+//            } else { // make life support horizontal
+//                sx = Values.Dimensions.LIFE_SUPPORT_X_X;
+//                sy = Values.Dimensions.LIFE_SUPPORT_X_Y;
+//            }
+//            x = Game.random.nextInt(width - sx);
+//            y = Game.random.nextInt(height - sy);
+//        }
+//        lifeSupport = new Room(x, y, sx, sy, Values.Types.LIFESUPPORT);
+//        rooms.add(lifeSupport);
+//
+//        x = -1;
+//
+//        // place the hangar
+//        Room hangar = null;
+//        while(roomClash(x, y, sx, sy)){
+//            if(Game.random.nextBoolean()){ // make hangar vertical
+//                sx = Values.Dimensions.HANGAR_Y_X;
+//                sy = Values.Dimensions.HANGAR_Y_Y;
+//            } else { // make life support horizontal
+//                sx = Values.Dimensions.HANGAR_X_X;
+//                sy = Values.Dimensions.HANGAR_X_Y;
+//            }
+//            x = Game.random.nextInt(width - sx);
+//            y = Game.random.nextInt(height - sy);
+//        }
+//        hangar = new Room(x, y, sx, sy, Values.Types.HANGAR);
+//        rooms.add(hangar);
+//
+//        Room invigorator = null; // TODO remove these, they're useless
+//        while(roomClash(x, y, sx, sy)){
+//            sx = Values.Dimensions.INVIGORATOR;
+//            sy = sx;
+//            x = Game.random.nextInt(width - sx);
+//            y = Game.random.nextInt(height - sy);
+//        }
+//        invigorator = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+//        rooms.add(invigorator);
+//
+//        Room invigorator2 = null; // TODO remove these, they're useless
+//        while(roomClash(x, y, sx, sy)){
+//            sx = Values.Dimensions.INVIGORATOR;
+//            sy = sx;
+//            x = Game.random.nextInt(width - sx);
+//            y = Game.random.nextInt(height - sy);
+//        }
+//        invigorator2 = new Room(x, y, sx, sy, Values.Types.BRIDGE);
+//        rooms.add(invigorator2);
+//
+//        // TODO add more rooms and particularly corridors. they might be tricky
+//        // TODO more dynamic amounts of rooms, etc
+//
+//    }
+//
+//    private void buildStockMap(){
+//        rooms.add(new Room(4, 4, 3, 3,  Values.Types.GENERIC)); // TODO appropriate values that are multiples of tile width
+//        rooms.add(new Room(7, 5, 3, 1,  Values.Types.CORRIDOR_X)); // TODO remove CORRIDOR_X and CORRIDOR_Y and replace with just CORRIDOR
+//        rooms.add(new Room(10, 5, 1, 1, Values.Types.GENERIC));
+//        rooms.add(new Room(10, 6, 1, 3, Values.Types.CORRIDOR_Y));
+//        rooms.add(new Room(9, 9, 4, 4,  Values.Types.BRIDGE));
+//    }
+//
+//    private void buildStaticShip(){
+//        rooms.add(new Room(4, 1, 3, 3, Values.Types.BRIDGE)); // bridge
+//        rooms.add(new Room(5, 4, 1, 1, Values.Types.GENERIC)); // corridor
+//    }
 
     private boolean roomClash(int x, int y, int sx, int sy){
         if(x < 0){
@@ -378,8 +382,8 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
                     }
                 }
 
-                Corridor corridor = new Corridor(currentCorridorTiles); // TODO expand
-                rooms.add(corridor);
+//                Corridor corridor = new Corridor(currentCorridorTiles); // TODO expand
+//                rooms.add(corridor);
 
                 long curTime = System.currentTimeMillis();
                 if((curTime - restartTime)/1000 > Values.SEARCH_INCREMENT_TIME){

@@ -33,7 +33,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     protected String name;
     protected Point previous, current;
-    protected Room room;
     private boolean alive; // TODO sort private/public/protected orders
     private int fear; // TODO CONSIDER removing replacing tx,ty with a point.
 
@@ -58,7 +57,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         alive = true;
         current = point;
         previous = point;
-        room = GameController.mapController.getRoom(point);
         fear = Values.Attributes.MENTAL_INDIFFERENT;
 
         // Check for spawn in void tile
@@ -73,12 +71,8 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     }
 
-    public void refresh(){
-        room = GameController.mapController.getRoom(current);
-    }
-
     public Room getRoom(){
-        return room;
+        return GameController.mapController.getRoom(current); // TODO CONSIDER does caching the room pointer really save that much resources?
     }
 
     private void generateBaseStats(){ // TODO make this more user based // TODO sort the order of these private and public methods
@@ -146,12 +140,12 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     public void moveTo(Point position){ // TODO always create new points?
 
-        Room newRoom = GameController.mapController.getRoom(position); // TODO replace with points
+//        Room newRoom = GameController.mapController.getRoom(position); // TODO replace with points
 
-        // if entering a new room
-        if(this.room != newRoom){
-            this.room = newRoom; // set new room
-        }
+//        // if entering a new room // TODO remove
+//        if(this.room != newRoom){
+//            this.room = newRoom; // set new room
+//        }
 
         // setting new position
         previous = this.current;
@@ -190,13 +184,13 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         // calculate base damage done
         float damage = 1 - resilience;
 
-        float roomOxygen = room.getOxygen(); // TODO set room
+        float roomOxygen = getRoom().getOxygen(); // TODO set room
 
-        if(getType() == Mob.TYPE_PARASITE) {
-//            System.out.println("Doing parasite damage. Room oxygen: " + roomOxygen + ", min oxygen: " + minOpOxygen);
-        }
+//        if(getType() == Mob.TYPE_PARASITE) { // TODO resolve later
+////            System.out.println("Doing parasite damage. Room oxygen: " + roomOxygen + ", min oxygen: " + minOpOxygen);
+//        }
 
-        if(room.getOxygen() < minOpOxygen){
+        if(getRoom().getOxygen() < minOpOxygen){
 //            System.out.println("taking oxygen dep dmg");
             health = health - damage; // TODO make it less black and white?
         }
@@ -207,6 +201,11 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         // TODO mob should process damage done to itself via looking at the room its in, and what is in the room with it.
         // if there's a parasite there, it's likely to take damage from that.
         // if there's no oxygen, it's likely to take damage there also, so it can get real bad real quick.
+    }
+
+    @Override
+    public void refresh(){ // TODO remove
+
     }
 
     public abstract void specificDamage();

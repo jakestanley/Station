@@ -8,15 +8,16 @@ import org.newdawn.slick.Graphics;
 import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
+import guicomponents.Dialog;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * Created by stanners on 22/05/2015.
  */
-public class Room extends Loopable implements Interactable { // TODO make abstract
+public class Room implements Interactable { // TODO make abstract
 
     public static final float MAX_OXYGEN = 100;
     public static final float MAX_INTEGRITY = 100; // TODO crew members have the job of repairing integrity
@@ -31,7 +32,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
-    protected ArrayList<Tile> tiles;
     protected ArrayList<Point> points;
     private int x;
     private int y;
@@ -41,73 +41,79 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     protected int type;
     protected int priority;
     protected float oxygen, integrity, ventRate, refillRate, consumptionRate;
-    protected boolean purge, evacuate, support, selected; // support is life support, which is oxygen
+    protected boolean purge, evacuate, support, selected, force; // support is life support, which is oxygen
     protected String typeString;
 
     protected ArrayList<String> strings;
 
-    /**
-     * Specific superconstructor for corridors
-     */
-    public Room(){
-        super(0, 0);
-    }
-
-    public Room(ArrayList<Point> points){ // TODO , int type
-        super(0, 0); // TODO remove the requirement for this
+    public Room(ArrayList<Point> points, boolean force){ // TODO , int type
         this.points = points;
-
         this.integrity = MAX_INTEGRITY;
         this.oxygen = MAX_OXYGEN;
+        this.force = force;
     }
 
-    public Room(int x, int y, int sx, int sy, int type){ // TODO room type
+    public void init(){
 
-        super(0, 0); // for now TODO reconsider
-
-        this.x = x;
-        this.y = y;
-        this.sx = sx;
-        this.sy = sy;
-
-        this.integrity = MAX_INTEGRITY;
-        this.oxygen = MAX_OXYGEN;
-        this.strings = new ArrayList<String>();
-
-        purge = false; // oxygen purge on/off
-        evacuate = false; // evacuation alarm on/off
-        support = true;
-        selected = false;
-
-        priority = DEFAULT_PRIORITY;
-
-        ventRate           = BASE_PURGE_RATE / (sx * sy); // TODO consider isn't this just tiles.length?
-        refillRate         = BASE_REFILL_RATE / (sx * sy);
-        consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
-//        System.out.println("Consumption rate: " + consumptionRate);
-
-        this.type = type;
-
-        // SET ROOM TYPE STRING
-        if(Values.Types.CORRIDOR_X == type || Values.Types.CORRIDOR_Y == type){
-            typeString = Values.Strings.rooms[Values.Types.CORRIDOR];
-        } else {
-            typeString = Values.Strings.rooms[type];
+        // If user initialised room creation, create a new room dialog
+        if(!force){
+            GameController.guiController.addDialog(new Dialog(true));
         }
 
-        try {
-            generateTiles(sx, sy);
-        } catch (CorridorDimensionsException e) { // TODO a bit drastic, but let's nip these errors in the bud early
-            System.err.println("Failed to generate a room. Exiting");
-            e.printStackTrace();
-            System.exit(0);
+        initialiseTiles();
+    }
+
+    private void initialiseTiles(){
+        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            if(!GameController.mapController.getTile(next).isVoid() || force){
+                GameController.mapController.putTile(next, new VisibleTile((int) next.getX(), (int) next.getY(), this, Values.Types.BRIDGE)); // TODO properly
+            }
         }
     }
 
-    @Override
-    public void init() {
-
-    }
+//    public Room(int x, int y, int sx, int sy, int type){ // TODO room type
+//
+//        super(0, 0); // for now TODO reconsider
+//
+//        this.x = x;
+//        this.y = y;
+//        this.sx = sx;
+//        this.sy = sy;
+//
+//        this.integrity = MAX_INTEGRITY;
+//        this.oxygen = MAX_OXYGEN;
+//        this.strings = new ArrayList<String>();
+//
+//        purge = false; // oxygen purge on/off
+//        evacuate = false; // evacuation alarm on/off
+//        support = true;
+//        selected = false;
+//
+//        priority = DEFAULT_PRIORITY;
+//
+//        ventRate           = BASE_PURGE_RATE / (sx * sy); // TODO consider isn't this just tiles.length?
+//        refillRate         = BASE_REFILL_RATE / (sx * sy);
+//        consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
+////        System.out.println("Consumption rate: " + consumptionRate);
+//
+//        this.type = type;
+//
+//        // SET ROOM TYPE STRING
+//        if(Values.Types.CORRIDOR_X == type || Values.Types.CORRIDOR_Y == type){
+//            typeString = Values.Strings.rooms[Values.Types.CORRIDOR];
+//        } else {
+//            typeString = Values.Strings.rooms[type];
+//        }
+//
+//        try {
+//            generateTiles(sx, sy);
+//        } catch (CorridorDimensionsException e) { // TODO a bit drastic, but let's nip these errors in the bud early
+//            System.err.println("Failed to generate a room. Exiting");
+//            e.printStackTrace();
+//            System.exit(0);
+//        }
+//    }
 
     public void select(){ // TODO tidy this up
         this.selected = true;
@@ -121,39 +127,40 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     }
 
-    public void render(Graphics screen) {
-
-//        System.out.println("Room::render called");
-
-        Color pulseBgColor = null;
-        Color pulseBorderColor = null;
-
-        if(evacuate || selected){
-            int pulse = Game.pulse.getPulse();
-            pulseBgColor        = new Color(255, pulse, pulse);
-            pulseBorderColor    = new Color(255 - pulse, 255 - pulse, 255 - pulse);
-        }
-
-        for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
-            VisibleTile next = (VisibleTile) iterator.next();
-
-            if(evacuate){
-                next.setBackgroundColour(pulseBgColor);
-            }
-
-            if(selected){
-                next.setBorderColour(pulseBorderColor);
-            } else {
-                next.resetBorderColour();
-            }
-
-            next.render(screen);
-
-        }
-
-        selected = false;
-
-    }
+//    public void render(Graphics screen) { // TODO
+//
+////        System.out.println("Room::render called");
+//
+//        Color pulseBgColor = null;
+//        Color pulseBorderColor = null;
+//
+//        if(evacuate || selected){
+//            int pulse = Game.pulse.getPulse();
+//            pulseBgColor        = new Color(255, pulse, pulse);
+//            pulseBorderColor    = new Color(255 - pulse, 255 - pulse, 255 - pulse);
+//        }
+//
+//        for (Iterator<Point> iterator = tiles.iterator(); iterator.hasNext(); ) {
+//            Point next = iterator.next();
+//            VisibleTile tile = (VisibleTile) GameController.mapController.getTile(next);
+//
+//            if(evacuate){
+//                tile.setBackgroundColour(pulseBgColor);
+//            }
+//
+//            if(selected){
+//                tile.setBorderColour(pulseBorderColor);
+//            } else {
+//                tile.resetBorderColour();
+//            }
+//
+//            tile.render(screen);
+//
+//        }
+//
+//        selected = false;
+//
+//    }
 
     public void populateDataBoxStrings(){
         // generating strings for data box // TODO optimise so this only happens when necessary
@@ -197,7 +204,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return false;
     }
 
-    @Override
     public void update(){
 
         // count mobs in room
@@ -289,8 +295,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
     private void toggleEvacuate(){
         evacuate = !evacuate; // TODO print instructions on the bottom
         if(!evacuate){ // TODO CONSIDER is this not an inefficient and expensive operation?
-            for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
-                VisibleTile next = (VisibleTile) iterator.next();
+            for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+                Point point = iterator.next();
+                VisibleTile next = (VisibleTile) GameController.mapController.getTile(point);
                 next.resetBackgroundColour();
             }
         }
@@ -314,9 +321,9 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         int mouseY = (int) mousePoint.getY();
 
         boolean over = false;
-        for (Iterator<Tile> iterator = tiles.iterator(); iterator.hasNext(); ) {
-            Tile next =  iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
+        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+            Point point =  iterator.next();
+            if(GameController.mapController.getTile(point).mouseOver(mouseX, mouseY)){
                 over = true; // TODO tidy and clean this confusing crap up
                 selected = true;
             }
@@ -341,54 +348,54 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
      * @return
      */
     public Tile getRandomTile(){ // TODO fix after testing
-        return tiles.get(Game.random.nextInt(tiles.size()));
+        return GameController.mapController.getTile(points.get(GameController.random.nextInt(points.size())));
     }
 
-    public ArrayList<Tile> getRoomTiles(){
-        return tiles;
+    public ArrayList<Point> getPoints(){
+        return points;
     }
 
-    private void generateTiles(int sx, int sy) throws CorridorDimensionsException {
-
-        tiles = new ArrayList<Tile>();
-
-        if(isCorridor()){ // if its a corridor // TODO clean up
-            System.out.println("generating corridor tiles");
-            if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
-                throw new CorridorDimensionsException(sx, sy);
-            }
-
-            if(sx == 1){ // if sizeX = 1, do a vertical corridor
-                for(int ly = 0; ly < sy; ly++){
-                    Tile tile = new VisibleTile(x, y + ly, this, type);
-                    Game.map.tiles[x][y + ly] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
-                }
-            } else { // else do a horizontal corridor
-                for(int lx = 0; lx < sx; lx++){
-                    Tile tile = new VisibleTile(x + lx, y, this, type);
-                    Game.map.tiles[x + lx][y] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
-                }
-            }
-
-        } else { // if its a regular tile
-            for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
-                for(int ly = 0; ly < sy; ly++){ // l is local
-
-                    Tile tile = new VisibleTile(x + lx, y + ly, this, type);
-                    Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
-                    tiles.add(tile); // add to the list of tracked tiles for this room
-//                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
-
-                }
-            }
-
-        }
-
-    }
+//    private void generateTiles(int sx, int sy) throws CorridorDimensionsException {
+//
+//        tiles = new ArrayList<Point>();
+//
+//        if(isCorridor()){ // if its a corridor // TODO clean up
+//            System.out.println("generating corridor tiles");
+//            if(sx != 1 && sy != 1){ // If corridor dimensions do not match, throw exception
+//                throw new CorridorDimensionsException(sx, sy);
+//            }
+//
+//            if(sx == 1){ // if sizeX = 1, do a vertical corridor
+//                for(int ly = 0; ly < sy; ly++){
+//                    Tile tile = new VisibleTile(x, y + ly, this, type);
+//                    Game.map.tiles[x][y + ly] = tile; // switch out from the array
+//                    tiles.add(tile); // add to the list of tracked tiles for this room
+////                    tiles.add(new Tile(this, x, y + ly*Display.TILE_WIDTH, Tile.TYPE_CORRIDOR_Y));
+//                }
+//            } else { // else do a horizontal corridor
+//                for(int lx = 0; lx < sx; lx++){
+//                    Tile tile = new VisibleTile(x + lx, y, this, type);
+//                    Game.map.tiles[x + lx][y] = tile; // switch out from the array
+//                    tiles.add(tile); // add to the list of tracked tiles for this room
+////                    tiles.add(new Tile(this, x + lx*Display.TILE_WIDTH, y, Tile.TYPE_CORRIDOR_X));
+//                }
+//            }
+//
+//        } else { // if its a regular tile
+//            for(int lx = 0; lx < sx; lx++){ // TODO tile generation should be dynamic and tiles should look different
+//                for(int ly = 0; ly < sy; ly++){ // l is local
+//
+//                    Tile tile = new VisibleTile(x + lx, y + ly, this, type);
+//                    Game.map.tiles[x + lx][y + ly] = tile; // switch out from the array
+//                    tiles.add(tile); // add to the list of tracked tiles for this room
+////                    tiles.add(new Tile(this, x + (lx*Display.TILE_WIDTH), y + (ly*Display.TILE_WIDTH), Tile.TYPE_SQUARE)); // TODO do the multiplication in the render method only
+//
+//                }
+//            }
+//
+//        }
+//
+//    }
 
     public int getX() {
         return x;

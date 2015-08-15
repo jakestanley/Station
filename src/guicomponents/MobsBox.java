@@ -84,4 +84,10 @@ public class MobsBox extends GuiComponent {
             pos++;
         }
     }
+
+    @Override
+    protected void onClose() {
+
+    }
+
 }

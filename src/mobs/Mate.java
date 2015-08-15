@@ -71,7 +71,7 @@ public class Mate extends Mob {
         // TODO fear levels and escape to safety threshold
 
         // if evacuate alarm is on and can evacuate
-        if(room.isEvacuate() && Game.map.hasEvacuatableRoom()){ // TODO move this stuff into decision engine, or separate planner static class?
+        if(getRoom().isEvacuate() && Game.map.hasEvacuatableRoom()){ // TODO move this stuff into decision engine, or separate planner static class?
             if(planner == null){
                 planner = new Evacuate(this);
             } else if (Planner.GOAL_EVACUATE != planner.getType()){
@@ -170,4 +170,8 @@ public class Mate extends Mob {
         }
     }
 
+    @Override
+    public void refresh() {
+
+    }
 }

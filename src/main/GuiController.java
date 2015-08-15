@@ -25,8 +25,6 @@ public class GuiController {
     private StringBuilder hint;
 
     public GuiController(){
-
-        font = FontLoader.loadFont("04b03.ttf");
         components = new ArrayList<GuiComponent>();
 
         hintsBox = new HintsBox(hint);
@@ -41,6 +39,14 @@ public class GuiController {
 
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
 
+    }
+
+    public void init(){
+        font = FontLoader.loadFont("04b03.ttf");
+    }
+
+    public void addDialog(Dialog dialog){
+        components.add(dialog);
     }
 
     public void setBackground(Graphics screen){
@@ -67,7 +73,14 @@ public class GuiController {
     public void updateContent(){
         for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
             GuiComponent next = iterator.next();
-            next.update();
+            if(next.isValid()){
+                // if valid, update
+                next.update();
+            } else {
+                // if invalid, destroy and remove from the list
+                next.destroy();
+                iterator.remove();
+            }
         }
     }
 

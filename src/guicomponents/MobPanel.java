@@ -107,4 +107,9 @@ public class MobPanel extends GuiComponent {
         // TODO clean all this shit up to be honest
     }
 
+    @Override
+    protected void onClose() {
+
+    }
+
 }

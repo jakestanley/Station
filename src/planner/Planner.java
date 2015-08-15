@@ -1,9 +1,12 @@
 package planner;
 
 import actions.Action;
+import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
 import main.GameController;
+import map.MapController;
 import mobs.Mob;
+import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,11 +35,16 @@ public abstract class Planner {
         this.type = type;
     }
 
-    public static ArrayList<Point> getPossibleMoves(int cx, int cy) {
+    public static ArrayList<Point> getPossibleMoves(int cx, int cy) { // TODO add a condition for completion of the action early
+
+        MapController mc = GameController.mapController;
+
+        Point current = new Point(cx, cy);
+
         ArrayList<Point> moves = new ArrayList<Point>(5);
         moves.add(new Point(cx - 1, cy));
         moves.add(new Point(cx, cy - 1));
-        moves.add(new Point(cx, cy)); // don't go anywhere. this shouldn't be relevant unless random or waiting
+        moves.add(current); // don't go anywhere. this shouldn't be relevant unless random or waiting
         moves.add(new Point(cx, cy + 1));
         moves.add(new Point(cx + 1, cy));
 
@@ -47,7 +55,7 @@ public abstract class Planner {
             int nextY = (int) next.getY();
             if(nextX < 0 || nextY < 0){ // prevents array out of bounds exception
                 iterator.remove();
-            } else if(GameController.mapController.getTile(next).isVoid()){
+            } else if(mc.getTile(next).isVoid()){
                 iterator.remove();
             }
         }

@@ -15,7 +15,7 @@ public class ActionQueue {
         this.queue = new ArrayList<Action>();
     }
 
-    public void putAction(Action action){
+    public void addAction(Action action){
         queue.add(action);
     }
 
@@ -23,7 +23,7 @@ public class ActionQueue {
         return queue;
     }
 
-    public void cleanActions(){
+    public void cleanActions(){ // TODO add a clean action method to actions, which checks if an action is still valid
         // TODO method for removing expired or invalid actions. should be called after actions are released, but before any new ones are assigned.
     }
 

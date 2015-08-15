@@ -17,7 +17,7 @@ public class MouseController {
 
     public MouseController(){
         dragMode = false;
-    }
+    } // TODO check context
 
     public void setClickPoint(Point mousePoint){
 

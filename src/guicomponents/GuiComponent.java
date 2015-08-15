@@ -15,15 +15,25 @@ public abstract class GuiComponent {
     protected int x, y, width, height; // start point and end point
     protected Color backgroundColour;
     private Rectangle rect;
+    private boolean valid;
 
     public GuiComponent(int x, int y, int width, int height){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.valid = true;
 
         this.backgroundColour = Colours.GUI_BACKGROUND;
         this.rect = new Rectangle(x, y, width, height);
+    }
+
+    public boolean isValid(){
+        return valid;
+    }
+
+    public void destroy(){
+        onClose();
     }
 
     public abstract void update();
@@ -40,5 +50,7 @@ public abstract class GuiComponent {
     }
 
     public abstract void renderBody(Graphics screen);
+
+    protected abstract void onClose();
 
 }

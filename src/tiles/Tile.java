@@ -9,13 +9,12 @@ import java.awt.*;
 /**
  * Created by stanners on 22/05/2015.
  */
-public class Tile { // TODO extend these
+public class Tile {
 
     protected static final float MAX_HEALTH = 100;
 
     protected boolean isVoid, isSelected;
     protected int x, y;
-    protected float health;
     protected Room room; // room the tile belongs to
 
     // void tile constructor
@@ -32,7 +31,6 @@ public class Tile { // TODO extend these
         this.x = x;
         this.y = y;
         this.room = room;
-        this.health = MAX_HEALTH;
     }
 
     public void setSelected(boolean selected){

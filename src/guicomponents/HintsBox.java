@@ -51,4 +51,9 @@ public class HintsBox extends GuiComponent {
         screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
 
     }
+
+    @Override
+    protected void onClose() {
+
+    }
 }

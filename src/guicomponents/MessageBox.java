@@ -47,4 +47,10 @@ public class MessageBox extends GuiComponent { // TODO consider that update may 
             screen.drawString(message, x + Display.MARGIN, y + Display.MARGIN + (i * Display.TEXT_PANEL_HEIGHT)); // TODO check hint is not null
         }
     }
+
+    @Override
+    protected void onClose() {
+
+    }
+
 }

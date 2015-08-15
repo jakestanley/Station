@@ -24,4 +24,9 @@ public class InfoBox extends GuiComponent {
         screen.setColor(Colours.GUI_TEXT); // TODO
 
     }
+
+    @Override
+    protected void onClose() {
+
+    }
 }

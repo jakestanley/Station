@@ -81,7 +81,7 @@ public class Door extends Loopable implements Interactable {
 
         screen.setColor(DOOR_BG_COLOUR);
         if (horizontal) {
-            screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
+            screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH) - 1, ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH) - 1);
         } else {
             screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
         }
@@ -96,7 +96,7 @@ public class Door extends Loopable implements Interactable {
 
             if (frame != frames) {
                 if (horizontal) {
-                    screen.drawLine(sx + (frame) + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
+                    screen.drawLine(sx + (frame) + (voX * Display.TILE_WIDTH), sy + (voY * Display.TILE_WIDTH) - 1, ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH) - 1);
                 } else {
                     screen.drawLine(sx + (voX * Display.TILE_WIDTH), sy + (frame) + (voY * Display.TILE_WIDTH), ex + (voX * Display.TILE_WIDTH), ey + (voY * Display.TILE_WIDTH));
                 }

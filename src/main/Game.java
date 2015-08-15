@@ -9,6 +9,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import tiles.Tile;
 import tiles.VisibleTile;
 
+import java.awt.*;
 import java.awt.Font;
 import java.io.*;
 import java.util.ArrayList;
@@ -255,11 +256,11 @@ public class Game extends BasicGame {
 
     public ArrayList<Mob> getMobsByRoom(Room room){
         ArrayList<Mob> mobs = new ArrayList<Mob>();
-        for (Iterator<Tile> iterator = hoverRoom.getRoomTiles().iterator(); iterator.hasNext(); ) { // TODO change this to use points
-            Tile tile = iterator.next();
+        for (Iterator<Point> iterator = hoverRoom.getPoints().iterator(); iterator.hasNext(); ) { // TODO change this to use points
+            Point point = iterator.next();
             for (Iterator<Mob> iterator1 = map.getMobs().iterator(); iterator1.hasNext(); ) {
                 Mob mob = iterator1.next();
-                if(mob.getPoint().equals(tile.getPoint())){
+                if(mob.getPoint().equals(point)){
                     mobs.add(mob);
                 }
             }

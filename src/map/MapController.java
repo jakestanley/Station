@@ -23,12 +23,14 @@ public class MapController {
     private Tile[][] tiles;
     private ArrayList<Room> rooms;
     private ArrayList<Door> doors;
+    private ArrayList<Point> base;
     private ArrayList<Functional> functionals;
 
     private Door hoverDoor;
 
     // Room creation
     private ArrayList<Point> dragSelection;
+    private ArrayList<Point> selection;
 
     public MapController(String mapFileName){ // TODO CONSIDER RoomBuilder class - instead of "RoomController"?
 
@@ -44,29 +46,53 @@ public class MapController {
         rooms = new ArrayList<Room>();
         doors = new ArrayList<Door>();
         functionals = new ArrayList<Functional>();
+        selection = new ArrayList<Point>();
 
         hoverDoor = null;
 
-        // Initialise tiles
-        initialiseTiles();
-        initialiseTestFunctionals(); // TODO
 
+//        initialiseTestFunctionals(); // TODO
+
+//
+//        generateDoors();
+
+    }
+
+    public void init(){
+        initialiseTiles(); // set all tiles as void tiles
+        createRoom(base, true);
+    }
+
+    public Tile getTile(Point point){
+        return tiles[(int) point.getX()][(int) point.getY()];
+    }
+
+    public Tile getTile(int x, int y){ // TODO resolve inconsistencies between using points and int pairs, and consider using Point here
+        return tiles[x][y];
+    }
+
+    public void putTile(Point point, Tile tile){
+        tiles[(int) point.getX()][(int) point.getY()] = tile;
+    }
+
+    public void createRoom(ArrayList<Point> points, boolean force){
+        Room room = new Room(points, force);
+        room.init();
+        rooms.add(room);
+        generateDoors(); // wat
+//        clearDoors(); // TODO properly. consider making this into a thing that updates walls and doors?
     }
 
     private void initialiseTestFunctionals() {
         functionals.add(new Toilet(new Point(0,0), 0));
     }
 
-    private void initialiseTile(Point point){
-        int x = (int) point.getX();
-        int y = (int) point.getY();
-        tiles[x][y] = new Tile(x, y);
-    }
-
     private void initialiseTiles(){
 
+        // booleans array index
         int index = 0;
-        ArrayList<Point> points = new ArrayList<Point>();
+
+        base = new ArrayList<Point>();
 
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){
@@ -75,7 +101,7 @@ public class MapController {
 
                 // Add these coordinates to initial room points
                 if(booleans[index]){
-                    points.add(point);
+                    base.add(point);
                 }
 
                 index++;
@@ -84,45 +110,54 @@ public class MapController {
         }
 
         // Add all tiles as first room
-        createRoom(points, true); // TODO put an appropriate constant somewhere for useVoid
+        // createRoom(points, true); // TODO put an appropriate constant somewhere for useVoid
+
     }
 
-    public Room createRoom(ArrayList<Point> points, boolean useVoid){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
+    private void initialiseTile(Point point){
 
-        // create room with points
-        Room room = new Room(points);
+        int x = (int) point.getX();
+        int y = (int) point.getY();
+        tiles[x][y] = new Tile(x, y);
 
-        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
-            Point next = iterator.next();
-
-            if(useVoid || !getTile(next).isVoid()){ // if using void tiles is permitted, or it's not a void tile
-
-                // initialise the tile
-                initialiseTile(next);
-
-                // create new visible tiles
-                int x = (int) next.getX();
-                int y = (int) next.getY();
-                tiles[x][y] = new VisibleTile(x, y, room); // TODO CONSIDER change to Point?
-            }
-
-        }
-
-        rooms.add(room);
-
-        generateDoors();
-
-        return room;
     }
+
+//    public Room createRoom(ArrayList<Point> points, boolean useVoid){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
+//
+//        // create room with points
+//        Room room = new Room(points);
+//
+//        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+//            Point next = iterator.next();
+//
+//            if(useVoid || !getTile(next).isVoid()){ // if using void tiles is permitted, or it's not a void tile
+//
+//                // initialise the tile
+//                initialiseTile(next);
+//
+//                // create new visible tiles
+//                int x = (int) next.getX();
+//                int y = (int) next.getY();
+//                tiles[x][y] = new VisibleTile(x, y, room); // TODO CONSIDER change to Point?
+//            }
+//
+//        }
+//
+//        rooms.add(room);
+//
+//        generateDoors();
+//
+//        return room;
+//    }
 
     public void generateDoors(){
 
-        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
-            Door next =  iterator.next();
-            iterator.remove();
-        }
+        MapController mc = GameController.mapController;
 
-        // generate doors // TODO CONSIDER should all doors update? maybe cache could only update select tiles (e.g by association checks?)
+        clearDoors();
+
+        // generate new doors // TODO CONSIDER should all doors update? maybe cache could only update select tiles (e.g by association checks?)
+        // TODO optimise this if necessary to take points arraylist as arguments and only update for the new room?
         for(int w = 0; w < width; w++){
             for(int h = 0; h < height; h++){
                 Tile currentTile = tiles[w][h];
@@ -130,14 +165,14 @@ public class MapController {
                     // TODO don't add doors twice - if we're not checking north and west, or east and south, we'll automatically exclude duplicates
                     if(h > 0){ // if not on north bound
                         Tile northTile = tiles[w][h-1];
-                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom()){
+                        if(!northTile.isVoid() && currentTile.getRoom() != northTile.getRoom()){ // && (mc.getDoor(currentTile.getPoint(), northTile.getPoint()) == null)){
                             doors.add(new Door(currentTile.getPoint(), northTile.getPoint())); // TODO clean up this QD business
                         }
                     }
 
                     if(w > 0){ // if not on west bound
                         Tile westTile = tiles[w-1][h];
-                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom()){
+                        if(!westTile.isVoid() && currentTile.getRoom() != westTile.getRoom()){ // && (mc.getDoor(currentTile.getPoint(), westTile.getPoint()) == null)){
                             doors.add(new Door(currentTile.getPoint(), westTile.getPoint())); // TODO clean up this QD business
                         }
                     }
@@ -154,14 +189,6 @@ public class MapController {
 
     public int getHeight() {
         return height;
-    }
-
-    public Tile getTile(int x, int y){ // TODO resolve inconsistencies between using points and int pairs, and consider using Point here
-        return tiles[x][y];
-    }
-
-    public Tile getTile(Point point){
-        return tiles[(int) point.getX()][(int) point.getY()];
     }
 
     public Point getSpawnPoint(){ // TODO use the cache!!!
@@ -181,16 +208,21 @@ public class MapController {
         return nonVoidTiles.get(GameController.random.nextInt(nonVoidTiles.size()));
     }
 
-    public Room getRoom(Point point){
-        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
-            Room next = iterator.next();
-            if(next.hasPoint(point)){ // TODO come up with a better method name
-                return next;
-            }
+    public void updateTiles(){ // TODO CONSIDER putting this somewhere else
+        for (Iterator<Point> iterator = selection.iterator(); iterator.hasNext(); ) {
+            getTile(iterator.next()).setSelected(true);
         }
-        System.out.println("failed to get roomm");
-        System.exit(0);
-        return null;
+    }
+
+    public void updateDoors(){ // TODO sort these methods
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next = iterator.next();
+            next.update();
+        }
+    }
+
+    public Room getRoom(Point point){
+        return getTile(point).getRoom();
     }
 
     /**
@@ -230,10 +262,18 @@ public class MapController {
         return hoverDoor;
     }
 
-    public void updateDoors(){
+    /**
+     * Remove doors if they no longer exist
+     */
+    public void clearDoors(){
+
+        MapController mc = GameController.mapController; // TODO put this somewhere better. need to be able to access this more cleanly and easily
+
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
-            Door next = iterator.next();
-            next.update();
+            Door next =  iterator.next();
+            if(mc.getRoom(next.getStartPoint()) == mc.getRoom(next.getEndPoint())){
+                iterator.remove();
+            }
         }
     }
 
@@ -374,7 +414,6 @@ public class MapController {
 
             }
 
-
         }
 
         // return the shortest path
@@ -397,6 +436,20 @@ public class MapController {
                 }
             }
             return shortestPath;
+        }
+    }
+
+    /**
+     * False if both points are in the same room. I could have written less code here, but I want it to appear readable
+     * @param point1
+     * @param point2
+     * @return
+     */
+    public boolean getWall(Point point1, Point point2){
+        if(getRoom(point1) == getRoom(point2)){
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -436,11 +489,29 @@ public class MapController {
     }
 
     public void releaseDrag(){
-        for (Iterator<Point> iterator = dragSelection.iterator(); iterator.hasNext(); ) {
+        // add selected tiles to selection
+        selection.addAll(dragSelection);
+    }
+
+    /**
+     * Commit selection to a new room
+     */
+    public void createRoomFromSelection(){
+        if(selection.size() > 0){
+            createRoom(selection, false);
+            clearSelection();
+        }
+    }
+
+    /**
+     * Clear selected tiles
+     */
+    public void clearSelection(){
+        for (Iterator<Point> iterator = selection.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
             getTile(next).setSelected(false);
         }
-        createRoom(dragSelection, false); // TODO createRoom needs more arguments
+        selection = new ArrayList<Point>();
     }
 
 }

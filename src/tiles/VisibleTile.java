@@ -22,6 +22,7 @@ public class VisibleTile extends Tile {
     protected int function;
 
     private int type;
+    protected float health;
 
     protected Color borderColour            = Colours.Tiles.BORDER; // TODO consider a different border colour. draw borders separately?
     protected Color borderColourNormal      = Colours.Tiles.BORDER;
@@ -30,13 +31,12 @@ public class VisibleTile extends Tile {
 
     protected Image image;
 
-    public VisibleTile(int x, int y, Room room){
+    public VisibleTile(int x, int y, Room room, int function){
         super(x,y,room); // TODO
 
-        this.isVoid = false; // TODO get function from room
-
-        backgroundColour = Colours.Tiles.BG_BRIDGE; // TODO come up with an efficient way to get the colours
-        backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
+        this.isVoid = false;
+        this.function = function;
+        this.health = MAX_HEALTH;
 
         try { // TODO clean up. move this crap into an image loader class or something that gets called in init.
             image = new Image("res/img/tiles/floor.png");
@@ -46,15 +46,12 @@ public class VisibleTile extends Tile {
             System.exit(0);
         }
 
+        setColours();
+
     }
 
-    public VisibleTile(int x, int y, Room room, int function){
-        super(x,y,room); // TODO
-
-        this.isVoid = true;
-        this.function = function;
-
-        if(Values.Types.BRIDGE == type){
+    private void setColours(){
+        if(Values.Types.BRIDGE == type){ // TODO make this better
             backgroundColour = Colours.Tiles.BG_BRIDGE;
             backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
         } else if(Values.Types.LIFESUPPORT == type){
@@ -63,8 +60,10 @@ public class VisibleTile extends Tile {
         } else if(Values.Types.HANGAR == type){
             backgroundColour = Colours.Tiles.BG_HANGAR;
             backgroundColourNormal = Colours.Tiles.BG_HANGAR;
+        } else {
+            backgroundColour = Colours.Tiles.BG_BRIDGE;
+            backgroundColourNormal = Colours.Tiles.BG_BRIDGE;
         }
-
     }
 
     public int getType() {

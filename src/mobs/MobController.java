@@ -18,6 +18,9 @@ public class MobController {
 
     public MobController(){
         mobs = new ArrayList<Mob>();
+    }
+
+    public void init(){
         generateMobs();
     }
 
