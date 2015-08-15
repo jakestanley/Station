@@ -58,6 +58,9 @@ public class MapController {
 
     }
 
+    /**
+     * Initialise all tile array values as void tiles
+     */
     private void initialiseTiles(){
         for(int x = 0; x < tiles.length; x++) {
             for (int y = 0; y < tiles[x].length; y++) {
@@ -222,8 +225,6 @@ public class MapController {
     }
 
     public void renderBackgrounds(Graphics screen){ // TODO consider getting this from somewhere else
-
-        System.out.println("render backgrounds called");
 
         for(int x = 0; x < tiles.length; x++){
             for(int y = 0; y < tiles[x].length; y++){

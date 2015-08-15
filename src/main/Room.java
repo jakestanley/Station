@@ -1,11 +1,9 @@
 package main;
 
 import com.sun.xml.internal.ws.util.StringUtils;
-import exceptions.CorridorDimensionsException;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
 
@@ -295,6 +293,19 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
         return tiles;
     }
 
+
+    public int getSize() {
+        return tiles.size();
+    }
+
+    public boolean isEvacuate(){
+        return evacuate;
+    }
+
+    public float getIntegrity(){
+        return integrity;
+    }
+
     private void generateTiles(boolean forceVoid){
         tiles = new ArrayList<Tile>();
 
@@ -322,63 +333,6 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 
     }
 
-    public int getSize() {
-        return tiles.size();
-    }
-
-    public boolean isEvacuate(){
-        return evacuate;
-    }
-
-//    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO rewrite and test
-//        ArrayList<int[]> coordinates = new ArrayList<int[]>();
-//
-//        int maxX = point;
-//        int maxY = y + sy;
-//
-//        // get the top and bottom edges
-//        for(int i = x; i < maxX; i++){
-//
-//            int[] top = new int[2];
-//            top[0] = i;
-//            top[1] = y;
-//
-//            int[] bottom = new int[2];
-//            bottom[0] = i;
-//            bottom[1] = maxY;
-//
-//            // add both to edge
-//            coordinates.add(top);
-//            coordinates.add(bottom);
-//
-//        }
-//
-//        // get the left and right edges
-//        for(int i = y + 1; i < maxY - 1; i++){
-//
-//            int[] left = new int[2];
-//            left[0] = x;
-//            left[1] = i;
-//
-//            int[] right = new int[2];
-//            right[0] = maxX;
-//            right[1] = i;
-//
-//            coordinates.add(left);
-//            coordinates.add(right);
-//
-//        }
-//
-//        return coordinates;
-//
-//    }
-
-    public float getIntegrity(){
-        return integrity;
-    }
-
-//    public ArrayList<Tile> getBorderPoints(){ // TODO rewrite and test
-//
 //        ArrayList<Tile> corridorTiles = new ArrayList<Tile>();
 //
 //        int maxX = x + sx;
@@ -437,5 +391,52 @@ public class Room extends Loopable implements Interactable { // TODO make abstra
 //        return corridorTiles;
 //
 //    }
+
+    //    }
+
+//    public ArrayList<Tile> getBorderPoints(){ // TODO rewrite and test
+
+//
+//    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO rewrite and test
+//        ArrayList<int[]> coordinates = new ArrayList<int[]>();
+//
+//        int maxX = point;
+//        int maxY = y + sy;
+//
+//        // get the top and bottom edges
+//        for(int i = x; i < maxX; i++){
+//
+//            int[] top = new int[2];
+//            top[0] = i;
+//            top[1] = y;
+//
+//            int[] bottom = new int[2];
+//            bottom[0] = i;
+//            bottom[1] = maxY;
+//
+//            // add both to edge
+//            coordinates.add(top);
+//            coordinates.add(bottom);
+//
+//        }
+//
+//        // get the left and right edges
+//        for(int i = y + 1; i < maxY - 1; i++){
+//
+//            int[] left = new int[2];
+//            left[0] = x;
+//            left[1] = i;
+//
+//            int[] right = new int[2];
+//            right[0] = maxX;
+//            right[1] = i;
+//
+//            coordinates.add(left);
+//            coordinates.add(right);
+//
+//        }
+//
+//        return coordinates;
+//
 
 }

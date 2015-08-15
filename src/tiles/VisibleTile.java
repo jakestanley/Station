@@ -63,6 +63,9 @@ public class VisibleTile extends Tile {
         } else if(Values.Types.HANGAR == type){
             backgroundColour = Colours.Tiles.BG_HANGAR;
             backgroundColourNormal = Colours.Tiles.BG_HANGAR;
+        } else {
+            backgroundColour = Colours.Tiles.BG_BRIDGE;
+            backgroundColourNormal = Colours.Tiles.BG_BRIDGE; // TODO remove background colour normal
         }
 
     }
