@@ -67,7 +67,7 @@ public class GameController extends BasicGame {
         } catch (SlickException e) {
             System.out.println("Failed to start the container");
             e.printStackTrace();
-            System.exit(0);
+            System.exit(Game.EXIT_BAD);
         }
 
     }

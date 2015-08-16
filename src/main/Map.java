@@ -84,7 +84,7 @@ public class Map extends Loopable { // TODO abstract functionality out of map. t
             generateMobs();
         } catch(NoSpawnableArea e) {
             System.err.println("Can't spawn mobs as there are no non void tiles. Exiting");
-            System.exit(0);
+            System.exit(Game.EXIT_BAD);
 //        } catch (LongCorridorGeneration longCorridorGeneration) {
 //            System.err.println("Couldn't generate corridors. Took too long!");
         }

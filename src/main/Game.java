@@ -21,6 +21,9 @@ import java.util.Random;
  */
 public class Game extends BasicGame {
 
+    public static final int EXIT_GOOD   = 0;
+    public static final int EXIT_BAD    = 1;
+
     public static final int NO_SELECTION = 0;
     public static final int ROOM_SELECTION = 1;
     public static final int DOOR_SELECTION = 2; // TODO CONSIDER that this won't work until i sort out the overcrowding? revise.
@@ -90,7 +93,7 @@ public class Game extends BasicGame {
         } catch (SlickException e) {
             System.out.println("Failed to start the container");
             e.printStackTrace();
-            System.exit(0);
+            System.exit(Game.EXIT_BAD);
         }
 
     }
@@ -126,7 +129,7 @@ public class Game extends BasicGame {
 
             } else {
                 System.err.println("Couldn't get ship design from file");
-                System.exit(0);
+                System.exit(Game.EXIT_BAD);
             }
 
         } catch (FileNotFoundException e) {

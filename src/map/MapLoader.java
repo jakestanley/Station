@@ -1,5 +1,7 @@
 package map;
 
+import main.Game;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,7 +42,7 @@ public class MapLoader {
 
             } else {
                 System.err.println("Couldn't get map design from file"); // TODO better errors
-                System.exit(0);
+                System.exit(Game.EXIT_BAD);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

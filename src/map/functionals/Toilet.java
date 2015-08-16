@@ -1,5 +1,6 @@
 package map.functionals;
 
+import main.Game;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -18,7 +19,7 @@ public class Toilet extends Functional {
             this.image = new Image("res/img/functionals/toilet.png"); // TODO make less static
         } catch (SlickException e) {
             System.err.println("Failed to load toilet image");
-            System.exit(0);
+            System.exit(Game.EXIT_BAD);
         }
     }
 

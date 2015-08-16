@@ -43,7 +43,7 @@ public class VisibleTile extends Tile {
         } catch (SlickException e){
             System.err.println("Failed to load image");
             e.printStackTrace();
-            System.exit(0);
+            System.exit(Game.EXIT_BAD);
         }
 
         setColours();

@@ -3,6 +3,7 @@ package map;
 import exceptions.NoDialogException;
 import main.ContextController;
 import main.Display;
+import main.Game;
 import main.GameController;
 import resources.Converter;
 
@@ -47,7 +48,7 @@ public class MouseController {
                 GameController.guiController.getDialog().click(mousePoint);
             } catch (NoDialogException e) {
                 e.printStackTrace();
-                System.exit(1);
+                System.exit(Game.EXIT_BAD);
             }
         }
 

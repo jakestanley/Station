@@ -67,7 +67,7 @@ public abstract class GuiContainer extends GuiComponent {
     public abstract void widgetClicked(int index);
 
     public void click(Point mouse){
-
+        // TODO act upon
     }
 
 }
