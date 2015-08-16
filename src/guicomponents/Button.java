@@ -39,9 +39,19 @@ public class Button extends GuiWidget {
     }
 
     @Override
+    protected void setType() {
+        this.type = TYPE_BUTTON;
+    }
+
+    @Override
     public void render(Graphics screen, int x, int y) {
 
-        setCoordinates(x, y);
+        System.out.println(this.toString());
+        System.out.println("Setting button coordinates to " + x + "," + y);
+
+        if(!set){
+            setCoordinates(x, y);
+        }
 
         int textWidth   = GameController.guiController.getFont().getWidth(text);
         int textHeight  = GameController.guiController.getFont().getHeight(text);

@@ -60,14 +60,8 @@ public abstract class GuiContainer extends GuiComponent {
 
     }
 
-    public abstract void renderContent(Graphics screen);
+    public void click(Point mouse){
 
-    /**
-     * A child widget was clicked
-     */
-    public abstract void widgetClicked(int index);
-
-    public void click(Point mouse){ // TODO improve
         for (Iterator<GuiWidget> iterator = widgets.iterator(); iterator.hasNext(); ) {
             GuiWidget next = iterator.next();
             if(next.isMouseOver(mouse)){
@@ -75,5 +69,12 @@ public abstract class GuiContainer extends GuiComponent {
             }
         }
     }
+
+    public abstract void renderContent(Graphics screen);
+
+    /**
+     * A child widget was clicked
+     */
+    public abstract void widgetClicked(int index);
 
 }

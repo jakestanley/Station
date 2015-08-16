@@ -1,6 +1,8 @@
 package map;
 
 import exceptions.NoDialogException;
+import guicomponents.*;
+import guicomponents.Dialog;
 import main.ContextController;
 import main.Display;
 import main.Game;
@@ -30,8 +32,16 @@ public class MouseController {
         // Clear map hover objects
         mc.clearHoverObjects();
 
-        // If in construction context and mouse is over map
-        if((cc.getContext() == ContextController.CONSTRUCTION) && isMouseOverMap(mousePoint)){
+        // Get focus and click it if it exists
+        GuiContainer focus = (GuiContainer) GameController.guiController.getFocus(); // TODO make less bad
+        if(focus != null){
+            focus.click(mousePoint);
+            return;
+        }
+
+        int context = cc.getContext(); // TODO make default context -1
+
+        if((cc.getContext() == ContextController.CONSTRUCTION) && isMouseOverMap(mousePoint)){ // If in construction context and mouse is over map
 
             if(mc.setHoverDoor(mousePoint)){ // if hover door was set
                 mc.getHoverDoor().enable(); // enable the door
@@ -40,16 +50,6 @@ public class MouseController {
                 clickPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
                 hoverPoint = clickPoint;
                 mc.setDragSelection(clickPoint, clickPoint);
-            }
-        }
-
-        // If in dialog context
-        if((cc.getContext() == ContextController.DIALOG)){
-            try {
-                GameController.guiController.getDialog().click(mousePoint);
-            } catch (NoDialogException e) {
-                e.printStackTrace();
-                System.exit(Game.EXIT_BAD);
             }
         }
 

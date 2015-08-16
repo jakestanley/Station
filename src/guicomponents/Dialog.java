@@ -20,7 +20,7 @@ public abstract class Dialog extends GuiFloating {
         super((Display.DISPLAY_WIDTH - width) / 2, (Display.DISPLAY_HEIGHT - height) / 2, width, height);
 
         // set context
-        GameController.contextController.pushContext(ContextController.DIALOG);
+        GameController.contextController.pushContext(ContextController.DIALOG); // TODO remove?
 
         // set variables
         this.pause = pause;
@@ -39,13 +39,19 @@ public abstract class Dialog extends GuiFloating {
 
     @Override
     protected void onClose() {
-        
+
         if(pause){ // TODO CONSIDER only try to unpause if this was a pauser. not sure about this as you could have multiple dialogs. need a hierarchy system
             GameController.unPause(); // TODO CONSIDER should it be the job of the Dialog to handle unpausing?
         }
 
-        GameController.guiController.clearDialog();
+        GameController.guiController.popFocus(); // TODO CONSIDER REVISING
         GameController.contextController.popContext();
 
     }
+
+    @Override
+    protected void setType(){
+        this.type = TYPE_DIALOG;
+    }
+
 }

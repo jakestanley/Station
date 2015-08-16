@@ -1,5 +1,8 @@
 package main;
 
+import guicomponents.*;
+import guicomponents.Dialog;
+import guicomponents.dialogs.Dialog_CreateRoom;
 import map.MapController;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -25,6 +28,11 @@ public class InputController {
         ViewController vc = GameController.viewController;
         MapController mc = GameController.mapController;
 
+        // get focused component and context for deciding where input should be sent
+        GuiComponent focus  = GameController.guiController.getFocus();
+        int context         = GameController.contextController.getContext();
+
+        // move the view
         if(input.isKeyDown(Input.KEY_UP)){
             vc.increaseViewOffsetY();
         }
@@ -41,7 +49,9 @@ public class InputController {
         // if in construction context
         if(GameController.contextController.getContext() == ContextController.CONSTRUCTION){
             if(input.isKeyDown(Input.KEY_ENTER)){
-                mc.createRoomFromSelection();
+                Dialog_CreateRoom dialog = new Dialog_CreateRoom();
+                GameController.guiController.addContainer(dialog);
+                GameController.guiController.pushFocus(dialog);
             }
 
             if(input.isKeyDown(Input.KEY_ESCAPE)){

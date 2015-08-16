@@ -54,12 +54,6 @@ public class Room implements Interactable { // TODO make abstract
     }
 
     public void init(){
-
-        // If user initialised room creation, create a new room dialog
-        if(!force){
-            GameController.guiController.addDialog(new Dialog_CreateRoom());
-        }
-
         initialiseTiles();
     }
 

@@ -1,6 +1,5 @@
 package main;
 
-import exceptions.NoDialogException;
 import guicomponents.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -8,7 +7,9 @@ import org.newdawn.slick.TrueTypeFont;
 import resources.FontLoader;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * Created by stanners on 21/07/2015.
@@ -16,31 +17,35 @@ import java.util.Iterator;
 public class GuiController {
 
     private TrueTypeFont font;
-    private ArrayList<GuiContainer> components;
-
     private HintsBox            hintsBox;
+
     private InfoBox             infoBox;
     private MobsBox             mobsBox;
     private MessageBox          messageBox;
 
-    private Dialog              dialog;
+    // Components
+    private ArrayList<GuiContainer> containers;
+    private Stack<GuiComponent> focuses;
 
     private StringBuilder hint;
 
     public GuiController(){
-        components = new ArrayList<GuiContainer>();
 
-        hintsBox = new HintsBox(hint);
-        infoBox = new InfoBox();
-        mobsBox = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
-        messageBox = new MessageBox();
+        // initialise component lists
+        containers = new ArrayList<GuiContainer>();
+        focuses     = new Stack<GuiComponent>();
 
-        components.add(hintsBox);
-        components.add(infoBox);
-        components.add(mobsBox);
-        components.add(messageBox);
+        // initialise static gui elements
+        hintsBox    = new HintsBox(hint);
+        infoBox     = new InfoBox();
+        mobsBox     = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
+        messageBox  = new MessageBox();
 
-        dialog = null;
+        // add static gui elements to containers
+        containers.add(hintsBox);
+        containers.add(infoBox);
+        containers.add(mobsBox);
+        containers.add(messageBox);
 
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
 
@@ -50,29 +55,12 @@ public class GuiController {
         font = FontLoader.loadFont("04b03.ttf");
     }
 
-    public void addDialog(Dialog dialog){
-        this.dialog = dialog;
-        components.add(dialog);
-    }
-
-    public Dialog getDialog() throws NoDialogException {
-
-        int context = GameController.contextController.getContext();
-
-        // make sure we're in the right context and we have a dialog object
-        if(context != ContextController.DIALOG || dialog == null){
-            throw new NoDialogException(context, dialog);
-        }
-
-        return dialog;
-    }
-
-    public void clearDialog(){
-        dialog = null;
-    }
-
     public void setBackground(Graphics screen){
         screen.setBackground(Colours.GRID_BACKGROUND);
+    }
+
+    public void addContainer(GuiContainer container){
+        containers.add(container);
     }
 
     public void renderGrid(Graphics screen){
@@ -93,7 +81,7 @@ public class GuiController {
     }
 
     public void updateContent(){
-        for (Iterator<GuiContainer> iterator = components.iterator(); iterator.hasNext(); ) {
+        for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
             GuiContainer next = iterator.next();
             if(next.isValid()){
                 // if valid, update
@@ -106,7 +94,7 @@ public class GuiController {
     }
 
     public void render(Graphics screen){
-        for (Iterator<GuiContainer> iterator = components.iterator(); iterator.hasNext(); ) {
+        for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
             GuiContainer next =  iterator.next();
             next.render(screen);
         }
@@ -114,6 +102,24 @@ public class GuiController {
 
     public TrueTypeFont getFont(){
         return font;
+    }
+
+    public void pushFocus(GuiComponent focus){
+        focuses.push(focus);
+    }
+
+    public void popFocus(){
+        if(focuses.size() > 0){
+            focuses.pop();
+        }
+    }
+
+    public GuiComponent getFocus() throws EmptyStackException {
+        try {
+            return focuses.peek();
+        } catch (EmptyStackException e){
+            return null;
+        }
     }
 
     private void renderComponentsData(Graphics screen){ // TODO remove, incorporate, or break off into something else

@@ -10,6 +10,7 @@ public class ContextController {
 
     public static final int CONSTRUCTION    = 0;
     public static final int DIALOG          = 1;
+    public static final int TEXT_INPUT      = 2;
 
     private Stack<Integer> contexts; // TODO CONSIDER context stack
 

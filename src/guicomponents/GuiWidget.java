@@ -7,12 +7,15 @@ import org.newdawn.slick.Graphics;
  */
 public abstract class GuiWidget extends GuiComponent {
 
+    protected boolean set;
     protected int index;
     protected GuiContainer parent;
 
     public GuiWidget(GuiContainer parent, int index){
         super();
+        this.set = false;
         this.parent = parent;
+        this.index = index;
     }
 
     public void click(){
@@ -22,8 +25,10 @@ public abstract class GuiWidget extends GuiComponent {
     public abstract void render(Graphics screen, int x, int y);
 
     protected void setCoordinates(int x, int y){
+        System.out.println(toString());
         this.x = x;
         this.y = y;
+        set = true;
     }
 
 }
