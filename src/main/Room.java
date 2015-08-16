@@ -1,14 +1,13 @@
 package main;
 
 import com.sun.xml.internal.ws.util.StringUtils;
-import exceptions.CorridorDimensionsException;
+import guicomponents.dialogs.Dialog_CreateRoom;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
-import guicomponents.Dialog;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class Room implements Interactable { // TODO make abstract
 
         // If user initialised room creation, create a new room dialog
         if(!force){
-            GameController.guiController.addDialog(new Dialog(true));
+            GameController.guiController.addDialog(new Dialog_CreateRoom());
         }
 
         initialiseTiles();

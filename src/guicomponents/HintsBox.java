@@ -11,13 +11,34 @@ import java.awt.*;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class HintsBox extends GuiComponent {
+public class HintsBox extends GuiStatic {
 
     private StringBuilder hint;
 
     public HintsBox(StringBuilder hint){ // TODO pass some variables here
         super(0, Display.MAP_HEIGHT, Display.CONTROL_HINTS_BOX_WIDTH, Display.TEXT_PANEL_HEIGHT);
         setMessage(hint);
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void update() {
+        setMessage(null); // TODO remove after testing
+    }
+
+    @Override
+    public void renderContent(Graphics screen) {
+        screen.setColor(Color.white); // TODO change to a non hard coded value here
+        screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
+    }
+
+    @Override
+    public void widgetClicked(int index) {
+
     }
 
     public void setMessage(StringBuilder hint){
@@ -39,21 +60,4 @@ public class HintsBox extends GuiComponent {
         }
     }
 
-    @Override
-    public void update() {
-        setMessage(null); // TODO remove after testing
-    }
-
-    @Override
-    public void renderBody(Graphics screen) {
-
-        screen.setColor(Color.white); // TODO change to a non hard coded value here
-        screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
-
-    }
-
-    @Override
-    protected void onClose() {
-
-    }
 }

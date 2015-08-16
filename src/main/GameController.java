@@ -19,6 +19,7 @@ public class GameController extends BasicGame {
     public static boolean debug;
     public static boolean disableMobs;
     public static boolean paused;
+    public static boolean multiplayer = false;
 
     public static Random            random;
     public static ContextController contextController;
@@ -125,10 +126,7 @@ public class GameController extends BasicGame {
 
         mapController.renderHoverBoxes(screen);
 
-        guiController.renderBackgrounds(screen);
-        guiController.renderContent(screen);
-
-
+        guiController.render(screen);
 
     }
 

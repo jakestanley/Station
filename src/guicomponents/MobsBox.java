@@ -10,7 +10,7 @@ import java.util.Iterator;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MobsBox extends GuiComponent {
+public class MobsBox extends GuiStatic {
 
     private ArrayList<Mob> friendlies;
     private ArrayList<Mob> hostiles;
@@ -23,18 +23,28 @@ public class MobsBox extends GuiComponent {
     }
 
     @Override
+    public void init() {
+        // TODO CONSIDER that this might not actually be used
+    }
+
+    @Override
     public void update() {
 
     }
 
     @Override
-    public void renderBody(Graphics screen) {
+    public void renderContent(Graphics screen) {
 
         // draw panels
         for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
             MobPanel next = iterator.next();
-            next.renderBody(screen);
+            next.render(screen);
         }
+
+    }
+
+    @Override
+    public void widgetClicked(int index) {
 
     }
 
@@ -83,11 +93,6 @@ public class MobsBox extends GuiComponent {
             panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
             pos++;
         }
-    }
-
-    @Override
-    protected void onClose() {
-
     }
 
 }

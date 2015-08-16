@@ -27,4 +27,8 @@ public class Colours {
 
     }
 
+    public static final class Palette { // TODO
+
+    }
+
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MessageBox extends GuiComponent { // TODO consider that update may be redundant
+public class MessageBox extends GuiStatic { // TODO consider that update may be redundant
 
     public static final int MAX_MESSAGES = 5;
     public static final int MAX_MESSAGE_AGE_SECONDS = 5;
@@ -19,6 +19,11 @@ public class MessageBox extends GuiComponent { // TODO consider that update may 
     public MessageBox(){
         super(Display.LEFT_COLUMN_WIDTH, Display.getMessageBoxY(), Display.RIGHT_COLUMN_WIDTH, Display.MESSAGE_BOX_HEIGHT);
         messages = new ArrayList<MessagePanel>();
+    }
+
+    @Override
+    public void init() {
+
     }
 
     public void addMessage(String message){ // TODO animations for new messages and pushing messages down?
@@ -49,8 +54,12 @@ public class MessageBox extends GuiComponent { // TODO consider that update may 
     }
 
     @Override
-    protected void onClose() {
+    public void renderContent(Graphics screen) {
 
     }
 
+    @Override
+    public void widgetClicked(int index) {
+
+    }
 }

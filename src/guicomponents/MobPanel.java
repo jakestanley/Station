@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Rectangle;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MobPanel extends GuiComponent {
+public class MobPanel extends GuiStatic { // TODO CONSIDER does it though?
 
     private Mob mob;
     private int index;
@@ -30,12 +30,17 @@ public class MobPanel extends GuiComponent {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void update() {
 
     }
 
     @Override
-    public void renderBody(Graphics screen) {
+    public void renderContent(Graphics screen) {
 
         renderHealthBar(screen);
 //        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
@@ -49,9 +54,15 @@ public class MobPanel extends GuiComponent {
         screen.setColor(Colours.GUI_TEXT);
         screen.drawString(name, x + Display.MOB_TEXT_MARGIN, y + 8); // TODO 2 should be a variable like MARGIN or HEALTH_BAR_MARGIN?
         screen.drawString(mob.getGoalString(), x + Display.MOB_TEXT_MARGIN + 120, y + 8); // TODO add non statics
+
     }
 
-    public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this
+    @Override
+    public void widgetClicked(int index) {
+
+    }
+
+    public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this TODO today
 
 //        System.out.println("MOUSE: " + mouseX + ", " + mouseY);
 
@@ -105,11 +116,6 @@ public class MobPanel extends GuiComponent {
 
         // TODO render the gradient properly and accurately with non static/hard coded values
         // TODO clean all this shit up to be honest
-    }
-
-    @Override
-    protected void onClose() {
-
     }
 
 }

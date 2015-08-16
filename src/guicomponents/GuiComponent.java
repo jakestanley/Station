@@ -5,6 +5,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.util.ArrayList;
+
 /**
  * Created by stanners on 26/05/2015.
  */
@@ -12,45 +14,35 @@ public abstract class GuiComponent {
 
     protected static final int LINE_WIDTH = 3;
 
-    protected int x, y, width, height; // start point and end point
+    protected int x, y, width, height;
     protected Color backgroundColour;
-    private Rectangle rect;
-    private boolean valid;
+    protected ArrayList<GuiWidget> widgets;
 
-    public GuiComponent(int x, int y, int width, int height){
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.valid = true;
+    public GuiComponent(){
 
         this.backgroundColour = Colours.GUI_BACKGROUND;
-        this.rect = new Rectangle(x, y, width, height);
+        this.widgets = new ArrayList<GuiWidget>(); // TODO CONSIDER can a widget contain widgets? PROBABLY.
+
     }
 
-    public boolean isValid(){
-        return valid;
-    }
-
-    public void destroy(){
-        onClose();
-    }
+    public abstract void init();
 
     public abstract void update();
 
-    public void renderBackground(Graphics screen){ // TODO CONSIDER you can override if necessary
-
-        screen.setColor(backgroundColour);
-        screen.fill(rect);
-
-        screen.setLineWidth(LINE_WIDTH);
-        screen.setColor(Colours.GUI_BORDER); // TODO fix borders
-        screen.draw(rect);
-
+    public int getX() {
+        return x;
     }
 
-    public abstract void renderBody(Graphics screen);
+    public int getY() {
+        return y;
+    }
 
-    protected abstract void onClose();
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 
 }

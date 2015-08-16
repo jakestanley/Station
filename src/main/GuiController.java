@@ -1,6 +1,7 @@
 package main;
 
 import guicomponents.*;
+import guicomponents.Dialog;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
@@ -15,7 +16,7 @@ import java.util.Iterator;
 public class GuiController {
 
     private TrueTypeFont font;
-    private ArrayList<GuiComponent> components;
+    private ArrayList<GuiContainer> components;
 
     private HintsBox            hintsBox;
     private InfoBox             infoBox;
@@ -25,7 +26,7 @@ public class GuiController {
     private StringBuilder hint;
 
     public GuiController(){
-        components = new ArrayList<GuiComponent>();
+        components = new ArrayList<GuiContainer>();
 
         hintsBox = new HintsBox(hint);
         infoBox = new InfoBox();
@@ -71,35 +72,27 @@ public class GuiController {
     }
 
     public void updateContent(){
-        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
-            GuiComponent next = iterator.next();
+        for (Iterator<GuiContainer> iterator = components.iterator(); iterator.hasNext(); ) {
+            GuiContainer next = iterator.next();
             if(next.isValid()){
                 // if valid, update
                 next.update();
             } else {
                 // if invalid, destroy and remove from the list
-                next.destroy();
                 iterator.remove();
             }
         }
     }
 
-    public void renderBackgrounds(Graphics screen){
-        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
-            GuiComponent next =  iterator.next();
-            next.renderBackground(screen);
+    public void render(Graphics screen){
+        for (Iterator<GuiContainer> iterator = components.iterator(); iterator.hasNext(); ) {
+            GuiContainer next =  iterator.next();
+            next.render(screen);
         }
     }
 
-    public void renderContent(Graphics screen){
-
-        setFont(screen);
-
-        for (Iterator<GuiComponent> iterator = components.iterator(); iterator.hasNext(); ) {
-            GuiComponent next =  iterator.next();
-            next.renderBody(screen);
-        }
-
+    public TrueTypeFont getFont(){
+        return font;
     }
 
     private void renderComponentsData(Graphics screen){ // TODO remove, incorporate, or break off into something else
