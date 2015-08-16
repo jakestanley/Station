@@ -12,7 +12,7 @@ public class Dialog_CreateRoom extends Dialog {
     public static final int BUTTON_OK       = 0;
     public static final int BUTTON_CANCEL   = 1;
 
-    public Dialog_CreateRoom(){
+    public Dialog_CreateRoom(){ // TODO create room on OK
         super(Dialog.PAUSE, 300, 200);
         widgets.add(new Button(this, 1, 1, "OK", BUTTON_OK));
         widgets.add(new Button(this, 1, 1, "Cancel", BUTTON_CANCEL));

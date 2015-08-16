@@ -21,4 +21,9 @@ public abstract class GuiWidget extends GuiComponent {
 
     public abstract void render(Graphics screen, int x, int y);
 
+    protected void setCoordinates(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
 }

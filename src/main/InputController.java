@@ -54,22 +54,19 @@ public class InputController {
 
     private static void processClicks(Input input){
 
-        // if in construction context
-        if(GameController.contextController.getContext() == ContextController.CONSTRUCTION) {
-            if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-                Point mousePoint = new Point(input.getMouseX(), input.getMouseY());
-                if (!leftMouseHeld) {
-                    leftMouseHeld = true;
-                    GameController.mouseController.setClickPoint(mousePoint);
-                }
-            } else {
-                if (leftMouseHeld) {
-                    leftMouseHeld = false;
-                    GameController.mouseController.setMouseRelease();
-                }
+        if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+            Point mousePoint = new Point(input.getMouseX(), input.getMouseY());
+            if (!leftMouseHeld) {
+                leftMouseHeld = true;
+                GameController.mouseController.setClickPoint(mousePoint);
+            }
+        } else {
+            if (leftMouseHeld) {
+                leftMouseHeld = false;
+                GameController.mouseController.setMouseRelease();
             }
         }
-        
+
         GameController.mouseController.setHoverPoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
     }
 

@@ -42,6 +42,7 @@ public class Room implements Interactable { // TODO make abstract
     protected float oxygen, integrity, ventRate, refillRate, consumptionRate;
     protected boolean purge, evacuate, support, selected, force; // support is life support, which is oxygen
     protected String typeString;
+    protected String name;
 
     protected ArrayList<String> strings;
 
@@ -113,6 +114,10 @@ public class Room implements Interactable { // TODO make abstract
 //            System.exit(0);
 //        }
 //    }
+
+    public void setName(String name){
+        this.name = name;
+    }
 
     public void select(){ // TODO tidy this up
         this.selected = true;

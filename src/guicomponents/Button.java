@@ -41,6 +41,8 @@ public class Button extends GuiWidget {
     @Override
     public void render(Graphics screen, int x, int y) {
 
+        setCoordinates(x, y);
+
         int textWidth   = GameController.guiController.getFont().getWidth(text);
         int textHeight  = GameController.guiController.getFont().getHeight(text);
 

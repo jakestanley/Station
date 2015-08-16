@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -43,6 +44,15 @@ public abstract class GuiComponent {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isMouseOver(Point mouse){
+        int mouseX = (int) mouse.getX();
+        int mouseY = (int) mouse.getY();
+        if((x <= mouseX) && (mouseX <= x+width) && (y <= mouseY) && (mouseY <= y+height)){
+            return true;
+        }
+        return false;
     }
 
 }

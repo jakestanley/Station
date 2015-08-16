@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
 import java.awt.*;
+import java.util.Iterator;
 
 /**
  * For gui components whose size and position is known before initialisation
@@ -66,8 +67,13 @@ public abstract class GuiContainer extends GuiComponent {
      */
     public abstract void widgetClicked(int index);
 
-    public void click(Point mouse){
-        // TODO act upon
+    public void click(Point mouse){ // TODO improve
+        for (Iterator<GuiWidget> iterator = widgets.iterator(); iterator.hasNext(); ) {
+            GuiWidget next = iterator.next();
+            if(next.isMouseOver(mouse)){
+                next.click();
+            }
+        }
     }
 
 }
