@@ -8,7 +8,7 @@ public class ContextController {
     public static final int CONSTRUCTION    = 0;
     public static final int DIALOG          = 1;
 
-    private int context;
+    private int context; // TODO CONSIDER context stack
 
     public ContextController(int context){
         this.context = context;

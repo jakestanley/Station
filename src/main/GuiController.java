@@ -1,7 +1,7 @@
 package main;
 
+import exceptions.NoDialogException;
 import guicomponents.*;
-import guicomponents.Dialog;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
@@ -23,6 +23,8 @@ public class GuiController {
     private MobsBox             mobsBox;
     private MessageBox          messageBox;
 
+    private Dialog              dialog;
+
     private StringBuilder hint;
 
     public GuiController(){
@@ -38,6 +40,8 @@ public class GuiController {
         components.add(mobsBox);
         components.add(messageBox);
 
+        dialog = null;
+
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
 
     }
@@ -47,7 +51,24 @@ public class GuiController {
     }
 
     public void addDialog(Dialog dialog){
+        this.dialog = dialog;
         components.add(dialog);
+    }
+
+    public Dialog getDialog() throws NoDialogException {
+
+        int context = GameController.contextController.getContext();
+
+        // make sure we're in the right context and we have a dialog object
+        if(context != ContextController.DIALOG || dialog == null){
+            throw new NoDialogException(context, dialog);
+        }
+
+        return dialog;
+    }
+
+    public void clearDialog(){
+        dialog = null;
     }
 
     public void setBackground(Graphics screen){

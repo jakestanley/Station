@@ -4,6 +4,8 @@ import main.Colours;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.awt.*;
+
 /**
  * For gui components whose size and position is known before initialisation
  * Created by jake on 16/08/15.
@@ -63,5 +65,9 @@ public abstract class GuiContainer extends GuiComponent {
      * A child widget was clicked
      */
     public abstract void widgetClicked(int index);
+
+    public void click(Point mouse){
+
+    }
 
 }

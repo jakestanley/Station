@@ -25,7 +25,7 @@ public class Dialog_CreateRoom extends Dialog {
 
     @Override
     public void renderContent(Graphics screen) {
-
+        screen.drawString("test string", x + 10, y + 10);
     }
 
     @Override

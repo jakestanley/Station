@@ -1,7 +1,8 @@
 package map;
 
+import exceptions.NoDialogException;
+import main.ContextController;
 import main.Display;
-import main.Game;
 import main.GameController;
 import resources.Converter;
 
@@ -21,20 +22,37 @@ public class MouseController {
 
     public void setClickPoint(Point mousePoint){
 
+        ContextController cc    = GameController.contextController;
+        MapController mc        = GameController.mapController;
+
         // Clear map hover objects
-        GameController.mapController.clearHoverObjects();
+        mc.clearHoverObjects();
 
-        if(isMouseOverMap(mousePoint)){
+        // If in construction context and mouse is over map
+        if((cc.getContext() == ContextController.CONSTRUCTION) && isMouseOverMap(mousePoint)){
 
-            if(GameController.mapController.setHoverDoor(mousePoint)){ // if hover door was set
-                GameController.mapController.getHoverDoor().enable(); // enable the door
+            if(mc.setHoverDoor(mousePoint)){ // if hover door was set
+                mc.getHoverDoor().enable(); // enable the door
             } else { // if door is null, process tile click
                 dragMode = true;
                 clickPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
                 hoverPoint = clickPoint;
-                GameController.mapController.setDragSelection(clickPoint, clickPoint);
+                mc.setDragSelection(clickPoint, clickPoint);
             }
         }
+
+        // If in dialog context
+        if((cc.getContext() == ContextController.DIALOG)){
+            try {
+                GameController.guiController.getDialog().click(mousePoint);
+            } catch (NoDialogException e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
+        // Menus should be clickable in any context except dialogs, as arbitrarily, they should block.
+
     }
 
     public void setHoverPoint(Point mousePoint){
@@ -42,7 +60,7 @@ public class MouseController {
         // Clear map hover objects
         GameController.mapController.clearHoverObjects();
 
-        if(isMouseOverMap(mousePoint)){
+        if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.CONSTRUCTION)){
 
             if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set
 
