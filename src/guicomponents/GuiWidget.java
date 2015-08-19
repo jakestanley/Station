@@ -2,6 +2,8 @@ package guicomponents;
 
 import org.newdawn.slick.Graphics;
 
+import java.awt.*;
+
 /**
  * Created by jake on 16/08/15.
  */
@@ -18,7 +20,7 @@ public abstract class GuiWidget extends GuiComponent {
         this.index = index;
     }
 
-    public void click(){
+    public void click(Point mouse){ // TODO REVISE doesn't actually use mouse
         parent.widgetClicked(index);
     }
 

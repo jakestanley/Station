@@ -24,7 +24,7 @@ public abstract class Dialog extends GuiFloating {
 
         // set variables
         this.pause = pause;
-        this.widgets = new ArrayList<GuiWidget>();
+        this.buttons = new ArrayList<GuiWidget>();
 
         // pause the game if this is a pausing dialog and we're not in a multiplayer mode
         if(pause && !GameController.multiplayer){

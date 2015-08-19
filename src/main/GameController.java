@@ -22,6 +22,7 @@ public class GameController extends BasicGame {
     public static boolean multiplayer = false;
 
     public static Random            random;
+    public static InputController   inputController;
     public static ContextController contextController;
     public static ViewController    viewController;
     public static GuiController     guiController;
@@ -48,13 +49,14 @@ public class GameController extends BasicGame {
         random          = new Random();
 
         // Initialise controllers
-        contextController = new ContextController(ContextController.CONSTRUCTION);
-        viewController  = new ViewController();
-        mapController   = new MapController("the_tortuga.csv");
-        mobController   = new MobController();
-        guiController   = new GuiController();
-        actionQueue     = new ActionQueue();
-        mouseController = new MouseController();
+        inputController     = new InputController();
+        contextController   = new ContextController(ContextController.CONSTRUCTION);
+        viewController      = new ViewController();
+        mapController       = new MapController("the_tortuga.csv");
+        mobController       = new MobController();
+        guiController       = new GuiController();
+        actionQueue         = new ActionQueue();
+        mouseController     = new MouseController();
 
         // Initialise the game framework
         try {
@@ -75,6 +77,11 @@ public class GameController extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
 
+        // sort the input controller out
+        Input input = gameContainer.getInput();
+        input.addKeyListener(inputController);
+        inputController.setInput(input);
+
         // post construction initialisation
         mapController.init();
         mobController.init();
@@ -84,7 +91,7 @@ public class GameController extends BasicGame {
 
     @Override
     public void update(GameContainer gameContainer, int i) throws SlickException {
-        InputController.processInput(gameContainer); // TODO update logic
+        inputController.processInput(gameContainer); // TODO remove and work with the listener
 
         // if the game is paused, don't run any game logic. useful for dialog boxes also
         if(!paused){

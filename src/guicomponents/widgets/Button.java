@@ -1,5 +1,7 @@
-package guicomponents;
+package guicomponents.widgets;
 
+import guicomponents.GuiContainer;
+import guicomponents.GuiWidget;
 import main.GameController;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -14,18 +16,13 @@ public class Button extends GuiWidget {
     public static final int MAX_WIDTH = 72;
     public static final int MAX_HEIGHT = 36;
 
-    private int position;
-    private int total;
-    private int index;
     private String text;
 
-    public Button(GuiContainer parent, int position, int total, String text, int index){
+    public Button(GuiContainer parent, String text, int index){
         super(parent, index);
-        this.width = MAX_WIDTH;
+        this.width  = MAX_WIDTH;
         this.height = MAX_HEIGHT;
-        this.position   = position;
-        this.total      = total;
-        this.text       = text;
+        this.text   = text;
     }
 
     @Override
@@ -45,9 +42,6 @@ public class Button extends GuiWidget {
 
     @Override
     public void render(Graphics screen, int x, int y) {
-
-        System.out.println(this.toString());
-        System.out.println("Setting button coordinates to " + x + "," + y);
 
         if(!set){
             setCoordinates(x, y);

@@ -33,7 +33,7 @@ public class MouseController {
         mc.clearHoverObjects();
 
         // Get focus and click it if it exists
-        GuiContainer focus = (GuiContainer) GameController.guiController.getFocus(); // TODO make less bad
+        GuiComponent focus = GameController.guiController.getFocus(); // TODO make less bad
         if(focus != null){
             focus.click(mousePoint);
             return;

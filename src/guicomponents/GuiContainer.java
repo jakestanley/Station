@@ -51,9 +51,20 @@ public abstract class GuiContainer extends GuiComponent {
 
     public void renderWidgets(Graphics screen){
 
-        for(int index = 0; index < widgets.size(); index++){
+        int x1 = 4 + this.x;
+        int y1 = 4 + this.y; // TODO rename
+
+        // render non button widgets
+        for (int index = 0; index < widgets.size(); index++) {
             GuiWidget widget = widgets.get(index);
-            int x = this.x + ((width / widgets.size()) * index) + ((width / widgets.size()) / 2) - (widget.getWidth() / 2);
+            widget.render(screen, x1, y1); // TODO some constant
+            y1 = y1 + widget.getHeight() + 4; // TODO some constant
+        }
+
+        // render button row
+        for(int index = 0; index < buttons.size(); index++){
+            GuiWidget widget = buttons.get(index);
+            int x = this.x + ((width / buttons.size()) * index) + ((width / buttons.size()) / 2) - (widget.getWidth() / 2);
             int y = this.y + height - (height / 4); // TODO make this more standard.
             widget.render(screen, x, y);
         }
@@ -62,12 +73,22 @@ public abstract class GuiContainer extends GuiComponent {
 
     public void click(Point mouse){
 
+        // iterate through buttons
+        for (Iterator<GuiWidget> iterator = buttons.iterator(); iterator.hasNext(); ) {
+            GuiWidget next = iterator.next();
+            if(next.isMouseOver(mouse)){
+                next.click(mouse);
+            }
+        }
+
+        // iterate through other widgets
         for (Iterator<GuiWidget> iterator = widgets.iterator(); iterator.hasNext(); ) {
             GuiWidget next = iterator.next();
             if(next.isMouseOver(mouse)){
-                next.click();
+                next.click(mouse);
             }
         }
+
     }
 
     public abstract void renderContent(Graphics screen);
