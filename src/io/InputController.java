@@ -1,10 +1,11 @@
-package main;
+package io;
 
 import guicomponents.*;
 import guicomponents.Dialog;
 import guicomponents.dialogs.Dialog_CreateRoom;
 import guicomponents.widgets.*;
 import guicomponents.widgets.TextField;
+import main.*;
 import map.MapController;
 import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
@@ -35,11 +36,15 @@ public class InputController implements KeyListener {
         GuiComponent focus  = gc.getFocus();
         int context         = cc.getContext();
 
+        // ESCAPE to have overriding functionality
+
         if(focus != null && GuiComponent.TYPE_TEXTFIELD == focus.getType()){
             TextField field = (TextField) focus;
             if(input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_ESCAPE)){
                 gc.popFocus();
             }
+        } else {
+            // do regular controls
         }
 
         // if in construction context
@@ -60,6 +65,7 @@ public class InputController implements KeyListener {
         processClicks(input);
     }
 
+    // DEPRECATED TODO USE keyPressed, etc
     private void processViewControllerControls(Input input){ // TODO make this more efficient. any other controls?
 
         ViewController vc = GameController.viewController;
@@ -121,6 +127,9 @@ public class InputController implements KeyListener {
             } else {
                 field.addLetter(Character.toString(c));
             }
+        } else { // add more depth to this
+            processGenericControls(i, c);
+
         }
 
     }
@@ -149,4 +158,28 @@ public class InputController implements KeyListener {
     public void inputStarted() {
 
     }
+
+    // SEPERATING CONTROL SCHEMES INTO METHODS. TODO CONSIDER mapping in future?
+
+    private void processGenericControls(int i, char c){
+
+        // NEED A HIERARCHY FOR PASSING INPUT AROUND
+
+        // PROCESS DOOR CONTROLS
+        Door door = GameController.mapController.getHoverDoor();
+        if(door != null){
+            door.input(i, c);
+        }
+
+        Room room = GameController.mapController.getHoverRoom(); // TODO
+        if(room != null){
+            room.input(i, c);
+        }
+
+    }
+
+    private void processBuildControls(int i, char c){
+        // TODO code...
+    }
+
 }

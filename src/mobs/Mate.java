@@ -4,6 +4,7 @@ import actions.Action;
 import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.UnnecessaryAction;
+import io.Inputtable;
 import main.Game;
 import main.GameController;
 import main.Values;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by stanners on 23/05/2015.
  */
-public class Mate extends Mob {
+public class Mate extends Mob implements Inputtable {
 
     private float energy; // tiredness/wakefulness
     private float morale; // TODO CONSIDER personal events, relational events, local events, ship wide events, global events
@@ -137,31 +138,6 @@ public class Mate extends Mob {
     }
 
     @Override
-    public void qPress() {
-
-    }
-
-    @Override
-    public void wPress() {
-
-    }
-
-    @Override
-    public void ePress() {
-
-    }
-
-    @Override
-    public void rPress() {
-
-    }
-
-    @Override
-    public void vPress() {
-
-    }
-
-    @Override
     public String getGoalString(){
         if(planner == null){
             return "no goal";
@@ -173,5 +149,10 @@ public class Mate extends Mob {
     @Override
     public void refresh() {
 
+    }
+
+    @Override
+    public void input(int i, char c) {
+        // TODO
     }
 }

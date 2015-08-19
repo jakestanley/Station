@@ -2,9 +2,11 @@ package main;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 import guicomponents.dialogs.Dialog_CreateRoom;
+import io.Inputtable;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
@@ -16,7 +18,7 @@ import java.util.Iterator;
 /**
  * Created by stanners on 22/05/2015.
  */
-public class Room implements Interactable { // TODO make abstract
+public class Room implements Interactable, Inputtable { // TODO make abstract
 
     public static final float MAX_OXYGEN = 100;
     public static final float MAX_INTEGRITY = 100; // TODO crew members have the job of repairing integrity
@@ -255,31 +257,6 @@ public class Room implements Interactable { // TODO make abstract
             y = y + Display.TEXT_SPACING;
         }
 
-    }
-
-    @Override
-    public void qPress() { // ON Q PRESS, TOGGLE PURGING
-        togglePurge();
-    }
-
-    @Override
-    public void wPress() {
-        toggleEvacuate(); // the alarm
-    }
-
-    @Override
-    public void ePress() {
-        decreaseRepairPriority();
-    }
-
-    @Override
-    public void rPress() {
-        increaseRepairPriority();
-    }
-
-    @Override
-    public void vPress() {
-        toggleSupport(); // TODO RECONSIDER naming here
     }
 
     private void togglePurge(){
@@ -531,4 +508,26 @@ public class Room implements Interactable { // TODO make abstract
 
     }
 
+    @Override
+    public void input(int i, char c) {
+        switch (i) {
+            case Input.KEY_Q:
+                togglePurge();
+                break;
+            case Input.KEY_W:
+                toggleEvacuate(); // the alarm
+                break;
+            case Input.KEY_E:
+                decreaseRepairPriority();
+                break;
+            case Input.KEY_R:
+                increaseRepairPriority();
+                break;
+            case Input.KEY_V:
+                toggleSupport(); // TODO RECONSIDER naming here
+                break;
+            default:
+                break;
+        }
+    }
 }

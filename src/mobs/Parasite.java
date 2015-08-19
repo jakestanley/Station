@@ -120,29 +120,4 @@ public class Parasite extends Mob {
         return false;
     }
 
-    @Override
-    public void qPress() {
-
-    }
-
-    @Override
-    public void wPress() {
-
-    }
-
-    @Override
-    public void ePress() {
-
-    }
-
-    @Override
-    public void rPress() {
-
-    }
-
-    @Override
-    public void vPress() {
-
-    }
-
 }

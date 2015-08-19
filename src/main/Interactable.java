@@ -20,14 +20,4 @@ public interface Interactable {
 
     public void renderDataBox(Graphics screen);
 
-    public void qPress();
-
-    public void wPress();
-
-    public void ePress();
-
-    public void rPress();
-
-    public void vPress();
-
 }

@@ -1,7 +1,9 @@
 package main;
 
+import io.Inputtable;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.Iterator;
 /**
  * Created by stanners on 24/05/2015.
  */
-public class Door extends Loopable implements Interactable {
+public class Door extends Loopable implements Interactable, Inputtable {
 
     // TODO CONSIDER how isLocked and isOpen work together in various conditions
 
@@ -117,60 +119,69 @@ public class Door extends Loopable implements Interactable {
         // generating strings for data box // TODO optimise so this only happens when necessary
         strings = new ArrayList<String>();
 
-        if(!destroyed){
-            strings.add("Integrity: " + integrity + "%");
-        } else {
-            strings.add("Integrity: DESTROYED");
-        }
+        if(enabled){
+            if(!destroyed){
+                strings.add("Integrity: " + integrity + "%");
+            } else {
+                strings.add("Integrity: DESTROYED");
+            }
 
-        // get strings
-        if(open){
-            strings.add("Status: OPEN");
-        } else {
-            strings.add("Status: CLOSED");
-        }
+            // get strings
+            if(open){
+                strings.add("Status: OPEN");
+            } else {
+                strings.add("Status: CLOSED");
+            }
 
-        if(locked){
-            strings.add("Lock: LOCKED");
-        } else {
-            strings.add("Lock: UNLOCKED");
-        }
+            if(locked){
+                strings.add("Lock: LOCKED");
+            } else {
+                strings.add("Lock: UNLOCKED");
+            }
 
-        if(bulkhead){
-            strings.add("Bulkhead: ENGAGED");
-        } else {
-            strings.add("Bulkhead: READY");
+            if(bulkhead){
+                strings.add("Bulkhead: ENGAGED");
+            } else {
+                strings.add("Bulkhead: READY");
+            }
         }
     }
 
     @Override
     public void update(){
-        autoClose();
+        if(enabled){
+            autoClose();
+        }
     }
 
     public boolean isOpen(){
-        if(destroyed){
-            return true;
-        } else {
-            return open;
+        if(enabled){
+            if(destroyed){
+                return true;
+            } else {
+                return open;
+            }
         }
+        return false;
     }
 
     public boolean isLocked(){
         return locked;
     }
 
-    public void toggle(){
-        open = !open;
-        if(open){
-            timer = DOOR_TIMER;
-        } else {
-            timer = 0;
+    public void toggle() {
+        if (enabled){
+            open = !open;
+            if (open) {
+                timer = DOOR_TIMER;
+            } else {
+                timer = 0;
+            }
         }
     }
 
     private void autoClose(){
-        if(!locked){
+        if(!locked && enabled){
             if(timer == 0 && open){
                 open = false;
             }
@@ -240,31 +251,6 @@ public class Door extends Loopable implements Interactable {
         return enabled;
     }
 
-    @Override
-    public void qPress() {
-        openLock();
-    }
-
-    @Override
-    public void wPress() {
-        closeLock();
-    }
-
-    @Override
-    public void ePress() {
-        resetLock();
-    }
-
-    @Override
-    public void rPress() {
-        engageBulkhead(); // permanently locks door and doubles security. useful in some cases, but could be harmful to crew and others
-    }
-
-    @Override
-    public void vPress() {
-        // TODO something with this
-    }
-
     public void damage(){ // TODO possibly another way
         // TODO more functionality
         if(integrity == 0){
@@ -275,17 +261,21 @@ public class Door extends Loopable implements Interactable {
     }
 
     private void openLock(){
-        if(!bulkhead){
-            open = true;
-            locked = true;
-            timer = 0;
+        if(enabled){
+            if(!bulkhead){
+                open = true;
+                locked = true;
+                timer = 0;
+            }
         }
     }
 
     private void closeLock(){
-        open = false;
-        locked = true;
-        timer = 0;
+        if(enabled){
+            open = false;
+            locked = true;
+            timer = 0;
+        }
     }
 
     private void resetLock(){
@@ -296,11 +286,36 @@ public class Door extends Loopable implements Interactable {
     }
 
     private void engageBulkhead(){ // TODO bulkhead engage animation
-        if(!bulkhead){
-            integrity = integrity + BULKHEAD_STRENGTH;
-            bulkhead = true;
+        if(enabled){
+            if(!bulkhead){
+                integrity = integrity + BULKHEAD_STRENGTH;
+                bulkhead = true;
+            }
+            closeLock();
         }
-        closeLock();
     }
 
+    @Override
+    public void input(int i, char c) {
+        switch (i) {
+            case Input.KEY_Q:
+                openLock();
+                break;
+            case Input.KEY_W:
+                closeLock();
+                break;
+            case Input.KEY_E:
+                resetLock();
+                break;
+            case Input.KEY_R:
+                engageBulkhead(); // permanently locks door and doubles security. useful in some cases, but could be harmful to crew and others
+                break;
+            case Input.KEY_V:
+                // TODO something else
+                break;
+            default:
+                break;
+        }
+
+    }
 }

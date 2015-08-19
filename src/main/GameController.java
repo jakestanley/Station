@@ -1,5 +1,6 @@
 package main;
 
+import io.InputController;
 import map.MouseController;
 import map.MapController;
 import mobs.MobController;
@@ -22,7 +23,7 @@ public class GameController extends BasicGame {
     public static boolean multiplayer = false;
 
     public static Random            random;
-    public static InputController   inputController;
+    public static InputController inputController;
     public static ContextController contextController;
     public static ViewController    viewController;
     public static GuiController     guiController;

@@ -247,6 +247,10 @@ public class MapController {
         hoverDoor = null;
     }
 
+    public Room getHoverRoom(){
+        return null;
+    }
+
     public boolean setHoverDoor(Point mousePoint){
         for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
             Door next = iterator.next();
