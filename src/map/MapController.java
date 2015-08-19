@@ -26,7 +26,9 @@ public class MapController {
     private ArrayList<Point> base;
     private ArrayList<Functional> functionals;
 
+    // hover components
     private Door hoverDoor;
+    private Room hoverRoom;
 
     // Room creation
     private ArrayList<Point> dragSelection;
@@ -47,9 +49,8 @@ public class MapController {
         doors = new ArrayList<Door>();
         functionals = new ArrayList<Functional>();
         selection = new ArrayList<Point>();
-
         hoverDoor = null;
-
+        hoverRoom = null;
 
 //        initialiseTestFunctionals(); // TODO
 
@@ -247,8 +248,20 @@ public class MapController {
         hoverDoor = null;
     }
 
+    public boolean setHoverRoom(Point mousePoint){ // TODO tidy up and optimise
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            if(next.mouseOver(mousePoint)){
+                System.out.println("set hover room");
+                hoverRoom = next;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Room getHoverRoom(){
-        return null;
+        return hoverRoom;
     }
 
     public boolean setHoverDoor(Point mousePoint){

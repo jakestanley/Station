@@ -51,7 +51,7 @@ public class GameController extends BasicGame {
 
         // Initialise controllers
         inputController     = new InputController();
-        contextController   = new ContextController(ContextController.CONSTRUCTION);
+        contextController   = new ContextController(ContextController.CONSTRUCTION); // TODO change to generic after adding context buttons
         viewController      = new ViewController();
         mapController       = new MapController("the_tortuga.csv");
         mobController       = new MobController();
@@ -81,6 +81,7 @@ public class GameController extends BasicGame {
         // sort the input controller out
         Input input = gameContainer.getInput();
         input.addKeyListener(inputController);
+        input.addMouseListener(mouseController);
         inputController.setInput(input);
 
         // post construction initialisation

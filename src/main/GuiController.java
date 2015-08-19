@@ -1,6 +1,7 @@
 package main;
 
 import guicomponents.*;
+import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
@@ -23,6 +24,11 @@ public class GuiController {
     private MobsBox             mobsBox;
     private MessageBox          messageBox;
 
+    // Accessed objects
+    Door hoverDoor;
+    Room hoverRoom;
+    Mob hoverMob; // TODO re-implement
+
     // Components
     private ArrayList<GuiContainer> containers;
     private Stack<GuiComponent> focuses;
@@ -40,6 +46,11 @@ public class GuiController {
         infoBox     = new InfoBox();
         mobsBox     = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
         messageBox  = new MessageBox();
+
+        // initialise object points
+        Door hoverDoor = null;
+        Room hoverRoom = null;
+        Mob hoverMob = null;
 
         // add static gui elements to containers
         containers.add(hintsBox);
@@ -81,6 +92,29 @@ public class GuiController {
     }
 
     public void updateContent(){
+
+        // UPDATE HINT STRING AND RENDER BOXES
+        hint.setLength(0);
+//        if(shift){ // TODO check that it's cleared first.
+            hint.append(Values.Strings.CONTROLS_SHIFT_DOOR);
+//        } else {
+//            if(selection == ROOM_SELECTION){
+//                hint.append(Values.Strings.CONTROLS_ROOM);
+//                hoverRoom.populateDataBoxStrings();
+//            } else if(selection == DOOR_SELECTION){
+//                hint.append(Values.Strings.CONTROLS_DOOR);
+//                hoverDoor.populateDataBoxStrings();
+//            } else if(selection == NAUT_SELECTION){
+//                hint.append(Values.Strings.CONTROLS_NAUT);
+//                hoverMob.populateDataBoxStrings();
+//            } else if(selection == HOSTILE_SELECTION){
+//                hint.append(Values.Strings.CONTROLS_HOSTILE);
+//                hoverMob.populateDataBoxStrings();
+//            } else {
+//                hint.append(Values.Strings.HINTS_WILL_APPEAR); // TODO rename to all controls, or something
+//            }
+//        }
+
         for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
             GuiContainer next = iterator.next();
             if(next.isValid()){
@@ -98,6 +132,7 @@ public class GuiController {
             GuiContainer next =  iterator.next();
             next.render(screen);
         }
+        renderComponentsData(screen); // TODO come up with a better way to do this
     }
 
     public TrueTypeFont getFont(){
@@ -125,29 +160,18 @@ public class GuiController {
     private void renderComponentsData(Graphics screen){ // TODO remove, incorporate, or break off into something else
 
 //        // DRAW STRINGS
-//        screen.setColor(Colours.GUI_TEXT);
+        screen.setColor(Colours.GUI_TEXT);
 //
+
+
 //        // DRAW HOVER DOOR INFORMATION
-//        if(hoverDoor != null){ // render hover door hover box
-//            hoverDoor.renderDataBox(screen); // TODO move this into update, get hover stuff from gamecontroller or something
-//        } else if(hoverRoom != null){
-//            hoverRoom.renderDataBox(screen);
-//        } else if(hoverMob != null){
-//            hoverMob.renderDataBox(screen);;
-//        }
-
-    }
-
-    private void renderHoverBoxes(Graphics screen){ // TODO tidy, etc
-
-//        // DRAW HOVER BOXES
-//        if(hoverDoor != null){ // render hover door hover box
-//            hoverDoor.renderHoverBox(screen);
-//        } else if(hoverRoom != null){
-////            hoverRoom.renderHoverBox(screen, map.getViewOffsetX(), map.getViewOffsetY());
-//        } else if(hoverMob != null){
-//            hoverMob.renderHoverBox(screen);
-//        }
+        if(hoverDoor != null){ // render hover door hover box
+            hoverDoor.renderDataBox(screen); // TODO move this into update, get hover stuff from gamecontroller or something
+        } else if(hoverRoom != null){
+            hoverRoom.renderDataBox(screen);
+        } else if(hoverMob != null){
+            hoverMob.renderDataBox(screen);;
+        }
 
     }
 

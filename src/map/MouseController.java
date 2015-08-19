@@ -8,6 +8,8 @@ import main.Display;
 import main.Game;
 import main.GameController;
 import org.lwjgl.Sys;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.MouseListener;
 import resources.Converter;
 
 import java.awt.*;
@@ -15,7 +17,7 @@ import java.awt.*;
 /**
  * Created by stanners on 26/07/2015.
  */
-public class MouseController {
+public class MouseController implements MouseListener { // TODO improve and abstract
 
     private boolean dragMode;
     private Point clickPoint, hoverPoint;
@@ -24,13 +26,26 @@ public class MouseController {
         dragMode = false;
     } // TODO check context
 
+    public void setMousePoint(Point mousePoint){
+
+        // Clear map hover objects
+        GameController.mapController.clearHoverObjects();
+
+        if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.CONSTRUCTION)){
+
+            if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set
+
+            } else if(dragMode){
+                hoverPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
+                GameController.mapController.setDragSelection(clickPoint, hoverPoint);
+            }
+        }
+    }
+
     public void setClickPoint(Point mousePoint){
 
         ContextController cc    = GameController.contextController;
-        MapController mc        = GameController.mapController;
-
-        // Clear map hover objects
-        mc.clearHoverObjects();
+        MapController mc = GameController.mapController;
 
         // Get focus and click it if it exists
         GuiComponent focus = GameController.guiController.getFocus(); // TODO make less bad
@@ -57,21 +72,7 @@ public class MouseController {
 
     }
 
-    public void setHoverPoint(Point mousePoint){
 
-        // Clear map hover objects
-        GameController.mapController.clearHoverObjects();
-
-        if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.CONSTRUCTION)){
-
-            if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set
-
-            } else if(dragMode){
-                hoverPoint = Converter.mouseToTile(mousePoint, Converter.OFFSET_ADDED);
-                GameController.mapController.setDragSelection(clickPoint, hoverPoint);
-            }
-        }
-    }
 
     public void setMouseRelease() { // TODO CONSIDER MouseController ?
         if(dragMode){
@@ -94,4 +95,66 @@ public class MouseController {
         return false;
     }
 
+    @Override
+    public void mouseWheelMoved(int i) {
+
+    }
+
+    @Override
+    public void mouseClicked(int i, int i1, int i2, int i3) {
+
+    }
+
+    @Override
+    public void mousePressed(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseReleased(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseMoved(int i, int i1, int newX, int newY) {
+
+        System.out.println("mouse moved");
+        Point mousePoint = new Point(newX, newY);
+
+
+        // TODO make sure that we're in game context (i.e not a menu)
+
+
+
+        // Clear map hover objects
+        GameController.mapController.clearHoverObjects();
+        GameController.mapController.setHoverDoor(mousePoint);
+        GameController.mapController.setHoverRoom(mousePoint);
+
+    }
+
+    @Override
+    public void mouseDragged(int oldX, int oldY, int newX, int newY) {
+//        System.out.println("mouse dragged: [" + oldX + ", " + oldY + "] to [" + newX + ", " + newY + "]"); // doesn't work in a helpful way
+    }
+
+    @Override
+    public void setInput(Input input) {
+
+    }
+
+    @Override
+    public boolean isAcceptingInput() {
+        return true;
+    }
+
+    @Override
+    public void inputEnded() {
+
+    }
+
+    @Override
+    public void inputStarted() {
+
+    }
 }

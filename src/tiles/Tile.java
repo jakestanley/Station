@@ -1,8 +1,6 @@
 package tiles;
 
-import main.Display;
-import main.Game;
-import main.Room;
+import main.*;
 
 import java.awt.*;
 
@@ -39,8 +37,10 @@ public class Tile {
 
     public boolean mouseOver(int mouseX, int mouseY){
 
-        int vx = this.x * Display.TILE_WIDTH + (Game.vc.getViewOffsetX() * Display.TILE_WIDTH);
-        int vy = this.y * Display.TILE_WIDTH + (Game.vc.getViewOffsetY() * Display.TILE_WIDTH);
+        ViewController vc = GameController.viewController;
+
+        int vx = this.x * Display.TILE_WIDTH + (vc.getViewOffsetX() * Display.TILE_WIDTH);
+        int vy = this.y * Display.TILE_WIDTH + (vc.getViewOffsetY() * Display.TILE_WIDTH);
 
         if((mouseX >= vx) && (mouseX <= (vx + Display.TILE_WIDTH)) && (mouseY >= vy) && (mouseY <= (vy + Display.TILE_WIDTH))){
             return true;

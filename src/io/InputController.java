@@ -1,13 +1,10 @@
 package io;
 
 import guicomponents.*;
-import guicomponents.Dialog;
 import guicomponents.dialogs.Dialog_CreateRoom;
-import guicomponents.widgets.*;
 import guicomponents.widgets.TextField;
 import main.*;
 import map.MapController;
-import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
@@ -20,7 +17,7 @@ import java.awt.*;
  */
 public class InputController implements KeyListener {
 
-    private boolean leftMouseHeld = false; // TODO consider making this un-static
+    private boolean leftMouseHeld = false; // TODO consider making this un-static TODO CONSIDER removing
 
     public InputController(){
 
@@ -101,7 +98,7 @@ public class InputController implements KeyListener {
             }
         }
 
-        GameController.mouseController.setHoverPoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
+        GameController.mouseController.setMousePoint(new Point(input.getMouseX(), input.getMouseY())); // TODO use this in more places
     }
 
     @Override
@@ -167,12 +164,10 @@ public class InputController implements KeyListener {
 
         // PROCESS DOOR CONTROLS
         Door door = GameController.mapController.getHoverDoor();
+        Room room = GameController.mapController.getHoverRoom(); // TODO
         if(door != null){
             door.input(i, c);
-        }
-
-        Room room = GameController.mapController.getHoverRoom(); // TODO
-        if(room != null){
+        } else if(room != null){ // Only operate room controls if a door isn't selected
             room.input(i, c);
         }
 
