@@ -4,7 +4,6 @@ import actions.Move;
 import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
 import main.Door;
-import main.Game;
 import main.GameController;
 import main.Room;
 import mobs.Mob;
@@ -24,7 +23,7 @@ public class Evacuate extends Planner {
 
     @Override
     public void calculate() throws ImpossibleGoal { // TODO ensure always moves to closest possible room
-        ArrayList<Room> rooms = Game.map.getRooms();
+        ArrayList<Room> rooms = GameController.mapController.getRooms();
         ArrayList<Point> path = null;
         loop:
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
