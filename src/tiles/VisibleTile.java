@@ -50,6 +50,26 @@ public class VisibleTile extends Tile {
 
     }
 
+    public VisibleTile(int x, int y, Room room, Color color){ // TODO tidy up big time
+        super(x,y,room); // TODO
+
+        this.isVoid = false;
+        this.backgroundColour = color;
+        this.backgroundColourNormal = color;
+        this.health = MAX_HEALTH;
+
+        try { // TODO clean up. move this crap into an image loader class or something that gets called in init.
+            image = new Image("res/img/tiles/floor.png");
+        } catch (SlickException e){
+            System.err.println("Failed to load image");
+            e.printStackTrace();
+            System.exit(Game.EXIT_BAD);
+        }
+
+//        setColours();
+
+    }
+
     private void setColours(){
         if(Values.Types.BRIDGE == type){ // TODO make this better
             backgroundColour = Colours.Tiles.BG_BRIDGE;
@@ -93,7 +113,7 @@ public class VisibleTile extends Tile {
         int drawX = this.x * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetX() * Display.TILE_WIDTH);
         int drawY = this.y * Display.TILE_WIDTH + (GameController.viewController.getViewOffsetY() * Display.TILE_WIDTH);
 
-        if(image != null && !GameController.debug){
+        if(image != null && !Game.debug){
             image.draw(drawX, drawY);
         } else {
 

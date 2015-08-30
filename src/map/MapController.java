@@ -10,6 +10,7 @@ import tiles.VisibleTile;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Don't let this controller get really messy.
@@ -77,9 +78,45 @@ public class MapController {
     }
 
     public void createRoom(ArrayList<Point> points, boolean force){
-        Room room = new Room(points, force);
-        room.init();
-        rooms.add(room);
+
+        // get rooms affected by the creation of this room
+        List<Room> affectedRooms = getAffectedRooms(points);
+
+        // remove any points from the previous rooms
+        for (Iterator<Room> iterator = affectedRooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            next.disownPoints(points);
+        }
+
+        // create the new room
+        Room firstNewRoom = new Room(points, force);
+        firstNewRoom.init(); // TODO POTENTIAL BUG check these variable name usages
+        rooms.add(firstNewRoom);
+
+        // remove any rooms that now contain no tiles // TODO CONSIDER should this go before new room initialisation? i dunno...
+        cleanupRooms();
+
+        // split existing rooms and create new ones
+        for(int i = 0; i < affectedRooms.size(); i++){
+
+            // get disowned points and remove them from the old room
+            Room oldRoom = affectedRooms.get(i);
+            affectedRooms.remove(i);
+            List<Point> disownedPoints = oldRoom.getDisownedPoints();
+            oldRoom.disownPoints(disownedPoints);
+
+            // create a new (affected) room from the disowned points
+            if(disownedPoints.size() > 0){
+                Room nextNewRoom = new Room(disownedPoints, force);
+                nextNewRoom.init();
+                rooms.add(nextNewRoom);
+                affectedRooms.add(nextNewRoom);
+            }
+
+        }
+
+        // TODO updates to any other entities
+
         generateDoors(); // wat
 //        clearDoors(); // TODO properly. consider making this into a thing that updates walls and doors?
     }
@@ -121,6 +158,15 @@ public class MapController {
         int y = (int) point.getY();
         tiles[x][y] = new Tile(x, y);
 
+    }
+
+    private void cleanupRooms(){
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            if (next.size() < 1){
+                iterator.remove();
+            }
+        }
     }
 
 //    public Room createRoom(ArrayList<Point> points, boolean useVoid){ // TODO need more variables // TODO remove a room if it no longer has any tiles in update method
@@ -338,6 +384,22 @@ public class MapController {
         }
     }
 
+    public List<Room> getAffectedRooms(ArrayList<Point> points){
+
+        List<Room> affectedRooms = new ArrayList<Room>();
+
+        for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            Room room = getRoom(next);
+            if(!affectedRooms.contains(room) && room != null){
+                affectedRooms.add(room);
+            }
+        }
+
+        return affectedRooms;
+
+    }
+
     public ArrayList<Point> getTraversiblePath(Point start, Room end){ // less time allowed for this search
         System.out.println("Get traversible path called");
 
@@ -531,4 +593,7 @@ public class MapController {
         selection = new ArrayList<Point>();
     }
 
+    public void renderRoomData(Graphics screen) {
+        screen.drawString("rooms: " + rooms.size(), 20, 20);
+    }
 }

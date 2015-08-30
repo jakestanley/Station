@@ -14,6 +14,7 @@ import tiles.VisibleTile;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stanners on 22/05/2015.
@@ -33,7 +34,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
 
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
-    protected ArrayList<Point> points;
+    protected List<Point> points;
     private int x;
     private int y;
 
@@ -47,8 +48,9 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     protected String name;
 
     protected ArrayList<String> strings;
+    private List<Point> disownedPoints;
 
-    public Room(ArrayList<Point> points, boolean force){ // TODO , int type
+    public Room(List<Point> points, boolean force){ // TODO , int type
         this.points = points;
         this.integrity = MAX_INTEGRITY;
         this.oxygen = MAX_OXYGEN;
@@ -60,10 +62,11 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     }
 
     private void initialiseTiles(){
+        Color roomColour = new Color(GameController.random.nextInt(255), GameController.random.nextInt(255), GameController.random.nextInt(255));
         for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
             if(!GameController.mapController.getTile(next).isVoid() || force){
-                GameController.mapController.putTile(next, new VisibleTile((int) next.getX(), (int) next.getY(), this, Values.Types.BRIDGE)); // TODO properly
+                GameController.mapController.putTile(next, new VisibleTile((int) next.getX(), (int) next.getY(), this, roomColour)); // TODO properly
             }
         }
     }
@@ -117,6 +120,19 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
 
     public void select(){ // TODO tidy this up
         this.selected = true;
+    }
+
+    public int size(){
+        return points.size();
+    }
+
+    public void disownPoints(List<Point> points){
+        for (Iterator<Point> iterator = this.points.iterator(); iterator.hasNext(); ) {
+            Point next =  iterator.next();
+            if(next != null && points != null && points.contains(next)){ // TODO long term fix haha
+                iterator.remove();
+            }
+        }
     }
 
     public void updateFrame(){
@@ -326,7 +342,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         return GameController.mapController.getTile(points.get(GameController.random.nextInt(points.size())));
     }
 
-    public ArrayList<Point> getPoints(){
+    public List<Point> getPoints(){
         return points;
     }
 
@@ -529,5 +545,56 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
             default:
                 break;
         }
+    }
+
+    public List<Point> getDisownedPoints() {
+
+        // initialise a to do list
+        List<Point> todoPoints = new ArrayList<Point>();
+
+        // make a list of the unexplored points
+        List<Point> unexploredPoints = new ArrayList<Point>();
+        unexploredPoints.addAll(points);
+
+        // make sure there are actually points left in the list
+        if(unexploredPoints.size() > 0){
+
+            todoPoints.add(unexploredPoints.get(0));
+            unexploredPoints.remove(0);
+
+            // while there are points left to explore
+            while(!todoPoints.isEmpty()){
+
+                Point point = todoPoints.get(0);
+                todoPoints.remove(0);
+
+                // get values of currently analysing point
+                int pX = (int) point.getX();
+                int pY = (int) point.getY();
+
+                // iterate through unexplored points getting
+                for (Iterator<Point> iterator = unexploredPoints.iterator(); iterator.hasNext(); ) {
+                    Point next = iterator.next();
+
+                    int nX = (int) next.getX();
+                    int nY = (int) next.getY();
+
+                    // if next point is adjacent, remove it from the unexplored points and add it to the to do list
+                    if( (Math.abs(pX - nX) == 1 && nY == pY ) || (Math.abs(pY - nY) == 1 && nX == pX) ){
+                        if(!todoPoints.contains(next)){
+                            todoPoints.add(next);
+                            iterator.remove();
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+        // remaining unexplored points will be the disowned points
+        return unexploredPoints;
+
     }
 }

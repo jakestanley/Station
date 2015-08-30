@@ -4,6 +4,7 @@ import io.InputController;
 import map.MouseController;
 import map.MapController;
 import mobs.MobController;
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 import java.util.Random;
@@ -136,6 +137,11 @@ public class GameController extends BasicGame {
         mapController.renderHoverBoxes(screen);
 
         guiController.render(screen);
+
+        // render debug text
+        if(Game.debug){
+            mapController.renderRoomData(screen);
+        }
 
     }
 

@@ -366,9 +366,9 @@ public class Game extends BasicGame {
 
         for(int i = 0; i < args.length; i++){
             if(args[i].equalsIgnoreCase("-debug")){
-                debug = true;
+                Game.debug = true;
             } else if(args[i].equalsIgnoreCase("-mobsOff")){
-                disableMobs = true;
+//                Game.disableMobs = true; // TODO fix
             }
         }
 
