@@ -408,99 +408,71 @@ public class MapController {
 
     }
 
-    public ArrayList<Point> getTraversiblePath(Point start, Point end){ // less time allowed for this search
-        System.out.println("Get traversible path called");
+    public List<Point> getTraversiblePath(Point start, Point end){ // less time allowed for this search
 
-        int timeout = Values.SEARCH_TIME_LIMIT + 100; // TODO put somewhere more semantic
+        List<List<Point>> routes = new ArrayList<List<Point>>();
+        List<Point> explored = new ArrayList<Point>();
 
-        ArrayList<ArrayList<Point>> paths = new ArrayList<ArrayList<Point>>();
+        // add initial route
+        List<Point> route = new ArrayList<Point>();
+        route.add(start);
+        routes.add(route);
 
-        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + " [" + end.getX() + ", " + end.getY() + "]");
+        noRoute: // break this loop when a route has been found
+        while(!routes.isEmpty()){
 
-        // initialise list of tiles explored this search
-        ArrayList<Point> explored = new ArrayList<Point>();
+            System.out.println("evaluating a route");
 
-        // initialise the list of routes to explore
-        ArrayList<ArrayList<Point>> potentialRoutes = new ArrayList<ArrayList<Point>>();
+            // get the currently analysing route and point
+            List<Point> currentRoute = routes.get(0);
+            Point currentPoint = currentRoute.get(currentRoute.size() - 1);
 
-        // make route and add this tile to it
-        ArrayList<Point> firstRoute = new ArrayList<Point>();
-        firstRoute.add(start);
-
-        // add this route to the potential routes list (the to do list)
-        potentialRoutes.add(firstRoute);
-
-        boolean routeFound = false;
-        long startTime = System.currentTimeMillis(); // get the time
-        long currentTime = startTime;
-
-        // iterate through the routes trying to find a path
-        int potentialRoutesSize = potentialRoutes.size();
-        for(int i = 0; i < potentialRoutesSize && !routeFound && ((currentTime - startTime) < timeout) ; i++){ // added 100ms arbitrary time limit to searches. may experience issues with this though
-//                System.out.println("Analysing new route");
-//            for (Iterator<ArrayList<Tile>> tileIterator = potentialRoutes.iterator(); tileIterator.hasNext() && !routeFound; ) {
-            ArrayList<Point> route = potentialRoutes.get(i);
-
-            // get the last tile from the currently analysing route and add it to the explored list
-            Point lastTile = route.get(route.size() - 1); // TODO rename variable
-            explored.add(lastTile);
-
-            // get neighbour tiles
-            List<Point> potentialTiles = getAdjacentPoints(lastTile);
-
-            // iterate through the potential tiles
-            for (Iterator<Point> pti = potentialTiles.iterator(); pti.hasNext(); ) {
-                currentTime = System.currentTimeMillis();
-                Point nextTile = pti.next();
-//                    System.out.println("Analysing [" + nextTile.getX() + ", " + nextTile.getY() + "]");
-
-                // if the next tile hasn't been explored
-                if(!explored.contains(nextTile)){ // TODO TILE TRAVERSAL STATIC CLASS - yes
-
-                    // build a new route // TODO CONSIDER is this inefficient if the route is likely to be discarded now?
-                    ArrayList<Point> nextPotentialRoute = new ArrayList<Point>();
-                    nextPotentialRoute.addAll(route); // add all tiles from currently analysing route
-                    nextPotentialRoute.add(nextTile); // add the next tile to that route
-
-                    // if next tile is a an end tile, add to path and mark as route found
-
-                    Door door = GameController.mapController.getDoor(lastTile, nextTile);
-
-                    if(nextTile.equals(end)){
-                        paths.add(nextPotentialRoute);
-                        routeFound = true;
-                    } else if(!getTile(nextTile).isVoid() && door != null && door.isEnabled() && !door.isLocked()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
-                        potentialRoutes.add(nextPotentialRoute);
-                        potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
-                    }
-
-                }
-
-            }
-
-        }
-
-        // return the shortest path
-        if(paths.isEmpty()){
-            System.out.println("Could not find a path in reasonable time");
-            return new ArrayList<Point>(); // return empty array list // TODO optimise
-        } else {
-            ArrayList<Point> shortestPath = null;
-            int shortestPathSize = 0;
-            for (Iterator<ArrayList<Point>> iterator = paths.iterator(); iterator.hasNext(); ) {
-                ArrayList<Point> path = iterator.next();
-                if(shortestPath == null){
-                    shortestPath = path;
-                    shortestPathSize = path.size();
-                } else {
-                    if(path.size() < shortestPathSize){ // OPTIMISE
-                        shortestPath = path;
-                        shortestPathSize = path.size();
+            // explore this node and add it to the list of explored nodes when done
+            if(!listContainsPoint(explored, currentPoint)){
+                explored.add(currentPoint);
+                List<Point> adjacentPoints = getAdjacentPoints(currentPoint); // get the adjacent points
+                for (Iterator<Point> iterator = adjacentPoints.iterator(); iterator.hasNext(); ) {
+                    Point next = iterator.next();
+                    // if these points can be traversed and the point has not been explored, add a route
+                    if(pointsAreTraversible(currentPoint, next) && !listContainsPoint(explored, next)){
+                        List<Point> newRoute = new ArrayList<Point>();
+                        newRoute.addAll(currentRoute);
+                        newRoute.add(next);
+                        routes.add(newRoute);
                     }
                 }
             }
-            return shortestPath;
+
+            if(currentPoint.equals(end)){
+                return currentRoute;
+            }
+
+            routes.remove(0);
+
         }
+
+        return null; // TODO replace
+
+    }
+
+    private boolean pointsAreTraversible(Point a, Point b){ // TODO tidy up
+        Door door = getDoor(a, b);
+        if(door != null && !door.isTraversible()){
+            return false;
+        } else if(getTile(a).isVoid() || getTile(b).isVoid()){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean listContainsPoint(List<Point> list, Point point){
+        for (Iterator<Point> iterator = list.iterator(); iterator.hasNext(); ) {
+            Point next = iterator.next();
+            if(next.equals(point)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Point> getAdjacentPoints(Point point){
@@ -711,7 +683,7 @@ public class MapController {
         return false;
     }
 
-    public ArrayList<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 }
