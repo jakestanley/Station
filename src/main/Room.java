@@ -1,18 +1,13 @@
 package main;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-import guicomponents.dialogs.Dialog_CreateRoom;
 import io.Inputtable;
-import mobs.Mob;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import tiles.BorderTile;
 import tiles.Tile;
 import tiles.VisibleTile;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -80,35 +75,6 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         refillRate         = BASE_REFILL_RATE / points.size();
         consumptionRate    = BASE_CONSUMPTION_RATE / points.size();
     }
-
-//    public Room(int x, int y, int sx, int sy, int type){ // TODO room type
-//
-//        super(0, 0); // for now TODO reconsider
-//
-
-//
-//        priority = DEFAULT_PRIORITY;
-//
-
-////        System.out.println("Consumption rate: " + consumptionRate);
-//
-//        this.type = type;
-//
-//        // SET ROOM TYPE STRING
-//        if(Values.Types.CORRIDOR_X == type || Values.Types.CORRIDOR_Y == type){
-//            typeString = Values.Strings.rooms[Values.Types.CORRIDOR];
-//        } else {
-//            typeString = Values.Strings.rooms[type];
-//        }
-//
-//        try {
-//            generateTiles(sx, sy);
-//        } catch (CorridorDimensionsException e) { // TODO a bit drastic, but let's nip these errors in the bud early
-//            System.err.println("Failed to generate a room. Exiting");
-//            e.printStackTrace();
-//            System.exit(0);
-//        }
-//    }
 
     public void setName(String name){
         this.name = name;
@@ -185,6 +151,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         strings.add("Crew: " + GameController.mapController.getMobsInRoom(this).size()); // TODO
         strings.add("Oxygen: " + oxygen + "%");
         strings.add("Integrity: " + integrity + "%");
+        strings.add("Size: " + points.size());
 
         if(purge){
             strings.add("Purge: ON");
@@ -258,7 +225,6 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     }
 
     public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
-        System.out.println("renderDataBox called");
         // initialising variables
 //        int x = dbx;
 //        int y = dby;
