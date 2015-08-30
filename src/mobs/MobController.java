@@ -26,7 +26,7 @@ public class MobController {
 
     private void generateMobs(){
         // specify target crew count
-        int crewCount = 1;
+        int crewCount = 40;
 //        int hostileCount = 2;
 
         try {
