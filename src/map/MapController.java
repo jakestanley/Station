@@ -408,14 +408,14 @@ public class MapController {
 
     }
 
-    public ArrayList<Point> getTraversiblePath(Point start, Room end){ // less time allowed for this search
+    public ArrayList<Point> getTraversiblePath(Point start, Point end){ // less time allowed for this search
         System.out.println("Get traversible path called");
 
-        int timeout = Values.SEARCH_TIME_LIMIT; // TODO put somewhere more semantic
+        int timeout = Values.SEARCH_TIME_LIMIT + 100; // TODO put somewhere more semantic
 
         ArrayList<ArrayList<Point>> paths = new ArrayList<ArrayList<Point>>();
 
-//        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString());
+        System.out.println("Finding path from [" + start.getX() + ", " + start.getY() + "] to " + " [" + end.getX() + ", " + end.getY() + "]");
 
         // initialise list of tiles explored this search
         ArrayList<Point> explored = new ArrayList<Point>();
@@ -445,33 +445,8 @@ public class MapController {
             Point lastTile = route.get(route.size() - 1); // TODO rename variable
             explored.add(lastTile);
 
-            // get tile coordinates
-            int x = (int) lastTile.getX();
-            int y = (int) lastTile.getY();
-
-            // initialise tiles and put them in an arraylist
-            Point northTile = null, eastTile = null, southTile = null, westTile = null;
-            ArrayList<Point> potentialTiles = new ArrayList<Point>();
-
-            if(y > 0){
-                northTile = new Point(x, y-1);
-                potentialTiles.add(northTile);
-            }
-
-            if(y < Game.map.getHeight()-1){
-                southTile = new Point(x, y+1);
-                potentialTiles.add(southTile);
-            }
-
-            if(x > 0){
-                westTile = new Point(x-1, y);
-                potentialTiles.add(westTile);
-            }
-
-            if(x < Game.map.getWidth()-1){
-                eastTile = new Point(x+1, y);
-                potentialTiles.add(eastTile);
-            }
+            // get neighbour tiles
+            List<Point> potentialTiles = getAdjacentPoints(lastTile);
 
             // iterate through the potential tiles
             for (Iterator<Point> pti = potentialTiles.iterator(); pti.hasNext(); ) {
@@ -480,7 +455,7 @@ public class MapController {
 //                    System.out.println("Analysing [" + nextTile.getX() + ", " + nextTile.getY() + "]");
 
                 // if the next tile hasn't been explored
-                if(!explored.contains(nextTile)){ // TODO TILE TRAVERSER STATIC CLASS
+                if(!explored.contains(nextTile)){ // TODO TILE TRAVERSAL STATIC CLASS - yes
 
                     // build a new route // TODO CONSIDER is this inefficient if the route is likely to be discarded now?
                     ArrayList<Point> nextPotentialRoute = new ArrayList<Point>();
@@ -489,10 +464,12 @@ public class MapController {
 
                     // if next tile is a an end tile, add to path and mark as route found
 
-                    if(end.hasPoint(nextTile)){
+                    Door door = GameController.mapController.getDoor(lastTile, nextTile);
+
+                    if(nextTile.equals(end)){
                         paths.add(nextPotentialRoute);
                         routeFound = true;
-                    } else if(!getTile(nextTile).isVoid()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
+                    } else if(!getTile(nextTile).isVoid() && door != null && door.isEnabled() && !door.isLocked()) { // if the next tile is traversible, add to potential routes. // TODO check there is a door if so
                         potentialRoutes.add(nextPotentialRoute);
                         potentialRoutesSize = potentialRoutes.size(); // recalculate the size for the loop
                     }
@@ -505,7 +482,7 @@ public class MapController {
 
         // return the shortest path
         if(paths.isEmpty()){
-            System.out.println("Could not find a path from [" + start.getX() + ", " + start.getY() + "] to " + end.getTypeString() + " in reasonable time");
+            System.out.println("Could not find a path in reasonable time");
             return new ArrayList<Point>(); // return empty array list // TODO optimise
         } else {
             ArrayList<Point> shortestPath = null;
@@ -524,6 +501,42 @@ public class MapController {
             }
             return shortestPath;
         }
+    }
+
+    public List<Point> getAdjacentPoints(Point point){
+
+        // initialise ints for point comparison
+        int x = (int) point.getX();
+        int y = (int) point.getY();
+
+        // initialise points list
+        List<Point> adjacentPoints = new ArrayList<Point>();
+
+        // initialise points
+        Point northTile = null, eastTile = null, southTile = null, westTile = null;
+
+        if(y > 0){
+            northTile = new Point(x, y-1);
+            adjacentPoints.add(northTile);
+        }
+
+        if(y < GameController.mapController.getHeight()-1){
+            southTile = new Point(x, y+1);
+            adjacentPoints.add(southTile);
+        }
+
+        if(x > 0){
+            westTile = new Point(x-1, y);
+            adjacentPoints.add(westTile);
+        }
+
+        if(x < GameController.mapController.getWidth()-1){
+            eastTile = new Point(x+1, y);
+            adjacentPoints.add(eastTile);
+        }
+
+        return adjacentPoints;
+
     }
 
     /**

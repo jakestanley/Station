@@ -29,7 +29,7 @@ public class Evacuate extends Planner {
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             if(!next.isEvacuate()){
-                path = GameController.mapController.getTraversiblePath(mob.getPoint(), next); // TODO expand in here to include non locked doors
+                path = GameController.mapController.getTraversiblePath(mob.getPoint(), next.getRandomTile().getPoint()); // TODO expand in here to include non locked doors
                 break loop;
             }
         }
