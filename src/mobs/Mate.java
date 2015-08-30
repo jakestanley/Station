@@ -107,7 +107,7 @@ public class Mate extends Mob implements Inputtable {
         } catch (ImpossibleGoal impossibleGoal) {
 //            System.err.println("Caught impossible goal exception"); // TODO comment back in
         } catch (NullPointerException nullPointerException){
-            System.out.println("No action available for " + name);
+//            System.out.println("No action available for " + name);
         }
 
     }

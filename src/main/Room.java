@@ -4,6 +4,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import guicomponents.dialogs.Dialog_CreateRoom;
 import io.Inputtable;
 import mobs.Mob;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -127,6 +128,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     }
 
     public void disownPoints(List<Point> points){
+        System.out.println("disowning " + points.size() + " points");
         for (Iterator<Point> iterator = this.points.iterator(); iterator.hasNext(); ) {
             Point next =  iterator.next();
             if(next != null && points != null && points.contains(next)){ // TODO long term fix haha

@@ -118,7 +118,6 @@ public class MouseController implements MouseListener { // TODO improve and abst
     @Override
     public void mouseMoved(int i, int i1, int newX, int newY) {
 
-        System.out.println("mouse moved");
         Point mousePoint = new Point(newX, newY);
 
 

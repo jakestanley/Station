@@ -81,6 +81,7 @@ public class MapController {
 
         // get rooms affected by the creation of this room
         List<Room> affectedRooms = getAffectedRooms(points);
+        System.out.println("affected rooms: " + affectedRooms.size());
 
         // remove any points from the previous rooms
         for (Iterator<Room> iterator = affectedRooms.iterator(); iterator.hasNext(); ) {
@@ -93,15 +94,12 @@ public class MapController {
         firstNewRoom.init(); // TODO POTENTIAL BUG check these variable name usages
         rooms.add(firstNewRoom);
 
-        // remove any rooms that now contain no tiles // TODO CONSIDER should this go before new room initialisation? i dunno...
-        cleanupRooms();
-
         // split existing rooms and create new ones
-        for(int i = 0; i < affectedRooms.size(); i++){
+        while(!affectedRooms.isEmpty()){
 
             // get disowned points and remove them from the old room
-            Room oldRoom = affectedRooms.get(i);
-            affectedRooms.remove(i);
+            Room oldRoom = affectedRooms.get(0);
+            affectedRooms.remove(0);
             List<Point> disownedPoints = oldRoom.getDisownedPoints();
             oldRoom.disownPoints(disownedPoints);
 
@@ -116,6 +114,9 @@ public class MapController {
         }
 
         // TODO updates to any other entities
+
+        // remove any rooms that now contain no tiles // TODO CONSIDER should this go before new room initialisation? i dunno...
+        cleanupRooms();
 
         generateDoors(); // wat
 //        clearDoors(); // TODO properly. consider making this into a thing that updates walls and doors?
@@ -298,7 +299,6 @@ public class MapController {
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             if(next.mouseOver(mousePoint)){
-                System.out.println("set hover room");
                 hoverRoom = next;
                 return true;
             }
