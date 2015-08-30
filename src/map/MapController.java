@@ -3,6 +3,7 @@ package map;
 import main.*;
 import map.functionals.Functional;
 import map.functionals.Toilet;
+import org.lwjgl.Sys;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
 import tiles.VisibleTile;
@@ -576,6 +577,12 @@ public class MapController {
      * Commit selection to a new room
      */
     public void createRoomFromSelection(){
+
+        if(!isContiguous(selection)){
+            System.err.println("Selection is not contiguous"); // TODO make better. maybe throw an exception?
+            return;
+        }
+
         if(selection.size() > 0){
             createRoom(selection, false);
             clearSelection();
@@ -595,5 +602,60 @@ public class MapController {
 
     public void renderRoomData(Graphics screen) {
         screen.drawString("rooms: " + rooms.size(), 20, 20);
+    }
+
+    private boolean isContiguous(List<Point> points){
+
+        boolean contiguous = true;
+
+        // initialise a to do list
+        List<Point> todoPoints = new ArrayList<Point>();
+
+        // make a list of the unexplored points
+        List<Point> unexploredPoints = new ArrayList<Point>();
+        unexploredPoints.addAll(points);
+
+        // make sure there are actually points left in the list
+        if(unexploredPoints.size() > 0){
+
+            todoPoints.add(unexploredPoints.get(0));
+            unexploredPoints.remove(0);
+
+            // while there are points left to explore
+            while(!todoPoints.isEmpty()){
+
+                Point point = todoPoints.get(0);
+                todoPoints.remove(0);
+
+                // get values of currently analysing point
+                int pX = (int) point.getX();
+                int pY = (int) point.getY();
+
+                // iterate through unexplored points getting
+                for (Iterator<Point> iterator = unexploredPoints.iterator(); iterator.hasNext(); ) {
+                    Point next = iterator.next();
+
+                    int nX = (int) next.getX();
+                    int nY = (int) next.getY();
+
+                    // if next point is adjacent, remove it from the unexplored points and add it to the to do list
+                    if( (Math.abs(pX - nX) == 1 && nY == pY ) || (Math.abs(pY - nY) == 1 && nX == pX) ){
+                        if(!todoPoints.contains(next)){
+                            todoPoints.add(next);
+                            iterator.remove();
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+        // remaining unexplored points will be the disowned points
+        if(unexploredPoints.size() > 0){
+            contiguous = false;
+        }
+        return contiguous;
     }
 }
