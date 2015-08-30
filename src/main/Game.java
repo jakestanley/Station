@@ -221,17 +221,17 @@ public class Game extends BasicGame {
     @Override
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
 
-        screen.setFont(font);
-
-        renderBackground(screen);
-
-        renderTileBackgrounds(screen);
-
-        renderGrid(screen);
-
-        renderWalls(screen);
-
-        renderMap(screen);
+//        screen.setFont(font);
+//
+//        renderBackground(screen);
+//
+//        renderTileBackgrounds(screen);
+//
+//        renderGrid(screen);
+//
+//        renderWalls(screen);
+//
+//        renderMap(screen);
 
     }
 

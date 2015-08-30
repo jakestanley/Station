@@ -3,6 +3,7 @@ package map;
 import main.*;
 import map.functionals.Functional;
 import map.functionals.Toilet;
+import mobs.Mob;
 import org.lwjgl.Sys;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
@@ -25,7 +26,7 @@ public class MapController {
     private Tile[][] tiles;
     private ArrayList<Room> rooms;
     private ArrayList<Door> doors;
-    private ArrayList<Point> base;
+    private ArrayList<Point> base; // TODO CONSIDER Removing
     private ArrayList<Functional> functionals;
 
     // hover components
@@ -255,6 +256,13 @@ public class MapController {
             return null;
         }
         return nonVoidTiles.get(GameController.random.nextInt(nonVoidTiles.size()));
+    }
+
+    public void updateRooms(){
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            next.update();
+        }
     }
 
     public void updateTiles(){ // TODO CONSIDER putting this somewhere else
@@ -657,5 +665,23 @@ public class MapController {
             contiguous = false;
         }
         return contiguous;
+    }
+
+    public void updateStrings() {
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            next.populateDataBoxStrings();
+        }
+        for (Iterator<Door> iterator = doors.iterator(); iterator.hasNext(); ) {
+            Door next = iterator.next();
+            next.populateDataBoxStrings();
+        }
+    }
+
+    public List<Mob> getMobsInRoom(Room room) {
+        // TODO code...
+        List<Mob> mobs = new ArrayList<Mob>();
+        return mobs;
+
     }
 }

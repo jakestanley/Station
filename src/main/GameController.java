@@ -6,7 +6,13 @@ import map.MapController;
 import mobs.MobController;
 import org.lwjgl.Sys;
 import org.newdawn.slick.*;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.util.ResourceLoader;
 
+import java.awt.*;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -22,6 +28,7 @@ public class GameController extends BasicGame {
     public static boolean disableMobs;
     public static boolean paused;
     public static boolean multiplayer = false;
+    public static TrueTypeFont font;
 
     public static Random            random;
     public static InputController inputController;
@@ -85,6 +92,16 @@ public class GameController extends BasicGame {
         input.addMouseListener(mouseController);
         inputController.setInput(input);
 
+        // load font
+        try {
+            InputStream inputStream	= ResourceLoader.getResourceAsStream("res/fonts/04b03.ttf");
+            java.awt.Font awtFont2 = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, inputStream);
+            awtFont2 = awtFont2.deriveFont(16f); // set font size
+            font = new TrueTypeFont(awtFont2, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } // TODO set font again
+
         // post construction initialisation
         mapController.init();
         mobController.init();
@@ -104,6 +121,7 @@ public class GameController extends BasicGame {
             // execute new actions, etc
             if(tick > MAX_TICK){
                 tick = 0;
+                mapController.updateRooms();
                 mapController.updateDoors();
                 mobController.updateMobs();
                 mobController.executeMobEvaluations(); // TODO use DecisionEngine
@@ -116,7 +134,6 @@ public class GameController extends BasicGame {
 
         mapController.updateTiles(); // for the selection only really
 
-
         // get and display data last
         guiController.updateContent(); // TODO last?
 
@@ -124,6 +141,9 @@ public class GameController extends BasicGame {
 
     @Override
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
+
+        screen.setFont(font);
+
         guiController.setBackground(screen);
         guiController.renderGrid(screen); // TODO CONSIDER that it looks a lot better with the grid off.
 

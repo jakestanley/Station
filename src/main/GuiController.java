@@ -17,7 +17,7 @@ import java.util.Stack;
  */
 public class GuiController {
 
-    private TrueTypeFont font;
+    private TrueTypeFont        font;
     private HintsBox            hintsBox;
 
     private InfoBox             infoBox;
@@ -25,9 +25,9 @@ public class GuiController {
     private MessageBox          messageBox;
 
     // Accessed objects
-    Door hoverDoor;
-    Room hoverRoom;
-    Mob hoverMob; // TODO re-implement
+    private Door hoverDoor;
+    private Room hoverRoom;
+    private Mob hoverMob; // TODO re-implement
 
     // Components
     private ArrayList<GuiContainer> containers;
@@ -48,9 +48,9 @@ public class GuiController {
         messageBox  = new MessageBox();
 
         // initialise object points
-        Door hoverDoor = null;
-        Room hoverRoom = null;
-        Mob hoverMob = null;
+        hoverDoor = null;
+        hoverRoom = null;
+        hoverMob = null;
 
         // add static gui elements to containers
         containers.add(hintsBox);
@@ -63,7 +63,7 @@ public class GuiController {
     }
 
     public void init(){
-        font = FontLoader.loadFont("04b03.ttf");
+        font = FontLoader.loadFont("04b03.ttf"); // TODO remove other mention of font
     }
 
     public void setBackground(Graphics screen){
@@ -92,6 +92,9 @@ public class GuiController {
     }
 
     public void updateContent(){
+
+        hoverDoor = GameController.mapController.getHoverDoor();
+        hoverRoom = GameController.mapController.getHoverRoom();
 
         // UPDATE HINT STRING AND RENDER BOXES
         hint.setLength(0);
@@ -128,10 +131,12 @@ public class GuiController {
     }
 
     public void render(Graphics screen){
+
         for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
             GuiContainer next =  iterator.next();
             next.render(screen);
         }
+
         renderComponentsData(screen); // TODO come up with a better way to do this
     }
 
@@ -168,6 +173,7 @@ public class GuiController {
         if(hoverDoor != null){ // render hover door hover box
             hoverDoor.renderDataBox(screen); // TODO move this into update, get hover stuff from gamecontroller or something
         } else if(hoverRoom != null){
+            hoverRoom.populateDataBoxStrings();
             hoverRoom.renderDataBox(screen);
         } else if(hoverMob != null){
             hoverMob.renderDataBox(screen);;

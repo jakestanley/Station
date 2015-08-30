@@ -36,11 +36,9 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     public static final String[] priorities = {"MINIMUM", "LOW", "NORMAL", "HIGH", "URGENT"};
 
     protected List<Point> points;
-    private int x;
+    private int x; // TODO remove?
     private int y;
 
-    private int sx;
-    private int sy;
     protected int type;
     protected int priority;
     protected float oxygen, integrity, ventRate, refillRate, consumptionRate;
@@ -49,13 +47,18 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     protected String name;
 
     protected ArrayList<String> strings;
-    private List<Point> disownedPoints;
+    private List<Point> disownedPoints; // TODO CONSIDER Does this even need to be a member variable?
 
     public Room(List<Point> points, boolean force){ // TODO , int type
         this.points = points;
         this.integrity = MAX_INTEGRITY;
         this.oxygen = MAX_OXYGEN;
         this.force = force;
+        purge = false; // oxygen purge on/off
+        evacuate = false; // evacuation alarm on/off
+        support = true;
+        selected = false;
+        calculateRates();
     }
 
     public void init(){
@@ -63,7 +66,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     }
 
     private void initialiseTiles(){
-        Color roomColour = new Color(GameController.random.nextInt(255), GameController.random.nextInt(255), GameController.random.nextInt(255));
+        Color roomColour = new Color(GameController.random.nextInt(255), GameController.random.nextInt(255), GameController.random.nextInt(255)); // TODO change
         for (Iterator<Point> iterator = points.iterator(); iterator.hasNext(); ) {
             Point next = iterator.next();
             if(!GameController.mapController.getTile(next).isVoid() || force){
@@ -72,29 +75,21 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         }
     }
 
+    private void calculateRates(){
+        ventRate           = BASE_PURGE_RATE / points.size(); // TODO consider isn't this just tiles.length?
+        refillRate         = BASE_REFILL_RATE / points.size();
+        consumptionRate    = BASE_CONSUMPTION_RATE / points.size();
+    }
+
 //    public Room(int x, int y, int sx, int sy, int type){ // TODO room type
 //
 //        super(0, 0); // for now TODO reconsider
 //
-//        this.x = x;
-//        this.y = y;
-//        this.sx = sx;
-//        this.sy = sy;
-//
-//        this.integrity = MAX_INTEGRITY;
-//        this.oxygen = MAX_OXYGEN;
-//        this.strings = new ArrayList<String>();
-//
-//        purge = false; // oxygen purge on/off
-//        evacuate = false; // evacuation alarm on/off
-//        support = true;
-//        selected = false;
+
 //
 //        priority = DEFAULT_PRIORITY;
 //
-//        ventRate           = BASE_PURGE_RATE / (sx * sy); // TODO consider isn't this just tiles.length?
-//        refillRate         = BASE_REFILL_RATE / (sx * sy);
-//        consumptionRate    = BASE_CONSUMPTION_RATE / (sx * sy);
+
 ////        System.out.println("Consumption rate: " + consumptionRate);
 //
 //        this.type = type;
@@ -135,6 +130,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
                 iterator.remove();
             }
         }
+        calculateRates(); // re-calculate
     }
 
     public void updateFrame(){
@@ -184,10 +180,10 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         // generating strings for data box // TODO optimise so this only happens when necessary
         strings = new ArrayList<String>();
 
-        strings.add(StringUtils.capitalize(typeString));
+//        strings.add(StringUtils.capitalize(typeString));
 
-        strings.add("Crew: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_MATE).size());
-        strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
+//        strings.add("Crew: " + GameController.mapController.getMobsInRoomByType(this, Mob.TYPE_MATE).size()); // TODO
+//        strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
         strings.add("Oxygen: " + oxygen + "%");
         strings.add("Integrity: " + integrity + "%");
 
@@ -225,7 +221,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     public void update(){
 
         // count mobs in room
-        int mobCount = Game.map.getMobsInRoom(this).size();
+        int mobCount = GameController.mapController.getMobsInRoom(this).size();
 
         // subtract mob oxygen consumption from oxygen level
         float consumptionRate = (mobCount * this.consumptionRate);
@@ -265,12 +261,18 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
     public void renderDataBox(Graphics screen){ // TODO draw a hover box and then some stuff
         System.out.println("renderDataBox called");
         // initialising variables
-        int x = dbx;
-        int y = dby;
+//        int x = dbx;
+//        int y = dby;
+
+        x = 10;
+        y = 10;
 
         // iterate through and present strings
         for (Iterator<String> iterator = strings.iterator(); iterator.hasNext(); ) {
             String next = iterator.next();
+            if(next == null){
+                next = "nullstr";
+            }
             screen.drawString(next, x, y); // TODO make this more efficient
             y = y + Display.TEXT_SPACING;
         }
@@ -398,132 +400,12 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         return y;
     }
 
-    public int getSx() {
-        return sx;
-    }
-
-    public int getSy() {
-        return sy;
-    }
-
-    public boolean isCorridor(){
-        if (Values.Types.CORRIDOR_Y == type || Values.Types.CORRIDOR_X == type){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public boolean isEvacuate(){
         return evacuate;
     }
 
-    public ArrayList<int[]> getEdgeTileCoordinates(){ // TODO test
-        ArrayList<int[]> coordinates = new ArrayList<int[]>();
-
-        int maxX = x + sx;
-        int maxY = y + sy;
-
-        // get the top and bottom edges
-        for(int i = x; i < maxX; i++){
-
-            int[] top = new int[2];
-            top[0] = i;
-            top[1] = y;
-
-            int[] bottom = new int[2];
-            bottom[0] = i;
-            bottom[1] = maxY;
-
-            // add both to edge
-            coordinates.add(top);
-            coordinates.add(bottom);
-
-        }
-
-        // get the left and right edges
-        for(int i = y + 1; i < maxY - 1; i++){
-
-            int[] left = new int[2];
-            left[0] = x;
-            left[1] = i;
-
-            int[] right = new int[2];
-            right[0] = maxX;
-            right[1] = i;
-
-            coordinates.add(left);
-            coordinates.add(right);
-
-        }
-
-        return coordinates;
-
-    }
-
     public float getIntegrity(){
         return integrity;
-    }
-
-    public ArrayList<Tile> getBorderPoints(){
-
-        ArrayList<Tile> corridorTiles = new ArrayList<Tile>();
-
-        int maxX = x + sx;
-        int maxY = y + sy;
-
-        int mapHeight = Game.map.getHeight();
-        int mapWidth = Game.map.getWidth();
-
-        System.out.println("max y: " + maxY);
-
-        // get top and bottom rows of tiles
-        Tile tile;
-        for(int i = x; i < maxX; i++){
-            tile = null;
-            if(y > 0){
-                tile = Game.map.tiles[i][y-1];
-                if(tile.isVoid()){
-                    tile = new BorderTile(i, y-1, this);
-                    Game.map.tiles[i][y-1] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-            tile = null;
-            if(maxY < mapHeight){ // TODO
-                tile = Game.map.tiles[i][maxY];
-                if(tile.isVoid()){
-                    tile = new BorderTile(i, maxY, this);
-                    Game.map.tiles[i][maxY] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-        }
-
-        // get left and right rows of tiles
-        for(int i = y; i < maxY; i++){
-            tile = null;
-            if(x > 0){
-                tile = Game.map.tiles[x-1][i];
-                if(tile.isVoid()){
-                    tile = new BorderTile(x-1, i, this);
-                    Game.map.tiles[x-1][i] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-            tile = null;
-            if(maxX < mapWidth){
-                tile = Game.map.tiles[maxX][i];
-                if(tile.isVoid()){
-                    tile = new BorderTile(maxX, i, this);
-                    Game.map.tiles[maxX][i] = tile;
-                    corridorTiles.add(tile);
-                }
-            }
-        }
-
-        return corridorTiles;
-
     }
 
     @Override
