@@ -72,7 +72,7 @@ public class Mate extends Mob implements Inputtable {
         // TODO fear levels and escape to safety threshold
 
         // if evacuate alarm is on and can evacuate
-        if(getRoom().isEvacuate() && Game.map.hasEvacuatableRoom()){ // TODO move this stuff into decision engine, or separate planner static class?
+        if(getRoom().isEvacuate() && GameController.mapController.hasEvacuatableRoom()){ // TODO move this stuff into decision engine, or separate planner static class?
             if(planner == null){
                 planner = new Evacuate(this);
             } else if (Planner.GOAL_EVACUATE != planner.getType()){

@@ -667,7 +667,7 @@ public class MapController {
         return contiguous;
     }
 
-    public void updateStrings() {
+    public void updateStrings() { // TODO
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             next.populateDataBoxStrings();
@@ -679,9 +679,17 @@ public class MapController {
     }
 
     public List<Mob> getMobsInRoom(Room room) {
-        // TODO code...
         List<Mob> mobs = new ArrayList<Mob>();
+        for (Iterator<Mob> iterator = GameController.mobController.getMobs().iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            if(next.getRoom() == room){
+                mobs.add(next);
+            }
+        }
         return mobs;
+    }
 
+    public boolean hasEvacuatableRoom() {
+        return false;
     }
 }

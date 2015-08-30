@@ -182,8 +182,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
 
 //        strings.add(StringUtils.capitalize(typeString));
 
-//        strings.add("Crew: " + GameController.mapController.getMobsInRoomByType(this, Mob.TYPE_MATE).size()); // TODO
-//        strings.add("Hostiles: " + Game.map.getMobsInRoomByType(this, Mob.TYPE_PARASITE).size()); // TODO CONSIDER renaming parasites to hostiles
+        strings.add("Crew: " + GameController.mapController.getMobsInRoom(this).size()); // TODO
         strings.add("Oxygen: " + oxygen + "%");
         strings.add("Integrity: " + integrity + "%");
 
