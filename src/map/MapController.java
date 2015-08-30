@@ -689,7 +689,14 @@ public class MapController {
         return mobs;
     }
 
-    public boolean hasEvacuatableRoom() {
+    public boolean hasEvacuatableRoom(){
+        for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
+            Room next = iterator.next();
+            if(!next.isEvacuate()){
+                return true;
+            }
+        }
         return false;
     }
+
 }
