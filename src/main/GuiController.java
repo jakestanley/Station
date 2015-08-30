@@ -41,16 +41,21 @@ public class GuiController {
         containers = new ArrayList<GuiContainer>();
         focuses     = new Stack<GuiComponent>();
 
+        // initialise object points
+        hoverDoor = null;
+        hoverRoom = null;
+        hoverMob = null;
+
+        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
+
+    }
+
+    public void init(){
         // initialise static gui elements
         hintsBox    = new HintsBox(hint);
         infoBox     = new InfoBox();
         mobsBox     = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
         messageBox  = new MessageBox();
-
-        // initialise object points
-        hoverDoor = null;
-        hoverRoom = null;
-        hoverMob = null;
 
         // add static gui elements to containers
         containers.add(hintsBox);
@@ -58,11 +63,7 @@ public class GuiController {
         containers.add(mobsBox);
         containers.add(messageBox);
 
-        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
-
-    }
-
-    public void init(){
+        // load font
         font = FontLoader.loadFont("04b03.ttf"); // TODO remove other mention of font
     }
 
@@ -131,6 +132,8 @@ public class GuiController {
     }
 
     public void render(Graphics screen){
+
+        screen.setFont(font);
 
         for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
             GuiContainer next =  iterator.next();
