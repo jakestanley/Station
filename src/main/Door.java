@@ -318,4 +318,11 @@ public class Door extends Loopable implements Interactable, Inputtable {
         }
 
     }
+
+    public boolean isTraversible() {
+        if(bulkhead || locked || !enabled){
+            return false;
+        }
+        return true;
+    }
 }
