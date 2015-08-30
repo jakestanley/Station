@@ -5,7 +5,6 @@ import exceptions.IllegalAction;
 import exceptions.ImpossibleGoal;
 import exceptions.UnnecessaryAction;
 import io.Inputtable;
-import main.Game;
 import main.GameController;
 import main.Values;
 import org.newdawn.slick.Color;
@@ -105,9 +104,9 @@ public class Mate extends Mob implements Inputtable {
             System.err.println("Caught illegal action exception");
             illegalAction.printStackTrace(); // TODO why is it illegal?
         } catch (ImpossibleGoal impossibleGoal) {
-//            System.err.println("Caught impossible goal exception"); // TODO comment back in
+            System.err.println("Caught impossible goal exception"); // TODO comment back in
         } catch (NullPointerException nullPointerException){
-//            System.out.println("No action available for " + name);
+            System.out.println("No action available for " + name);
         }
 
     }

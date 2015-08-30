@@ -9,8 +9,8 @@ import main.Room;
 import mobs.Mob;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stanners on 31/05/2015.
@@ -23,13 +23,13 @@ public class Evacuate extends Planner {
 
     @Override
     public void calculate() throws ImpossibleGoal { // TODO ensure always moves to closest possible room
-        ArrayList<Room> rooms = GameController.mapController.getRooms();
-        ArrayList<Point> path = null;
+        List<Room> rooms = GameController.mapController.getRooms();
+        List<Point> path = null;
         loop:
         for (Iterator<Room> iterator = rooms.iterator(); iterator.hasNext(); ) {
             Room next = iterator.next();
             if(!next.isEvacuate()){
-                path = GameController.mapController.getTraversiblePath(mob.getPoint(), next); // TODO expand in here to include non locked doors
+                path = GameController.mapController.getTraversiblePath(mob.getPoint(), next.getRandomTile().getPoint()); // TODO expand in here to include non locked doors
                 break loop;
             }
         }
