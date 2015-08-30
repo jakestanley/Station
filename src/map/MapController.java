@@ -4,12 +4,11 @@ import main.*;
 import map.functionals.Functional;
 import map.functionals.Toilet;
 import mobs.Mob;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
 import tiles.VisibleTile;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -699,4 +698,7 @@ public class MapController {
         return false;
     }
 
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
 }
