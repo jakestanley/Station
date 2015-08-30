@@ -44,10 +44,7 @@ public class Door extends Loopable implements Interactable, Inputtable {
         this.integrity = BASE_STRENGTH;
 
         locked = false;
-        horizontal = false;
-        if(start.getX() == end.getX()){
-            horizontal = true;
-        }
+        horizontal = start.getX() == end.getX();
 
         if(horizontal){ // if it's a horizontal door, it will be on the north side
             sx = ((int) start.getX()) * Display.TILE_WIDTH + (Display.DOOR_WIDTH / 2);
@@ -205,12 +202,9 @@ public class Door extends Loopable implements Interactable, Inputtable {
             detection = new Rectangle(sx - 2 + (voX * Display.TILE_WIDTH), sy - 3 + (voY * Display.TILE_WIDTH), Display.DOOR_WIDTH, (Display.DOOR_WIDTH * 2) + 2);
         }
 
-        if (mouseX >= detection.getMinX() && mouseX <= detection.getMaxX() &&
-            mouseY >= detection.getMinY() && mouseY <= detection.getMaxY()){
-            return true;
-        }
+        return mouseX >= detection.getMinX() && mouseX <= detection.getMaxX() &&
+                mouseY >= detection.getMinY() && mouseY <= detection.getMaxY();
 
-        return false;
     }
 
     public void renderHoverBox(Graphics screen) { // TODO animate the hover boxes?
@@ -320,9 +314,6 @@ public class Door extends Loopable implements Interactable, Inputtable {
     }
 
     public boolean isTraversible() {
-        if(bulkhead || locked || !enabled){
-            return false;
-        }
-        return true;
+        return !(bulkhead || locked || !enabled);
     }
 }

@@ -1,6 +1,9 @@
 package tiles;
 
-import main.*;
+import main.Display;
+import main.GameController;
+import main.Room;
+import main.ViewController;
 
 import java.awt.*;
 
@@ -42,11 +45,8 @@ public class Tile {
         int vx = this.x * Display.TILE_WIDTH + (vc.getViewOffsetX() * Display.TILE_WIDTH);
         int vy = this.y * Display.TILE_WIDTH + (vc.getViewOffsetY() * Display.TILE_WIDTH);
 
-        if((mouseX >= vx) && (mouseX <= (vx + Display.TILE_WIDTH)) && (mouseY >= vy) && (mouseY <= (vy + Display.TILE_WIDTH))){
-            return true;
-        }
+        return (mouseX >= vx) && (mouseX <= (vx + Display.TILE_WIDTH)) && (mouseY >= vy) && (mouseY <= (vy + Display.TILE_WIDTH));
 
-        return false;
     }
 
     public int getX(){

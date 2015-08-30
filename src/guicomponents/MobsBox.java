@@ -4,6 +4,7 @@ import main.Display;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -48,15 +49,21 @@ public class MobsBox extends GuiStatic {
 
     }
 
-    public Mob getMobMouseOver(int mouseX, int mouseY){
+    public Mob getMobMouseOver(Point mouse){
 
-        selectedMob = null;
+        if(mouse != null) {
+            System.out.println("getting mouse over");
+            int mouseX = (int) mouse.getX();
+            int mouseY = (int) mouse.getY();
+            selectedMob = null;
 
-        for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
-            MobPanel next = iterator.next();
-            if(next.mouseOver(mouseX, mouseY)){
-                selectedMob = next.getMob();
+            for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
+                MobPanel next = iterator.next();
+                if (next.mouseOver(mouseX, mouseY)) {
+                    selectedMob = next.getMob();
+                }
             }
+
         }
 
         return selectedMob;

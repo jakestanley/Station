@@ -92,7 +92,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         System.out.println("disowning " + points.size() + " points");
         for (Iterator<Point> iterator = this.points.iterator(); iterator.hasNext(); ) {
             Point next =  iterator.next();
-            if(next != null && points != null && points.contains(next)){ // TODO long term fix haha
+            if(next != null && points.contains(next)){ // TODO long term fix haha
                 iterator.remove();
             }
         }

@@ -1,13 +1,9 @@
 package map;
 
-import exceptions.NoDialogException;
-import guicomponents.*;
-import guicomponents.Dialog;
+import guicomponents.GuiComponent;
 import main.ContextController;
 import main.Display;
-import main.Game;
 import main.GameController;
-import org.lwjgl.Sys;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 import resources.Converter;
@@ -89,10 +85,7 @@ public class MouseController implements MouseListener { // TODO improve and abst
         int xUpperBound = Display.LEFT_COLUMN_WIDTH;
         int yLowerBound = Display.TEXT_PANEL_HEIGHT;
         int yUpperBound = Display.DISPLAY_HEIGHT;
-        if(x >= xLowerBound && x <= xUpperBound && y >= yLowerBound && y <= yUpperBound){
-            return true;
-        }
-        return false;
+        return x >= xLowerBound && x <= xUpperBound && y >= yLowerBound && y <= yUpperBound;
     }
 
     @Override
@@ -155,5 +148,9 @@ public class MouseController implements MouseListener { // TODO improve and abst
     @Override
     public void inputStarted() {
 
+    }
+
+    public Point getMouse() {
+        return hoverPoint;
     }
 }

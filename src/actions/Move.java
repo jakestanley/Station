@@ -2,7 +2,6 @@ package actions;
 
 import exceptions.IllegalAction;
 import main.Door;
-import main.Game;
 import main.GameController;
 import map.MapController;
 import mobs.Mob;

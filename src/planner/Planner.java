@@ -1,12 +1,10 @@
 package planner;
 
 import actions.Action;
-import actions.OpenDoor;
 import exceptions.ImpossibleGoal;
 import main.GameController;
 import map.MapController;
 import mobs.Mob;
-import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;

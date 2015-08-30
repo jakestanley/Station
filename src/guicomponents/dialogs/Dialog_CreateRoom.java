@@ -1,7 +1,7 @@
 package guicomponents.dialogs;
 
-import guicomponents.widgets.Button;
 import guicomponents.Dialog;
+import guicomponents.widgets.Button;
 import guicomponents.widgets.TextField;
 import main.GameController;
 import org.newdawn.slick.Color;

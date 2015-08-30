@@ -1,18 +1,11 @@
 package main;
 
 import io.InputController;
-import map.MouseController;
 import map.MapController;
+import map.MouseController;
 import mobs.MobController;
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.util.ResourceLoader;
 
-import java.awt.*;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -24,13 +17,9 @@ public class GameController extends BasicGame {
     public static final int MAX_TICK = 6; // TODO should be 30
 
     public static int tick = 0;
-    public static boolean debug;
-    public static boolean disableMobs;
-    public static boolean paused;
-    public static boolean multiplayer = false;
 
     public static Random            random;
-    public static InputController inputController;
+    public static InputController   inputController;
     public static ContextController contextController;
     public static ViewController    viewController;
     public static GuiController     guiController;
@@ -39,13 +28,10 @@ public class GameController extends BasicGame {
     public static ActionQueue       actionQueue;
     public static MouseController   mouseController;
 
-    public GameController(String gameName, boolean debug, boolean disableMobs){
+    public GameController(String gameName){
         super(gameName);
-        this.debug = debug;
-        this.disableMobs = disableMobs;
-        this.paused = false;
 
-        if(debug){
+        if(Game.debug){
             System.out.println("Launching in developer mode");
         } else {
             System.out.println("Launching in normal mode");
@@ -69,7 +55,7 @@ public class GameController extends BasicGame {
         // Initialise the game framework
         try {
             AppGameContainer container = new AppGameContainer(this);
-            container.setShowFPS(debug);
+            container.setShowFPS(Game.debug);
             container.setDisplayMode(Display.DISPLAY_WIDTH, Display.DISPLAY_HEIGHT, false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
@@ -103,7 +89,7 @@ public class GameController extends BasicGame {
         inputController.processInput(gameContainer); // TODO remove and work with the listener
 
         // if the game is paused, don't run any game logic. useful for dialog boxes also
-        if(!paused){
+        if(!Game.paused){
 
             // TODO update animation frames
 
@@ -153,11 +139,11 @@ public class GameController extends BasicGame {
     }
 
     public static void pause(){
-        paused = true;
+        Game.paused = true;
     }
 
     public static void unPause(){ // TODO CONSIDER that other objects may require the game to still be paused, e.g multiple dialog boxes
-        paused = false;
+        Game.paused = false;
     }
 
 }

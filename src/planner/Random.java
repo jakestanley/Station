@@ -56,7 +56,7 @@ public class Random extends Planner {
                     actions.add(new Move(mob, tx, ty));
                 } else if(door.isOpen()){ // if the door is open, go straight through
                     actions.add(new Move(mob, tx, ty));
-                } else if(!door.isOpen() && mob.canOpen() && !door.isLocked() && door.isEnabled()) { // if the door is shut, but the mob can open it, and it's not locked, and it's enabled open it and go through
+                } else if(mob.canOpen() && !door.isLocked() && door.isEnabled()) { // if the door is shut, but the mob can open it, and it's not locked, and it's enabled open it and go through
                     if (!door.isOpen()) { // if there is a door, check if it's locked
                         actions.add(new OpenDoor(mob, door));
                         actions.add(new Move(mob, tx, ty));

@@ -96,6 +96,7 @@ public class GuiController {
 
         hoverDoor = GameController.mapController.getHoverDoor();
         hoverRoom = GameController.mapController.getHoverRoom();
+        hoverMob = mobsBox.getMobMouseOver(GameController.mouseController.getMouse());
 
         // UPDATE HINT STRING AND RENDER BOXES
         hint.setLength(0);
@@ -179,7 +180,7 @@ public class GuiController {
             hoverRoom.populateDataBoxStrings();
             hoverRoom.renderDataBox(screen);
         } else if(hoverMob != null){
-            hoverMob.renderDataBox(screen);;
+            hoverMob.renderDataBox(screen);
         }
 
     }

@@ -58,10 +58,7 @@ public abstract class GuiComponent {
     public boolean isMouseOver(Point mouse){
         int mouseX = (int) mouse.getX();
         int mouseY = (int) mouse.getY();
-        if((x <= mouseX) && (mouseX <= x+width) && (y <= mouseY) && (mouseY <= y+height)){
-            return true;
-        }
-        return false;
+        return (x <= mouseX) && (mouseX <= x + width) && (y <= mouseY) && (mouseY <= y + height);
     }
 
     public int getType(){

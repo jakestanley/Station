@@ -1,6 +1,6 @@
 package io;
 
-import guicomponents.*;
+import guicomponents.GuiComponent;
 import guicomponents.dialogs.Dialog_CreateRoom;
 import guicomponents.widgets.TextField;
 import main.*;

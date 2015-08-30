@@ -2,6 +2,7 @@ package guicomponents;
 
 import main.ContextController;
 import main.Display;
+import main.Game;
 import main.GameController;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public abstract class Dialog extends GuiFloating {
         this.buttons = new ArrayList<GuiWidget>();
 
         // pause the game if this is a pausing dialog and we're not in a multiplayer mode
-        if(pause && !GameController.multiplayer){
+        if(pause && !Game.multiplayer){
             GameController.pause();
         }
     }

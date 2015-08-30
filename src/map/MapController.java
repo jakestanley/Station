@@ -1,6 +1,8 @@
 package map;
 
-import main.*;
+import main.Door;
+import main.GameController;
+import main.Room;
 import map.functionals.Functional;
 import map.functionals.Toilet;
 import mobs.Mob;
@@ -518,11 +520,7 @@ public class MapController {
      * @return
      */
     public boolean getWall(Point point1, Point point2){
-        if(getRoom(point1) == getRoom(point2)){
-            return false;
-        } else {
-            return true;
-        }
+        return getRoom(point1) != getRoom(point2);
     }
 
     public void setDragSelection(Point dragStart, Point dragEnd){
