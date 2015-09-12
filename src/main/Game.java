@@ -29,7 +29,7 @@ public class Game {
         }
 
         // Initialise GameController
-        GameController gameController = new GameController("Space Commander: Battlecruiser");
+        GameController gameController = new GameController("Space Commander: Battlecruiser", new Display());
 
     }
 

@@ -1,4 +1,4 @@
-package guicomponents;
+package gui;
 
 /**
  * Created by stanners on 26/05/2015.

@@ -1,8 +1,10 @@
-package guicomponents;
+package gui;
 
+import exceptions.ComponentChildSizeException;
+import main.Colours;
 import main.Display;
+import main.GameController;
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import resources.Converter;
 
@@ -11,12 +13,15 @@ import java.awt.*;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class HintsBox extends GuiStatic {
+public class HintsBox extends Component {
 
     private StringBuilder hint;
 
-    public HintsBox(StringBuilder hint){ // TODO pass some variables here
-        super(0, Display.MAP_HEIGHT, Display.CONTROL_HINTS_BOX_WIDTH, Display.TEXT_PANEL_HEIGHT);
+    public HintsBox(Component parent, StringBuilder hint){ // TODO pass some variables here
+        super(parent,
+                Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
+                0, GameController.display.getHeight() - Display.TEXT_PANEL_HEIGHT, GameController.display.getWidth(), GameController.display.getHeight(), 1); // TODO change 1 to appropriate border width
+//        super(0, Display.MAP_HEIGHT, Display.CONTROL_HINTS_BOX_WIDTH, Display.TEXT_PANEL_HEIGHT);
         setMessage(hint);
     }
 
@@ -31,15 +36,25 @@ public class HintsBox extends GuiStatic {
     }
 
     @Override
-    public void renderContent(Graphics screen) {
-        screen.setColor(Color.white); // TODO change to a non hard coded value here
-        screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
+    public void action() {
+
     }
 
     @Override
-    public void widgetClicked(int index) {
+    public void draw(Graphics screen) {
 
     }
+
+    public void addChild(Component c) throws ComponentChildSizeException {
+        // TODO throw exception
+        children.add(c);
+    }
+
+//    @Override
+//    public void renderContent(Graphics screen) {
+//        screen.setColor(Color.white); // TODO change to a non hard coded value here
+//        screen.drawString(hint.toString(), x + Display.MARGIN, y + Display.MARGIN); // TODO check hint is not null
+//    }
 
     public void setMessage(StringBuilder hint){
         if(hint == null){

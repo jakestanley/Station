@@ -1,5 +1,6 @@
 package main;
 
+import contexts.ContextController;
 import io.InputController;
 import map.MapController;
 import map.MouseController;
@@ -18,6 +19,7 @@ public class GameController extends BasicGame {
 
     public static int tick = 0;
 
+    public static Display           display;
     public static Random            random;
     public static InputController   inputController;
     public static ContextController contextController;
@@ -28,7 +30,7 @@ public class GameController extends BasicGame {
     public static ActionQueue       actionQueue;
     public static MouseController   mouseController;
 
-    public GameController(String gameName){
+    public GameController(String gameName, Display display){
         super(gameName);
 
         if(Game.debug){
@@ -40,11 +42,12 @@ public class GameController extends BasicGame {
         // initialise game objects
 
         // Initialise meta components
+        this.display = display;
         random          = new Random();
 
         // Initialise controllers
         inputController     = new InputController();
-        contextController   = new ContextController(ContextController.CONSTRUCTION); // TODO change to generic after adding context buttons
+        contextController   = new ContextController(ContextController.BUILD_ROOM); // TODO change to generic after adding context buttons
         viewController      = new ViewController();
         mapController       = new MapController("the_tortuga.csv");
         mobController       = new MobController();
@@ -56,7 +59,7 @@ public class GameController extends BasicGame {
         try {
             AppGameContainer container = new AppGameContainer(this);
             container.setShowFPS(Game.debug);
-            container.setDisplayMode(Display.DISPLAY_WIDTH, Display.DISPLAY_HEIGHT, false);
+            container.setDisplayMode(display.getWidth(), display.getHeight(), false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
             container.start();

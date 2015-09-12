@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public interface Interactable {
 
-    int dbx = Display.MAP_WIDTH + Display.MARGIN;
+    int dbx = GameController.display.getMapWidth() + Display.MARGIN;
     int dby = Display.MARGIN;
 
     boolean mouseOver(Point mousePoint);

@@ -1,67 +1,105 @@
 package main;
 
-import guicomponents.*;
+import gui.Component;
+import gui.HintsBox;
+import gui.inspectors.GeneralInspector;
+import gui.inspectors.Inspector;
+import gui.widgets.Button;
+import gui.widgets.ButtonRow;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 import resources.FontLoader;
 
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.Iterator;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by stanners on 21/07/2015.
  */
 public class GuiController {
 
-    private TrueTypeFont        font;
-    private HintsBox            hintsBox;
+    // component reference constants for hashmap
+    public static final String MENU = "MENU";
+    public static final String HINTS = "HINTS";
+    public static final String INSPECTOR_GENERAL    = "INSPECTOR_GENERAL";
+    public static final String INSPECTOR_BUILD      = "INSPECTOR_BUILD";
+    public static final String INSPECTOR_PLACE      = "INSPECTOR_PLACE"; // TODO use a better structure
+    public static final String VIEW_GENERAL         = "VIEW_GENERAL";
+    public static final String VIEW_BUILD           = "VIEW_BUILD";
+    public static final String VIEW_PLACE           = "VIEW_PLACE";
 
-    private InfoBox             infoBox;
-    private MobsBox             mobsBox;
-    private MessageBox          messageBox;
+    // font
+    private TrueTypeFont            font;
 
     // Accessed objects
     private Door hoverDoor;
     private Room hoverRoom;
-    private Mob hoverMob; // TODO re-implement
+    private Mob hoverMob; // TODO re-implement better
 
     // Components
-    private ArrayList<GuiContainer> containers;
-    private Stack<GuiComponent> focuses;
-
+    private Map<String, Component> components;
+    private ArrayList<Component> visible;
+    private Stack<Component> focuses;
     private StringBuilder hint;
 
     public GuiController(){
 
-        // initialise component lists
-        containers = new ArrayList<GuiContainer>();
-        focuses     = new Stack<GuiComponent>();
+        // construct maps and lists
+        components = new HashMap<String, Component>();
+        visible = new ArrayList<Component>();
+
+        // construct gui components
+
+        // build the menu TODO make a separate class for this stuff
+        ButtonRow menu = new ButtonRow(null, 0, 0, GameController.display.getWidth(), Button.MAX_HEIGHT);
+        menu.addButton(new Button(menu, "BUILD"));
+        menu.addButton(new Button(menu, "CREW"));
+        menu.addButton(new Button(menu, "MISSION"));
+        menu.addButton(new Button(menu, "BUDGET"));
+        menu.addButton(new Button(menu, "NAVIGATION"));
+        menu.addButton(new Button(menu, "WEAPONS"));
+        menu.addButton(new Button(menu, "POWER"));
+
+        // construct the inspector and hints box
+        Inspector generalInspector = new GeneralInspector();
+        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
+        HintsBox hints = new HintsBox(null, hint);
+
+        // populate the hashmap
+        components.put(MENU, menu);
+        components.put(INSPECTOR_GENERAL, generalInspector);
+        components.put(HINTS, hints);
+
+        // add the initially visible parent elements
+        visible.add(menu);
+        visible.add(generalInspector);
+        visible.add(hints);
+
+//        messages = new MessageBox(null, 0); // TODO figure out what's going on here
+        focuses     = new Stack<Component>();
 
         // initialise object points
         hoverDoor = null;
         hoverRoom = null;
         hoverMob = null;
 
-        hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
-
     }
 
     public void init(){
-        // initialise static gui elements
-        hintsBox    = new HintsBox(hint);
-        infoBox     = new InfoBox();
-        mobsBox     = new MobsBox(GameController.mobController.getMobs()); // TODO reconsider how this works
-        messageBox  = new MessageBox();
 
-        // add static gui elements to containers
-        containers.add(hintsBox);
-        containers.add(infoBox);
-        containers.add(mobsBox);
-        containers.add(messageBox);
+        // iterating over a hash map. yeah.
+        for(Map.Entry<String, Component> entry : components.entrySet()){
+            entry.getValue().init();
+        }
+
+//        for (Iterator<Component> iterator = components.iterator(); iterator.hasNext(); ) {
+//            Component next = iterator.next();
+//            next.init();
+//        }
+
+        // initialise static gui elements
+//        hintsBox    = new HintsBox(hint); // TODO 12/09
 
         // load font
         font = FontLoader.loadFont("04b03.ttf"); // TODO remove other mention of font
@@ -71,10 +109,6 @@ public class GuiController {
         screen.setBackground(Colours.GRID_BACKGROUND);
     }
 
-    public void addContainer(GuiContainer container){
-        containers.add(container);
-    }
-
     public void renderGrid(Graphics screen){
 
         screen.setColor(Colours.GRID_LINES); // TODO fix these values
@@ -82,11 +116,11 @@ public class GuiController {
 
         // draw horizontal lines going down
         for(int v = 0; v < Display.MAP_HEIGHT; v++){
-            screen.drawLine(0, v * Display.TILE_WIDTH, Display.MAP_WIDTH, v * Display.TILE_WIDTH);
+            screen.drawLine(0, v * Display.TILE_WIDTH, GameController.display.getMapWidth(), v * Display.TILE_WIDTH);
         }
 
         // draw vertical lines going across
-        for(int h = 0; h < Display.MAP_WIDTH; h++){
+        for(int h = 0; h < GameController.display.getMapWidth(); h++){
             screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
         }
 
@@ -96,7 +130,7 @@ public class GuiController {
 
         hoverDoor = GameController.mapController.getHoverDoor();
         hoverRoom = GameController.mapController.getHoverRoom();
-        hoverMob = mobsBox.getMobMouseOver(GameController.mouseController.getMouse());
+//        hoverMob = mobsBox.getMobMouseOver(GameController.mouseController.getMouse()); // TODO uncomment
 
         // UPDATE HINT STRING AND RENDER BOXES
         hint.setLength(0);
@@ -120,35 +154,34 @@ public class GuiController {
 //            }
 //        }
 
-        for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
-            GuiContainer next = iterator.next();
-            if(next.isValid()){
-                // if valid, update
-                next.update();
-            } else {
-                // if invalid, destroy and remove from the list
-                iterator.remove();
-            }
-        }
+//        for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
+//            GuiContainer next = iterator.next();
+//            if(next.isValid()){
+//                // if valid, update
+//                next.update();
+//            } else {
+//                // if invalid, destroy and remove from the list
+//                iterator.remove();
+//            }
+//        }
     }
 
     public void render(Graphics screen){
 
-        screen.setFont(font);
+        setFont(screen); // TODO use more than one font
 
-        for (Iterator<GuiContainer> iterator = containers.iterator(); iterator.hasNext(); ) {
-            GuiContainer next =  iterator.next();
+        for (Iterator<Component> iterator = visible.iterator(); iterator.hasNext(); ) {
+            Component next = iterator.next();
             next.render(screen);
         }
 
-        renderComponentsData(screen); // TODO come up with a better way to do this
     }
 
     public TrueTypeFont getFont(){
         return font;
     }
 
-    public void pushFocus(GuiComponent focus){
+    public void pushFocus(Component focus){
         focuses.push(focus);
     }
 
@@ -158,7 +191,7 @@ public class GuiController {
         }
     }
 
-    public GuiComponent getFocus() throws EmptyStackException {
+    public Component getFocus() throws EmptyStackException {
         try {
             return focuses.peek();
         } catch (EmptyStackException e){
@@ -201,6 +234,41 @@ public class GuiController {
         if(font != null){
             screen.setFont(font);
         }
+    }
+
+    public void switchView(String view) throws Exception {
+        visible.clear();
+        setCommonView(); // TODO consider ViewController class
+        switch (view){
+            case VIEW_GENERAL:
+                setGeneralView();
+                break;
+            case VIEW_BUILD:
+                setBuildView();
+                break;
+            case VIEW_PLACE:
+                setPlaceView();
+                break;
+            default:
+                throw new Exception("Bad view string passed to switchView");
+        }
+    }
+
+    public void setCommonView(){
+        visible.add(components.get(MENU));
+        visible.add(components.get(HINTS));
+    }
+
+    public void setGeneralView(){
+        visible.add(components.get(INSPECTOR_GENERAL));
+    }
+
+    public void setBuildView(){
+        visible.add(components.get(INSPECTOR_BUILD));
+    }
+
+    public void setPlaceView(){
+        visible.add(components.get(INSPECTOR_PLACE));
     }
 
 }

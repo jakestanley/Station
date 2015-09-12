@@ -1,41 +1,35 @@
-package guicomponents;
+package gui.floating.dialog;
 
-import main.ContextController;
-import main.Display;
+import contexts.ContextController;
+import gui.floating.Floating;
+import gui.widgets.ButtonRow;
 import main.Game;
 import main.GameController;
-
-import java.util.ArrayList;
 
 /**
  * Created by jake on 15/08/15.
  */
-public abstract class Dialog extends GuiFloating {
+public abstract class Dialog extends Floating {
 
     public static boolean PAUSE = true;
     public static boolean NO_PAUSE = false;
 
     private boolean pause;
+    private ButtonRow buttonRow;
 
     public Dialog(boolean pause, int width, int height){
-        super((Display.DISPLAY_WIDTH - width) / 2, (Display.DISPLAY_HEIGHT - height) / 2, width, height);
+        super((GameController.display.getWidth() - width) / 2, (GameController.display.getHeight() - height) / 2, width, height);
 
         // set context
         GameController.contextController.pushContext(ContextController.DIALOG); // TODO remove?
 
         // set variables
         this.pause = pause;
-        this.buttons = new ArrayList<GuiWidget>();
 
         // pause the game if this is a pausing dialog and we're not in a multiplayer mode
         if(pause && !Game.multiplayer){
             GameController.pause();
         }
-    }
-
-    @Override
-    public void update() { // TODO some kind of interaction
-
     }
 
     @Override
@@ -49,10 +43,4 @@ public abstract class Dialog extends GuiFloating {
         GameController.contextController.popContext();
 
     }
-
-    @Override
-    protected void setType(){
-        this.type = TYPE_DIALOG;
-    }
-
 }

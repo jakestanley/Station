@@ -1,15 +1,14 @@
-package guicomponents.widgets;
+package gui.widgets;
 
-import guicomponents.GuiContainer;
-import guicomponents.GuiWidget;
-import main.GameController;
+import gui.Component;
+import main.Colours;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 /**
  * Created by jake on 16/08/15.
  */
-public class TextField extends GuiWidget {
+public class TextField extends Widget {
 
     public static final Color BG = Color.darkGray;
     public static final Color FG = Color.white;
@@ -20,10 +19,10 @@ public class TextField extends GuiWidget {
     private boolean clicked;
     private String text;
 
-    public TextField(GuiContainer parent, int index){
-        super(parent, index);
-        this.width  = (parent.getWidth() - (2 * BUFFER));
-        this.height = MAX_HEIGHT;
+    public TextField(Component parent, int x, int y){ // TODO use actions instead of ints
+        super(parent,
+                BG, FG, Colours.GUI_BORDER, Colours.GUI_TEXT,
+                x, y, parent.getWidth() - (2 * BUFFER), MAX_HEIGHT);
         this.text = PLACEHOLDER;
         this.clicked = false;
     }
@@ -39,22 +38,32 @@ public class TextField extends GuiWidget {
     }
 
     @Override
-    public void render(Graphics screen, int x, int y) {
+    public void action() {
 
-        if(!set){
-            setCoordinates(x, y);
-        }
-
-        int textWidth   = GameController.guiController.getFont().getWidth(text);
-        int textHeight  = GameController.guiController.getFont().getHeight(text);
-
-        screen.setColor(BG);
-        screen.fillRect(x, y, width, height);
-        screen.setColor(FG);
-        screen.drawString(text, x + (width - textWidth) / 2, y + (height - textHeight) / 2); // primitive, but it will look OK
-
-        parent.getWidth();
     }
+
+    @Override
+    public void draw(Graphics screen) {
+
+    }
+
+//    @Override // TODO
+//    public void render(Graphics screen, int x, int y) {
+//
+//        if(!set){
+//            setCoordinates(x, y);
+//        }
+//
+//        int textWidth   = GameController.guiController.getFont().getWidth(text);
+//        int textHeight  = GameController.guiController.getFont().getHeight(text);
+//
+//        screen.setColor(BG);
+//        screen.fillRect(x, y, width, height);
+//        screen.setColor(FG);
+//        screen.drawString(text, x + (width - textWidth) / 2, y + (height - textHeight) / 2); // primitive, but it will look OK
+//
+//        parent.getWidth();
+//    }
 
     public void addLetter(String letter){ // this feels so primitive
 
@@ -75,10 +84,5 @@ public class TextField extends GuiWidget {
 
     public String getContent(){
         return text;
-    }
-
-    @Override
-    protected void setType() {
-        this.type = TYPE_TEXTFIELD;
     }
 }

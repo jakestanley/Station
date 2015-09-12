@@ -1,7 +1,8 @@
-package guicomponents;
+package gui;
 
 import main.Colours;
 import main.Display;
+import main.GameController;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -10,20 +11,21 @@ import org.newdawn.slick.geom.Rectangle;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MobPanel extends GuiStatic { // TODO CONSIDER does it though?
+public class MobPanel extends Component { // TODO CONSIDER does it though?
 
     private Mob mob;
     private int index;
     private String name = "NAME?";
     private Rectangle detection;
 
-    public MobPanel(int y, int index, Mob mob){ // TODO top and bottom borders, much simpler though
-        super(Display.LEFT_COLUMN_WIDTH, y, Display.RIGHT_COLUMN_WIDTH, Display.TEXT_PANEL_HEIGHT); // TODO CONSIDER parent panel?
+    public MobPanel(Component parent, int y, int index, Mob mob){ // TODO top and bottom borders, much simpler though
+        super(parent, Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
+                parent.getX(), y, parent.getWidth(), Display.TEXT_PANEL_HEIGHT, 1); // TODO change 1 to appropriate border width
 //        System.out.println("Building mob panel");
         this.index = index;
         this.mob = mob;
         name = mob.getName();
-        detection = new Rectangle(Display.LEFT_COLUMN_WIDTH, y, Display.RIGHT_COLUMN_WIDTH, Display.TEXT_PANEL_HEIGHT);
+        detection = new Rectangle(GameController.display.getLeftColumnWidth(), y, GameController.display.getRightColumnWidth(), Display.TEXT_PANEL_HEIGHT);
 //        System.out.println("Mob panel has dimensions: " + x + ", " + y + ", " + (x + width) + ", " + (y + height));
 //        System.out.println("y render: " + y);
 //        System.out.println("mob panel index: " + index);
@@ -40,11 +42,16 @@ public class MobPanel extends GuiStatic { // TODO CONSIDER does it though?
     }
 
     @Override
-    public void renderContent(Graphics screen) {
+    public void action() {
 
+    }
+
+    @Override
+    public void draw(Graphics screen) {
+        System.out.println("drawing mob panel");
         renderHealthBar(screen);
 //        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
-
+//
         // DRAW TOP AND BOTTOM BORDERS
         screen.setColor(Colours.GUI_BORDER);
         screen.drawLine(x, y, x + width, y);
@@ -57,10 +64,11 @@ public class MobPanel extends GuiStatic { // TODO CONSIDER does it though?
 
     }
 
-    @Override
-    public void widgetClicked(int index) {
-
-    }
+//    @Override
+//    public void renderContent(Graphics screen) {
+//
+//
+//    }
 
     public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this TODO today
 
@@ -70,12 +78,12 @@ public class MobPanel extends GuiStatic { // TODO CONSIDER does it though?
                 mouseY > detection.getMinY() && mouseY <= detection.getMaxY()){
 
             // set background selected colour
-            backgroundColour = Colours.GUI_BACKGROUND_SELECTED;
+            bgCol = Colours.GUI_FOREGROUND;
 //            System.out.println("Mouse over");
             return true;
         } else {
             // set regular background colour
-            backgroundColour = Colours.GUI_BACKGROUND;
+            bgCol = Colours.GUI_BACKGROUND;
             return false;
         }
     }

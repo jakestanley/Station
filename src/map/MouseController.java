@@ -1,8 +1,7 @@
 package map;
 
-import guicomponents.GuiComponent;
-import main.ContextController;
-import main.Display;
+import contexts.ContextController;
+import gui.Component;
 import main.GameController;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
@@ -27,7 +26,7 @@ public class MouseController implements MouseListener { // TODO improve and abst
         // Clear map hover objects
         GameController.mapController.clearHoverObjects();
 
-        if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.CONSTRUCTION)){
+        if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.BUILD_ROOM)){
 
             if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set
 
@@ -44,7 +43,7 @@ public class MouseController implements MouseListener { // TODO improve and abst
         MapController mc = GameController.mapController;
 
         // Get focus and click it if it exists
-        GuiComponent focus = GameController.guiController.getFocus(); // TODO make less bad
+        Component focus = GameController.guiController.getFocus(); // TODO make less bad
         if(focus != null){
             focus.click(mousePoint);
             return;
@@ -52,7 +51,7 @@ public class MouseController implements MouseListener { // TODO improve and abst
 
         int context = cc.getContext(); // TODO make default context -1
 
-        if((cc.getContext() == ContextController.CONSTRUCTION) && isMouseOverMap(mousePoint)){ // If in construction context and mouse is over map
+        if((cc.getContext() == ContextController.BUILD_ROOM) && isMouseOverMap(mousePoint)){ // If in construction context and mouse is over map
 
             if(mc.setHoverDoor(mousePoint)){ // if hover door was set
                 mc.getHoverDoor().enable(); // enable the door
@@ -81,10 +80,10 @@ public class MouseController implements MouseListener { // TODO improve and abst
 
         int x = (int) point.getX();
         int y = (int) point.getY();
-        int xLowerBound = 0; // Display.DISPLAY_START_X; // TODO
-        int xUpperBound = Display.LEFT_COLUMN_WIDTH;
-        int yLowerBound = Display.TEXT_PANEL_HEIGHT;
-        int yUpperBound = Display.DISPLAY_HEIGHT;
+        int xLowerBound = Button.HEIGHT; // Display.DISPLAY_START_X; // TODO use Display for dimension values
+        int xUpperBound = GameController.display.getLeftColumnWidth();
+        int yLowerBound = GameController.display.TEXT_PANEL_HEIGHT;
+        int yUpperBound = GameController.display.getHeight();
         return x >= xLowerBound && x <= xUpperBound && y >= yLowerBound && y <= yUpperBound;
     }
 

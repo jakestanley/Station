@@ -1,5 +1,6 @@
-package guicomponents;
+package gui;
 
+import main.Colours;
 import main.Display;
 import org.newdawn.slick.Graphics;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MessageBox extends GuiStatic { // TODO consider that update may be redundant
+public class MessageBox extends Component { // TODO consider that update may be redundant
 
     public static final int MAX_MESSAGES = 5;
     public static final int MAX_MESSAGE_AGE_SECONDS = 5;
@@ -16,8 +17,9 @@ public class MessageBox extends GuiStatic { // TODO consider that update may be 
 
     private ArrayList<MessagePanel> messages;
 
-    public MessageBox(){
-        super(Display.LEFT_COLUMN_WIDTH, Display.getMessageBoxY(), Display.RIGHT_COLUMN_WIDTH, Display.MESSAGE_BOX_HEIGHT);
+    public MessageBox(Component parent, int y){
+        super(parent, Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
+                parent.getX(), y, parent.getWidth(), Display.TEXT_PANEL_HEIGHT, 1); // TODO change 1 to appropriate border width
         messages = new ArrayList<MessagePanel>();
     }
 
@@ -45,21 +47,21 @@ public class MessageBox extends GuiStatic { // TODO consider that update may be 
         }
     }
 
+    @Override
+    public void action() {
+
+    }
+
+    @Override
+    public void draw(Graphics screen) {
+
+    }
+
     public void renderBody(Graphics screen) {
 
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i).getMessage();
             screen.drawString(message, x + Display.MARGIN, y + Display.MARGIN + (i * Display.TEXT_PANEL_HEIGHT)); // TODO check hint is not null
         }
-    }
-
-    @Override
-    public void renderContent(Graphics screen) {
-
-    }
-
-    @Override
-    public void widgetClicked(int index) {
-
     }
 }

@@ -1,6 +1,8 @@
-package guicomponents;
+package gui;
 
+import main.Colours;
 import main.Display;
+import main.GameController;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 
@@ -11,21 +13,23 @@ import java.util.Iterator;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MobsBox extends GuiStatic {
+public class MobsBox extends Component {
 
     private ArrayList<Mob> friendlies;
     private ArrayList<Mob> hostiles;
     private ArrayList<MobPanel> panels;
     private Mob selectedMob;
 
-    public MobsBox(ArrayList<Mob> mobs){
-        super(Display.LEFT_COLUMN_WIDTH, Display.getMobsBoxY(), Display.RIGHT_COLUMN_WIDTH, Display.MOBS_BOX_HEIGHT);
-        buildPanels(mobs);
+    public MobsBox(Component parent, int y){
+        super(parent, Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
+                parent.getX(), y, parent.getWidth(), Display.TEXT_PANEL_HEIGHT, 1); // TODO change 1 to appropriate border width
     }
 
     @Override
     public void init() {
         // TODO CONSIDER that this might not actually be used
+        ArrayList<Mob> mobs = GameController.mobController.getMobs();
+        buildPanels(mobs);
     }
 
     @Override
@@ -34,20 +38,20 @@ public class MobsBox extends GuiStatic {
     }
 
     @Override
-    public void renderContent(Graphics screen) {
-
-        // draw panels
-        for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
-            MobPanel next = iterator.next();
-            next.render(screen);
-        }
+    public void action() {
 
     }
 
     @Override
-    public void widgetClicked(int index) {
+    public void draw(Graphics screen) {
 
     }
+//
+//    @Override
+//    public void renderContent(Graphics screen) {
+//
+//
+//    }
 
     public Mob getMobMouseOver(Point mouse){
 
@@ -71,8 +75,6 @@ public class MobsBox extends GuiStatic {
 
     private void buildPanels(ArrayList<Mob> mobs){
 
-        // TODO maintain consistent order on this list.
-
         friendlies = new ArrayList<Mob>();
         hostiles = new ArrayList<Mob>();
         panels = new ArrayList<MobPanel>();
@@ -91,13 +93,13 @@ public class MobsBox extends GuiStatic {
 
         for (Iterator<Mob> iterator = friendlies.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
             pos++;
         }
 
         for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            panels.add(new MobPanel(y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
             pos++;
         }
     }

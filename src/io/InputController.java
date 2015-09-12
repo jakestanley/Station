@@ -1,8 +1,8 @@
 package io;
 
-import guicomponents.GuiComponent;
-import guicomponents.dialogs.Dialog_CreateRoom;
-import guicomponents.widgets.TextField;
+import contexts.ContextController;
+import gui.Component;
+import gui.widgets.TextField;
 import main.*;
 import map.MapController;
 import org.newdawn.slick.GameContainer;
@@ -30,32 +30,32 @@ public class InputController implements KeyListener {
         ContextController cc = GameController.contextController;
 
         // get focused component and context for deciding where input should be sent
-        GuiComponent focus  = gc.getFocus();
+        Component focus  = gc.getFocus();
         int context         = cc.getContext();
 
         // ESCAPE to have overriding functionality
 
-        if(focus != null && GuiComponent.TYPE_TEXTFIELD == focus.getType()){
-            TextField field = (TextField) focus;
-            if(input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_ESCAPE)){
-                gc.popFocus();
-            }
-        } else {
-            // do regular controls
-        }
+//        if(focus != null && Component.TYPE_TEXTFIELD == focus.getType()){
+//            TextField field = (TextField) focus;
+//            if(input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_ESCAPE)){
+//                gc.popFocus();
+//            }
+//        } else {
+//            // do regular controls
+//        }
 
         // if in construction context
-        if(GameController.contextController.getContext() == ContextController.CONSTRUCTION){
-            if(input.isKeyDown(Input.KEY_ENTER)){
-                Dialog_CreateRoom dialog = new Dialog_CreateRoom();
-                GameController.guiController.addContainer(dialog);
-                GameController.guiController.pushFocus(dialog);
-            }
-
-            if(input.isKeyDown(Input.KEY_ESCAPE)){
-                mc.clearSelection();
-            }
-        }
+//        if(GameController.contextController.getContext() == ContextController.CONSTRUCTION){
+//            if(input.isKeyDown(Input.KEY_ENTER)){
+//                CreateRoom dialog = new CreateRoom();
+//                GameController.guiController.addContainer(dialog);
+//                GameController.guiController.pushFocus(dialog);
+//            }
+//
+//            if(input.isKeyDown(Input.KEY_ESCAPE)){
+//                mc.clearSelection();
+//            }
+//        }
 
 
         processViewControllerControls(input);
@@ -108,10 +108,10 @@ public class InputController implements KeyListener {
         GuiController gc = GameController.guiController;
 
         // get focus
-        GuiComponent focus = gc.getFocus();
+        Component focus = gc.getFocus();
 
         // if a text field is selected, send the input there
-        if(focus != null && GuiComponent.TYPE_TEXTFIELD == focus.getType()){
+        if(focus != null){ //&& Component.TYPE_TEXTFIELD == focus.getType()){
 
             System.out.println("fhuef");
             TextField field = (TextField) focus;
@@ -126,7 +126,7 @@ public class InputController implements KeyListener {
             }
         } else { // add more depth to this
             processGenericControls(i, c);
-
+//
         }
 
     }
