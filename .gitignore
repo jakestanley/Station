@@ -6,3 +6,5 @@ res/
 *.iml
 
 *.log
+
+.DS_Store
