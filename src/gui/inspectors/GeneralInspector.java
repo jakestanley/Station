@@ -49,7 +49,7 @@ public class GeneralInspector extends Inspector {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
         // does nothing
     }
 

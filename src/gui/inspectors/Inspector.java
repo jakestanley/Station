@@ -39,7 +39,12 @@ public class Inspector extends Component { // not abstract in case you want to m
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
+
+    }
+
+    @Override
+    public void hoverAction() {
 
     }
 

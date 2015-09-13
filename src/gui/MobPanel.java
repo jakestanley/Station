@@ -42,8 +42,13 @@ public class MobPanel extends Component { // TODO CONSIDER does it though?
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
         System.out.println("selected " + mob.getName());
+    }
+
+    @Override
+    public void hoverAction() {
+        System.out.println("hovered over " + mob.getName());
     }
 
     @Override

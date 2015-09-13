@@ -46,7 +46,12 @@ public class CreateRoom extends Dialog {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
+
+    }
+
+    @Override
+    public void hoverAction() {
 
     }
 

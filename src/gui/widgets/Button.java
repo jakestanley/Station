@@ -43,10 +43,15 @@ public class Button extends Widget {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
         System.out.println("clicked " + text);
         action.execute();
         // TODO something with parent
+    }
+
+    @Override
+    public void hoverAction() {
+
     }
 
     public void setIndex(int index){

@@ -45,7 +45,9 @@ public abstract class Component { // TODO "implements Renderable" ?
 
     public abstract void update();
 
-    public abstract void action();
+    public abstract void clickAction();
+
+    public abstract void hoverAction();
 
     public abstract void draw(Graphics screen);
 
@@ -57,13 +59,28 @@ public abstract class Component { // TODO "implements Renderable" ?
     public void click(Point mouse){
         // if the mouse is over me
         if(isMouseOver(mouse)) {
-            System.out.println("component clicked");
-            // do my action
-            action();
+            // do my click action
+            clickAction();
             // then do my children's actions
             for (Iterator<Component> iterator = children.iterator(); iterator.hasNext(); ) {
                 Component next = iterator.next();
                 next.click(mouse);
+            }
+        }
+    }
+
+    /**
+     * Similar to click. Passes the mouse hover to children
+     * @param mouse
+     */
+    public void hover(Point mouse){
+        if(isMouseOver(mouse)) {
+            // do my hover action
+            hoverAction();
+            // then do my children's actions
+            for (Iterator<Component> iterator = children.iterator(); iterator.hasNext(); ) {
+                Component next = iterator.next();
+                next.hover(mouse);
             }
         }
     }

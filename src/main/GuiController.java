@@ -97,14 +97,6 @@ public class GuiController {
             entry.getValue().init();
         }
 
-//        for (Iterator<Component> iterator = components.iterator(); iterator.hasNext(); ) {
-//            Component next = iterator.next();
-//            next.init();
-//        }
-
-        // initialise static gui elements
-//        hintsBox    = new HintsBox(hint); // TODO 12/09
-
         // load font
         font = FontLoader.loadFont("04b03.ttf"); // TODO remove other mention of font
     }
@@ -269,6 +261,22 @@ public class GuiController {
             if(next.isMouseOver(mouse)){
                 System.out.println("gui click");
                 next.click(mouse);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * For sending hovers to non-map components and informing the caller that a click was registered by a component.
+     * @param mouse
+     * @return
+     */
+    public boolean hover(Point mouse){
+        for (Iterator<Component> iterator = visible.iterator(); iterator.hasNext(); ) {
+            Component next = iterator.next();
+            if(next.isMouseOver(mouse)){
+                next.hover(mouse);
                 return true;
             }
         }

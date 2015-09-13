@@ -27,6 +27,18 @@ public class MouseController implements MouseListener { // TODO improve and abst
         // Clear map hover objects
         GameController.mapController.clearHoverObjects();
 
+        // Get focus and click it if it exists
+        Component focus = GameController.guiController.getFocus(); // TODO make less bad
+        if(focus != null){
+            focus.hover(mousePoint);
+            return;
+        }
+
+        // pass clicks to the interface
+        if(GameController.guiController.hover(mousePoint)){
+            return;
+        }
+
         if(isMouseOverMap(mousePoint) && (GameController.contextController.getContext() == ContextController.BUILD_ROOM)){
 
             if(!dragMode && GameController.mapController.setHoverDoor(mousePoint)) { // if hover door was set

@@ -36,7 +36,12 @@ public class HintsBox extends Component {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
+
+    }
+
+    @Override
+    public void hoverAction() {
 
     }
 

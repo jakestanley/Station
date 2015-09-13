@@ -38,7 +38,12 @@ public class TextField extends Widget {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
+
+    }
+
+    @Override
+    public void hoverAction() {
 
     }
 

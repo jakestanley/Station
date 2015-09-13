@@ -30,8 +30,13 @@ public class ButtonRow extends Component {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
         // do nothing
+    }
+
+    @Override
+    public void hoverAction() {
+
     }
 
     @Override

@@ -48,7 +48,12 @@ public class MessageBox extends Component { // TODO consider that update may be 
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
+
+    }
+
+    @Override
+    public void hoverAction() {
 
     }
 

@@ -6,7 +6,6 @@ import main.GameController;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -22,7 +21,7 @@ public class MobsBox extends Component {
 
     public MobsBox(Component parent, int y){
         super(parent, Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
-                parent.getX(), y, parent.getWidth(), Display.TEXT_PANEL_HEIGHT, 1); // TODO change 1 to appropriate border width
+                parent.getX(), y, parent.getWidth(), Display.MOBS_BOX_HEIGHT, 1); // TODO change 1 to appropriate border width
     }
 
     @Override
@@ -38,8 +37,13 @@ public class MobsBox extends Component {
     }
 
     @Override
-    public void action() {
+    public void clickAction() {
 
+    }
+
+    @Override
+    public void hoverAction() {
+        System.out.println("hovering over mob bos");
     }
 
     @Override
@@ -47,31 +51,10 @@ public class MobsBox extends Component {
 
     }
 
-    public Mob getMobMouseOver(Point mouse){
-
-        if(mouse != null) {
-            System.out.println("getting mouse over");
-            int mouseX = (int) mouse.getX();
-            int mouseY = (int) mouse.getY();
-            selectedMob = null;
-
-            for (Iterator<MobPanel> iterator = panels.iterator(); iterator.hasNext(); ) {
-                MobPanel next = iterator.next();
-                if (next.mouseOver(mouseX, mouseY)) {
-                    selectedMob = next.getMob();
-                }
-            }
-
-        }
-
-        return selectedMob;
-    }
-
     private void buildPanels(ArrayList<Mob> mobs){
 
         friendlies = new ArrayList<Mob>();
         hostiles = new ArrayList<Mob>();
-        panels = new ArrayList<MobPanel>();
 
         // sort into two groups
         for (Iterator<Mob> iterator = mobs.iterator(); iterator.hasNext(); ) {
@@ -91,11 +74,12 @@ public class MobsBox extends Component {
             pos++;
         }
 
-//        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
-//            Mob next = iterator.next();
-//            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
-//            pos++;
-//        }
+        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
+            Mob next = iterator.next();
+            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+            pos++;
+        }
+
     }
 
 }
