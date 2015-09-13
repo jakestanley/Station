@@ -59,7 +59,8 @@ public class MessageBox extends Component { // TODO consider that update may be 
 
     @Override
     public void draw(Graphics screen) {
-
+        screen.setColor(Colours.GUI_TEXT);
+        screen.drawString("message box test string", x + 8, y + 8);
     }
 
     public void renderBody(Graphics screen) {

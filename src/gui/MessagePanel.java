@@ -8,7 +8,7 @@ public class MessagePanel {
     private String message;
     private int age;
 
-    public MessagePanel(String message){
+    public MessagePanel(String message){ // TODO use stack for messages
         this.message = message;
         this.age = 0;
     }

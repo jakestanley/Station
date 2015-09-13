@@ -23,8 +23,8 @@ public class GeneralInspector extends Inspector {
     public void init() {
 
 //        infoBox     = new InfoBox();
-        mobsBox     = new MobsBox(this, y); // TODO reconsider how this works
-        messageBox  = new MessageBox(this, y);
+        mobsBox     = new MobsBox(this, y);
+        messageBox  = new MessageBox(this, y + mobsBox.getHeight());
 
 //        infoBox.init();
         mobsBox.init();

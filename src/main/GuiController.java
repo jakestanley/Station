@@ -24,8 +24,8 @@ import java.util.*;
 public class GuiController {
 
     // component reference constants for hashmap
-    public static final String MENU = "MENU";
-    public static final String HINTS = "HINTS";
+    public static final String MENU                 = "MENU";
+    public static final String HINTS                = "HINTS";
     public static final String INSPECTOR_GENERAL    = "INSPECTOR_GENERAL";
     public static final String INSPECTOR_BUILD      = "INSPECTOR_BUILD";
     public static final String INSPECTOR_PLACE      = "INSPECTOR_PLACE"; // TODO use a better structure
@@ -35,6 +35,7 @@ public class GuiController {
 
     // font
     private TrueTypeFont            font;
+    private TrueTypeFont            osFont;
 
     // Accessed objects
     private Door hoverDoor;
@@ -60,6 +61,11 @@ public class GuiController {
         menu.addButton(new Button(menu, "GENERAL", new SwitchViewAction(VIEW_GENERAL))); // TODO strings/translations class
         menu.addButton(new Button(menu, "BUILD", new SwitchViewAction(VIEW_BUILD)));
         menu.addButton(new Button(menu, "PLACE", new SwitchViewAction(VIEW_PLACE)));
+        menu.addButton(new Button(menu, "MISSIONS", new SwitchViewAction(VIEW_GENERAL)));
+        menu.addButton(new Button(menu, "CREW", new SwitchViewAction(VIEW_GENERAL)));
+        menu.addButton(new Button(menu, "SYSTEM", new SwitchViewAction(VIEW_GENERAL)));
+        menu.addButton(new Button(menu, "BUDGET", new SwitchViewAction(VIEW_GENERAL)));
+//        menu.addButton(new Button(menu, "DANGER ZONE", new SwitchViewAction(VIEW_GENERAL)));
 
         // construct the inspector and hints box
         Inspector generalInspector          = new GeneralInspector();

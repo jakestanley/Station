@@ -43,7 +43,7 @@ public class MobsBox extends Component {
 
     @Override
     public void hoverAction() {
-        System.out.println("hovering over mob bos");
+
     }
 
     @Override
@@ -70,15 +70,17 @@ public class MobsBox extends Component {
 
         for (Iterator<Mob> iterator = friendlies.iterator(); iterator.hasNext(); ) {
             Mob next = iterator.next();
-            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+            int panelY = y + (pos * Display.TEXT_PANEL_HEIGHT);
+            System.out.println("creating mob panel y: " + panelY);
+            children.add(new MobPanel(this, panelY, pos, next));
             pos++;
         }
 
-        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
-            Mob next = iterator.next();
-            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
-            pos++;
-        }
+//        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
+//            Mob next = iterator.next();
+//            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+//            pos++;
+//        }
 
     }
 
