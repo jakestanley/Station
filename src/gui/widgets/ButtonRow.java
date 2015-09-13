@@ -47,11 +47,12 @@ public class ButtonRow extends Component {
     public void addButton(Button button){ // resize row and add new button
         children.add(button);
         int buttonWidth = (int) Math.ceil(getWidth() / children.size());
+        int xOffset = (getWidth() - (buttonWidth * children.size())) / 2;
         for (int i = 0; i < children.size(); i++) {
             // update new button height and width
             Component c = (Component) children.get(i);
             c.setWidth(buttonWidth);
-            c.setX(getX() + (i * buttonWidth));
+            c.setX(xOffset + getX() + (i * buttonWidth));
         }
     }
 
