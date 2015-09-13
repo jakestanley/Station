@@ -8,7 +8,6 @@ import io.Inputtable;
 import main.GameController;
 import main.Values;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import planner.Evacuate;
 import planner.Planner;
 import planner.Random;
@@ -115,11 +114,6 @@ public class Mate extends Mob implements Inputtable {
     public void populateDataBoxStrings() {
         strings = new ArrayList<String>();
         strings.add("random string: " + GameController.random.nextFloat());
-    }
-
-    @Override
-    public void renderHoverBox(Graphics screen) {
-
     }
 
     @Override

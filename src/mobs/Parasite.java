@@ -7,7 +7,6 @@ import exceptions.NoAction;
 import exceptions.UnnecessaryAction;
 import main.GameController;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import planner.Random;
 
 import java.awt.*;
@@ -94,12 +93,7 @@ public class Parasite extends Mob {
         strings = new ArrayList<String>();
         strings.add("random string: " + GameController.random.nextFloat());
     }
-
-    @Override
-    public void renderHoverBox(Graphics screen) {
-
-    }
-
+    
     @Override
     public void specificDamage() { // TODO specific damage only done to subclasses
         // TODO put this in a more appropriate place

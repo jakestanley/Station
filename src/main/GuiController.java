@@ -3,10 +3,10 @@ package main;
 import gui.Component;
 import gui.HintsBox;
 import gui.actions.SwitchViewAction;
-import gui.inspectors.BuildRoomInspector;
+import gui.inspectors.BuildInspector;
 import gui.inspectors.GeneralInspector;
 import gui.inspectors.Inspector;
-import gui.inspectors.PlaceObjectsInspector;
+import gui.inspectors.PlaceInspector;
 import gui.widgets.Button;
 import gui.widgets.ButtonRow;
 import mobs.Mob;
@@ -66,8 +66,8 @@ public class GuiController {
 
         // construct the inspector and hints box
         Inspector generalInspector          = new GeneralInspector();
-        Inspector buildRoomInspector        = new BuildRoomInspector();
-        Inspector placeObjectsInspector     = new PlaceObjectsInspector();
+        Inspector buildRoomInspector        = new BuildInspector();
+        Inspector placeObjectsInspector     = new PlaceInspector();
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         HintsBox hints = new HintsBox(null, hint);
 
