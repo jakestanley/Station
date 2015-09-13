@@ -113,14 +113,14 @@ public class GuiController {
         screen.setColor(Colours.GRID_LINES); // TODO fix these values
         screen.setLineWidth(Display.GRID_LINES);
 
-        // draw horizontal lines going down
-        for(int v = 0; v < Display.MAP_HEIGHT; v++){
+        // draw horizontal lines
+        for(int v = 0; v < GameController.display.getMapHeight(); v++){
             screen.drawLine(0, v * Display.TILE_WIDTH, GameController.display.getMapWidth(), v * Display.TILE_WIDTH);
         }
 
-        // draw vertical lines going across
+        // draw vertical lines
         for(int h = 0; h < GameController.display.getMapWidth(); h++){
-            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Display.MAP_HEIGHT);
+            screen.drawLine(h * Display.TILE_WIDTH, 0, h * Display.TILE_WIDTH, Button.MAX_HEIGHT + GameController.display.getMapHeight() + 16); // TODO improve
         }
 
     }
