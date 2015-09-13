@@ -43,19 +43,14 @@ public class MobPanel extends Component { // TODO CONSIDER does it though?
 
     @Override
     public void action() {
-
+        System.out.println("selected " + mob.getName());
     }
 
     @Override
     public void draw(Graphics screen) {
-        System.out.println("drawing mob panel");
         renderHealthBar(screen);
 //        int scale = Display.BIG_SCALE; // TODO fix it so i don't need to adjust scale here
 //
-        // DRAW TOP AND BOTTOM BORDERS
-        screen.setColor(Colours.GUI_BORDER);
-        screen.drawLine(x, y, x + width, y);
-        screen.drawLine(x, y + height, x + width, y + height);
 
         // DRAW TEXT
         screen.setColor(Colours.GUI_TEXT);

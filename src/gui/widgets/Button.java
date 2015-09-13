@@ -1,6 +1,7 @@
 package gui.widgets;
 
 import gui.Component;
+import gui.actions.Action;
 import main.Colours;
 import main.GameController;
 import org.newdawn.slick.Color;
@@ -18,22 +19,17 @@ public class Button extends Widget {
 
     private String text;
     private int index;
+    private Action action;
 
     /**
      * No position or dimensions constructor for when another component determines size
      * @param parent
      */
-    public Button(Component parent, String text){
+    public Button(Component parent, String text, Action action){
         super(parent, BG, FG, Colours.GUI_BORDER, Colours.GUI_TEXT,
                 0, 0, 0, MAX_HEIGHT);
         this.text = text;
-    }
-
-    public Button(Component parent, int x, int y, String text, int index){
-        super(parent, BG, FG, Colours.GUI_BORDER, Colours.GUI_TEXT,
-                x, y, MAX_WIDTH, MAX_HEIGHT); // TODO sort colours
-        this.index  = index;
-        this.text   = text;
+        this.action = action;
     }
 
     @Override
@@ -48,6 +44,8 @@ public class Button extends Widget {
 
     @Override
     public void action() {
+        System.out.println("clicked " + text);
+        action.execute();
         // TODO something with parent
     }
 

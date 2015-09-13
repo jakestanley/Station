@@ -1,8 +1,9 @@
-package map;
+package io;
 
 import contexts.ContextController;
 import gui.Component;
 import main.GameController;
+import map.MapController;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 import resources.Converter;
@@ -37,10 +38,11 @@ public class MouseController implements MouseListener { // TODO improve and abst
         }
     }
 
+    /**
+     * Priority: focused dialogs, then map or static components
+     * @param mousePoint
+     */
     public void setClickPoint(Point mousePoint){
-
-        ContextController cc    = GameController.contextController;
-        MapController mc = GameController.mapController;
 
         // Get focus and click it if it exists
         Component focus = GameController.guiController.getFocus(); // TODO make less bad
@@ -48,6 +50,15 @@ public class MouseController implements MouseListener { // TODO improve and abst
             focus.click(mousePoint);
             return;
         }
+
+        // pass clicks to the interface
+        if(GameController.guiController.click(mousePoint)){
+            return;
+        }
+
+        // get map and context controller and check for map clicks
+        ContextController cc    = GameController.contextController;
+        MapController mc = GameController.mapController;
 
         int context = cc.getContext(); // TODO make default context -1
 
@@ -77,6 +88,8 @@ public class MouseController implements MouseListener { // TODO improve and abst
     }
 
     private boolean isMouseOverMap(Point point){
+
+        // TODO CONSIDER checking if the map is visible
 
         int x = (int) point.getX();
         int y = (int) point.getY();

@@ -46,12 +46,6 @@ public class MobsBox extends Component {
     public void draw(Graphics screen) {
 
     }
-//
-//    @Override
-//    public void renderContent(Graphics screen) {
-//
-//
-//    }
 
     public Mob getMobMouseOver(Point mouse){
 
@@ -97,11 +91,11 @@ public class MobsBox extends Component {
             pos++;
         }
 
-        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
-            Mob next = iterator.next();
-            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
-            pos++;
-        }
+//        for (Iterator<Mob> iterator = hostiles.iterator(); iterator.hasNext(); ) {
+//            Mob next = iterator.next();
+//            children.add(new MobPanel(this, y + (pos * Display.TEXT_PANEL_HEIGHT), pos, next));
+//            pos++;
+//        }
     }
 
 }

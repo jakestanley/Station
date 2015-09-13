@@ -56,7 +56,8 @@ public abstract class Component { // TODO "implements Renderable" ?
      */
     public void click(Point mouse){
         // if the mouse is over me
-        if(!isMouseOver(mouse)) {
+        if(isMouseOver(mouse)) {
+            System.out.println("component clicked");
             // do my action
             action();
             // then do my children's actions

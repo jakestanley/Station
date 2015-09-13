@@ -3,7 +3,7 @@ package main;
 import contexts.ContextController;
 import io.InputController;
 import map.MapController;
-import map.MouseController;
+import io.MouseController;
 import mobs.MobController;
 import org.newdawn.slick.*;
 

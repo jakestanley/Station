@@ -2,8 +2,11 @@ package main;
 
 import gui.Component;
 import gui.HintsBox;
+import gui.actions.SwitchViewAction;
+import gui.inspectors.BuildRoomInspector;
 import gui.inspectors.GeneralInspector;
 import gui.inspectors.Inspector;
+import gui.inspectors.PlaceObjectsInspector;
 import gui.widgets.Button;
 import gui.widgets.ButtonRow;
 import mobs.Mob;
@@ -12,6 +15,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 import resources.FontLoader;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -53,22 +57,22 @@ public class GuiController {
 
         // build the menu TODO make a separate class for this stuff
         ButtonRow menu = new ButtonRow(null, 0, 0, GameController.display.getWidth(), Button.MAX_HEIGHT);
-        menu.addButton(new Button(menu, "BUILD"));
-        menu.addButton(new Button(menu, "CREW"));
-        menu.addButton(new Button(menu, "MISSION"));
-        menu.addButton(new Button(menu, "BUDGET"));
-        menu.addButton(new Button(menu, "NAVIGATION"));
-        menu.addButton(new Button(menu, "WEAPONS"));
-        menu.addButton(new Button(menu, "POWER"));
+        menu.addButton(new Button(menu, "GENERAL", new SwitchViewAction(VIEW_GENERAL))); // TODO strings/translations class
+        menu.addButton(new Button(menu, "BUILD", new SwitchViewAction(VIEW_BUILD)));
+        menu.addButton(new Button(menu, "PLACE", new SwitchViewAction(VIEW_PLACE)));
 
         // construct the inspector and hints box
-        Inspector generalInspector = new GeneralInspector();
+        Inspector generalInspector          = new GeneralInspector();
+        Inspector buildRoomInspector        = new BuildRoomInspector();
+        Inspector placeObjectsInspector     = new PlaceObjectsInspector();
         hint = new StringBuilder(Values.Strings.HINTS_WILL_APPEAR);
         HintsBox hints = new HintsBox(null, hint);
 
         // populate the hashmap
         components.put(MENU, menu);
         components.put(INSPECTOR_GENERAL, generalInspector);
+        components.put(INSPECTOR_BUILD, buildRoomInspector);
+        components.put(INSPECTOR_PLACE, placeObjectsInspector);
         components.put(HINTS, hints);
 
         // add the initially visible parent elements
@@ -252,6 +256,23 @@ public class GuiController {
             default:
                 throw new Exception("Bad view string passed to switchView");
         }
+    }
+
+    /**
+     * For sending clicks to non-map components and informing the caller that a click was registered by a component.
+     * @param mouse
+     * @return
+     */
+    public boolean click(Point mouse){
+        for (Iterator<Component> iterator = visible.iterator(); iterator.hasNext(); ) {
+            Component next = iterator.next();
+            if(next.isMouseOver(mouse)){
+                System.out.println("gui click");
+                next.click(mouse);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setCommonView(){
