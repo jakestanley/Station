@@ -577,6 +577,13 @@ public class MapController {
      */
     public void createRoomFromSelection(){
 
+        for (Iterator<Point> iterator = selection.iterator(); iterator.hasNext(); ) { // TODO EFFICIENCY change the flow of this code so it just ignores void tiles for
+            Point next = iterator.next();
+            if(getTile(next).isVoid()){
+                iterator.remove();
+            }
+        }
+
         if(!isContiguous(selection)){
             System.err.println("Selection is not contiguous"); // TODO make better. maybe throw an exception?
             return;

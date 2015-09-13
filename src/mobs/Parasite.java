@@ -93,7 +93,7 @@ public class Parasite extends Mob {
         strings = new ArrayList<String>();
         strings.add("random string: " + GameController.random.nextFloat());
     }
-    
+
     @Override
     public void specificDamage() { // TODO specific damage only done to subclasses
         // TODO put this in a more appropriate place
