@@ -16,7 +16,9 @@ public class Button extends Widget {
     public static final Color FG = Color.white;
     public static final int MAX_WIDTH = 72;
     public static final int MAX_HEIGHT = 36;
+    public static final float DARKEN_SCALE = 0.1f;
 
+    private boolean selected;
     private String text;
     private int index;
     private Action action;
@@ -30,6 +32,7 @@ public class Button extends Widget {
                 0, 0, 0, MAX_HEIGHT);
         this.text = text;
         this.action = action;
+        this.selected = false;
     }
 
     @Override
@@ -45,8 +48,13 @@ public class Button extends Widget {
     @Override
     public void clickAction() {
         System.out.println("clicked " + text);
+        selected = true;
         action.execute();
         // TODO something with parent
+    }
+
+    public void clearSelection(){
+        selected = false;
     }
 
     @Override
@@ -63,7 +71,11 @@ public class Button extends Widget {
         int textWidth   = GameController.guiController.getFont().getWidth(text);
         int textHeight  = GameController.guiController.getFont().getHeight(text);
 
-        screen.setColor(BG);
+        if(!selected){
+            screen.setColor(BG);
+        } else {
+            screen.setColor(new Color(BG).darker(DARKEN_SCALE));
+        }
         screen.fillRect(x, y, width, height);
         screen.setColor(Colours.GUI_BORDER);
         screen.drawRect(x, y, width, height);

@@ -5,6 +5,8 @@ import main.Colours;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import java.util.Iterator;
+
 /**
  * Created by stanners on 12/09/2015.
  */
@@ -31,7 +33,10 @@ public class ButtonRow extends Component {
 
     @Override
     public void clickAction() {
-        // do nothing
+        for (Iterator<Component> iterator = children.iterator(); iterator.hasNext(); ) {
+            Button next = (Button) iterator.next();
+            next.clearSelection();
+        }
     }
 
     @Override
