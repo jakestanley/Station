@@ -1,9 +1,9 @@
 package gui.inspectors;
 
 import exceptions.ComponentChildSizeException;
-import gui.InfoBox;
-import gui.MessageBox;
-import gui.MobsBox;
+import gui.inspectors.boxes.InfoBox;
+import gui.inspectors.boxes.MessageBox;
+import gui.inspectors.boxes.MobsBox;
 
 /**
  * Created by stanners on 12/09/2015.

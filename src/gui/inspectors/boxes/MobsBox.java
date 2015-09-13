@@ -1,5 +1,7 @@
-package gui;
+package gui.inspectors.boxes;
 
+import gui.Component;
+import gui.Scrollable;
 import main.Colours;
 import main.Display;
 import main.GameController;
@@ -12,8 +14,10 @@ import java.util.Iterator;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class MobsBox extends Component {
+public class MobsBox extends Component implements Scrollable {
 
+    private int listOffset;
+    private int listVisible;
     private ArrayList<Mob> friendlies;
     private ArrayList<Mob> hostiles;
     private ArrayList<MobPanel> panels;
@@ -22,6 +26,8 @@ public class MobsBox extends Component {
     public MobsBox(Component parent, int y){
         super(parent, Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
                 parent.getX(), y, parent.getWidth(), Display.MOBS_BOX_HEIGHT, 1); // TODO change 1 to appropriate border width
+        listOffset = 0;
+        listVisible = getHeight() / Display.MOBS_BOX_HEIGHT; // TODO use this or change it
     }
 
     @Override
@@ -84,4 +90,15 @@ public class MobsBox extends Component {
 
     }
 
+    @Override
+    public void scrollUp() {
+        if(listOffset > 0){
+            listOffset--;
+        }
+    }
+
+    @Override
+    public void scrollDown(){
+
+    }
 }

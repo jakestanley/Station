@@ -1,6 +1,5 @@
 package main;
 
-import contexts.ContextController;
 import io.InputController;
 import map.MapController;
 import io.MouseController;

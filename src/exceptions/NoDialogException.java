@@ -1,7 +1,7 @@
 package exceptions;
 
 import gui.floating.dialog.Dialog;
-import contexts.ContextController;
+import main.ContextController;
 
 /**
  * Created by stanners on 16/08/2015.

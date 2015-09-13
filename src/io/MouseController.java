@@ -1,6 +1,6 @@
 package io;
 
-import contexts.ContextController;
+import main.ContextController;
 import gui.Component;
 import main.GameController;
 import map.MapController;

@@ -1,5 +1,6 @@
-package gui;
+package gui.inspectors.boxes;
 
+import gui.Component;
 import main.Colours;
 import main.Display;
 import main.GameController;
@@ -48,7 +49,7 @@ public class MobPanel extends Component { // TODO CONSIDER does it though?
 
     @Override
     public void hoverAction() {
-        System.out.println("hovered over " + mob.getName());
+        GameController.mapController.setHoverMob(mob);
     }
 
     @Override
@@ -64,35 +65,11 @@ public class MobPanel extends Component { // TODO CONSIDER does it though?
 
     }
 
-//    @Override
-//    public void renderContent(Graphics screen) {
-//
-//
-//    }
-
-    public boolean mouseOver(int mouseX, int mouseY) { // TODO an abstractly or statically accessible method for this TODO today
-
-//        System.out.println("MOUSE: " + mouseX + ", " + mouseY);
-
-        if (mouseX > detection.getMinX() && mouseX < detection.getMaxX() &&
-                mouseY > detection.getMinY() && mouseY <= detection.getMaxY()){
-
-            // set background selected colour
-            bgCol = Colours.GUI_FOREGROUND;
-//            System.out.println("Mouse over");
-            return true;
-        } else {
-            // set regular background colour
-            bgCol = Colours.GUI_BACKGROUND;
-            return false;
-        }
-    }
-
     public Mob getMob(){
         return mob;
     }
 
-    private void renderHealthBar(Graphics screen){
+    private void renderHealthBar(Graphics screen){ // TODO EFFICIENCY only update if health level has changed?
 
 //        screen.scale(Display.BIG_SCALE, Display.BIG_SCALE); // TODO fix so i don't have to keep doing this
 

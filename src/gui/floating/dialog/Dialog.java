@@ -1,6 +1,6 @@
 package gui.floating.dialog;
 
-import contexts.ContextController;
+import main.ContextController;
 import gui.floating.Floating;
 import gui.widgets.ButtonRow;
 import main.Game;

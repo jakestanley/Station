@@ -29,13 +29,10 @@ public class GuiController {
     public static final String INSPECTOR_GENERAL    = "INSPECTOR_GENERAL";
     public static final String INSPECTOR_BUILD      = "INSPECTOR_BUILD";
     public static final String INSPECTOR_PLACE      = "INSPECTOR_PLACE"; // TODO use a better structure
-    public static final String VIEW_GENERAL         = "VIEW_GENERAL";
-    public static final String VIEW_BUILD           = "VIEW_BUILD";
-    public static final String VIEW_PLACE           = "VIEW_PLACE";
 
     // font
-    private TrueTypeFont            font;
-    private TrueTypeFont            osFont;
+    private TrueTypeFont font;
+    private TrueTypeFont osFont;
 
     // Accessed objects
     private Door hoverDoor;
@@ -58,13 +55,13 @@ public class GuiController {
 
         // build the menu TODO make a separate class for this stuff
         ButtonRow menu = new ButtonRow(null, 0, 0, GameController.display.getWidth(), Button.MAX_HEIGHT);
-        menu.addButton(new Button(menu, "GENERAL", new SwitchViewAction(VIEW_GENERAL))); // TODO strings/translations class
-        menu.addButton(new Button(menu, "BUILD", new SwitchViewAction(VIEW_BUILD)));
-        menu.addButton(new Button(menu, "PLACE", new SwitchViewAction(VIEW_PLACE)));
-        menu.addButton(new Button(menu, "MISSIONS", new SwitchViewAction(VIEW_GENERAL)));
-        menu.addButton(new Button(menu, "CREW", new SwitchViewAction(VIEW_GENERAL)));
-        menu.addButton(new Button(menu, "SYSTEM", new SwitchViewAction(VIEW_GENERAL)));
-        menu.addButton(new Button(menu, "BUDGET", new SwitchViewAction(VIEW_GENERAL)));
+        menu.addButton(new Button(menu, "GENERAL", new SwitchViewAction(ContextController.GENERAL))); // TODO strings/translations class
+        menu.addButton(new Button(menu, "BUILD", new SwitchViewAction(ContextController.BUILD_ROOM)));
+        menu.addButton(new Button(menu, "PLACE", new SwitchViewAction(ContextController.BUILD_PLACE)));
+        menu.addButton(new Button(menu, "MISSIONS", new SwitchViewAction(ContextController.GENERAL)));
+        menu.addButton(new Button(menu, "CREW", new SwitchViewAction(ContextController.GENERAL)));
+        menu.addButton(new Button(menu, "SYSTEM", new SwitchViewAction(ContextController.GENERAL)));
+        menu.addButton(new Button(menu, "BUDGET", new SwitchViewAction(ContextController.GENERAL)));
 //        menu.addButton(new Button(menu, "DANGER ZONE", new SwitchViewAction(VIEW_GENERAL)));
 
         // construct the inspector and hints box
@@ -238,21 +235,24 @@ public class GuiController {
         }
     }
 
-    public void switchView(String view) throws Exception {
+    public void switchView(int view) throws Exception {
         visible.clear();
         setCommonView(); // TODO consider ViewController class
         switch (view){
-            case VIEW_GENERAL:
+            case ContextController.GENERAL:
                 setGeneralView();
+                GameController.contextController.replaceContext(ContextController.GENERAL);
                 break;
-            case VIEW_BUILD:
+            case ContextController.BUILD_ROOM:
                 setBuildView();
+                GameController.contextController.replaceContext(ContextController.BUILD_ROOM);
                 break;
-            case VIEW_PLACE:
+            case ContextController.BUILD_PLACE:
+                GameController.contextController.replaceContext(ContextController.BUILD_PLACE);
                 setPlaceView();
                 break;
             default:
-                throw new Exception("Bad view string passed to switchView");
+                throw new Exception("Bad view int passed to switchView");
         }
     }
 
@@ -295,6 +295,7 @@ public class GuiController {
     }
 
     public void setGeneralView(){
+        GameController.mapController.clearSelection();
         visible.add(components.get(INSPECTOR_GENERAL));
     }
 
@@ -303,6 +304,7 @@ public class GuiController {
     }
 
     public void setPlaceView(){
+        GameController.mapController.clearSelection();
         visible.add(components.get(INSPECTOR_PLACE));
     }
 

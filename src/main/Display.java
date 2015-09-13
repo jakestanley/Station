@@ -11,8 +11,8 @@ public class Display { // TODO put these variables in some kind of order/categor
 
     // DISPLAY CONSTANTS - OLD SCALING METHOD SYSTEM WAS CONVOLUTED AND STRESSFUL
     public static final boolean DEFAULT_WIDE = true;
-    public static final int DEFAULT_WIDTH = 1366; // OLD WIDTH WAS 256
-    public static final int DEFAULT_HEIGHT = 768; // OLD HEIGHT WAS 144
+    public static final int DEFAULT_WIDTH = 1600; // OLD WIDTH WAS 256
+    public static final int DEFAULT_HEIGHT = 900; // OLD HEIGHT WAS 144
     public static final double FULLSCREEN_RIGHT_PANEL_DIVISOR = 2.666;
     public static final double WIDESCREEN_RIGHT_PANEL_DIVISOR = 3.557;
 

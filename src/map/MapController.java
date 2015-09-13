@@ -33,6 +33,7 @@ public class MapController {
     // hover components
     private Door hoverDoor;
     private Room hoverRoom;
+    private Mob hoverMob;
 
     // Room creation
     private ArrayList<Point> dragSelection;
@@ -303,6 +304,8 @@ public class MapController {
 
     public void clearHoverObjects(){
         hoverDoor = null;
+        hoverRoom = null;
+        hoverMob = null;
     }
 
     public boolean setHoverRoom(Point mousePoint){ // TODO tidy up and optimise
@@ -314,6 +317,10 @@ public class MapController {
             }
         }
         return false;
+    }
+
+    public void setHoverMob(Mob mob){
+        hoverMob = mob;
     }
 
     public Room getHoverRoom(){
@@ -391,6 +398,8 @@ public class MapController {
     public void renderHoverBoxes(Graphics screen){
         if(hoverDoor != null){
             hoverDoor.renderHoverBox(screen);
+        } else if(hoverMob != null){
+            hoverMob.renderHoverBox(screen);
         }
     }
 

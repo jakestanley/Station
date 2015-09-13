@@ -1,6 +1,5 @@
 package io;
 
-import contexts.ContextController;
 import gui.Component;
 import gui.widgets.TextField;
 import main.*;
@@ -45,17 +44,15 @@ public class InputController implements KeyListener {
 //        }
 
         // if in construction context
-//        if(GameController.contextController.getContext() == ContextController.CONSTRUCTION){
-//            if(input.isKeyDown(Input.KEY_ENTER)){
-//                CreateRoom dialog = new CreateRoom();
-//                GameController.guiController.addContainer(dialog);
-//                GameController.guiController.pushFocus(dialog);
-//            }
-//
-//            if(input.isKeyDown(Input.KEY_ESCAPE)){
-//                mc.clearSelection();
-//            }
-//        }
+        if(GameController.contextController.getContext() == ContextController.BUILD_ROOM){
+            if(input.isKeyDown(Input.KEY_ENTER)){
+                mc.createRoomFromSelection();
+            }
+
+            if(input.isKeyDown(Input.KEY_ESCAPE)){
+                mc.clearSelection();
+            }
+        }
 
 
         processViewControllerControls(input);

@@ -1,4 +1,4 @@
-package gui;
+package gui.inspectors.boxes;
 
 /**
  * Created by stanners on 26/05/2015.

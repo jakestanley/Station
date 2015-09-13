@@ -13,11 +13,11 @@ import java.awt.*;
 /**
  * Created by stanners on 26/05/2015.
  */
-public class HintsBox extends Component {
+public class HintsBox extends gui.Component {
 
     private StringBuilder hint;
 
-    public HintsBox(Component parent, StringBuilder hint){ // TODO pass some variables here
+    public HintsBox(gui.Component parent, StringBuilder hint){ // TODO pass some variables here
         super(parent,
                 Colours.GUI_BACKGROUND, Colours.GUI_FOREGROUND, Colours.GUI_BORDER, Colours.GUI_TEXT,
                 0, GameController.display.getHeight() - Display.TEXT_PANEL_HEIGHT, GameController.display.getWidth(), GameController.display.getHeight(), 1); // TODO change 1 to appropriate border width
@@ -47,10 +47,10 @@ public class HintsBox extends Component {
 
     @Override
     public void draw(Graphics screen) {
-
+        screen.drawString(hint.toString(), x + 8, y + 8);
     }
 
-    public void addChild(Component c) throws ComponentChildSizeException {
+    public void addChild(gui.Component c) throws ComponentChildSizeException {
         // TODO throw exception
         children.add(c);
     }

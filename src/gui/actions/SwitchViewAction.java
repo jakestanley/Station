@@ -7,9 +7,9 @@ import main.GameController;
  */
 public class SwitchViewAction extends Action{
 
-    private String view;
+    private int view;
 
-    public SwitchViewAction(String view){
+    public SwitchViewAction(int view){
         this.view = view;
     }
 

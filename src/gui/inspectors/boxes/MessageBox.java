@@ -1,5 +1,6 @@
-package gui;
+package gui.inspectors.boxes;
 
+import gui.Component;
 import main.Colours;
 import main.Display;
 import org.newdawn.slick.Graphics;
