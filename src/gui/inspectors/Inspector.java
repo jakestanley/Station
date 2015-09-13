@@ -3,6 +3,7 @@ package gui.inspectors;
 import gui.Component;
 import gui.widgets.Button;
 import main.Colours;
+import main.Display;
 import main.GameController;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -25,7 +26,7 @@ public class Inspector extends Component { // not abstract in case you want to m
 
     public Inspector(){
         super(null, GUI_BACKGROUND, GUI_FOREGROUND, GUI_BORDER, GUI_TEXT,
-                    GameController.display.getLeftColumnWidth(), Button.MAX_HEIGHT, GameController.display.getRightColumnWidth(), GameController.display.getHeight() - (Button.MAX_HEIGHT * 2), 1); // TODO change 1 to appropriate border width
+                    GameController.display.getLeftColumnWidth(), Button.MAX_HEIGHT, GameController.display.getRightColumnWidth(), GameController.display.getHeight() - Button.MAX_HEIGHT - Display.TEXT_PANEL_HEIGHT, 1); // TODO change 1 to appropriate border width
     }
 
     @Override
