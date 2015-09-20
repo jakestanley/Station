@@ -1,6 +1,5 @@
 package gui.inspectors;
 
-import exceptions.ComponentChildSizeException;
 import gui.inspectors.boxes.InfoBox;
 import gui.inspectors.boxes.MessageBox;
 import gui.inspectors.boxes.MobsBox;
@@ -35,12 +34,12 @@ public class GeneralInspector extends Inspector {
 
 
 //        addChild(infoBox);
-        try {
-            addChild(mobsBox);
-            addChild(messageBox);
-        } catch(ComponentChildSizeException e){
-            e.printStackTrace();
-        }
+//        try {
+        addChild(mobsBox);
+        addChild(messageBox);
+//        } catch(ComponentChildSizeException e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override

@@ -1,10 +1,11 @@
 package main;
 
 import io.InputController;
-import map.MapController;
 import io.MouseController;
+import map.MapController;
 import mobs.MobController;
 import org.newdawn.slick.*;
+import resources.ImageController;
 
 import java.util.Random;
 
@@ -20,6 +21,7 @@ public class GameController extends BasicGame {
 
     public static Display           display;
     public static Random            random;
+    public static ImageController   imageController;
     public static InputController   inputController;
     public static ContextController contextController;
     public static ViewController    viewController;
@@ -45,6 +47,7 @@ public class GameController extends BasicGame {
         random          = new Random();
 
         // Initialise controllers
+        imageController     = new ImageController();
         inputController     = new InputController();
         contextController   = new ContextController(ContextController.BUILD_ROOM); // TODO change to generic after adding context buttons
         viewController      = new ViewController();
@@ -72,6 +75,9 @@ public class GameController extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+
+        // load images
+        imageController.init();
 
         // sort the input controller out
         Input input = gameContainer.getInput();

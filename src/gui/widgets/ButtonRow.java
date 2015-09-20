@@ -58,6 +58,7 @@ public class ButtonRow extends Component {
             Component c = (Component) children.get(i);
             c.setWidth(buttonWidth);
             c.setX(xOffset + getX() + (i * buttonWidth));
+            c.setY(y);
         }
     }
 

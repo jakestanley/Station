@@ -1,52 +1,32 @@
 package map.functionals;
 
+import map.Placeable;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-
-import java.awt.*;
 
 
 /**
  * Created by stanners on 27/07/2015.
  */
-public abstract class Functional {
+public abstract class Functional extends Placeable {
 
-    public static final int ORIENTATION_NORTH = 0;
-    public static final int ORIENTATION_EAST = 1;
-    public static final int ORIENTATION_SOUTH = 2;
-    public static final int ORIENTATION_WEST = 3;
-
-    protected Point location;
-    protected int orientation;
     protected float integrity;
-    protected boolean isBlocker, isOwnable, isVisible, isUsable;
-    protected Image image;
+    protected boolean isOwnable, isUsable;
 
     protected Mob owner;
 
-    public Functional(Point location, int orientation){
-        this.location = location;
-        this.orientation = orientation;
+    public Functional(int x, int y, int width, int height, Image image, boolean isPlaced, boolean isBlocking, boolean isVisible){
+        super(x, y, width, height, image, isPlaced, isBlocking, isVisible);
 
         // initialise variables
-        isBlocker = false;
         isOwnable = false;
-        isVisible = true; // by default
         owner = null;
 
     }
 
-    public boolean isBlocker(){
-        return isBlocker;
-    }
-
     public boolean isOwnable(){
         return isOwnable;
-    }
-
-    public boolean isVisible(){
-        return isVisible;
     }
 
     public boolean isUsable(){
@@ -55,8 +35,12 @@ public abstract class Functional {
 
     public abstract void use(Mob mob); // TODO CONSIDER is this called every tick? should i use an abandon method?
 
-    public abstract void update();
-
     public abstract void render(Graphics screen);
+
+    @Override
+    public abstract void init();
+
+    @Override
+    public abstract void update();
 
 }

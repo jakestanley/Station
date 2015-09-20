@@ -57,7 +57,7 @@ public class GuiController {
         ButtonRow menu = new ButtonRow(null, 0, 0, GameController.display.getWidth(), Button.MAX_HEIGHT);
         menu.addButton(new Button(menu, "GENERAL", new SwitchViewAction(ContextController.GENERAL))); // TODO strings/translations class
         menu.addButton(new Button(menu, "BUILD", new SwitchViewAction(ContextController.BUILD_ROOM)));
-        menu.addButton(new Button(menu, "PLACE", new SwitchViewAction(ContextController.BUILD_PLACE)));
+        menu.addButton(new Button(menu, "BUY & SELL", new SwitchViewAction(ContextController.BUILD_PLACE)));
         menu.addButton(new Button(menu, "MISSIONS", new SwitchViewAction(ContextController.GENERAL)));
         menu.addButton(new Button(menu, "CREW", new SwitchViewAction(ContextController.GENERAL)));
         menu.addButton(new Button(menu, "SYSTEM", new SwitchViewAction(ContextController.GENERAL)));
@@ -171,7 +171,12 @@ public class GuiController {
 
         for (Iterator<Component> iterator = visible.iterator(); iterator.hasNext(); ) {
             Component next = iterator.next();
-            next.render(screen);
+
+            try {
+                next.render(screen);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

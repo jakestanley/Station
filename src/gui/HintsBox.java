@@ -1,6 +1,5 @@
 package gui;
 
-import exceptions.ComponentChildSizeException;
 import main.Colours;
 import main.Display;
 import main.GameController;
@@ -48,11 +47,6 @@ public class HintsBox extends gui.Component {
     @Override
     public void draw(Graphics screen) {
         screen.drawString(hint.toString(), x + 8, y + 8);
-    }
-
-    public void addChild(gui.Component c) throws ComponentChildSizeException {
-        // TODO throw exception
-        children.add(c);
     }
 
 //    @Override

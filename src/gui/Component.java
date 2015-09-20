@@ -1,6 +1,5 @@
 package gui;
 
-import exceptions.ComponentChildSizeException;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -14,15 +13,21 @@ import java.util.Iterator;
  */
 public abstract class Component { // TODO "implements Renderable" ?
 
+    protected boolean isVisible;
     protected int x, y, width, height, border;
     protected Color bgCol, fgCol, bdCol, tCol; // background, foreground, border, and text colors
     protected Rectangle rect;
+    protected Component parent;
     protected ArrayList<Component> children;
 
     public Component(Component parent,
                      Color bgCol, Color fgCol, Color bdCol, Color tCol,
                      int x, int y, int width, int height, int border){
 
+
+        this.isVisible = true;
+
+        this.parent = parent;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -58,7 +63,7 @@ public abstract class Component { // TODO "implements Renderable" ?
      */
     public void click(Point mouse){
         // if the mouse is over me
-        if(isMouseOver(mouse)) {
+        if(isMouseOver(mouse) && isVisible) {
             // do my click action
             clickAction();
             // then do my children's actions
@@ -74,7 +79,7 @@ public abstract class Component { // TODO "implements Renderable" ?
      * @param mouse
      */
     public void hover(Point mouse){
-        if(isMouseOver(mouse)) {
+        if(isMouseOver(mouse) && isVisible) {
             // do my hover action
             hoverAction();
             // then do my children's actions
@@ -85,25 +90,34 @@ public abstract class Component { // TODO "implements Renderable" ?
         }
     }
 
-    public void render(Graphics screen){
+    public void render(Graphics screen) throws Exception {
 
-        // draw container body
-        screen.setColor(bgCol);
-        screen.fill(rect);
-        screen.setColor(bdCol);
-        screen.draw(rect);
-
-        // render me
-        draw(screen);
-
-        // render my children
-        for (Iterator<Component> iterator = children.iterator(); iterator.hasNext(); ) {
-            Component next = iterator.next();
-            next.render(screen);
+        if(y < 0){
+            throw new Exception("Y coordinate is less than one. Parent has not yet defined this value");
         }
+
+        if(isVisible) {
+
+            // draw container body
+            screen.setColor(bgCol);
+            screen.fill(rect);
+            screen.setColor(bdCol);
+            screen.draw(rect);
+
+            // render me
+            draw(screen);
+
+            // render my children
+            for (Iterator<Component> iterator = children.iterator(); iterator.hasNext(); ) {
+                Component next = iterator.next();
+                next.render(screen);
+            }
+
+        }
+
     }
 
-    public void addChild(Component c) throws ComponentChildSizeException{
+    public void addChild(Component c) {// throws ComponentChildSizeException{
         children.add(c);
     }
 
@@ -117,10 +131,12 @@ public abstract class Component { // TODO "implements Renderable" ?
 
     public void setX(int x){
         this.x = x; // TODO CONSIDER protected only?
+        resetRect();
     }
 
     public void setY(int y) {
         this.y = y;
+        resetRect();
     }
 
     public int getWidth(){
@@ -133,16 +149,34 @@ public abstract class Component { // TODO "implements Renderable" ?
 
     public void setWidth(int width){
         this.width = width;
+        resetRect();
     }
 
     public void setHeight(int height){
         this.height = height;
+        resetRect();
     }
 
     public boolean isMouseOver(Point mouse){
         int mouseX = (int) mouse.getX();
         int mouseY = (int) mouse.getY();
         return (x <= mouseX) && (mouseX <= x + width) && (y <= mouseY) && (mouseY <= y + height);
+    }
+
+    public boolean isVisible(){
+        return isVisible;
+    }
+
+    public void show(){
+        isVisible = true;
+    }
+
+    public void hide(){
+        isVisible = false;
+    }
+
+    protected void resetRect(){
+        this.rect = new Rectangle(x, y, width, height);
     }
 
 }

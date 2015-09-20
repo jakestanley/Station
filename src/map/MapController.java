@@ -4,7 +4,6 @@ import main.Door;
 import main.GameController;
 import main.Room;
 import map.functionals.Functional;
-import map.functionals.Toilet;
 import mobs.Mob;
 import org.newdawn.slick.Graphics;
 import tiles.Tile;
@@ -124,10 +123,6 @@ public class MapController {
 
         generateDoors(); // wat
 //        clearDoors(); // TODO properly. consider making this into a thing that updates walls and doors?
-    }
-
-    private void initialiseTestFunctionals() {
-        functionals.add(new Toilet(new Point(0,0), 0));
     }
 
     private void initialiseTiles(){
