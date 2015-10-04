@@ -1,6 +1,5 @@
-package map.functionals;
+package map;
 
-import map.Placeable;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public class ObjectController {
 
-    private List objects;
+    private List objects; // TODO CONSIDER what about the functionals? are they the same or different?
     private Placeable placing;
 
     public ObjectController(){
@@ -20,7 +19,12 @@ public class ObjectController {
         placing = null;
     }
 
+    public void setPlacing(Placeable placing){
+        this.placing = placing;
+    }
+
     public void addPlaceable(Placeable p){
+        p.setPlaced();
         objects.add(p);
     }
 

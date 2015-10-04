@@ -15,31 +15,31 @@ public class Placeable {
     public static final int INITIAL_ORIENTATION = ORIENTATION_NORTH;
 
     protected int x, y, width, height, orientation;
-    protected boolean isPlaced, isBlocking, isVisible;
+    protected boolean placed, blocking, visible;
     protected Image image;
 
-    public Placeable(int x, int y, int width, int height, Image image, boolean isPlaced, boolean isBlocking, boolean isVisible){
+    public Placeable(int x, int y, int width, int height, Image image, boolean placed, boolean blocking, boolean visible){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.image = image;
-        this.isPlaced = isPlaced;
-        this.isBlocking = isBlocking;
-        this.isVisible = isVisible;
+        this.placed = placed;
+        this.blocking = blocking;
+        this.visible = visible;
         orientation = INITIAL_ORIENTATION;
     }
 
     public boolean isPlaced(){
-        return isPlaced;
+        return placed;
     }
 
     public boolean isBlocking(){
-        return isBlocking;
+        return blocking;
     }
 
     public boolean isVisible(){ // TODO more
-        return isVisible;
+        return visible;
     }
 
     public void init(){
@@ -47,7 +47,6 @@ public class Placeable {
     }
 
     public void render(Graphics screen){
-        // TODO set relevant stuff
         screen.drawImage(image, x, y);
     }
 
@@ -55,4 +54,7 @@ public class Placeable {
 
     }
 
+    public void setPlaced() {
+        placed = true;
+    }
 }

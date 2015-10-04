@@ -12,7 +12,7 @@ import org.newdawn.slick.Image;
 public abstract class Functional extends Placeable {
 
     protected float integrity;
-    protected boolean isOwnable, isUsable;
+    protected boolean ownable, usable;
 
     protected Mob owner;
 
@@ -20,17 +20,17 @@ public abstract class Functional extends Placeable {
         super(x, y, width, height, image, isPlaced, isBlocking, isVisible);
 
         // initialise variables
-        isOwnable = false;
+        ownable = false;
         owner = null;
 
     }
 
     public boolean isOwnable(){
-        return isOwnable;
+        return ownable;
     }
 
     public boolean isUsable(){
-        return isUsable;
+        return usable;
     }
 
     public abstract void use(Mob mob); // TODO CONSIDER is this called every tick? should i use an abandon method?

@@ -9,6 +9,7 @@ import gui.inspectors.Inspector;
 import gui.inspectors.PlaceInspector;
 import gui.widgets.Button;
 import gui.widgets.ButtonRow;
+import map.Placeable;
 import mobs.Mob;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -87,9 +88,10 @@ public class GuiController {
         focuses     = new Stack<Component>();
 
         // initialise object points
-        hoverDoor = null;
-        hoverRoom = null;
-        hoverMob = null;
+        hoverDoor   = null;
+        hoverRoom   = null;
+        hoverMob    = null;
+        placing     = null;
 
     }
 
