@@ -122,7 +122,6 @@ public class GameController extends BasicGame {
 
     }
 
-    @Override
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
 
         guiController.setBackground(screen);

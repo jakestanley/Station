@@ -91,7 +91,7 @@ public class GuiController {
         hoverDoor   = null;
         hoverRoom   = null;
         hoverMob    = null;
-        placing     = null;
+        Object placing = null;
 
     }
 

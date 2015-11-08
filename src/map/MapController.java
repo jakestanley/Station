@@ -696,4 +696,7 @@ public class MapController {
         return rooms;
     }
 
+    public void setPlaceable() {
+
+    }
 }
