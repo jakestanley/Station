@@ -1,6 +1,7 @@
 
 .idea/
 libs/
+target/
 out/
 res/
 *.iml
