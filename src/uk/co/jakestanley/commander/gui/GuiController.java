@@ -1,12 +1,20 @@
 package uk.co.jakestanley.commander.gui;
 
+import lombok.Getter;
+import lombok.NonNull;
+import uk.co.jakestanley.commander.CommanderGame;
 import uk.co.jakestanley.commander.interfaces.Loopable;
-import uk.co.jakestanley.commander.interfaces.Renderable;
+import uk.co.jakestanley.commander.scene.entities.shapes.Shape;
 
-public class GuiController implements Loopable, Renderable {
+import java.util.ArrayList;
+import java.util.List;
+@Getter
+public class GuiController implements Loopable {
+
+    @NonNull private List<String> messages; // TODO messages, panels, etc
 
     public GuiController(){
-
+        messages = new ArrayList<String>();
     }
 
     public void init() {
@@ -14,10 +22,12 @@ public class GuiController implements Loopable, Renderable {
     }
 
     public void update() {
+        messages = new ArrayList<String>();
 
+        Shape playerShape = CommanderGame.sceneController.getMobileEntities().get(0).getShape();
+        messages.add("Player X: " + playerShape.getXLocal());
+        messages.add("Player Z: " + playerShape.getZLocal());
+        messages.add("Player Y: " + playerShape.getYLocal());
     }
 
-    public void render() {
-
-    }
 }
