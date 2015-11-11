@@ -29,7 +29,7 @@ public class GuiRenderer extends Renderer { // TODO make it impossible to draw o
         screen.setColor(Color.white);
         int drawX = 10;
         int drawY = 10;
-        for (Iterator<String> iterator = Main.guiController.getMessages().iterator(); iterator.hasNext(); ) {
+        for (Iterator<String> iterator = Main.getGuiController().getMessages().iterator(); iterator.hasNext(); ) {
             String next = iterator.next();
             screen.drawString(next, drawX, drawY);
             drawY = drawY + 10;

@@ -24,7 +24,7 @@ public class GuiController implements Loopable {
     public void update() {
         messages = new ArrayList<String>();
 
-        Shape playerShape = Main.sceneController.getMobileEntities().get(0).getShape();
+        Shape playerShape = Main.getSceneController().getMobileEntities().get(0).getShape();
         messages.add("Player X: " + playerShape.getXLocal());
         messages.add("Player Z: " + playerShape.getZLocal());
         messages.add("Player Y: " + playerShape.getYLocal());

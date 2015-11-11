@@ -6,10 +6,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import uk.co.jakestanley.commander.gui.GuiController;
-import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.Renderer;
-import uk.co.jakestanley.commander.scene.SceneController;
+import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
+import uk.co.jakestanley.commander.rendering.world.twodimensional.TopDownRenderer;
 
 /**
  * Created by jp-st on 10/11/2015.
@@ -29,18 +29,19 @@ public class CommanderGame3D {
     /** last fps time */
     long lastFPS; // TODO move these variables
 
-    public static int displayWidth = 1024; // TODO consider moving into a separate display class
-    public static int displayHeight = 768;
+    public static Renderer worldRenderer;
+    public static Renderer guiRenderer;
 
     public CommanderGame3D(){
-
+        worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600);
+        guiRenderer = new GuiRenderer(Main.getDisplayWidth(), Main.getDisplayHeight());
     }
 
     public void init(){
 
         // set up the display
         try {
-            Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
+            Display.setDisplayMode(new DisplayMode(Main.getDisplayWidth(), Main.getDisplayHeight()));
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
@@ -50,7 +51,7 @@ public class CommanderGame3D {
         // initialise OpenGL
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, displayWidth, 0, displayHeight, 1, -1);
+        GL11.glOrtho(0, Main.getDisplayWidth(), 0, Main.getDisplayHeight(), 1, -1); // TODO make this use the canvas
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         // get delta before loop starts

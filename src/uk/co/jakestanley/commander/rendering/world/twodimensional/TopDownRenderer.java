@@ -26,7 +26,7 @@ public class TopDownRenderer extends WorldRenderer {
     public void render(Graphics screen) {
 
         // render debug data if this is
-        if(Main.debug){
+        if(Main.isDebug()){
             renderDebugging(screen);
         }
 
@@ -36,13 +36,12 @@ public class TopDownRenderer extends WorldRenderer {
         screen.setColor(Color.red); // TODO use colours resource
         screen.fillRect(x, y, x + width, y + height); // this is the canvas TODO change to an actual isometric renderer
 
-        Box playerBox = (Box) Main.sceneController.getMobileEntities().get(0).getShape();
+        Box playerBox = (Box) Main.getSceneController().getMobileEntities().get(0).getShape();
 
         float renderAtX = x + playerBox.getXLocal();
         float renderAtY = -(y + playerBox.getZLocal());
 
-
-        System.out.println("coordinates: " + renderAtX + ", " + renderAtY + ", size: " + playerBox.getWidth() + " by " + playerBox.getDepth());
+//        System.out.println("coordinates: " + renderAtX + ", " + renderAtY + ", size: " + playerBox.getWidth() + " by " + playerBox.getDepth());
 
         screen.setColor(Color.lightGray);
         screen.fillRect( // TODO fix thiiis - x, y, width, height

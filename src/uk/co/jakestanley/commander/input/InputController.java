@@ -17,16 +17,16 @@ public class InputController implements KeyListener {
     public void update(GameContainer gc){ // TODO should return some list of actions or something for the scene controller
         Input input = gc.getInput();
         if(input.isKeyDown(Input.KEY_W)){ // TODO send the input data to the SceneController? don't explicitly command its logic, perhaps?
-            Main.sceneController.getMobileEntities().get(0).movePositiveZ(); // TODO change this to a fancy get player method
+            Main.getSceneController().getMobileEntities().get(0).movePositiveZ(); // TODO change this to a fancy get player method
         }
         if(input.isKeyDown(Input.KEY_S)){
-            Main.sceneController.getMobileEntities().get(0).moveNegativeZ(); // TODO set next value actually
+            Main.getSceneController().getMobileEntities().get(0).moveNegativeZ(); // TODO set next value actually
         }
         if(input.isKeyDown(Input.KEY_D)){
-            Main.sceneController.getMobileEntities().get(0).movePositiveX();
+            Main.getSceneController().getMobileEntities().get(0).movePositiveX();
         }
         if(input.isKeyDown(Input.KEY_A)){
-            Main.sceneController.getMobileEntities().get(0).moveNegativeX();
+            Main.getSceneController().getMobileEntities().get(0).moveNegativeX();
         } // TODO up and down
     }
 

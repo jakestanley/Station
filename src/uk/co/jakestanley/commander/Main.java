@@ -1,5 +1,6 @@
 package uk.co.jakestanley.commander;
 
+import lombok.Getter;
 import org.lwjgl.opengl.Display;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
@@ -12,13 +13,16 @@ public class Main {
 
     // TODO stick non rendering values in here
 
-    public static CommanderGame2D game2D; // uses slick
-    public static CommanderGame3D game3D; // uses lwjgl only
+    @Getter private static CommanderGame2D game2D; // uses slick
+    @Getter private static CommanderGame3D game3D; // uses lwjgl only
 
-    public static boolean           debug = false;
-    public static SceneController   sceneController;
-    public static GuiController     guiController;
-    public static InputController   inputController;
+    @Getter private static boolean           debug = false;
+    @Getter private static SceneController   sceneController;
+    @Getter private static GuiController     guiController;
+    @Getter private static InputController   inputController;
+
+    @Getter private static int displayWidth = 1024; // TODO consider moving into a separate display class
+    @Getter private static int displayHeight = 768;
 
     public static void main(String[] args) {
 
@@ -63,7 +67,7 @@ public class Main {
         CommanderGame3D game3D = new CommanderGame3D();
         game3D.init();
         while (!Display.isCloseRequested()) {
-            game3D.update(game3D.getDelta());
+            game3D.update(game3D.getDelta()); // TODO make sure both games use the same update method
             game3D.render();
         }
         Display.destroy();
