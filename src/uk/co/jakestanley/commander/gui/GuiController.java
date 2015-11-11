@@ -2,7 +2,7 @@ package uk.co.jakestanley.commander.gui;
 
 import lombok.Getter;
 import lombok.NonNull;
-import uk.co.jakestanley.commander.CommanderGame;
+import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.interfaces.Loopable;
 import uk.co.jakestanley.commander.scene.entities.shapes.Shape;
 
@@ -24,7 +24,7 @@ public class GuiController implements Loopable {
     public void update() {
         messages = new ArrayList<String>();
 
-        Shape playerShape = CommanderGame.sceneController.getMobileEntities().get(0).getShape();
+        Shape playerShape = Main.sceneController.getMobileEntities().get(0).getShape();
         messages.add("Player X: " + playerShape.getXLocal());
         messages.add("Player Z: " + playerShape.getZLocal());
         messages.add("Player Y: " + playerShape.getYLocal());

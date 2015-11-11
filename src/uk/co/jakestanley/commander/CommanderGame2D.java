@@ -5,26 +5,28 @@ import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
-import uk.co.jakestanley.commander.rendering.world.IsometricRenderer;
-import uk.co.jakestanley.commander.rendering.world.WorldRenderer;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
+import uk.co.jakestanley.commander.rendering.world.twodimensional.TopDownRenderer;
 import uk.co.jakestanley.commander.scene.SceneController;
 
 /**
  * Created by jp-st on 08/11/2015.
  */
-public class CommanderGame extends BasicGame {
+public class CommanderGame2D extends BasicGame { // TODO put this and CommanderGame3D in their own packages
 
     public static boolean debug;
-
     public static SceneController sceneController;
     public static GuiController guiController;
     public static Renderer worldRenderer;
     public static Renderer guiRenderer;
     public static InputController inputController;
 
-    public CommanderGame(boolean debug){
+    public static int displayWidth = 1024; // TODO consider moving into a separate display class
+    public static int displayHeight = 768;
+
+    public CommanderGame2D() {
         super(Strings.GAME_TITLE);
-        this.debug = debug;
+        this.debug = Main.debug;
 
         // Print some configuration information
         if(this.debug){
@@ -34,18 +36,18 @@ public class CommanderGame extends BasicGame {
         }
 
         // Initialise the game objects
-        sceneController = new SceneController(); // TODO fix order
-        guiController = new GuiController(); // TODO gets information data for the gui
-        worldRenderer = new IsometricRenderer(20, 20, 800, 600);
-        guiRenderer = new GuiRenderer();
-        inputController = new InputController();
+        sceneController = Main.sceneController; // TODO fix order
+        guiController = Main.guiController; // TODO gets information data for the gui
+        worldRenderer = new TopDownRenderer(20, 20, 800, 600);
+        guiRenderer = new GuiRenderer(displayWidth, displayHeight);
+        inputController = Main.inputController;
 
         // Initialise the game framework
         try {
             AppGameContainer container = new AppGameContainer(this);
             container.setShowFPS(main.Game.debug);
 //            container.setDisplayMode(display.getWidth(), display.getHeight(), false); // TODO set new values
-            container.setDisplayMode(1024, 768, false);
+            container.setDisplayMode(displayWidth, displayHeight, false);
             container.setVSync(true); // jesus h christ this needs to be on
             container.setTargetFrameRate(60); //Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
             container.start();
@@ -77,24 +79,8 @@ public class CommanderGame extends BasicGame {
     }
 
     public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
-        screen.drawString("Hello world", 10, 10);
         worldRenderer.render(screen);
         guiRenderer.render(screen);
-    }
-
-    public static void main(String[] args) {
-
-        // Process arguments
-        boolean debug = false;
-        for(String arg : args){
-            if(arg.equalsIgnoreCase("-debug")){
-                debug = true;
-            }
-        }
-
-        // Instantiate the game
-        new CommanderGame(debug);
-
     }
 
 }

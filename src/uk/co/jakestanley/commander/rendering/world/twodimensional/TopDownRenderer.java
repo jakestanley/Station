@@ -1,13 +1,10 @@
-package uk.co.jakestanley.commander.rendering.world;
+package uk.co.jakestanley.commander.rendering.world.twodimensional;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import uk.co.jakestanley.commander.CommanderGame;
-import uk.co.jakestanley.commander.scene.entities.Entity;
+import uk.co.jakestanley.commander.Main;
+import uk.co.jakestanley.commander.rendering.world.WorldRenderer;
 import uk.co.jakestanley.commander.scene.entities.shapes.Box;
-
-import java.util.ArrayList;
 
 /**
  * Created by jp-st on 08/11/2015.
@@ -29,7 +26,7 @@ public class TopDownRenderer extends WorldRenderer {
     public void render(Graphics screen) {
 
         // render debug data if this is
-        if(CommanderGame.debug){
+        if(Main.debug){
             renderDebugging(screen);
         }
 
@@ -39,7 +36,7 @@ public class TopDownRenderer extends WorldRenderer {
         screen.setColor(Color.red); // TODO use colours resource
         screen.fillRect(x, y, x + width, y + height); // this is the canvas TODO change to an actual isometric renderer
 
-        Box playerBox = (Box) CommanderGame.sceneController.getMobileEntities().get(0).getShape();
+        Box playerBox = (Box) Main.sceneController.getMobileEntities().get(0).getShape();
 
         float renderAtX = x + playerBox.getXLocal();
         float renderAtY = -(y + playerBox.getZLocal());
@@ -50,6 +47,6 @@ public class TopDownRenderer extends WorldRenderer {
         screen.setColor(Color.lightGray);
         screen.fillRect( // TODO fix thiiis - x, y, width, height
                 renderAtX, renderAtY, // TODO make each component have its own render method. this method should contain very little code.
-                playerBox.getWidth() * 10, playerBox.getDepth() * 10); // TODO more enhanced scaling, etc. need to read up on this stuff and really plan
+                playerBox.getWidth() * 100, playerBox.getDepth() * 100); // TODO more enhanced scaling, etc. need to read up on this stuff and really plan. scaaaaale
     }
 }

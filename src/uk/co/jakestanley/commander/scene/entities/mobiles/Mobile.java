@@ -25,7 +25,7 @@ public class Mobile extends PhysicalEntity {
     }
 
     public boolean canMoveNegativeX(){
-//        CommanderGame.sceneController.();
+//        Main.sceneController.();
         return true; // TODO functionality
     }
 
@@ -50,7 +50,7 @@ public class Mobile extends PhysicalEntity {
     }
 
     public boolean canMoveNegativeX(float distance){
-//        CommanderGame.sceneController.();
+//        Main.sceneController.();
         return true; // TODO functionality
     }
 

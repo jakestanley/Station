@@ -2,7 +2,7 @@ package uk.co.jakestanley.commander.rendering.gui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import uk.co.jakestanley.commander.CommanderGame;
+import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.Renderer;
 
 import java.util.Iterator;
@@ -12,8 +12,8 @@ import java.util.Iterator;
  */
 public class GuiRenderer extends Renderer { // TODO make it impossible to draw outside the renderable area
 
-    public GuiRenderer(){
-        super();
+    public GuiRenderer(int width, int height){ // TODO consider that i may need a different renderer for slick and lwjgl
+        super(0, 0, width, height);
     }
 
     public void init() {
@@ -29,7 +29,7 @@ public class GuiRenderer extends Renderer { // TODO make it impossible to draw o
         screen.setColor(Color.white);
         int drawX = 10;
         int drawY = 10;
-        for (Iterator<String> iterator = CommanderGame.guiController.getMessages().iterator(); iterator.hasNext(); ) {
+        for (Iterator<String> iterator = Main.guiController.getMessages().iterator(); iterator.hasNext(); ) {
             String next = iterator.next();
             screen.drawString(next, drawX, drawY);
             drawY = drawY + 10;
