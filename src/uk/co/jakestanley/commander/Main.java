@@ -67,7 +67,7 @@ public class Main {
         CommanderGame3D game3D = new CommanderGame3D();
         game3D.init();
         while (!Display.isCloseRequested()) {
-            game3D.update(game3D.getDelta()); // TODO make sure both games use the same update method
+            game3D.update(); // TODO make sure both games use the same update method
             game3D.render();
         }
         Display.destroy();

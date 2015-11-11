@@ -16,28 +16,14 @@ import uk.co.jakestanley.commander.rendering.world.twodimensional.TopDownRendere
  */
 public class CommanderGame3D {
 
-    /** position of quad */
-    float x = 400, y = 300;
-    /** angle of quad rotation */
-    float rotation = 0;
-
-    /** time at last frame */
-    long lastFrame;
-
-    /** frames per second */
-    int fps;
-    /** last fps time */
-    long lastFPS; // TODO move these variables
-
-    public static Renderer worldRenderer;
+    public static ThreeDimensionalRenderer worldRenderer;
     public static Renderer guiRenderer;
 
     public CommanderGame3D(){
+
+        // initialise the renderer objects
         worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600);
         guiRenderer = new GuiRenderer(Main.getDisplayWidth(), Main.getDisplayHeight());
-    }
-
-    public void init(){
 
         // set up the display
         try {
@@ -48,103 +34,33 @@ public class CommanderGame3D {
             System.exit(0);
         }
 
+    }
+
+    public void init(){
+
         // initialise OpenGL
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0, Main.getDisplayWidth(), 0, Main.getDisplayHeight(), 1, -1); // TODO make this use the canvas
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        // get delta before loop starts
-        getDelta(); // call once before loop to initialise lastFrame
-        lastFPS = getTime(); // call before loop to initialise fps timer
+        // initialise objects
+        Main.getSceneController().init();
+        Main.getGuiController().init();
+        worldRenderer.init();
+        guiRenderer.init();
 
     }
 
-    public void update(int delta) {
-        // rotate quad
-        rotation += 0.15f * delta;
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
-        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y -= 0.35f * delta;
-        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y += 0.35f * delta;
-
-        // keep quad on the screen
-        if (x < 0) x = 0;
-        if (x > 800) x = 800;
-        if (y < 0) y = 0;
-        if (y > 600) y = 600;
-
-        updateFPS(); // update FPS Counter
+    public void update()
+    {
+        Main.getInputController().updateLwjgl();
     }
 
     public void render(){
-        renderGL();
+        worldRenderer.render(null); // Graphics not required here
         Display.update();
         Display.sync(60); // cap fps to 60fps
-    }
-
-    /**
-     * Calculate how many milliseconds have passed
-     * since last frame.
-     *
-     * @return milliseconds passed since last frame
-     */
-    public int getDelta() {
-        long time = getTime();
-        int delta = (int) (time - lastFrame);
-        lastFrame = time;
-
-        return delta;
-    }
-
-    /**
-     * Get the accurate system time
-     *
-     * @return The system time in milliseconds
-     */
-    public long getTime() {
-        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-    }
-
-    /**
-     * Calculate the FPS and set it in the title bar
-     */
-    public void updateFPS() {
-        if (getTime() - lastFPS > 1000) {
-            Display.setTitle("FPS: " + fps);
-            fps = 0;
-            lastFPS += 1000;
-        }
-        fps++;
-    }
-
-    public void renderGL() {
-        // Clear The Screen And The Depth Buffer
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-        // R,G,B,A Set The Color To Blue One Time Only
-        GL11.glColor3f(0.5f, 0.5f, 1.0f);
-
-        // draw quad
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0);
-        GL11.glRotatef(rotation, 0f, 0f, 1f);
-        GL11.glTranslatef(-x, -y, 0);
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(x - 50, y - 50);
-        GL11.glVertex2f(x + 50, y - 50);
-        GL11.glVertex2f(x + 50, y + 50);
-        GL11.glVertex2f(x - 50, y + 50);
-        GL11.glEnd();
-        GL11.glPopMatrix();
-    }
-
-    public static void main(String[] args) {
-
-
     }
 
 }

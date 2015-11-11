@@ -16,7 +16,7 @@ public class CommanderGame2D extends BasicGame { // TODO put this and CommanderG
     public CommanderGame2D() {
         super(Strings.GAME_TITLE);
 
-        // Initialise the game objects
+        // initialise the renderer objects
         worldRenderer = new TopDownRenderer(20, 20, 800, 600);
         guiRenderer = new GuiRenderer(Main.getDisplayWidth(), Main.getDisplayHeight());
 
