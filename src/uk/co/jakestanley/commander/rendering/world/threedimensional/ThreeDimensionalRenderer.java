@@ -69,7 +69,7 @@ public class ThreeDimensionalRenderer extends Renderer {
         Box playerBox = (Box) Main.getSceneController().getMobileEntities().get(0).getShape();
 
         float renderAtX = x + playerBox.getXLocal();
-        float renderAtY = -(y + playerBox.getZLocal());
+        float renderAtY = y + playerBox.getZLocal();
 
         // begin drawing
         GL11.glBegin(GL11.GL_QUADS);
