@@ -13,6 +13,8 @@ import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.Loader;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.ShaderProgram;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
 
 /**
  * Created by jp-st on 10/11/2015.
@@ -23,6 +25,7 @@ public class CommanderGame3D extends CommanderGame {
     public static Renderer guiRenderer;
 
     public static Loader loader;
+    public static ShaderProgram shader;
     public static RawModel testModel;
 
     public CommanderGame3D(boolean debug){
@@ -41,19 +44,22 @@ public class CommanderGame3D extends CommanderGame {
     protected void initRenderers() {
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
+        shader = new StaticShader();
 
         // testing testing
-        float[] quadVertices = {
-                // left bottom triangle
-                -0.5f, 0.5f, 0f,
-                -0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                // right upper triangle
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
+        float[] vertices = {
+                -0.5f,  0.5f,   0f, // v0
+                -0.5f,  -0.5f,  0f, // v1
+                0.5f,   -0.5f,  0f, // v2
+                0.5f,    0.5f,  0f  // v3
         };
-        testModel = loader.loadToVAO(quadVertices); // load vertices // TODO make better
+
+        int[] indices = { // must be in counter clockwise order
+                0, 1, 3, // upper left triangle
+                2, 3, 1  // lower right triangle
+        };
+
+        testModel = loader.loadToVAO(vertices, indices); // load vertices // TODO make better
     }
 
     @Override
@@ -67,7 +73,9 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
+        shader.start();
         worldRenderer.render(testModel);
+        shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop
     }
 
@@ -76,7 +84,8 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void close() {
-        loader.cleanUp();
+        shader.cleanup();
+        loader.cleanup();
         DisplayManager.closeDisplay();
     }
 
