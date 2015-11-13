@@ -4,61 +4,64 @@ import org.newdawn.slick.*;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.twodimensional.TopDownRenderer;
+import uk.co.jakestanley.commander.slick.Loop;
 
 /**
  * Created by jp-st on 08/11/2015.
  */
-public class CommanderGame2D extends BasicGame { // TODO put this and CommanderGame3D in their own packages
+public class CommanderGame2D extends CommanderGame { // TODO put this and CommanderGame3D in their own packages
 
-    public static Renderer worldRenderer;
-    public static Renderer guiRenderer;
+    // slick components
+    private Loop slick;
+    private GameContainer gameContainer;
+    private Graphics screen;
 
-    public CommanderGame2D() {
-        super(Strings.GAME_TITLE);
+    // my renderers
+    private Renderer worldRenderer;
+    private Renderer guiRenderer;
+
+    public CommanderGame2D(boolean debug) {
+        super(debug, RENDER_IN_2D);
 
         // initialise the renderer objects
         worldRenderer = new TopDownRenderer(20, 20, 800, 600);
-        guiRenderer = new GuiRenderer(Main.getDisplayWidth(), Main.getDisplayHeight());
-
-        // Initialise the game framework
-        try {
-            AppGameContainer container = new AppGameContainer(this);
-            container.setShowFPS(main.Game.debug);
-//            container.setDisplayMode(display.getWidth(), display.getHeight(), false); // TODO set new values
-            container.setDisplayMode(Main.getDisplayWidth(), Main.getDisplayHeight(), false);
-            container.setVSync(true); // jesus h christ this needs to be on
-            container.setTargetFrameRate(60); //Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
-            container.start();
-        } catch (SlickException e) {
-            System.out.println("Failed to start the container");
-            e.printStackTrace();
-            System.exit(main.Game.EXIT_BAD);
-        }
+        guiRenderer = new GuiRenderer(getDisplayWidth(), getDisplayHeight());
 
     }
 
-    @Override
-    public void init(GameContainer gameContainer) throws SlickException {
-        // TODO consider whether this should be the order
-        Main.getSceneController().init();
-        Main.getGuiController().init();
+    public void initSpecifics() {
+        slick = new Loop(this);
+        gameContainer = slick.getGameContainer();
+        screen = slick.getGraphics();
+    }
+
+    public void initRenderers() {
         worldRenderer.init();
         guiRenderer.init();
-//        inputController.init(); // TODO make it so
     }
 
-    @Override
-    public void update(GameContainer gameContainer, int i) throws SlickException {
-        Main.getSceneController().update();
-        Main.getInputController().update(gameContainer); // TODO fix this shitty order
-        Main.getGuiController().update();
+    protected void updateInput() {
+        getInputController().update(gameContainer);
+    }
+
+    public void updateRenderers() {
         worldRenderer.update();
         guiRenderer.update();
     }
 
-    public void render(GameContainer gameContainer, Graphics screen) throws SlickException {
+    public void render() {
         worldRenderer.render(screen);
         guiRenderer.render(screen);
     }
+
+    public boolean hasCloseCondition() {
+        return false;
+    }
+
+    public void close() {
+
+    }
+
+    // TODO fix as this is broken
 
 }

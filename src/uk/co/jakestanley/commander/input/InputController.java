@@ -31,7 +31,7 @@ public class InputController implements KeyListener {
         } // TODO up and down
     }
 
-    public void updateLwjgl(){ // TODO use these update methods to abstract behaviour
+    public void update(){ // TODO use these update methods to abstract behaviour
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
             downW();
         }
@@ -47,19 +47,19 @@ public class InputController implements KeyListener {
     } // TODO create a separate abstraction layer
 
     private void downW(){
-        Main.getSceneController().getMobileEntities().get(0).movePositiveZ(); // TODO change this to a fancy get player method
+        Main.getGame().getSceneController().getMobileEntities().get(0).movePositiveZ(); // TODO change this to a fancy get player method
     }
 
     private void downS(){
-        Main.getSceneController().getMobileEntities().get(0).moveNegativeZ(); // TODO set next value actually
+        Main.getGame().getSceneController().getMobileEntities().get(0).moveNegativeZ(); // TODO set next value actually
     }
 
     private void downD(){
-        Main.getSceneController().getMobileEntities().get(0).movePositiveX();
+        Main.getGame().getSceneController().getMobileEntities().get(0).movePositiveX();
     }
 
     private void downA(){
-        Main.getSceneController().getMobileEntities().get(0).moveNegativeX();
+        Main.getGame().getSceneController().getMobileEntities().get(0).moveNegativeX();
     }
 
 
