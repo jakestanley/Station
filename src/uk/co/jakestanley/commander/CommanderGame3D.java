@@ -1,20 +1,16 @@
 package uk.co.jakestanley.commander;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.PixelFormat;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.Loader;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.ShaderProgram;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
 
 /**
  * Created by jp-st on 10/11/2015.
@@ -27,6 +23,8 @@ public class CommanderGame3D extends CommanderGame {
     public static Loader loader;
     public static ShaderProgram shader;
     public static RawModel testModel;
+    public static ModelTexture texture;
+    public static TexturedModel testTexturedModel;
 
     public CommanderGame3D(boolean debug){
         super(debug, RENDER_IN_3D);
@@ -59,7 +57,16 @@ public class CommanderGame3D extends CommanderGame {
                 2, 3, 1  // lower right triangle
         };
 
-        testModel = loader.loadToVAO(vertices, indices); // load vertices // TODO make better
+        float[] textureCoordinates = {
+                0,0,
+                0,1,
+                1,1,
+                1,0
+        };
+
+        testModel = loader.loadToVAO(vertices, indices, textureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
+        texture = new ModelTexture(loader.loadTexture("basic"));
+        testTexturedModel = new TexturedModel(testModel, texture);
     }
 
     @Override
@@ -74,7 +81,7 @@ public class CommanderGame3D extends CommanderGame {
 
     public void render(){
         shader.start();
-        worldRenderer.render(testModel);
+        worldRenderer.render(testTexturedModel);
         shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop
     }

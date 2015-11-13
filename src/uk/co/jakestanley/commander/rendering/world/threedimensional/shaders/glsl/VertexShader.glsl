@@ -1,12 +1,17 @@
 #version 400 core
 
 in vec3 position;
+in vec2 textureCoordinates;
 
 out vec3 colour;
+out vec2 pass_textureCoordinates;
+
+uniform mat4 transformationMatrix;
 
 void main(void){
     
-    gl_Position = vec4(position.x, position.y, position.z, 1.0);
-    colour = vec3(position.x+0.5,1.0,position.y+0.5);
+    gl_Position = transformationMatrix * vec4(position.x, position.y, position.z, 1.0);
+    pass_textureCoordinates = textureCoordinates;
+    colour = vec3(position.x+0.5,0.0,position.y+0.5);
     
 }
