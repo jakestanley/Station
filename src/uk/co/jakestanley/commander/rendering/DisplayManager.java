@@ -12,8 +12,8 @@ import uk.co.jakestanley.commander.Main;
  */
 public class DisplayManager {
 
-    @Getter private static int displayWidth = 1024; // TODO consider moving into a separate display class
-    @Getter private static int displayHeight = 768;
+    @Getter private static int displayWidth = 1280; // TODO consider moving into a separate display class
+    @Getter private static int displayHeight = 720;
 
     public static void createDisplay(){
 

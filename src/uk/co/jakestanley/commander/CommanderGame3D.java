@@ -73,7 +73,7 @@ public class CommanderGame3D extends CommanderGame {
         testModel = loader.loadToVAO(vertices, indices, textureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
         texture = new ModelTexture(loader.loadTexture("basic"));
         testTexturedModel = new TexturedModel(testModel, texture);
-        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,0),0,0,0,1);
+        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-1f),0,0,0,1);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
-        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-        testRenderEntity.increaseRotation(0.2f,0.2f,0.2f);
+        testRenderEntity.increasePosition(0,0,-0.002f); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
+        testRenderEntity.increaseRotation(0.0f,0.0f,0.0f);
         shader.start();
         worldRenderer.render(testRenderEntity, shader);
         shader.stop();

@@ -1,10 +1,6 @@
 package uk.co.jakestanley.commander.rendering.world.threedimensional;
 
-import main.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.Graphics;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
@@ -20,21 +16,22 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     private int x, y, width, height; // canvas
 
-    private static final float FIELD_OF_VIEW    = 70;
-    private static final float NEAR_PLANE       = 0.1f;
-    private static final float FAR_PLANE        = 1000;
+    private static final float FOV = 70;
+    private static final float NEAR_PLANE = 0.1f;
+    private static final float FAR_PLANE = 1000;
 
     private Matrix4f projectionMatrix;
 
-    public ThreeDimensionalRenderer(int x, int y, int width, int height, StaticShader shader){ // TODO use these values
+    public ThreeDimensionalRenderer(int x, int y, int width, int height, StaticShader shader) { // TODO use these values
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
 
         // after this the projection matrix will stay there forever
+        createProjectionMatrix(); // only needs to be set up once
         shader.start();
-        initialiseProjectionMatrix(); // only needs to be set up once
+        shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
     }
 
@@ -70,19 +67,18 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     }
 
-    private void initialiseProjectionMatrix(){ // TODO read the thin matrix tutorials notes on projection matrices (did this in 8) and figure out how this shit works so i can better develop for it
-        float aspectRatio = (float) org.lwjgl.opengl.Display.getWidth() / (float) org.lwjgl.opengl.Display.getHeight(); // TODO use canvas variables, not the display ones unless they're appropriate
-        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FIELD_OF_VIEW / 2f))) * aspectRatio);
+    private void createProjectionMatrix() {
+        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
         float x_scale = y_scale / aspectRatio;
-        float frustrum_length = FAR_PLANE - NEAR_PLANE;
+        float frustum_length = FAR_PLANE - NEAR_PLANE;
 
         projectionMatrix = new Matrix4f();
         projectionMatrix.m00 = x_scale;
         projectionMatrix.m11 = y_scale;
-        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustrum_length);
+        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
         projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustrum_length);
+        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
         projectionMatrix.m33 = 0;
     }
-
 }
