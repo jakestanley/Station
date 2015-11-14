@@ -1,14 +1,15 @@
 package uk.co.jakestanley.commander;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
+import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.ShaderProgram;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
 
@@ -21,16 +22,19 @@ public class CommanderGame3D extends CommanderGame {
     public static Renderer guiRenderer;
 
     public static Loader loader;
-    public static ShaderProgram shader;
+    public static StaticShader shader;
+
+    // learning
     public static RawModel testModel;
     public static ModelTexture texture;
     public static TexturedModel testTexturedModel;
+    public static RenderEntity testRenderEntity;
 
     public CommanderGame3D(boolean debug){
         super(debug, RENDER_IN_3D);
 
         // initialise the renderer objects
-        worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600);
+
         guiRenderer = new GuiRenderer(Main.getGame().getDisplayWidth(), Main.getGame().getDisplayHeight());
 
     }
@@ -40,9 +44,11 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     protected void initRenderers() {
+
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
         shader = new StaticShader();
+        worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600, shader);
 
         // testing testing
         float[] vertices = {
@@ -67,6 +73,7 @@ public class CommanderGame3D extends CommanderGame {
         testModel = loader.loadToVAO(vertices, indices, textureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
         texture = new ModelTexture(loader.loadTexture("basic"));
         testTexturedModel = new TexturedModel(testModel, texture);
+        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,0),0,0,0,1);
     }
 
     @Override
@@ -80,8 +87,10 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
+        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
+        testRenderEntity.increaseRotation(0.2f,0.2f,0.2f);
         shader.start();
-        worldRenderer.render(testTexturedModel);
+        worldRenderer.render(testRenderEntity, shader);
         shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop
     }

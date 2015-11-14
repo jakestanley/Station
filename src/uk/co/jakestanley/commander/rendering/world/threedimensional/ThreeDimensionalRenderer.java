@@ -1,12 +1,17 @@
 package uk.co.jakestanley.commander.rendering.world.threedimensional;
 
+import main.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.Graphics;
+import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.tools.Maths;
 
 /**
  * Created by jp-st on 10/11/2015.
@@ -15,11 +20,22 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     private int x, y, width, height; // canvas
 
-    public ThreeDimensionalRenderer(int x, int y, int width, int height){
+    private static final float FIELD_OF_VIEW    = 70;
+    private static final float NEAR_PLANE       = 0.1f;
+    private static final float FAR_PLANE        = 1000;
+
+    private Matrix4f projectionMatrix;
+
+    public ThreeDimensionalRenderer(int x, int y, int width, int height, StaticShader shader){ // TODO use these values
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+
+        // after this the projection matrix will stay there forever
+        shader.start();
+        initialiseProjectionMatrix(); // only needs to be set up once
+        shader.stop();
     }
 
     public void init() {
@@ -31,11 +47,17 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         GL11.glClearColor(1, 0, 0, 1); // TODO set a proper background colour
     }
 
-    public void render(TexturedModel model) { // TODO need models/shapes/objects list or something
+    public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something
+        TexturedModel model = entity.getModel();
         RawModel rawModel = model.getRawModel();
         GL30.glBindVertexArray(rawModel.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1); // enable texture mapping // TODO use consts
+
+        Matrix4f transformationMatrix = Maths.createTransformationMatrix(
+                entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+        shader.loadTransformationMatrix(transformationMatrix);
+
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getTextureID());
         GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // start at beginning, accepting unsigned ints, drawing triangles
@@ -46,6 +68,21 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     public void renderDebugging(Graphics screen) {
 
+    }
+
+    private void initialiseProjectionMatrix(){ // TODO read the thin matrix tutorials notes on projection matrices (did this in 8) and figure out how this shit works so i can better develop for it
+        float aspectRatio = (float) org.lwjgl.opengl.Display.getWidth() / (float) org.lwjgl.opengl.Display.getHeight(); // TODO use canvas variables, not the display ones unless they're appropriate
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FIELD_OF_VIEW / 2f))) * aspectRatio);
+        float x_scale = y_scale / aspectRatio;
+        float frustrum_length = FAR_PLANE - NEAR_PLANE;
+
+        projectionMatrix = new Matrix4f();
+        projectionMatrix.m00 = x_scale;
+        projectionMatrix.m11 = y_scale;
+        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustrum_length);
+        projectionMatrix.m23 = -1;
+        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustrum_length);
+        projectionMatrix.m33 = 0;
     }
 
 }

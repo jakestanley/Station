@@ -42,7 +42,7 @@ public abstract class ShaderProgram {
      */
     private static int loadShader(String path, int type){
         StringBuilder shaderSource = new StringBuilder();
-        try {
+        try { // TODO put in method. error out from there if necessary
             BufferedReader reader = new BufferedReader(new FileReader(path));
             String line;
             while ((line = reader.readLine()) != null) {
