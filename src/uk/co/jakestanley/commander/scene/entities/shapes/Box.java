@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * Created by jp-st on 08/11/2015.
  */
-public class Box extends Shape {
+public class Box extends Shape { // TODO consider deleting
 
     @Getter @Setter private float width; // x axis
     @Getter @Setter private float depth; // z axis

@@ -47,19 +47,19 @@ public class InputController implements KeyListener {
     } // TODO create a separate abstraction layer
 
     private void downW(){
-        Main.getGame().getSceneController().getMobileEntities().get(0).movePositiveZ(); // TODO change this to a fancy get player method
+//        Main.getGame().getSceneController().getMobiles().get(0).movePositiveZ(); // TODO change this to a fancy get player method
     }
 
     private void downS(){
-        Main.getGame().getSceneController().getMobileEntities().get(0).moveNegativeZ(); // TODO set next value actually
+//        Main.getGame().getSceneController().getMobiles().get(0).moveNegativeZ(); // TODO set next value actually
     }
 
     private void downD(){
-        Main.getGame().getSceneController().getMobileEntities().get(0).movePositiveX();
+//        Main.getGame().getSceneController().getMobiles().get(0).movePositiveX();
     }
 
     private void downA(){
-        Main.getGame().getSceneController().getMobileEntities().get(0).moveNegativeX();
+//        Main.getGame().getSceneController().getMobiles().get(0).moveNegativeX();
     }
 
 

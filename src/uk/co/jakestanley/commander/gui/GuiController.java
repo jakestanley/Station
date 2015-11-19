@@ -2,6 +2,7 @@ package uk.co.jakestanley.commander.gui;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.newdawn.slick.geom.Rectangle;
 import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.interfaces.Loopable;
 import uk.co.jakestanley.commander.scene.entities.shapes.Shape;
@@ -24,10 +25,10 @@ public class GuiController implements Loopable {
     public void update() {
         messages = new ArrayList<String>();
 
-        Shape playerShape = Main.getGame().getSceneController().getMobileEntities().get(0).getShape();
-        messages.add("Player X: " + playerShape.getXLocal());
-        messages.add("Player Z: " + playerShape.getZLocal());
-        messages.add("Player Y: " + playerShape.getYLocal());
+        Rectangle playerBox = Main.getGame().getSceneController().getMobiles().get(0).getBox();
+        messages.add("Player X: " + playerBox.getX());
+        messages.add("Player Z: " + playerBox.getY());
+//        messages.add("Player Y: " + playerShape.getYLocal());
     }
 
 }

@@ -10,4 +10,12 @@ public class Ship extends Entity {
     public Ship(String id) {
         super(id);
     }
+
+    public void init() {
+
+    }
+
+    public void update() {
+
+    }
 }

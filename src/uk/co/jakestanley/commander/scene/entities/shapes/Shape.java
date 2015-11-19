@@ -11,7 +11,7 @@ public abstract class Shape { // TODO base the coordinates on the top-left-botto
     protected boolean isBox;
 
     @Getter @Setter private float xLocal;
-    @Getter @Setter private float zLocal;
+    @Getter @Setter private float zLocal; // TODO consider deleting
     @Getter @Setter private float yLocal;
 
     public Shape(float xLocal, float zLocal, float yLocal){

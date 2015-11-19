@@ -40,7 +40,9 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
     }
 
     public void update() {
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
         GL11.glClearColor(1, 0, 0, 1); // TODO set a proper background colour
     }
 
