@@ -6,9 +6,10 @@ import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.Camera;
+import uk.co.jakestanley.commander.rendering.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
@@ -142,7 +143,7 @@ public class CommanderGame3D extends CommanderGame {
 
         };
 
-        int[] cubeIndices = {
+        int[] cubeIndices = {  // TODO remove this crap
                 0,1,3,
                 3,1,2,
                 4,5,7,
@@ -158,10 +159,18 @@ public class CommanderGame3D extends CommanderGame {
 
         };
 
-        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
-        texture = new ModelTexture(loader.loadTexture("basic"));
+//        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
+
+        // TODO use a const or something and make sure that the models and textures have the same names
+        testModel = ObjLoader.loadObjModel("stan", loader, true);
+        texture = new ModelTexture(loader.loadTexture("stan")); // TODO untextured model? shaded model?
         testTexturedModel = new TexturedModel(testModel, texture);
-        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-5),0,0,0,1);
+        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-20),0,0,0,1);
+//
+//        testModel = ObjLoader.loadObjModel("robot", loader, false);
+//        testRenderEntity = new RenderEntity(testModel, new Vector3f(0, 0, -25), 0, 0, 0, 1); // untextured
+
+
         camera = new Camera();
     }
 
@@ -176,8 +185,8 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
-        testRenderEntity.increasePosition(0,0,-0.002f); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-        testRenderEntity.increaseRotation(1,1,0.0f);
+        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
+        testRenderEntity.increaseRotation(0,2f,2f);
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
         shader.loadViewMatrix(camera);

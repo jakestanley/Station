@@ -1,7 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world.threedimensional.shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.Camera;
+import uk.co.jakestanley.commander.rendering.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.tools.Maths;
 
 /**

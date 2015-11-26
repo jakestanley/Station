@@ -3,6 +3,7 @@ package uk.co.jakestanley.commander.rendering.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.util.vector.Vector3f;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
 
 /**
@@ -11,18 +12,31 @@ import uk.co.jakestanley.commander.rendering.world.threedimensional.models.Textu
 @Getter @Setter
 public class RenderEntity { // TODO take a world object as its variable?
 
-    private TexturedModel model;
+    private RawModel rawModel;
+    private TexturedModel texturedModel;
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
+    private boolean textured;
 
-    public RenderEntity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        this.model = model;
+    public RenderEntity(RawModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale){ // TODO make sure this works. i've tried adapting this to use an untextured model
+        this.rawModel = model;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
         this.rotZ = rotZ;
         this.scale = scale;
+        this.textured = false;
+    }
+
+    public RenderEntity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        this.texturedModel = model;
+        this.position = position;
+        this.rotX = rotX;
+        this.rotY = rotY;
+        this.rotZ = rotZ;
+        this.scale = scale;
+        this.textured = true;
     }
 
     public void increaseRotation(float rx, float ry, float rz){

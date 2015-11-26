@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional;
+package uk.co.jakestanley.commander.rendering.entities;
 
 import lombok.Getter;
 import org.lwjgl.input.Keyboard;

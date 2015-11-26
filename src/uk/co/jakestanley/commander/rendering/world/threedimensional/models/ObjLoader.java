@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ObjLoader {
 
-    public static RawModel loadObjModel(String name, Loader loader){
+    public static RawModel loadObjModel(String name, Loader loader, boolean textured){
 
         // get a file pointer
         FileReader file = null;
@@ -85,9 +85,9 @@ public class ObjLoader {
                 String[] vertex2 = currentLine[2].split("/");
                 String[] vertex3 = currentLine[3].split("/");
 
-                processVertex(vertex1, indices, textures, normals, texturesArray, normalsArray);
-                processVertex(vertex2, indices, textures, normals, texturesArray, normalsArray);
-                processVertex(vertex3, indices, textures, normals, texturesArray, normalsArray);
+                processVertex(vertex1, indices, textures, normals, texturesArray, normalsArray, textured);
+                processVertex(vertex2, indices, textures, normals, texturesArray, normalsArray, textured);
+                processVertex(vertex3, indices, textures, normals, texturesArray, normalsArray, textured);
                 line = reader.readLine();
             }
 
@@ -121,12 +121,14 @@ public class ObjLoader {
 
     private static void processVertex(String[] vertexData,
                                       List<Integer> indeces, List<Vector2f> textures, List<Vector3f> normals,
-                                      float[] texturesArray, float[] normalsArray){
+                                      float[] texturesArray, float[] normalsArray, boolean textured){
         int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
         indeces.add(currentVertexPointer);
-        Vector2f currentTexture = textures.get(Integer.parseInt(vertexData[1])-1);
-        texturesArray[currentVertexPointer*2] = currentTexture.x;
-        texturesArray[(currentVertexPointer*2)+1] = 1 - currentTexture.y;
+        if(textured){
+            Vector2f currentTexture = textures.get(Integer.parseInt(vertexData[1])-1);
+            texturesArray[currentVertexPointer*2] = currentTexture.x;
+            texturesArray[(currentVertexPointer*2)+1] = 1 - currentTexture.y;
+        }
         Vector3f currentNormal = normals.get(Integer.parseInt(vertexData[2])-1);
         normalsArray[currentVertexPointer*3] = currentNormal.x;
         normalsArray[(currentVertexPointer*3)+1] = currentNormal.y;

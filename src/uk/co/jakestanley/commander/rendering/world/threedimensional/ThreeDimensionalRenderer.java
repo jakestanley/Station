@@ -47,8 +47,17 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
     }
 
     public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something
-        TexturedModel model = entity.getModel();
-        RawModel rawModel = model.getRawModel();
+
+        TexturedModel texturedModel = null;
+        RawModel rawModel = null;
+
+        if(entity.isTextured()){
+            texturedModel = entity.getTexturedModel();
+            rawModel = texturedModel.getRawModel();
+        } else {
+            rawModel = entity.getRawModel();
+        }
+
         GL30.glBindVertexArray(rawModel.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1); // enable texture mapping // TODO use consts
@@ -58,7 +67,9 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         shader.loadTransformationMatrix(transformationMatrix);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getTextureID());
+        if(entity.isTextured()){
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getTextureID());
+        }
         GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // start at beginning, accepting unsigned ints, drawing triangles
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
