@@ -115,7 +115,7 @@ public class ObjLoader {
 
         // TODO save this data for faster loading later
 
-        return loader.loadToVAO(verticesArray, indicesArray, texturesArray);
+        return loader.loadToVAO(verticesArray, indicesArray, texturesArray, normalsArray);
 
     }
 

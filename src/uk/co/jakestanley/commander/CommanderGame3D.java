@@ -4,6 +4,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
+import uk.co.jakestanley.commander.rendering.entities.Light;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.entities.Camera;
@@ -35,6 +36,7 @@ public class CommanderGame3D extends CommanderGame {
     public static ModelTexture texture;
     public static TexturedModel testTexturedModel;
     public static RenderEntity testRenderEntity;
+    public static Light testLight;
     public static Camera camera;
 
     public CommanderGame3D(boolean debug){
@@ -165,7 +167,8 @@ public class CommanderGame3D extends CommanderGame {
         testModel = ObjLoader.loadObjModel("stan", loader, true);
         texture = new ModelTexture(loader.loadTexture("stan")); // TODO untextured model? shaded model?
         testTexturedModel = new TexturedModel(testModel, texture);
-        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-20),0,0,0,1);
+        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-25),0,0,0,1);
+        testLight = new Light(new Vector3f(0,0,0), new Vector3f(1,1,1));
 //
 //        testModel = ObjLoader.loadObjModel("robot", loader, false);
 //        testRenderEntity = new RenderEntity(testModel, new Vector3f(0, 0, -25), 0, 0, 0, 1); // untextured
@@ -186,9 +189,10 @@ public class CommanderGame3D extends CommanderGame {
 
     public void render(){
         testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-        testRenderEntity.increaseRotation(0,2f,2f);
+        testRenderEntity.increaseRotation(0,0,2f);
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
+//        shader.loadLight(testLight);
         shader.loadViewMatrix(camera);
         worldRenderer.render(testRenderEntity, shader);
         shader.stop();
