@@ -21,16 +21,16 @@ public class Camera {
 
     public void move(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){ // TODO eventually move this stuff to the input controller in a cool ass way
-            position.z = position.z - 0.02f; // TODO make speed constant
+            position.z = position.z - 0.08f; // TODO make speed constant
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x = position.x + 0.02f;
+            position.x = position.x + 0.08f;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x = position.x - 0.02f;
+            position.x = position.x - 0.08f;
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.z = position.z + 0.02f; // TODO make speed constant
+        if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+            position.z = position.z + 0.08f; // TODO make speed constant
         }
     }
 
