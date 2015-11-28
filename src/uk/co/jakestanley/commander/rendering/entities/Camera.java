@@ -1,6 +1,8 @@
 package uk.co.jakestanley.commander.rendering.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -8,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
  * Created by jake on 19/11/2015.
  */
 @Getter
+@AllArgsConstructor
 public class Camera {
 
     private Vector3f position;

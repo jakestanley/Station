@@ -1,7 +1,10 @@
 package uk.co.jakestanley.commander.rendering.world.threedimensional;
 
+import main.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.Graphics;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
@@ -29,7 +32,8 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         this.height = height;
 
         // after this the projection matrix will stay there forever
-        createProjectionMatrix(); // only needs to be set up once
+//        createPerspectiveProjectionMatrix(); // only needs to be set up once
+        createOrthogonalProjectionMatrix(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, NEAR_PLANE, FAR_PLANE);
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
@@ -82,7 +86,8 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     }
 
-    private void createProjectionMatrix() {
+    private void createPerspectiveProjectionMatrix() {
+
         float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
         float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
         float x_scale = y_scale / aspectRatio;
@@ -96,4 +101,42 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
         projectionMatrix.m33 = 0;
     }
+
+    private void createOrthogonalProjectionMatrix(float left, float right, float top, float bottom, float near, float far){
+
+        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+//        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
+//        float x_scale = y_scale / aspectRatio;
+
+//        bottom = y_scale;
+//        right = x_scale;
+
+        Matrix4f m = new Matrix4f();
+
+        m.m00 = 2.0f / (right - left);
+        m.m01 = 0.0f;
+        m.m02 = 0.0f;
+        m.m03 = 0.0f;
+
+        m.m10 = 0.0f;
+        m.m11 = 2.0f / (top - bottom);
+        m.m12 = 0.0f;
+        m.m13 = 0.0f;
+
+        m.m20 = 0.0f;
+        m.m21 = 0.0f;
+        m.m22 = -2.0f / (far - near);
+        m.m23 = 0.0f;
+
+        m.m30 = -(right + left  ) / (right - left  );
+        m.m31 = -(top   + bottom) / (top   - bottom);
+        m.m32 = -(far   + near  ) / (far   - near  );
+        m.m33 = 1.0f;
+
+        m = m.scale(new Vector3f(10,10,10));
+
+        projectionMatrix = m;
+
+    } // TODO clean this shit up
+
 }

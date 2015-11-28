@@ -164,8 +164,8 @@ public class CommanderGame3D extends CommanderGame {
 //        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
 
         // TODO use a const or something and make sure that the models and textures have the same names
-        testModel = ObjLoader.loadObjModel("stan", loader, true);
-        texture = new ModelTexture(loader.loadTexture("stan")); // TODO untextured model? shaded model?
+        testModel = ObjLoader.loadObjModel("stan_smooth", loader, true);
+        texture = new ModelTexture(loader.loadTexture("stan_smooth_face")); // TODO untextured model? shaded model?
         testTexturedModel = new TexturedModel(testModel, texture);
         testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-25),0,0,0,1);
         testLight = new Light(new Vector3f(0,0,0), new Vector3f(1,1,1));
@@ -174,7 +174,9 @@ public class CommanderGame3D extends CommanderGame {
 //        testRenderEntity = new RenderEntity(testModel, new Vector3f(0, 0, -25), 0, 0, 0, 1); // untextured
 
 
-        camera = new Camera();
+//        camera = new Camera(new Vector3f(0,0,0), 0, 0, 0);
+        camera = new Camera(new Vector3f(40,40,30), 35, -45, 0);
+//        camera = new Camera();
     }
 
     @Override
@@ -189,10 +191,10 @@ public class CommanderGame3D extends CommanderGame {
 
     public void render(){
         testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-        testRenderEntity.increaseRotation(0,0,2f);
+        testRenderEntity.increaseRotation(0,0,0);
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
-//        shader.loadLight(testLight);
+        shader.loadLight(testLight);
         shader.loadViewMatrix(camera);
         worldRenderer.render(testRenderEntity, shader);
         shader.stop();
