@@ -13,6 +13,8 @@ import org.lwjgl.util.vector.Vector3f;
 @AllArgsConstructor
 public class Camera {
 
+    private static final float SCROLL_SPEED = 0.5f;
+
     private Vector3f position;
     private float pitch; // up or down
     private float yaw; // left or right
@@ -24,16 +26,16 @@ public class Camera {
 
     public void move(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){ // TODO eventually move this stuff to the input controller in a cool ass way
-            position.z = position.z - 0.08f; // TODO make speed constant
+            position.z = position.z - SCROLL_SPEED; // TODO make speed constant
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x = position.x + 0.08f;
+            position.x = position.x + SCROLL_SPEED;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x = position.x - 0.08f;
+            position.x = position.x - SCROLL_SPEED;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.z = position.z + 0.08f; // TODO make speed constant
+            position.z = position.z + SCROLL_SPEED; // TODO make speed constant
         }
     }
 

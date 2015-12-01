@@ -20,8 +20,10 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
     private int x, y, width, height; // canvas
 
     private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 1000;
+    private static final float NEAR_PLANE = 0.01f;
+    private static final float FAR_PLANE = 1000f;
+    private static final float ORTHOGONAL_NEAR_PLANE = 100f;
+    private static final float ORTHOGONAL_FAR_PLANE = 2500f;
 
     private Matrix4f projectionMatrix;
 
@@ -33,7 +35,7 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
         // after this the projection matrix will stay there forever
 //        createPerspectiveProjectionMatrix(); // only needs to be set up once
-        createOrthogonalProjectionMatrix(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, NEAR_PLANE, FAR_PLANE);
+        createOrthogonalProjectionMatrix();
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
@@ -47,7 +49,7 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
-        GL11.glClearColor(1, 0, 0, 1); // TODO set a proper background colour
+        GL11.glClearColor(0, 0, 0, 1); // TODO set a proper background colour
     }
 
     public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something
@@ -102,7 +104,15 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         projectionMatrix.m33 = 0;
     }
 
-    private void createOrthogonalProjectionMatrix(float left, float right, float top, float bottom, float near, float far){
+    private void createOrthogonalProjectionMatrix(){
+
+        float left = 0.0f;
+        float right = Display.getWidth();
+        float top = Display.getHeight();
+        float bottom = 0.0f;
+        float near = ORTHOGONAL_NEAR_PLANE;
+        float far = ORTHOGONAL_FAR_PLANE;
+
 
         float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 //        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
