@@ -79,25 +79,6 @@ public class CommanderGame3D extends CommanderGame {
         worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600, shader);
 
         // testing testing
-        float[] vertices = {
-                -0.5f,  0.5f,   0f, // v0
-                -0.5f,  -0.5f,  0f, // v1
-                0.5f,   -0.5f,  0f, // v2
-                0.5f,    0.5f,  0f  // v3
-        };
-
-        int[] indices = { // must be in counter clockwise order
-                0, 1, 3, // upper left triangle
-                2, 3, 1  // lower right triangle
-        };
-
-        float[] textureCoordinates = {
-                0,0,
-                0,1,
-                1,1,
-                1,0
-        };
-
         float[] cubeVertices = {
                 -0.5f,0.5f,-0.5f,
                 -0.5f,-0.5f,-0.5f,
@@ -128,36 +109,6 @@ public class CommanderGame3D extends CommanderGame {
                 -0.5f,-0.5f,-0.5f,
                 0.5f,-0.5f,-0.5f,
                 0.5f,-0.5f,0.5f
-
-        };
-
-        float[] cubeTextureCoordinates = {
-
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0
-
 
         };
 
