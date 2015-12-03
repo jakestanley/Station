@@ -1,11 +1,13 @@
 package uk.co.jakestanley.commander;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.entities.Light;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
+import uk.co.jakestanley.commander.rendering.entities.world.Floor;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
@@ -52,6 +54,7 @@ public class CommanderGame3D extends CommanderGame {
     public static RenderEntity testRenderEntity2;
     public static RenderEntity testRenderEntity3;
     public static RenderEntity testRenderEntity4;
+    public static RenderEntity floor;
     public static List<Light> lights;
     public static Camera camera;
 
@@ -157,6 +160,8 @@ public class CommanderGame3D extends CommanderGame {
         texture4 = new ModelTexture(loader.loadTexture("grid7")); // TODO untextured model? shaded model?
         testTexturedModel4 = new TexturedModel(testModel4, texture4);
         testRenderEntity4 = new RenderEntity(testTexturedModel4, new Vector3f(20,7,-75),0,0,0,1);
+
+        floor = new Floor(50f, 200f); // use default for now
 //
 //        testModel = ObjLoader.loadObjModel("robot", loader, false);
 //        testRenderEntity = new RenderEntity(testModel, new Vector3f(0, 0, -25), 0, 0, 0, 1); // untextured
@@ -192,6 +197,7 @@ public class CommanderGame3D extends CommanderGame {
         worldRenderer.render(testRenderEntity2, shader);
         worldRenderer.render(testRenderEntity3, shader);
         worldRenderer.render(testRenderEntity4, shader);
+        worldRenderer.render(floor, shader);
         shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop
     }
