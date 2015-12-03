@@ -39,6 +39,20 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
+    /**
+     * Untextured model with no normals
+     * @param positions
+     * @param indices
+     * @return
+     */
+    public RawModel loadToVAO(float[] positions, int[] indices){
+        int vaoID = createVAO();
+        bindIndicesBuffer(indices);
+        storeDataInAttributeList(0, 3, positions); // 2nd value is coordinate size, which is 3 here
+        unbindVAO();
+        return new RawModel(vaoID, indices.length);
+    }
+
     public int loadTexture(String name){ // TODO expand Loader into an abstract class with subclasses for managing loaded components? - could iterate through loaders and start/cleanup/etc
         Texture texture = null;
         try {
