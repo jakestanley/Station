@@ -1,7 +1,6 @@
 package uk.co.jakestanley.commander;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
@@ -205,7 +204,6 @@ public class CommanderGame3D extends CommanderGame {
             Light next =  iterator.next();
             shader.loadLight(next);
         }
-//        shader.loadLight(testLight);
         shader.loadViewMatrix(camera);
 //        worldRenderer.render(testRenderEntity, shader);
         worldRenderer.render(testRenderEntity2, shader);
@@ -215,7 +213,7 @@ public class CommanderGame3D extends CommanderGame {
         worldRenderer.render(floor, shader);
 
         // render ship
-        for (Iterator<RenderEntity> it = ship.getRenderEntities().iterator(); it.hasNext(); ) {
+        for (Iterator<RenderEntity> it = ship.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
             RenderEntity renderEntity = it.next();
             worldRenderer.render(renderEntity, shader);
         }

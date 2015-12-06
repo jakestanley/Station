@@ -10,6 +10,7 @@ import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.tools.Maths;
 
 /**
@@ -49,7 +50,7 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
-        GL11.glClearColor(0.5f, 0.5f, 0, 1); // TODO set a proper background colour
+        GL11.glClearColor(0, 0, 0, 1); // TODO set a proper background colour
     }
 
     public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something
@@ -72,6 +73,8 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         Matrix4f transformationMatrix = Maths.createTransformationMatrix(
                 entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix);
+        ModelTexture texture = texturedModel.getTexture();
+        shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         if(entity.isTextured()){

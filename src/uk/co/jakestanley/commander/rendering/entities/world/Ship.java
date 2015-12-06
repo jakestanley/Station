@@ -11,11 +11,13 @@ import uk.co.jakestanley.commander.rendering.world.threedimensional.models.Textu
 import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by jake on 05/12/2015.
  */
+@Getter
 public class Ship { // TODO a superclass
 
     private RenderEntity top;
@@ -25,11 +27,12 @@ public class Ship { // TODO a superclass
     private RenderEntity starboard;
     private RenderEntity ballast;
 
-    @Getter
-    private List<RenderEntity> renderEntities;
+    private List<RenderEntity> allRenderEntities;
+    private List<RenderEntity> visibleRenderEntities;
 
     public Ship(){ // TODO make a center point - TODO a render at coordinate
-        renderEntities = new ArrayList<RenderEntity>();
+        allRenderEntities = new ArrayList<RenderEntity>();
+        visibleRenderEntities = new ArrayList<RenderEntity>();
         loadModels();
     }
 
@@ -68,42 +71,50 @@ public class Ship { // TODO a superclass
         starboard = new RenderEntity(starboardTexturedModel, renderAt, rotX, rotY, rotZ, 1);
         ballast = new RenderEntity(ballastTexturedModel, renderAt, rotX, rotY, rotZ, 1);
 
-//        renderEntities.add(top);
+        allRenderEntities.add(top);
+        allRenderEntities.add(front);
+        allRenderEntities.add(rear);
+        allRenderEntities.add(port);
+        allRenderEntities.add(starboard);
+        allRenderEntities.add(ballast);
 
-//        renderEntities.add(rear);
-//        renderEntities.add(port);
-
-
+        // set specular values // TODO put somewhere else. tidy this shit up
+        for (Iterator<RenderEntity> iterator = allRenderEntities.iterator(); iterator.hasNext(); ) {
+            RenderEntity next =  iterator.next();
+            ModelTexture texture = next.getTexturedModel().getTexture();
+            texture.setShineDamper(10);
+            texture.setReflectivity(1);
+        }
 
     }
 
     public void resetRenderEntities(){
-        renderEntities = new ArrayList<RenderEntity>();
+        visibleRenderEntities = new ArrayList<RenderEntity>();
         switch (CommanderGame3D.camera.getFacing()){
             case Camera.NORTH:
-                renderEntities.add(front);
-                renderEntities.add(starboard);
-                renderEntities.add(ballast);
+                visibleRenderEntities.add(front);
+                visibleRenderEntities.add(starboard);
+                visibleRenderEntities.add(ballast);
                 break;
             case Camera.EAST:
-                renderEntities.add(rear);
-                renderEntities.add(starboard);
-                renderEntities.add(ballast);
+                visibleRenderEntities.add(rear);
+                visibleRenderEntities.add(starboard);
+                visibleRenderEntities.add(ballast);
                 break;
             case Camera.SOUTH:
-                renderEntities.add(rear);
-                renderEntities.add(port);
-                renderEntities.add(ballast);
+                visibleRenderEntities.add(rear);
+                visibleRenderEntities.add(port);
+                visibleRenderEntities.add(ballast);
                 break;
             case Camera.WEST:
-                renderEntities.add(front);
-                renderEntities.add(port);
-                renderEntities.add(ballast);
+                visibleRenderEntities.add(front);
+                visibleRenderEntities.add(port);
+                visibleRenderEntities.add(ballast);
                 break;
         }
     }
 
     public boolean hasSetRenderEntities() {
-         return renderEntities != null;
+         return visibleRenderEntities != null;
     }
 }
