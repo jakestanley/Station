@@ -137,4 +137,7 @@ public class ObjLoader {
 
     }
 
+    public static final boolean TEXTURED = true;
+    public static final boolean UNTEXTURED = false;
+
 }

@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.CommanderGame3D;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
+import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
 
 /**
  * Created by jake on 03/12/2015.
@@ -14,33 +16,36 @@ public class Floor extends RenderEntity {
     private static final Vector2f[] DEFAULT_VERTICES = { new Vector2f(2.5f,2.5f), new Vector2f(-2.5f,2.5f), new Vector2f(-2.5f,-2.5f), new Vector2f(2.5f,-2.5f)};
     private static final int[]      DEFAULT_INDICES = { 0, 1, 2, 3, 0, 2 }; // TODO figure out how to generate these
 
-    private static final float DEFAULT_X = 0;
+    private static final float DEFAULT_X = -60.9282f;
     private static final float DEFAULT_Y = 0;
-    private static final float DEFAULT_Z = 0;
+    private static final float DEFAULT_Z = -27.44542f; // TODO make these non-hardcoded
     private static final float DEFAULT_ROT_X = 0;
     private static final float DEFAULT_ROT_Y = 0;
     private static final float DEFAULT_ROT_Z = 0;
     private static final float DEFAULT_SCALE = 1;
     private static final boolean DEFAULT_TEXTURED = false;
 
-    private static final float DEFAULT_HEIGHT = -1f;
+    private static final float DEFAULT_HEIGHT = 0f;
 
     /**
      * Constructor to generate the default floor (testing only, pretty much)
      */
     public Floor(){
-        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, DEFAULT_TEXTURED);
+        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.UNTEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         rawModel = generateFloorModel(); // generate default floor model
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(CommanderGame3D.loader.loadTexture("basic")));
+
     }
 
     public Floor(float width, float height){ // TODO render offset for this and other map components for loading from file, for example.
-        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, DEFAULT_TEXTURED);
+        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         rawModel = generateFloorModel(width, height);
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(CommanderGame3D.loader.loadTexture("grid2")));
     }
 
     public Floor(Vector2f[] vertices, int[] indices){
-        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, DEFAULT_TEXTURED); // TODO more arguments
+        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL); // TODO more arguments
         rawModel = generateFloorModel(vertices, indices);
     }
 

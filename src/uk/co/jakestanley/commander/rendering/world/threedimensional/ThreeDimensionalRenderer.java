@@ -22,8 +22,8 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.01f;
     private static final float FAR_PLANE = 1000f;
-    private static final float ORTHOGONAL_NEAR_PLANE = 100f;
-    private static final float ORTHOGONAL_FAR_PLANE = 2500f;
+    private static final float ORTHOGONAL_NEAR_PLANE = 1000f;
+    private static final float ORTHOGONAL_FAR_PLANE = 2800f;
 
     private Matrix4f projectionMatrix;
 
@@ -49,13 +49,13 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
-        GL11.glClearColor(200, 50, 50, 1); // TODO set a proper background colour
+        GL11.glClearColor(0.5f, 0.5f, 0, 1); // TODO set a proper background colour
     }
 
     public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something
 
         TexturedModel texturedModel = null;
-        RawModel rawModel = null;
+        RawModel rawModel;
 
         if(entity.isTextured()){
             texturedModel = entity.getTexturedModel();

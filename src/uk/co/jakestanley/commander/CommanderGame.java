@@ -19,8 +19,8 @@ public abstract class CommanderGame {
     @Getter private static SceneController sceneController;
     @Getter private static GuiController guiController;
     @Getter private static InputController inputController;
-    @Getter private static int displayWidth = 1024; // TODO allow these to be changed with arguments
-    @Getter private static int displayHeight = 768;
+    @Getter private static int displayWidth = 1280; // TODO allow these to be changed with arguments
+    @Getter private static int displayHeight = 720;
 
     public CommanderGame(boolean debug, boolean renderIn3d){
 
