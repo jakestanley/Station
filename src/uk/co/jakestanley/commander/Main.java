@@ -7,11 +7,17 @@ import lombok.Getter;
  */
 public class Main {
 
-    @Getter private static CommanderGame game;
+    private static final boolean DEFAULT_DEBUG = false;
+    private static final int DEFAULT_DISPLAY_WIDTH = 1280;
+    private static final int DEFAULT_DISPLAY_HEIGHT = 720;
+
+    private static CommanderGame3D game;
 
     public static void main(String[] args){
 
         boolean debug = false;
+        int displayWidth = DEFAULT_DISPLAY_WIDTH;
+        int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 
         for(String argument : args){
             if(argument.equalsIgnoreCase("-debug")){
@@ -20,7 +26,7 @@ public class Main {
         }
 
         System.out.println("Launching 3D game");
-        game = new CommanderGame3D(debug);
+        game = new CommanderGame3D(debug, displayWidth, displayHeight);
 
         game.init();
         while(!game.hasCloseCondition()){

@@ -4,29 +4,31 @@ import lombok.Getter;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.Display;
+import uk.co.jakestanley.commander.CommanderGame3D;
 import uk.co.jakestanley.commander.Main;
+import uk.co.jakestanley.commander.Strings;
 
 /**
  * Created by jp-st on 13/11/2015.
  */
 public class DisplayManager {
 
-    @Getter private static int displayWidth = 1440; // TODO consider moving into a separate display class
-    @Getter private static int displayHeight = 900;
-
     public static void createDisplay(){
+
+        int width = CommanderGame3D.getDisplayWidth();
+        int height = CommanderGame3D.getDisplayHeight();
 
         ContextAttribs attributes = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
 
         try {
-            Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
+            Display.setDisplayMode(new DisplayMode(width, height));
             Display.create(new PixelFormat(), attributes);
-            Display.setTitle(Main.getGame().GAME_NAME);
+            Display.setTitle(Strings.GAME_TITLE);
         } catch (LWJGLException e){
             e.printStackTrace();
         }
 
-        GL11.glViewport(0, 0, displayWidth, displayHeight);
+        GL11.glViewport(0, 0, width, height);
 
     }
 

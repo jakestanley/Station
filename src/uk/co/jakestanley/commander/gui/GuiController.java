@@ -25,9 +25,9 @@ public class GuiController implements Loopable {
     public void update() {
         messages = new ArrayList<String>();
 
-        Rectangle playerBox = Main.getGame().getSceneController().getMobiles().get(0).getBox();
-        messages.add("Player X: " + playerBox.getX());
-        messages.add("Player Z: " + playerBox.getY());
+//        Rectangle playerBox = Main.getGame().getSceneController().getMobiles().get(0).getBox();
+//        messages.add("Player X: " + playerBox.getX());
+//        messages.add("Player Z: " + playerBox.getY());
 //        messages.add("Player Y: " + playerShape.getYLocal());
     }
 

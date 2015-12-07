@@ -1,7 +1,10 @@
 package uk.co.jakestanley.commander;
 
+import lombok.Getter;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
+import uk.co.jakestanley.commander.gui.GuiController;
+import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.entities.Light;
@@ -28,9 +31,15 @@ import java.util.List;
 /**
  * Created by jp-st on 10/11/2015.
  */
-public class CommanderGame3D extends CommanderGame {
+public class CommanderGame3D {
 
-    public static SceneController sceneController;
+    @Getter private static boolean debug;
+    @Getter private static int displayWidth; // TODO allow these to be changed with arguments
+    @Getter private static int displayHeight;
+
+    private static InputController inputController;
+    private static SceneController sceneController;
+    private static GuiController guiController;
 
     public static ThreeDimensionalRenderer worldRenderer;
     public static Renderer guiRenderer;
@@ -45,23 +54,23 @@ public class CommanderGame3D extends CommanderGame {
     public static Character character;
     public static Ship ship;
 
-    public CommanderGame3D(boolean debug){
-        super(debug, RENDER_IN_3D);
+    public CommanderGame3D(boolean debug, int displayWidth, int displayHeight){
+        this.debug = debug;
+        this.displayWidth = displayWidth;
+        this.displayHeight = displayHeight;
 
         // initialise game logic objects
+        inputController = new InputController();
         sceneController = new SceneController();
         sceneController.addMobileEntity(new Crewman("terry", 0f, 0f, 0f)); // TODO put in method and generate names
+        guiController = new GuiController();
 
         // initialise the renderer objects
-        guiRenderer = new GuiRenderer(Main.getGame().getDisplayWidth(), Main.getGame().getDisplayHeight());
+        guiRenderer = new GuiRenderer(displayWidth, displayHeight);
 
     }
 
-    protected void initSpecifics() { // TODO CONSIDER may not be needed
-
-    }
-
-    protected void initRenderers() {
+    protected void init() {
 
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
@@ -91,15 +100,16 @@ public class CommanderGame3D extends CommanderGame {
 //        camera = new Camera();
     }
 
-    @Override
-    protected void updateInput() {
-        Main.getGame().getInputController().update();
+    public void update(){
+        sceneController.update();
+        inputController.update();
+        guiController.update();
+        updateRenderers();
     }
 
-    @Override
-    protected void updateRenderers() {
+    private void updateRenderers() {
         worldRenderer.update();
-    }
+    } // TODO revise
 
     public void render(){
 
@@ -110,7 +120,6 @@ public class CommanderGame3D extends CommanderGame {
             shader.loadLight(next);
         }
         shader.loadViewMatrix(camera);
-
 
         // render ship
         for (Iterator<RenderEntity> it = ship.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
