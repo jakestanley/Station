@@ -79,7 +79,6 @@ public class Renderer { // TODO better inheritance
 
     public void render(StaticShader shader) { // TODO need models/shapes/objects list or something
         for(TexturedModel texturedModel : renderBatches.keySet()){
-            System.out.println("BINDING");
 
             // prepare the model and bind vertex attribute arrays
             RawModel rawModel = texturedModel.getRawModel();

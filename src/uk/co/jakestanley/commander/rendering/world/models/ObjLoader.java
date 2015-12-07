@@ -3,6 +3,8 @@ package uk.co.jakestanley.commander.rendering.world.models;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.world.Loader;
+import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.textures.TextureCache;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,23 +29,39 @@ public class ObjLoader {
         }
     }
 
-    public RawModel loadObjModel(String name, Loader loader, boolean textured){
+    public TexturedModel loadTexturedModel(String path, Loader loader){
+        // check the cache
+        TexturedModel cachedModel = cache.getTexturedModel(path);
+        if(cachedModel != null){
+            return cachedModel;
+        }
 
-        // get a file pointer
-        FileReader file = null;
-        String path = "res/models/"+name+".obj";
+        RawModel model = loadObjModel(path, loader, ObjLoader.TEXTURED);
+        ModelTexture texture = new ModelTexture(loader.loadTexture(path)); // TODO untextured model? shaded model?
+        TexturedModel texturedModel = new TexturedModel(model, texture);
+        cache.storeTexturedModel(path, texturedModel);
 
+        return texturedModel;
+    }
+
+    public RawModel loadObjModel(String path, Loader loader, boolean textured){
+
+        // get raw model from the cache if it's there
         if(ENABLE_CACHING == caching){
-            RawModel cachedModel = cache.get(path);
+            RawModel cachedModel = cache.getRawModel(path);
             if(cachedModel != null){
                 return cachedModel;
             }
         }
 
+        // get a file pointer
+        FileReader file = null;
+        String fullPath = "res/models/"+path+".obj";
+
         try {
-            file = new FileReader(new File(path));
+            file = new FileReader(new File(fullPath));
         } catch (FileNotFoundException e) {
-            System.out.println("Failed to load " + path);
+            System.out.println("Failed to load " + fullPath);
             e.printStackTrace();
         }
 
@@ -135,7 +153,7 @@ public class ObjLoader {
         RawModel loadedModel = loader.loadToVAO(verticesArray, indicesArray, texturesArray, normalsArray);
 
         if(caching){
-            cache.store(path, loadedModel);
+            cache.storeRawModel(path, loadedModel);
         }
 
         return loadedModel;

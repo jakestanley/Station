@@ -1,7 +1,5 @@
 package uk.co.jakestanley.commander.rendering.world.models;
 
-import uk.co.jakestanley.commander.rendering.world.models.RawModel;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,20 +9,30 @@ import java.util.Map;
  */
 public class ModelCache {
 
-    private Map<String, RawModel> map;
+    private Map<String, RawModel> rawModelMap;
+    private Map<String, TexturedModel> texturedModelMap;
 
     public ModelCache(){
-        map = new HashMap<String, RawModel>();
+        rawModelMap = new HashMap<String, RawModel>();
+        texturedModelMap = new HashMap<String, TexturedModel>();
     }
 
-    public RawModel get(String path){
-        return map.get(path);
+    public void storeRawModel(String path, RawModel model){
+        rawModelMap.put(path, model);
     }
 
-    public void store(String path, RawModel model){
-        map.put(path, model);
+    public void storeTexturedModel(String path, TexturedModel model){
+        texturedModelMap.put(path, model);
     }
 
-    // TODO cleanup cache periodically
+    public RawModel getRawModel(String path){
+        return rawModelMap.get(path);
+    }
+
+    public TexturedModel getTexturedModel(String path){
+        return texturedModelMap.get(path);
+    }
+
+    // TODO clean up cache periodically
 
 }
