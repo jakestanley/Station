@@ -41,7 +41,7 @@ public class Floor extends RenderEntity {
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         rawModel = generateFloorModel(width, height);
-        texturedModel = new TexturedModel(rawModel, new ModelTexture(CommanderGame3D.loader.loadTexture("grid2")));
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(CommanderGame3D.loader.loadTexture("unused/grid2")));
     }
 
     public Floor(Vector2f[] vertices, int[] indices){

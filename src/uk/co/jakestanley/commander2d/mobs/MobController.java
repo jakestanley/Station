@@ -1,8 +1,8 @@
-package mobs;
+package uk.co.jakestanley.commander2d.mobs;
 
-import exceptions.NoAction;
-import exceptions.NoSpawnableArea;
-import main.GameController;
+import uk.co.jakestanley.commander2d.exceptions.NoAction;
+import uk.co.jakestanley.commander2d.exceptions.NoSpawnableArea;
+import uk.co.jakestanley.commander2d.main.GameController;
 import org.newdawn.slick.Graphics;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.util.Iterator;
  */
 public class MobController {
 
-    private ArrayList<Mob> mobs; // TODO mobs should have a position, not a tile. i.e if the tile changes, the mob should not get stuck to the old tile.
+    private ArrayList<Mob> mobs; // TODO uk.co.jakestanley.commander2d.mobs should have a position, not a tile. i.e if the tile changes, the mob should not get stuck to the old tile.
 
     public MobController(){
         mobs = new ArrayList<Mob>();

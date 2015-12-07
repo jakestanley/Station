@@ -1,7 +1,7 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import exceptions.ImpossibleGoal;
-import mobs.Mob;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.mobs.Mob;
 
 /**
  * Created by stanners on 24/05/2015.

@@ -1,6 +1,6 @@
-package resources;
+package uk.co.jakestanley.commander2d.resources;
 
-import main.Game;
+import uk.co.jakestanley.commander2d.main.Game;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 

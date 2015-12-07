@@ -1,13 +1,13 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import mobs.Mob;
+import uk.co.jakestanley.commander2d.mobs.Mob;
 
 /**
  * Created by stanners on 03/08/2015.
  */
 public class DecisionEngine { // TODO CONSIDER that this is static
 
-    public void evaluate(Mob mob){ // TODO return a planner
+    public void evaluate(Mob mob){ // TODO return a uk.co.jakestanley.commander2d.planner
         // TODO panic action, e.g no action is available, e.g critical oxygen, critical health
 
 

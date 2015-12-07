@@ -1,4 +1,4 @@
-package resources;
+package uk.co.jakestanley.commander2d.resources;
 
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;

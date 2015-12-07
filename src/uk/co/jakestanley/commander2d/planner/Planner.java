@@ -1,10 +1,10 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import actions.Action;
-import exceptions.ImpossibleGoal;
-import main.GameController;
-import map.MapController;
-import mobs.Mob;
+import uk.co.jakestanley.commander2d.actions.Action;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.main.GameController;
+import uk.co.jakestanley.commander2d.map.MapController;
+import uk.co.jakestanley.commander2d.mobs.Mob;
 
 import java.awt.*;
 import java.util.ArrayList;

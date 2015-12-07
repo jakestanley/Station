@@ -1,21 +1,21 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import actions.Action;
-import actions.AttackDoor;
-import actions.Move;
-import actions.OpenDoor;
-import exceptions.ImpossibleGoal;
-import main.Door;
-import main.GameController;
-import mobs.Mob;
-import tiles.Tile;
+import uk.co.jakestanley.commander2d.actions.Action;
+import uk.co.jakestanley.commander2d.actions.AttackDoor;
+import uk.co.jakestanley.commander2d.actions.Move;
+import uk.co.jakestanley.commander2d.actions.OpenDoor;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.main.Door;
+import uk.co.jakestanley.commander2d.main.GameController;
+import uk.co.jakestanley.commander2d.mobs.Mob;
+import uk.co.jakestanley.commander2d.tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * For mobs moving randomly
+ * For uk.co.jakestanley.commander2d.mobs moving randomly
  * Created by stanners on 24/05/2015.
  */
 public class Random extends Planner {
@@ -27,7 +27,7 @@ public class Random extends Planner {
     @Override
     public void calculate() throws ImpossibleGoal { // TODO need to move some of this stuff into superclass
 
-        // initialising list of list of next actions
+        // initialising list of list of next uk.co.jakestanley.commander2d.actions
         ArrayList<ArrayList<Action>> options = new ArrayList<ArrayList<Action>>();
 
         Point point = mob.getPoint();
@@ -47,7 +47,7 @@ public class Random extends Planner {
 
             Tile nextTile = GameController.mapController.getTile(next); // TODO fix this workaround
 
-            if((tx >= 0) && (ty >= 0) && !nextTile.isVoid()){ // TODO also check that the border tiles aren't too big, as there are upper limits too
+            if((tx >= 0) && (ty >= 0) && !nextTile.isVoid()){ // TODO also check that the border uk.co.jakestanley.commander2d.tiles aren't too big, as there are upper limits too
 
                 Door door = GameController.mapController.getDoor(currentTile.getPoint(), nextTile.getPoint()); // TODO sort
 

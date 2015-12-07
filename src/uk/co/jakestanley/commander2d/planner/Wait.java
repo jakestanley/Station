@@ -1,8 +1,8 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import actions.Action;
-import exceptions.ImpossibleGoal;
-import mobs.Mob;
+import uk.co.jakestanley.commander2d.actions.Action;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.mobs.Mob;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public class Wait extends Planner {
     @Override
     public void calculate() throws ImpossibleGoal {
         actions = new ArrayList<Action>();
-        actions.add(new actions.Wait(mob));
+        actions.add(new uk.co.jakestanley.commander2d.actions.Wait(mob));
     }
 
     @Override

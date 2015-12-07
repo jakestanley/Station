@@ -88,12 +88,6 @@ public class CommanderGame3D extends CommanderGame {
 
 //        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
 
-        // TODO use a const or something and make sure that the models and textures have the same names
-        testModel = ObjLoader.loadObjModel("stan_b", loader, true);
-        texture = new ModelTexture(loader.loadTexture("paint_smooth_b")); // TODO untextured model? shaded model?
-        testTexturedModel = new TexturedModel(testModel, texture);
-        testRenderEntity = new RenderEntity(testTexturedModel, new Vector3f(0,0,-25),0,0,0,1);
-
         lights = new ArrayList<Light>();
         lights.add(new Light(new Vector3f(5,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(10,30,0), new Vector3f(1,1,1)));
@@ -101,8 +95,8 @@ public class CommanderGame3D extends CommanderGame {
         lights.add(new Light(new Vector3f(-10,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(0,30,-10), new Vector3f(1,1,1)));
 
-        testModel2 = ObjLoader.loadObjModel("stan_b", loader, ObjLoader.TEXTURED);
-        texture2 = new ModelTexture(loader.loadTexture("paint_smooth_b")); // TODO untextured model? shaded model?
+        testModel2 = ObjLoader.loadObjModel("characters/stan_b", loader, ObjLoader.TEXTURED);
+        texture2 = new ModelTexture(loader.loadTexture("characters/stan_b")); // TODO untextured model? shaded model?
         testTexturedModel2 = new TexturedModel(testModel2, texture2);
         testRenderEntity2 = new RenderEntity(testTexturedModel2, new Vector3f(0,0,0),0,90f,0,1);
 
@@ -122,7 +116,7 @@ public class CommanderGame3D extends CommanderGame {
 //        testRenderEntity5 = new RenderEntity(testTexturedModel5, new Vector3f(20,20,-75),0,0,0,3);
 
         floor = new Floor(100, 50); // use default for now
-        ship = new Ship();
+        ship = new Ship("gatlinburg");
 
 //
 //        testModel = ObjLoader.loadObjModel("robot", loader, false);
@@ -145,9 +139,9 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
-        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-//        testRenderEntity2.increasePosition(0,0,-0.06f);
-        testRenderEntity.increaseRotation(0,0,0);
+//        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
+        testRenderEntity2.increasePosition(0,0,-0.06f);
+//        testRenderEntity.increaseRotation(0,0,0);
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
         for (Iterator<Light> iterator = lights.iterator(); iterator.hasNext(); ) {

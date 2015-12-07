@@ -1,9 +1,9 @@
-package tiles;
+package uk.co.jakestanley.commander2d.tiles;
 
-import main.Display;
-import main.GameController;
-import main.Room;
-import main.ViewController;
+import uk.co.jakestanley.commander2d.main.Display;
+import uk.co.jakestanley.commander2d.main.GameController;
+import uk.co.jakestanley.commander2d.main.Room;
+import uk.co.jakestanley.commander2d.main.ViewController;
 
 import java.awt.*;
 

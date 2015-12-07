@@ -1,12 +1,12 @@
-package planner;
+package uk.co.jakestanley.commander2d.planner;
 
-import actions.Move;
-import actions.OpenDoor;
-import exceptions.ImpossibleGoal;
-import main.Door;
-import main.GameController;
-import main.Room;
-import mobs.Mob;
+import uk.co.jakestanley.commander2d.actions.Move;
+import uk.co.jakestanley.commander2d.actions.OpenDoor;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.main.Door;
+import uk.co.jakestanley.commander2d.main.GameController;
+import uk.co.jakestanley.commander2d.main.Room;
+import uk.co.jakestanley.commander2d.mobs.Mob;
 
 import java.awt.*;
 import java.util.Iterator;

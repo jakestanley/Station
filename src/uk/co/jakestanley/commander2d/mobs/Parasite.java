@@ -1,13 +1,13 @@
-package mobs;
+package uk.co.jakestanley.commander2d.mobs;
 
-import actions.Action;
-import exceptions.IllegalAction;
-import exceptions.ImpossibleGoal;
-import exceptions.NoAction;
-import exceptions.UnnecessaryAction;
-import main.GameController;
+import uk.co.jakestanley.commander2d.actions.Action;
+import uk.co.jakestanley.commander2d.exceptions.IllegalAction;
+import uk.co.jakestanley.commander2d.exceptions.ImpossibleGoal;
+import uk.co.jakestanley.commander2d.exceptions.NoAction;
+import uk.co.jakestanley.commander2d.exceptions.UnnecessaryAction;
+import uk.co.jakestanley.commander2d.main.GameController;
 import org.newdawn.slick.Color;
-import planner.Random;
+import uk.co.jakestanley.commander2d.planner.Random;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -61,8 +61,8 @@ public class Parasite extends Mob {
     public void act() throws NoAction {
 
         if(planner == null){
-//            Tile target = Game.map.getBridge().getRandomTile();
-//            planner = new Destination(this, target.getX(), target.getY());
+//            Tile target = Game.uk.co.jakestanley.commander2d.map.getBridge().getRandomTile();
+//            uk.co.jakestanley.commander2d.planner = new Destination(this, target.getX(), target.getY());
             planner = new Random(this);
         }
 
@@ -98,8 +98,8 @@ public class Parasite extends Mob {
     public void specificDamage() { // TODO specific damage only done to subclasses
         // TODO put this in a more appropriate place
 
-        // add this tile to explored tiles if not already explored
-        if(!explored.contains(current)){ // can query this tile and surrounding tiles, e.g for doors
+        // add this tile to explored uk.co.jakestanley.commander2d.tiles if not already explored
+        if(!explored.contains(current)){ // can query this tile and surrounding uk.co.jakestanley.commander2d.tiles, e.g for doors
             explored.add(current);
         }
 

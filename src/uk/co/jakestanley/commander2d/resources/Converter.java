@@ -1,7 +1,7 @@
-package resources;
+package uk.co.jakestanley.commander2d.resources;
 
-import main.Display;
-import main.GameController;
+import uk.co.jakestanley.commander2d.main.Display;
+import uk.co.jakestanley.commander2d.main.GameController;
 
 import java.awt.*;
 

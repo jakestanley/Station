@@ -1,6 +1,6 @@
-package tiles;
+package uk.co.jakestanley.commander2d.tiles;
 
-import main.*;
+import uk.co.jakestanley.commander2d.main.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -39,7 +39,7 @@ public class VisibleTile extends Tile {
         this.health = MAX_HEALTH;
 
         try { // TODO clean up. move this crap into an image loader class or something that gets called in init.
-            image = new Image("res/img/tiles/floor.png");
+            image = new Image("res/img/uk.co.jakestanley.commander2d.tiles/floor.png");
         } catch (SlickException e){
             System.err.println("Failed to load image");
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class VisibleTile extends Tile {
         this.health = MAX_HEALTH;
 
         try { // TODO clean up. move this crap into an image loader class or something that gets called in init.
-            image = new Image("res/img/tiles/floor.png");
+            image = new Image("res/img/uk.co.jakestanley.commander2d.tiles/floor.png");
         } catch (SlickException e){
             System.err.println("Failed to load image");
             e.printStackTrace();
