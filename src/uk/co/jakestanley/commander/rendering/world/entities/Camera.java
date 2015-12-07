@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.entities;
+package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

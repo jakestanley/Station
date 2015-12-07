@@ -7,13 +7,13 @@ import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
-import uk.co.jakestanley.commander.rendering.entities.Light;
-import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
-import uk.co.jakestanley.commander.rendering.entities.world.Character;
-import uk.co.jakestanley.commander.rendering.entities.world.Floor;
-import uk.co.jakestanley.commander.rendering.entities.world.Ship;
+import uk.co.jakestanley.commander.rendering.world.entities.Light;
+import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
+import uk.co.jakestanley.commander.rendering.world.entities.Character;
+import uk.co.jakestanley.commander.rendering.world.entities.Floor;
+import uk.co.jakestanley.commander.rendering.world.entities.Ship;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
-import uk.co.jakestanley.commander.rendering.entities.Camera;
+import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.ThreeDimensionalRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
@@ -130,7 +130,6 @@ public class CommanderGame3D {
         }
 
         worldRenderer.render(floor, shader);
-
 
         shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop

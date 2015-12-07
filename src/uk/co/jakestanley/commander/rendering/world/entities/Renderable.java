@@ -1,7 +1,6 @@
-package uk.co.jakestanley.commander.rendering.entities.world;
+package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
-import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 
 import java.util.ArrayList;
 import java.util.List;

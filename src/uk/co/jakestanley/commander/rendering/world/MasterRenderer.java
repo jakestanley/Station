@@ -1,8 +1,8 @@
 package uk.co.jakestanley.commander.rendering.world;
 
-import uk.co.jakestanley.commander.rendering.entities.Camera;
-import uk.co.jakestanley.commander.rendering.entities.Light;
-import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
+import uk.co.jakestanley.commander.rendering.world.entities.Camera;
+import uk.co.jakestanley.commander.rendering.world.entities.Light;
+import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 

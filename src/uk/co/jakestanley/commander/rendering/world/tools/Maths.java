@@ -2,7 +2,7 @@ package uk.co.jakestanley.commander.rendering.world.tools;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.rendering.entities.Camera;
+import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 
 /**
  * Created by jp-st on 13/11/2015.

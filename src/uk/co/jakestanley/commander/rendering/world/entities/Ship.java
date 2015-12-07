@@ -1,10 +1,8 @@
-package uk.co.jakestanley.commander.rendering.entities.world;
+package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.CommanderGame3D;
-import uk.co.jakestanley.commander.rendering.entities.Camera;
-import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
