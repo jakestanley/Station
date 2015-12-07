@@ -9,14 +9,17 @@ import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 import uk.co.jakestanley.commander.rendering.world.tools.Maths;
-import uk.co.jakestanley.commander.rendering.world.tools.RenderingOptimiser;
+import uk.co.jakestanley.commander.rendering.world.caching.RenderCache;
 
 /**
  * Created by jp-st on 10/11/2015.
  */
 public class Renderer { // TODO better inheritance
 
-    private RenderingOptimiser optimiser;
+    private int frameCount;
+    private int lastTimeInSeconds;
+
+    private RenderCache optimiser;
     private StaticShader shader;
     private Matrix4f projectionMatrix;
 
@@ -32,22 +35,30 @@ public class Renderer { // TODO better inheritance
             projectionMatrix = Maths.createOrthographicProjectionMatrix();
         }
 
-        optimiser = new RenderingOptimiser(null);
+        optimiser = new RenderCache(null);
 
     }
 
     public void init() {
         // set up the projection matrix
+        frameCount = 0;
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
     }
 
     public void update() {
+        if(lastTimeInSeconds == ((int) System.currentTimeMillis() / 1000)){
+            frameCount++;
+        } else {
+            System.out.println("FPS: " + frameCount);
+            frameCount = 0;
+        }
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
         GL11.glClearColor(0, 0, 0, 1); // TODO set a proper background colour
+        lastTimeInSeconds = (int) System.currentTimeMillis() / 1000;
     }
 
     public void render(RenderEntity entity, StaticShader shader) { // TODO need models/shapes/objects list or something

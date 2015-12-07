@@ -100,8 +100,7 @@ public class ObjLoader {
 
         // convert the vertices list into an array
         int vertexPointer = 0;
-        for (Vector3f vertex:
-             vertices) {
+        for (Vector3f vertex : vertices) {
             // 1, 2, 3, <line break> 4, 5, 6 <line break> etc, etc
             verticesArray[vertexPointer++] = vertex.x;
             verticesArray[vertexPointer++] = vertex.y;

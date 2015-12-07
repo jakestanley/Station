@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.tools;
+package uk.co.jakestanley.commander.rendering.world.caching;
 
 import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
@@ -12,22 +12,21 @@ import java.util.*;
 /**
  * Created by jake on 06/12/2015.
  */
-public class RenderingOptimiser {
+public class RenderCache {
 
-    private List<Light> lights;
+    private List<Light> lights; // not sure about this TODO revise
 
     private StaticShader shader;
-    private Renderer renderer;
     private Map<TexturedModel, List<RenderEntity>> renderEntities;
 
-    public RenderingOptimiser(List<Light> lights){
+    public RenderCache(List<Light> lights){
         this.lights = lights;
         shader = new StaticShader();
         renderEntities = new HashMap<TexturedModel, List<RenderEntity>>();
     }
 
     public void render(Camera camera){
-        renderer.update(); // TODO change (to prepare, maybe?)
+//        renderer.update(); // TODO change (to prepare, maybe?)
         shader.start();
         loadLights();
         shader.loadViewMatrix(camera);

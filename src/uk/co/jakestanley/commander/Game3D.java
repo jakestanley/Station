@@ -18,6 +18,7 @@ import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by jp-st on 10/11/2015.
@@ -29,6 +30,7 @@ public class Game3D {
     private int displayWidth; // TODO allow these to be changed with arguments
     private int displayHeight;
 
+    private Random random;
     private InputController inputController;
     private SceneController sceneController;
     private GuiController guiController;
@@ -56,6 +58,7 @@ public class Game3D {
         this.displayHeight = displayHeight;
 
         // initialise game logic objects
+        random = new Random();
         inputController = new InputController();
         sceneController = new SceneController();
         sceneController.addMobileEntity(new Crewman("terry", 0f, 0f, 0f)); // TODO put in method and generate names
@@ -85,8 +88,14 @@ public class Game3D {
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
         floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
-        ship = new Ship("gatlinburg");
-        character = new Character("stan");
+        ship = new Ship("gatlinburg", new Vector3f(0,0,0));
+
+        // stress testing
+        for(int i = 0; i < 1000; i++){
+            System.out.println("Initialising character: " + (i+1));
+            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(100) - 50));
+            renderables.add(character);
+        }
 
         // add renderables
         renderables.add(ship);

@@ -30,8 +30,8 @@ public class Ship extends Renderable { // TODO a superclass
      * identifier should be all lower case and should correspond with res directory structure
      * @param identifier
      */
-    public Ship(String identifier){ // TODO make a center point - TODO a render at coordinate
-        super(identifier);
+    public Ship(String identifier, Vector3f position){ // TODO make a center point - TODO a render at coordinate
+        super(identifier, position);
         loadRenderEntities();
     }
 
@@ -61,17 +61,16 @@ public class Ship extends Renderable { // TODO a superclass
         TexturedModel starboardTexturedModel = new TexturedModel(starboardModel, starboardTexture);
         TexturedModel ballastTexturedModel = new TexturedModel(ballastModel, ballastTexture);
 
-        Vector3f renderAt = new Vector3f(0,0,0); // TODO set
         float rotX = 0;
         float rotY = 0;
         float rotZ = 0;
 
-        top = new RenderEntity(topTexturedModel, renderAt, rotX, rotY, rotZ, 1);
-        front = new RenderEntity(frontTexturedModel, renderAt, rotX, rotY, rotZ, 1);
-        rear = new RenderEntity(rearTexturedModel, renderAt, rotX, rotY, rotZ, 1);
-        port = new RenderEntity(portTexturedModel, renderAt, rotX, rotY, rotZ, 1);
-        starboard = new RenderEntity(starboardTexturedModel, renderAt, rotX, rotY, rotZ, 1);
-        ballast = new RenderEntity(ballastTexturedModel, renderAt, rotX, rotY, rotZ, 1);
+        top = new RenderEntity(topTexturedModel, position, rotX, rotY, rotZ, 1);
+        front = new RenderEntity(frontTexturedModel, position, rotX, rotY, rotZ, 1);
+        rear = new RenderEntity(rearTexturedModel, position, rotX, rotY, rotZ, 1);
+        port = new RenderEntity(portTexturedModel, position, rotX, rotY, rotZ, 1);
+        starboard = new RenderEntity(starboardTexturedModel, position, rotX, rotY, rotZ, 1);
+        ballast = new RenderEntity(ballastTexturedModel, position, rotX, rotY, rotZ, 1);
 
         allRenderEntities.add(top);
         allRenderEntities.add(front);

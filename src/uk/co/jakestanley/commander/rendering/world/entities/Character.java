@@ -1,7 +1,6 @@
 package uk.co.jakestanley.commander.rendering.world.entities;
 
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.Game3D;
 import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
@@ -14,8 +13,8 @@ import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
  */
 public class Character extends Renderable {
 
-    public Character(String identifier){
-        super(identifier);
+    public Character(String identifier, Vector3f position){
+        super(identifier, position);
         loadRenderEntities();
     }
 
@@ -25,7 +24,7 @@ public class Character extends Renderable {
         RawModel model = ObjLoader.loadObjModel("characters/"+identifier, loader, ObjLoader.TEXTURED);
         ModelTexture texture = new ModelTexture(loader.loadTexture("characters/"+identifier)); // TODO untextured model? shaded model?
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        RenderEntity renderEntity = new RenderEntity(texturedModel, new Vector3f(0,0,0),0,90f,0,1);
+        RenderEntity renderEntity = new RenderEntity(texturedModel, position,0,90f,0,1);
 
         allRenderEntities.add(renderEntity);
         visibleRenderEntities.add(renderEntity);
