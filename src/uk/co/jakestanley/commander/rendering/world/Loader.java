@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.textures.TextureCache;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,10 +24,20 @@ import java.util.List;
  */
 public class Loader {
 
+    private boolean caching;
+    private TextureCache textureCache;
+
     // From YouTube: OpenGL 3D Game Tutorial
     private List<Integer> vaoList = new ArrayList<Integer>();
     private List<Integer> vboList = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
+
+    public Loader(boolean caching){
+        this.caching = caching;
+        if(caching){
+            textureCache = new TextureCache();
+        }
+    }
 
     public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoordinates, float[] normals){
         int vaoID = createVAO();
@@ -51,15 +63,28 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
-    public int loadTexture(String name){ // TODO expand Loader into an abstract class with subclasses for managing loaded components? - could iterate through loaders and start/cleanup/etc
+    public int loadTexture(String path){ // TODO expand Loader into an abstract class with subclasses for managing loaded components? - could iterate through loaders and start/cleanup/etc
+
+        if(ENABLE_CACHING == caching){
+            Integer cachedTextureId = textureCache.getModelId(path);
+            if(cachedTextureId != null){
+                return cachedTextureId;
+            }
+        }
+
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + name + ".png"));
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + path + ".png"));
         } catch (IOException e) {
             System.err.println("Failed to load file");
             e.printStackTrace();
         }
         int textureID = texture.getTextureID();
+
+        if(caching){
+            textureCache.store(path, textureID);
+        }
+
         textures.add(textureID);
         return textureID;
     }
@@ -125,5 +150,8 @@ public class Loader {
         floatBuffer.flip(); // signifies that the buffer is ready
         return floatBuffer;
     }
+
+    public static final boolean ENABLE_CACHING = true;
+    public static final boolean DISABLE_CACHING = false;
 
 }

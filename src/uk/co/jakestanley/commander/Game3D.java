@@ -75,7 +75,7 @@ public class Game3D {
     protected void init() {
 
         DisplayManager.createDisplay();
-        loader = new Loader(); // requires the OpenGL context
+        loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
         shader = new StaticShader();
         worldRenderer = new Renderer(shader, Renderer.ORTHOGRAPHIC);
         worldRenderer.init();
