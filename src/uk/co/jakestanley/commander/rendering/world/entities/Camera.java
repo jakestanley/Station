@@ -52,19 +52,23 @@ public class Camera {
         if(cooldown > 0){
             cooldown--;
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) { // TODO eventually move this stuff to the input controller in a cool ass way
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             switch (facing) {
                 case NORTH:
-                    position.z = position.z - SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case SOUTH:
+                    position.x = position.x + SCROLL_SPEED;
                     position.z = position.z + SCROLL_SPEED;
                     break;
                 case EAST:
                     position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case WEST:
                     position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
             }
         }
@@ -72,15 +76,19 @@ public class Camera {
             switch (facing) {
                 case NORTH:
                     position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case SOUTH:
                     position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
                 case EAST:
-                    position.z = position.z + SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
                 case WEST:
-                    position.z = position.z - SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
             }
         }
@@ -88,31 +96,39 @@ public class Camera {
             switch (facing) {
                 case NORTH:
                     position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
                 case SOUTH:
                     position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case EAST:
-                    position.z = position.z - SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case WEST:
-                    position.z = position.z + SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             switch (facing) {
                 case NORTH:
-                    position.z = position.z + SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
                 case SOUTH:
-                    position.z = position.z - SCROLL_SPEED; // TODO make speed constant
+                    position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
                 case EAST:
                     position.x = position.x - SCROLL_SPEED;
+                    position.z = position.z + SCROLL_SPEED;
                     break;
                 case WEST:
                     position.x = position.x + SCROLL_SPEED;
+                    position.z = position.z - SCROLL_SPEED;
                     break;
             }
         }

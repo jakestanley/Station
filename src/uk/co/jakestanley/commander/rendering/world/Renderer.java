@@ -29,7 +29,7 @@ public class Renderer { // TODO better inheritance
     public Renderer(StaticShader shader, int type) { // TODO use these values
 
         // enable face culling
-//        GL11.glEnable(GL11.GL_CULL_FACE); // TODO fix as this breaks the floor
+//        GL11.glEnable(GL11.GL_CULL_FACE); // TODO fix as this breaks the floor. need this fixing for performance
 //        GL11.glCullFace(GL11.GL_BACK);
 
         this.shader = shader;

@@ -97,7 +97,6 @@ public class Game3D {
 
         // adding a bunch of randomly placed characters
         for(int i = 0; i < 10; i++){
-            System.out.println("Initialising character: " + (i+1));
             character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(100) - 50));
             renderables.add(character);
         }
