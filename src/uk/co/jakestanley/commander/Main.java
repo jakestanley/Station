@@ -12,23 +12,15 @@ public class Main {
     public static void main(String[] args){
 
         boolean debug = false;
-        boolean renderIn3d = false;
 
         for(String argument : args){
             if(argument.equalsIgnoreCase("-debug")){
                 debug = true;
-            } else if(argument.equalsIgnoreCase("-3d")){
-                renderIn3d = true;
             }
         }
 
-        if(renderIn3d){
-            System.out.println("Launching 3D game");
-            game = new CommanderGame3D(debug);
-        } else {
-            System.out.println("Launching 2D game");
-            game = new CommanderGame2D(debug); // TODO just use fucking slick or get rid
-        }
+        System.out.println("Launching 3D game");
+        game = new CommanderGame3D(debug);
 
         game.init();
         while(!game.hasCloseCondition()){
