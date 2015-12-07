@@ -39,13 +39,14 @@ public class Ship extends Renderable { // TODO a superclass
     protected void loadRenderEntities(){
 
         Loader loader = Main.getGame().loader;
+        ObjLoader objLoader = Main.getGame().getObjLoader();
 
-        RawModel topModel = ObjLoader.loadObjModel("ships/"+identifier+"/Top", loader, ObjLoader.TEXTURED);
-        RawModel frontModel = ObjLoader.loadObjModel("ships/"+identifier+"/Front", loader, ObjLoader.TEXTURED);
-        RawModel rearModel = ObjLoader.loadObjModel("ships/"+identifier+"/Rear", loader, ObjLoader.TEXTURED);
-        RawModel portModel = ObjLoader.loadObjModel("ships/"+identifier+"/Port", loader, ObjLoader.TEXTURED);
-        RawModel starboardModel = ObjLoader.loadObjModel("ships/"+identifier+"/Starboard", loader, ObjLoader.TEXTURED);
-        RawModel ballastModel = ObjLoader.loadObjModel("ships/"+identifier+"/Ballast", loader, ObjLoader.TEXTURED);
+        RawModel topModel = objLoader.loadObjModel("ships/"+identifier+"/Top", loader, ObjLoader.TEXTURED);
+        RawModel frontModel = objLoader.loadObjModel("ships/"+identifier+"/Front", loader, ObjLoader.TEXTURED);
+        RawModel rearModel = objLoader.loadObjModel("ships/"+identifier+"/Rear", loader, ObjLoader.TEXTURED);
+        RawModel portModel = objLoader.loadObjModel("ships/"+identifier+"/Port", loader, ObjLoader.TEXTURED);
+        RawModel starboardModel = objLoader.loadObjModel("ships/"+identifier+"/Starboard", loader, ObjLoader.TEXTURED);
+        RawModel ballastModel = objLoader.loadObjModel("ships/"+identifier+"/Ballast", loader, ObjLoader.TEXTURED);
 
         ModelTexture topTexture = new ModelTexture(loader.loadTexture("test/yellow"));
         ModelTexture frontTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Front"));

@@ -11,6 +11,7 @@ import uk.co.jakestanley.commander.rendering.world.entities.*;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.entities.Character;
+import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
@@ -38,6 +39,7 @@ public class Game3D {
     public Renderer worldRenderer;
     public GuiRenderer guiRenderer;
 
+    public ObjLoader objLoader; // TODO make private with getters only
     public Loader loader;
 
     public static StaticShader shader;
@@ -59,6 +61,7 @@ public class Game3D {
 
         // initialise game logic objects
         random = new Random();
+        objLoader = new ObjLoader(ObjLoader.ENABLE_CACHING);
         inputController = new InputController();
         sceneController = new SceneController();
         sceneController.addMobileEntity(new Crewman("terry", 0f, 0f, 0f)); // TODO put in method and generate names

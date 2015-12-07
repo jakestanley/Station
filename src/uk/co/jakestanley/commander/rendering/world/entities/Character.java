@@ -21,7 +21,8 @@ public class Character extends Renderable {
     @Override
     protected void loadRenderEntities(){
         Loader loader = Main.getGame().loader;
-        RawModel model = ObjLoader.loadObjModel("characters/"+identifier, loader, ObjLoader.TEXTURED);
+        ObjLoader objLoader = Main.getGame().getObjLoader();
+        RawModel model = objLoader.loadObjModel("characters/"+identifier, loader, ObjLoader.TEXTURED);
         ModelTexture texture = new ModelTexture(loader.loadTexture("characters/"+identifier)); // TODO untextured model? shaded model?
         TexturedModel texturedModel = new TexturedModel(model, texture);
         RenderEntity renderEntity = new RenderEntity(texturedModel, position,0,90f,0,1);

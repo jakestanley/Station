@@ -17,11 +17,29 @@ import java.util.List;
  */
 public class ObjLoader {
 
-    public static RawModel loadObjModel(String name, Loader loader, boolean textured){
+    private boolean caching;
+    private ModelCache cache;
+
+    public ObjLoader(boolean caching){
+        this.caching = caching;
+        if(caching){
+            cache = new ModelCache();
+        }
+    }
+
+    public RawModel loadObjModel(String name, Loader loader, boolean textured){
 
         // get a file pointer
         FileReader file = null;
         String path = "res/models/"+name+".obj";
+
+        if(ENABLE_CACHING == caching){
+            RawModel cachedModel = cache.get(path);
+            if(cachedModel != null){
+                return cachedModel;
+            }
+        }
+
         try {
             file = new FileReader(new File(path));
         } catch (FileNotFoundException e) {
@@ -114,7 +132,13 @@ public class ObjLoader {
 
         // TODO save this data for faster loading later
 
-        return loader.loadToVAO(verticesArray, indicesArray, texturesArray, normalsArray);
+        RawModel loadedModel = loader.loadToVAO(verticesArray, indicesArray, texturesArray, normalsArray);
+
+        if(caching){
+            cache.store(path, loadedModel);
+        }
+
+        return loadedModel;
 
     }
 
@@ -138,5 +162,7 @@ public class ObjLoader {
 
     public static final boolean TEXTURED = true;
     public static final boolean UNTEXTURED = false;
+    public static final boolean ENABLE_CACHING = true;
+    public static final boolean DISABLE_CACHING = false;
 
 }
