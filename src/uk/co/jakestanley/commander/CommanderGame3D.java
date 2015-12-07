@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
-import uk.co.jakestanley.commander.rendering.Renderer;
+import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.entities.Light;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.entities.Character;
@@ -14,7 +14,6 @@ import uk.co.jakestanley.commander.rendering.world.entities.Floor;
 import uk.co.jakestanley.commander.rendering.world.entities.Ship;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
-import uk.co.jakestanley.commander.rendering.world.ThreeDimensionalRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
@@ -37,8 +36,8 @@ public class CommanderGame3D {
     private static SceneController sceneController;
     private static GuiController guiController;
 
-    public static ThreeDimensionalRenderer worldRenderer;
-    public static Renderer guiRenderer;
+    public static Renderer worldRenderer;
+    public static GuiRenderer guiRenderer;
 
     public static Loader loader;
     public static StaticShader shader;
@@ -71,7 +70,7 @@ public class CommanderGame3D {
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
         shader = new StaticShader();
-        worldRenderer = new ThreeDimensionalRenderer(20, 20, 800, 600, shader);
+        worldRenderer = new Renderer(20, 20, 800, 600, shader);
 
 //        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
 
