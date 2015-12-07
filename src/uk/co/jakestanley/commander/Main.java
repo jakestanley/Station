@@ -1,5 +1,7 @@
 package uk.co.jakestanley.commander;
 
+import lombok.Getter;
+
 /**
  * Created by jp-st on 13/11/2015.
  */
@@ -9,11 +11,11 @@ public class Main {
     private static final int DEFAULT_DISPLAY_WIDTH = 1280;
     private static final int DEFAULT_DISPLAY_HEIGHT = 720;
 
-    private static Game3D game;
+    @Getter private static Game3D game;
 
     public static void main(String[] args){
 
-        boolean debug = false;
+        boolean debug = DEFAULT_DEBUG;
         int displayWidth = DEFAULT_DISPLAY_WIDTH;
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 

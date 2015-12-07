@@ -3,6 +3,7 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Game3D;
+import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
@@ -32,7 +33,7 @@ public class Floor extends RenderEntity {
     public Floor(){
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.UNTEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         rawModel = generateFloorModel(); // generate default floor model
-        texturedModel = new TexturedModel(rawModel, new ModelTexture(Game3D.loader.loadTexture("basic")));
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("basic")));
 
     }
 
@@ -40,7 +41,7 @@ public class Floor extends RenderEntity {
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         rawModel = generateFloorModel(width, height);
-        texturedModel = new TexturedModel(rawModel, new ModelTexture(Game3D.loader.loadTexture("unused/grid2")));
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("unused/grid2")));
     }
 
     public Floor(Vector2f[] vertices, int[] indices){
@@ -50,7 +51,7 @@ public class Floor extends RenderEntity {
 
     private static RawModel generateFloorModel(){
         float[] floor3dVertices = generateVertexPositions(DEFAULT_VERTICES);
-        return Game3D.loader.loadToVAO(floor3dVertices, DEFAULT_INDICES);
+        return Main.getGame().loader.loadToVAO(floor3dVertices, DEFAULT_INDICES);
     }
 
     /**
@@ -62,7 +63,7 @@ public class Floor extends RenderEntity {
     private static RawModel generateFloorModel(float width, float height){
         Vector2f[] floor2dVertices = { new Vector2f(width,height), new Vector2f(0,height), new Vector2f(0,0), new Vector2f(width,0)};
         float[] floor3dVertices = generateVertexPositions(floor2dVertices);
-        return Game3D.loader.loadToVAO(floor3dVertices, DEFAULT_INDICES);
+        return Main.getGame().loader.loadToVAO(floor3dVertices, DEFAULT_INDICES);
     }
 
     private static RawModel generateFloorModel(Vector2f[] floor2dVertices, int[] floorIndices){
@@ -72,7 +73,7 @@ public class Floor extends RenderEntity {
         } else {
             floor3dVertices = generateVertexPositions(floor2dVertices);
         }
-        return Game3D.loader.loadToVAO(floor3dVertices, floorIndices); // TODO
+        return Main.getGame().loader.loadToVAO(floor3dVertices, floorIndices); // TODO
     }
 
     /**

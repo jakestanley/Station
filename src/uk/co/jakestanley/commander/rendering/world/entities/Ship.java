@@ -3,6 +3,8 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 import lombok.Getter;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Game3D;
+import uk.co.jakestanley.commander.Main;
+import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
@@ -36,19 +38,21 @@ public class Ship extends Renderable { // TODO a superclass
     @Override
     protected void loadRenderEntities(){
 
-        RawModel topModel = ObjLoader.loadObjModel("ships/"+identifier+"/Top", Game3D.loader, ObjLoader.TEXTURED);
-        RawModel frontModel = ObjLoader.loadObjModel("ships/"+identifier+"/Front", Game3D.loader, ObjLoader.TEXTURED);
-        RawModel rearModel = ObjLoader.loadObjModel("ships/"+identifier+"/Rear", Game3D.loader, ObjLoader.TEXTURED);
-        RawModel portModel = ObjLoader.loadObjModel("ships/"+identifier+"/Port", Game3D.loader, ObjLoader.TEXTURED);
-        RawModel starboardModel = ObjLoader.loadObjModel("ships/"+identifier+"/Starboard", Game3D.loader, ObjLoader.TEXTURED);
-        RawModel ballastModel = ObjLoader.loadObjModel("ships/"+identifier+"/Ballast", Game3D.loader, ObjLoader.TEXTURED);
+        Loader loader = Main.getGame().loader;
 
-        ModelTexture topTexture = new ModelTexture(Game3D.loader.loadTexture("test/yellow"));
-        ModelTexture frontTexture = new ModelTexture(Game3D.loader.loadTexture("ships/"+identifier+"/Front"));
-        ModelTexture rearTexture = new ModelTexture(Game3D.loader.loadTexture("ships/"+identifier+"/Rear"));
-        ModelTexture portTexture = new ModelTexture(Game3D.loader.loadTexture("ships/"+identifier+"/Port"));
-        ModelTexture starboardTexture = new ModelTexture(Game3D.loader.loadTexture("ships/"+identifier+"/Starboard"));
-        ModelTexture ballastTexture = new ModelTexture(Game3D.loader.loadTexture("test/green"));
+        RawModel topModel = ObjLoader.loadObjModel("ships/"+identifier+"/Top", loader, ObjLoader.TEXTURED);
+        RawModel frontModel = ObjLoader.loadObjModel("ships/"+identifier+"/Front", loader, ObjLoader.TEXTURED);
+        RawModel rearModel = ObjLoader.loadObjModel("ships/"+identifier+"/Rear", loader, ObjLoader.TEXTURED);
+        RawModel portModel = ObjLoader.loadObjModel("ships/"+identifier+"/Port", loader, ObjLoader.TEXTURED);
+        RawModel starboardModel = ObjLoader.loadObjModel("ships/"+identifier+"/Starboard", loader, ObjLoader.TEXTURED);
+        RawModel ballastModel = ObjLoader.loadObjModel("ships/"+identifier+"/Ballast", loader, ObjLoader.TEXTURED);
+
+        ModelTexture topTexture = new ModelTexture(loader.loadTexture("test/yellow"));
+        ModelTexture frontTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Front"));
+        ModelTexture rearTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Rear"));
+        ModelTexture portTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Port"));
+        ModelTexture starboardTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Starboard"));
+        ModelTexture ballastTexture = new ModelTexture(loader.loadTexture("test/green"));
 
         TexturedModel topTexturedModel = new TexturedModel(topModel, topTexture);
         TexturedModel frontTexturedModel = new TexturedModel(frontModel, frontTexture);
@@ -88,7 +92,7 @@ public class Ship extends Renderable { // TODO a superclass
 
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
-        switch (Game3D.camera.getFacing()){
+        switch (Main.getGame().getCamera().getFacing()){
             case Camera.NORTH:
                 visibleRenderEntities.add(front);
                 visibleRenderEntities.add(starboard);

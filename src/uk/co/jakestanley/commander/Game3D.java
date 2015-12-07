@@ -7,14 +7,10 @@ import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.world.Renderer;
-import uk.co.jakestanley.commander.rendering.world.entities.Light;
-import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
-import uk.co.jakestanley.commander.rendering.world.entities.Character;
-import uk.co.jakestanley.commander.rendering.world.entities.Floor;
-import uk.co.jakestanley.commander.rendering.world.entities.Ship;
+import uk.co.jakestanley.commander.rendering.world.entities.*;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
-import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.Loader;
+import uk.co.jakestanley.commander.rendering.world.entities.Character;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
@@ -26,28 +22,33 @@ import java.util.List;
 /**
  * Created by jp-st on 10/11/2015.
  */
+@Getter
 public class Game3D {
 
-    @Getter private static boolean debug;
-    @Getter private static int displayWidth; // TODO allow these to be changed with arguments
-    @Getter private static int displayHeight;
+    private boolean debug;
+    private int displayWidth; // TODO allow these to be changed with arguments
+    private int displayHeight;
 
-    private static InputController inputController;
-    private static SceneController sceneController;
-    private static GuiController guiController;
+    private InputController inputController;
+    private SceneController sceneController;
+    private GuiController guiController;
 
     public static Renderer worldRenderer;
-    public static GuiRenderer guiRenderer;
 
-    public static Loader loader;
+    public GuiRenderer guiRenderer;
+    public Loader loader;
+
     public static StaticShader shader;
 
-    // learning
-    public static RenderEntity floor;
-    public static List<Light> lights;
-    public static Camera camera;
-    public static Character character;
-    public static Ship ship;
+    // entities
+    private List<Light> lights;
+    private List<Renderable> renderables;
+
+    // entities you should probably keep track of
+    private Camera camera;
+    private RenderEntity floor;
+    private Ship ship;
+    private Character character;
 
     public Game3D(boolean debug, int displayWidth, int displayHeight){
         this.debug = debug;
@@ -74,6 +75,7 @@ public class Game3D {
 
 //        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
 
+        // initialise lights - TODO get from scene controller?
         lights = new ArrayList<Light>();
         lights.add(new Light(new Vector3f(5,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(10,30,0), new Vector3f(1,1,1)));
@@ -81,18 +83,16 @@ public class Game3D {
         lights.add(new Light(new Vector3f(-10,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(0,30,-10), new Vector3f(1,1,1)));
 
-        floor = new Floor(100, 50); // use default for now
-        character = new Character("stan");
+        // initialise visible entities
+        renderables = new ArrayList<Renderable>();
+        floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
+
         ship = new Ship("gatlinburg");
+        character = new Character("stan");
+        renderables.add(ship);
+        renderables.add(character);
 
-//
-//        testModel = ObjLoader.loadObjModel("robot", loader, false);
-//        testRenderEntity = new RenderEntity(testModel, new Vector3f(0, 0, -25), 0, 0, 0, 1); // untextured
-
-
-//        camera = new Camera(new Vector3f(0,0,0), 0, 0, 0);
         camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
-//        camera = new Camera();
     }
 
     public void update(){
@@ -116,16 +116,13 @@ public class Game3D {
         }
         shader.loadViewMatrix(camera);
 
-        // render ship
-        for (Iterator<RenderEntity> it = ship.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
-            RenderEntity next = it.next();
-            worldRenderer.render(next, shader);
-        }
-
-        // render character
-        for (Iterator<RenderEntity> it = character.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
-            RenderEntity next = it.next();
-            worldRenderer.render(next, shader);
+        // render the entities
+        for (Iterator<Renderable> iterator = renderables.iterator(); iterator.hasNext(); ) {
+            Renderable renderable = iterator.next();
+            for (Iterator<RenderEntity> it = renderable.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
+                RenderEntity renderEntity = it.next();
+                worldRenderer.render(renderEntity, shader);
+            }
         }
 
         worldRenderer.render(floor, shader);
@@ -136,6 +133,10 @@ public class Game3D {
 
     public boolean hasCloseCondition() {
         return Display.isCloseRequested();
+    }
+
+    public void addRenderable(Renderable renderable){
+        renderables.add(renderable);
     }
 
     public void close() {

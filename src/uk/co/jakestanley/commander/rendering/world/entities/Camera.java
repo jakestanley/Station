@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Game3D;
+import uk.co.jakestanley.commander.Main;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -44,8 +45,9 @@ public class Camera {
     }
 
     public void move() {
-        if(!Game3D.ship.hasVisibleRenderEntities()){
-            Game3D.ship.resetVisibleRenderEntities();
+        Ship ship = Main.getGame().getShip();
+        if(!ship.hasVisibleRenderEntities()){
+            ship.resetVisibleRenderEntities();
         }
         if(cooldown > 0){
             cooldown--;
@@ -126,7 +128,7 @@ public class Camera {
                 if(facing > 3){
                     facing = 0;
                 }
-                Game3D.ship.resetVisibleRenderEntities();
+                ship.resetVisibleRenderEntities();
                 rotateLeft();
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
@@ -138,7 +140,7 @@ public class Camera {
                 if(facing < 0){
                     facing = 3;
                 }
-                Game3D.ship.resetVisibleRenderEntities();
+                ship.resetVisibleRenderEntities();
                 rotateRight();
             }
         }
