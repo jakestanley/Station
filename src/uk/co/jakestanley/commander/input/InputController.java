@@ -15,7 +15,7 @@ public class InputController implements KeyListener {
         // TODO improve
     }
 
-    public void update(GameContainer gc){ // TODO should return some list of actions or something for the scene controller.
+    public void update(GameContainer gc){ // TODO should return some list of uk.co.jakestanley.commander2d.actions or something for the scene controller.
         Input input = gc.getInput();
         if(input.isKeyDown(Input.KEY_W)){ // TODO send the input data to the SceneController? don't explicitly command its logic, perhaps?
             downW();

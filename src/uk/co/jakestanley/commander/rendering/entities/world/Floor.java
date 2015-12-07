@@ -37,7 +37,7 @@ public class Floor extends RenderEntity {
 
     }
 
-    public Floor(float width, float height){ // TODO render offset for this and other map components for loading from file, for example.
+    public Floor(float width, float height){ // TODO render offset for this and other uk.co.jakestanley.commander2d.map components for loading from file, for example.
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         rawModel = generateFloorModel(width, height);

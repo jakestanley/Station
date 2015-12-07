@@ -43,7 +43,7 @@ public class Loop extends BasicGame {
     public void start(){
 //        try {
 //            AppGameContainer container = new AppGameContainer(this);
-//            container.setShowFPS(main.Game.debug);
+//            container.setShowFPS(uk.co.jakestanley.commander2d.main.Game.debug);
 //            container.setDisplayMode(getDisplayWidth(), getDisplayHeight(), false);
 //            container.setVSync(true); // jesus h christ this needs to be on
 //            container.setTargetFrameRate(60); //Display.FRAME_RATE); // TODO remove the /2 after testing screen scrolling
@@ -51,7 +51,7 @@ public class Loop extends BasicGame {
 //        } catch (SlickException e) {
 //            System.out.println("Failed to start the container");
 //            e.printStackTrace();
-//            System.exit(main.Game.EXIT_BAD); // TODO move these variables
+//            System.exit(uk.co.jakestanley.commander2d.main.Game.EXIT_BAD); // TODO move these variables
 //        }
     }
 

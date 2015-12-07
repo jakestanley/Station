@@ -1,6 +1,5 @@
 package uk.co.jakestanley.commander.rendering.world.threedimensional;
 
-import main.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;

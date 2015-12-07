@@ -1,7 +1,6 @@
 package uk.co.jakestanley.commander.rendering;
 
 import lombok.Getter;
-import main.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.Display;

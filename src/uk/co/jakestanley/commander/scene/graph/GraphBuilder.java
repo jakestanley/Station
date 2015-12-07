@@ -5,7 +5,7 @@ package uk.co.jakestanley.commander.scene.graph;
  */
 public class GraphBuilder {
 
-    public static Graph buildGraph(){ // TODO take a "map" as arguments
+    public static Graph buildGraph(){ // TODO take a "uk.co.jakestanley.commander2d.map" as arguments
         return null;
     }
 
