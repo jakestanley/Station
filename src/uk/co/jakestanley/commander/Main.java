@@ -7,6 +7,7 @@ import lombok.Getter;
  */
 public class Main {
 
+    private static final boolean DEFAULT_CACHING = true;
     private static final boolean DEFAULT_DEBUG = false;
     private static final int DEFAULT_DISPLAY_WIDTH = 1280;
     private static final int DEFAULT_DISPLAY_HEIGHT = 720;
@@ -15,18 +16,23 @@ public class Main {
 
     public static void main(String[] args){
 
+        boolean caching = DEFAULT_CACHING;
         boolean debug = DEFAULT_DEBUG;
         int displayWidth = DEFAULT_DISPLAY_WIDTH;
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 
         for(String argument : args){
             if(argument.equalsIgnoreCase("-debug")){
+                System.out.println("Launching in debug mode");
                 debug = true;
+            } else if(argument.equalsIgnoreCase("-cacheoff")){
+                System.out.println("Caching disabled");
+                caching = false;
             }
         }
 
         System.out.println("Launching 3D game");
-        game = new Game3D(debug, displayWidth, displayHeight);
+        game = new Game3D(debug, caching, displayWidth, displayHeight);
 
         game.init();
         while(!game.hasCloseCondition()){

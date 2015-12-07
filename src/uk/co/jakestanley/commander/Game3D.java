@@ -28,6 +28,7 @@ import java.util.Random;
 public class Game3D {
 
     private boolean debug;
+    private boolean caching;
     private int displayWidth; // TODO allow these to be changed with arguments
     private int displayHeight;
 
@@ -54,8 +55,9 @@ public class Game3D {
     private Ship ship;
     private Character character;
 
-    public Game3D(boolean debug, int displayWidth, int displayHeight){
+    public Game3D(boolean debug, boolean caching, int displayWidth, int displayHeight){
         this.debug = debug;
+        this.caching = caching;
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
 
@@ -119,22 +121,26 @@ public class Game3D {
 
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
+
+        // load the lights
         for (Iterator<Light> iterator = lights.iterator(); iterator.hasNext(); ) {
             Light next =  iterator.next();
             shader.loadLight(next);
         }
+
         shader.loadViewMatrix(camera);
 
-        // render the entities
+        // batch up the render entities
         for (Iterator<Renderable> iterator = renderables.iterator(); iterator.hasNext(); ) {
             Renderable renderable = iterator.next();
             for (Iterator<RenderEntity> it = renderable.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
                 RenderEntity renderEntity = it.next();
-                worldRenderer.render(renderEntity, shader);
+                worldRenderer.addToRenderQueue(renderEntity);
             }
         }
 
-        worldRenderer.render(floor, shader);
+        // run the render
+        worldRenderer.render(shader);
 
         shader.stop();
         DisplayManager.updateDisplay(); // last part of update loop

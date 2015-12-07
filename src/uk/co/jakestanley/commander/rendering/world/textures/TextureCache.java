@@ -1,7 +1,5 @@
 package uk.co.jakestanley.commander.rendering.world.textures;
 
-import uk.co.jakestanley.commander.rendering.world.models.RawModel;
-
 import java.util.HashMap;
 import java.util.Map;
 
