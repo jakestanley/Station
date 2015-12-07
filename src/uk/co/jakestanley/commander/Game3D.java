@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by jp-st on 10/11/2015.
  */
-public class CommanderGame3D {
+public class Game3D {
 
     @Getter private static boolean debug;
     @Getter private static int displayWidth; // TODO allow these to be changed with arguments
@@ -49,7 +49,7 @@ public class CommanderGame3D {
     public static Character character;
     public static Ship ship;
 
-    public CommanderGame3D(boolean debug, int displayWidth, int displayHeight){
+    public Game3D(boolean debug, int displayWidth, int displayHeight){
         this.debug = debug;
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;

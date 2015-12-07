@@ -1,11 +1,9 @@
 package uk.co.jakestanley.commander.rendering;
 
-import lombok.Getter;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.Display;
-import uk.co.jakestanley.commander.CommanderGame3D;
-import uk.co.jakestanley.commander.Main;
+import uk.co.jakestanley.commander.Game3D;
 import uk.co.jakestanley.commander.Strings;
 
 /**
@@ -15,8 +13,8 @@ public class DisplayManager {
 
     public static void createDisplay(){
 
-        int width = CommanderGame3D.getDisplayWidth();
-        int height = CommanderGame3D.getDisplayHeight();
+        int width = Game3D.getDisplayWidth();
+        int height = Game3D.getDisplayHeight();
 
         ContextAttribs attributes = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
 

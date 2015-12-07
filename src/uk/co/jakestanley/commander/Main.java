@@ -1,7 +1,5 @@
 package uk.co.jakestanley.commander;
 
-import lombok.Getter;
-
 /**
  * Created by jp-st on 13/11/2015.
  */
@@ -11,7 +9,7 @@ public class Main {
     private static final int DEFAULT_DISPLAY_WIDTH = 1280;
     private static final int DEFAULT_DISPLAY_HEIGHT = 720;
 
-    private static CommanderGame3D game;
+    private static Game3D game;
 
     public static void main(String[] args){
 
@@ -26,7 +24,7 @@ public class Main {
         }
 
         System.out.println("Launching 3D game");
-        game = new CommanderGame3D(debug, displayWidth, displayHeight);
+        game = new Game3D(debug, displayWidth, displayHeight);
 
         game.init();
         while(!game.hasCloseCondition()){

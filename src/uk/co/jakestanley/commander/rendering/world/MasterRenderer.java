@@ -22,7 +22,7 @@ public class MasterRenderer {
     public MasterRenderer(List<Light> lights){
         this.lights = lights;
         shader = new StaticShader();
-//        renderer = new Renderer(0, 0, CommanderGame3D.getDisplayWidth(), CommanderGame3D.getDisplayHeight(), shader);
+//        renderer = new Renderer(0, 0, Game3D.getDisplayWidth(), Game3D.getDisplayHeight(), shader);
         renderEntities = new HashMap<TexturedModel, List<RenderEntity>>();
     }
 

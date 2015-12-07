@@ -1,7 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world.entities;
 
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.CommanderGame3D;
+import uk.co.jakestanley.commander.Game3D;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
@@ -20,7 +20,7 @@ public class Character extends Renderable {
 
     @Override
     protected void loadRenderEntities(){
-        Loader loader = CommanderGame3D.loader;
+        Loader loader = Game3D.loader;
         RawModel model = ObjLoader.loadObjModel("characters/"+identifier, loader, ObjLoader.TEXTURED);
         ModelTexture texture = new ModelTexture(loader.loadTexture("characters/"+identifier)); // TODO untextured model? shaded model?
         TexturedModel texturedModel = new TexturedModel(model, texture);

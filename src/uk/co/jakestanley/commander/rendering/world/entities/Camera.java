@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.CommanderGame3D;
+import uk.co.jakestanley.commander.Game3D;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -31,7 +31,7 @@ public class Camera {
         rotating = false;
         direction = RIGHT;
         cooldown = 0;
-//        CommanderGame3D.ship.resetVisibleRenderEntities();
+//        Game3D.ship.resetVisibleRenderEntities();
     }
 
     public Camera(Vector3f position, float pitch, float yaw, float roll){
@@ -40,12 +40,12 @@ public class Camera {
         this.yaw = yaw;
         this.roll = roll;
         cooldown = 0;
-//        CommanderGame3D.ship.resetVisibleRenderEntities();
+//        Game3D.ship.resetVisibleRenderEntities();
     }
 
     public void move() {
-        if(!CommanderGame3D.ship.hasVisibleRenderEntities()){
-            CommanderGame3D.ship.resetVisibleRenderEntities();
+        if(!Game3D.ship.hasVisibleRenderEntities()){
+            Game3D.ship.resetVisibleRenderEntities();
         }
         if(cooldown > 0){
             cooldown--;
@@ -126,7 +126,7 @@ public class Camera {
                 if(facing > 3){
                     facing = 0;
                 }
-                CommanderGame3D.ship.resetVisibleRenderEntities();
+                Game3D.ship.resetVisibleRenderEntities();
                 rotateLeft();
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
@@ -138,7 +138,7 @@ public class Camera {
                 if(facing < 0){
                     facing = 3;
                 }
-                CommanderGame3D.ship.resetVisibleRenderEntities();
+                Game3D.ship.resetVisibleRenderEntities();
                 rotateRight();
             }
         }
