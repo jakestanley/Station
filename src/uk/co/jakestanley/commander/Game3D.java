@@ -33,9 +33,9 @@ public class Game3D {
     private SceneController sceneController;
     private GuiController guiController;
 
-    public static Renderer worldRenderer;
-
+    public Renderer worldRenderer;
     public GuiRenderer guiRenderer;
+
     public Loader loader;
 
     public static StaticShader shader;
@@ -71,9 +71,7 @@ public class Game3D {
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
         shader = new StaticShader();
-        worldRenderer = new Renderer(20, 20, 800, 600, shader);
-
-//        testModel = loader.loadToVAO(cubeVertices, cubeIndices, cubeTextureCoordinates); // load vertices // TODO make better - consider having an untextured model for low poly?
+        worldRenderer = new Renderer(20, 20, 800, 600, shader, Renderer.ORTHOGRAPHIC);
 
         // initialise lights - TODO get from scene controller?
         lights = new ArrayList<Light>();
@@ -86,12 +84,14 @@ public class Game3D {
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
         floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
-
         ship = new Ship("gatlinburg");
         character = new Character("stan");
+
+        // add renderables
         renderables.add(ship);
         renderables.add(character);
 
+        // create camera
         camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
     }
 
@@ -99,12 +99,8 @@ public class Game3D {
         sceneController.update();
         inputController.update();
         guiController.update();
-        updateRenderers();
-    }
-
-    private void updateRenderers() {
         worldRenderer.update();
-    } // TODO revise
+    }
 
     public void render(){
 

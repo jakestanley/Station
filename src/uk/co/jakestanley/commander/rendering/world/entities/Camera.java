@@ -52,9 +52,6 @@ public class Camera {
         if(cooldown > 0){
             cooldown--;
         }
-//        System.out.println("Camera facing: " + facing);
-//        System.out.println("camera position: " + position.toString() + " (yaw + 45) % 90: " + (yaw + 45) % 90);
-        System.out.println("Camera yaw: " + yaw);
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) { // TODO eventually move this stuff to the input controller in a cool ass way
             switch (facing) {
                 case NORTH:

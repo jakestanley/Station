@@ -19,23 +19,20 @@ public class Renderer { // TODO better inheritance
 
     private int x, y, width, height; // canvas
 
-    private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.01f;
-    private static final float FAR_PLANE = 1000f;
-    private static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
-    private static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
-
     private Matrix4f projectionMatrix;
 
-    public Renderer(int x, int y, int width, int height, StaticShader shader) { // TODO use these values
+    public Renderer(int x, int y, int width, int height, StaticShader shader, int type) { // TODO use these values
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
 
         // after this the projection matrix will stay there forever
-//        createPerspectiveProjectionMatrix(); // only needs to be set up once
-        createOrthographicProjectionMatrix();
+        if(PERSPECTIVE == type){
+            projectionMatrix = Maths.createPerspectiveProjectionMatrix(); // only needs to be set up once
+        } else {
+            projectionMatrix = Maths.createOrthographicProjectionMatrix();
+        }
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
@@ -90,65 +87,7 @@ public class Renderer { // TODO better inheritance
 
     }
 
-    private void createPerspectiveProjectionMatrix() {
-
-        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
-        float x_scale = y_scale / aspectRatio;
-        float frustum_length = FAR_PLANE - NEAR_PLANE;
-
-        projectionMatrix = new Matrix4f();
-        projectionMatrix.m00 = x_scale;
-        projectionMatrix.m11 = y_scale;
-        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-        projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-        projectionMatrix.m33 = 0;
-    }
-
-    private void createOrthographicProjectionMatrix(){
-
-        float left = 0.0f;
-        float right = Display.getWidth();
-        float top = Display.getHeight();
-        float bottom = 0.0f;
-        float near = ORTHOGRAPHIC_NEAR_PLANE;
-        float far = ORTHOGRAPHIC_FAR_PLANE;
-
-
-        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-//        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
-//        float x_scale = y_scale / aspectRatio;
-
-//        bottom = y_scale;
-//        right = x_scale;
-
-        Matrix4f m = new Matrix4f();
-
-        m.m00 = 2.0f / (right - left);
-        m.m01 = 0.0f;
-        m.m02 = 0.0f;
-        m.m03 = 0.0f;
-
-        m.m10 = 0.0f;
-        m.m11 = 2.0f / (top - bottom);
-        m.m12 = 0.0f;
-        m.m13 = 0.0f;
-
-        m.m20 = 0.0f;
-        m.m21 = 0.0f;
-        m.m22 = -2.0f / (far - near);
-        m.m23 = 0.0f;
-
-        m.m30 = -(right + left  ) / (right - left  );
-        m.m31 = -(top   + bottom) / (top   - bottom);
-        m.m32 = -(far   + near  ) / (far   - near  );
-        m.m33 = 1.0f;
-
-        m = m.scale(new Vector3f(10,10,10));
-
-        projectionMatrix = m;
-
-    } // TODO clean this shit up
+    public static final int ORTHOGRAPHIC = 301;
+    public static final int PERSPECTIVE = 302;
 
 }

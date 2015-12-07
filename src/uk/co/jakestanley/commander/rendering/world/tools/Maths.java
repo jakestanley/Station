@@ -1,5 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world.tools;
 
+import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
@@ -8,6 +10,13 @@ import uk.co.jakestanley.commander.rendering.world.entities.Camera;
  * Created by jp-st on 13/11/2015.
  */
 public class Maths {
+
+    // view matrix variables
+    private static final float FOV = 70;
+    private static final float NEAR_PLANE = 0.01f;
+    private static final float FAR_PLANE = 1000f;
+    private static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
+    private static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
 
     public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale){ // only good for uniform scale
         Matrix4f matrix = new Matrix4f();
@@ -31,5 +40,64 @@ public class Maths {
         Matrix4f.translate(negativeCameraPosition, viewMatrix, viewMatrix);
         return viewMatrix;
     }
+
+    public static Matrix4f createPerspectiveProjectionMatrix() {
+
+        Matrix4f perspectiveProjectionMatrix = new Matrix4f();
+
+        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
+        float x_scale = y_scale / aspectRatio;
+        float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+        perspectiveProjectionMatrix.m00 = x_scale;
+        perspectiveProjectionMatrix.m11 = y_scale;
+        perspectiveProjectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+        perspectiveProjectionMatrix.m23 = -1;
+        perspectiveProjectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+        perspectiveProjectionMatrix.m33 = 0;
+
+        return perspectiveProjectionMatrix;
+
+    }
+
+    public static Matrix4f createOrthographicProjectionMatrix(){
+
+        Matrix4f orthographicProjectionMatrix = new Matrix4f();
+
+        float left = 0.0f;
+        float right = Display.getWidth();
+        float top = Display.getHeight();
+        float bottom = 0.0f;
+        float near = ORTHOGRAPHIC_NEAR_PLANE;
+        float far = ORTHOGRAPHIC_FAR_PLANE;
+
+        orthographicProjectionMatrix.m00 = 2.0f / (right - left);
+        orthographicProjectionMatrix.m01 = 0.0f;
+        orthographicProjectionMatrix.m02 = 0.0f;
+        orthographicProjectionMatrix.m03 = 0.0f;
+
+        orthographicProjectionMatrix.m10 = 0.0f;
+        orthographicProjectionMatrix.m11 = 2.0f / (top - bottom);
+        orthographicProjectionMatrix.m12 = 0.0f;
+        orthographicProjectionMatrix.m13 = 0.0f;
+
+        orthographicProjectionMatrix.m20 = 0.0f;
+        orthographicProjectionMatrix.m21 = 0.0f;
+        orthographicProjectionMatrix.m22 = -2.0f / (far - near);
+        orthographicProjectionMatrix.m23 = 0.0f;
+
+        orthographicProjectionMatrix.m30 = -(right + left  ) / (right - left  );
+        orthographicProjectionMatrix.m31 = -(top   + bottom) / (top   - bottom);
+        orthographicProjectionMatrix.m32 = -(far   + near  ) / (far   - near  );
+        orthographicProjectionMatrix.m33 = 1.0f;
+
+        orthographicProjectionMatrix = orthographicProjectionMatrix.scale(new Vector3f(10,10,10));
+
+        return orthographicProjectionMatrix;
+
+    }
+
+
 
 }

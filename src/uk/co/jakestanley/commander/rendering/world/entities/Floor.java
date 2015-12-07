@@ -23,9 +23,8 @@ public class Floor extends RenderEntity {
     private static final float DEFAULT_ROT_Y = 0;
     private static final float DEFAULT_ROT_Z = 0;
     private static final float DEFAULT_SCALE = 1;
-    private static final boolean DEFAULT_TEXTURED = false;
 
-    private static final float DEFAULT_HEIGHT = 0f;
+    private static final float DEFAULT_HEIGHT = 0f; // TODO make as much stuff as programmatic and procedural as possible. floor could use a model after all
 
     /**
      * Constructor to generate the default floor (testing only, pretty much)
@@ -67,7 +66,7 @@ public class Floor extends RenderEntity {
     }
 
     private static RawModel generateFloorModel(Vector2f[] floor2dVertices, int[] floorIndices){
-        float[] floor3dVertices = null;
+        float[] floor3dVertices;
         if(floor2dVertices.length < 3){
             floor3dVertices = generateVertexPositions(DEFAULT_VERTICES);
         } else {
