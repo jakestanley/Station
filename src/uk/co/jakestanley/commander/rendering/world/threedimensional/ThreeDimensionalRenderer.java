@@ -22,8 +22,8 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.01f;
     private static final float FAR_PLANE = 1000f;
-    private static final float ORTHOGONAL_NEAR_PLANE = 1000f;
-    private static final float ORTHOGONAL_FAR_PLANE = 2800f;
+    private static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
+    private static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
 
     private Matrix4f projectionMatrix;
 
@@ -35,7 +35,7 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
         // after this the projection matrix will stay there forever
 //        createPerspectiveProjectionMatrix(); // only needs to be set up once
-        createOrthogonalProjectionMatrix();
+        createOrthographicProjectionMatrix();
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
@@ -106,14 +106,14 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
         projectionMatrix.m33 = 0;
     }
 
-    private void createOrthogonalProjectionMatrix(){
+    private void createOrthographicProjectionMatrix(){
 
         float left = 0.0f;
         float right = Display.getWidth();
         float top = Display.getHeight();
         float bottom = 0.0f;
-        float near = ORTHOGONAL_NEAR_PLANE;
-        float far = ORTHOGONAL_FAR_PLANE;
+        float near = ORTHOGRAPHIC_NEAR_PLANE;
+        float far = ORTHOGRAPHIC_FAR_PLANE;
 
 
         float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();

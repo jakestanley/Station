@@ -6,6 +6,7 @@ import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.Renderer;
 import uk.co.jakestanley.commander.rendering.entities.Light;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
+import uk.co.jakestanley.commander.rendering.entities.world.Character;
 import uk.co.jakestanley.commander.rendering.entities.world.Floor;
 import uk.co.jakestanley.commander.rendering.entities.world.Ship;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
@@ -38,29 +39,10 @@ public class CommanderGame3D extends CommanderGame {
     public static StaticShader shader;
 
     // learning
-    public static RawModel testModel;
-    public static RawModel testModel2;
-    public static RawModel testModel3;
-    public static RawModel testModel4;
-    public static RawModel testModel5;
-    public static ModelTexture texture;
-    public static ModelTexture texture2;
-    public static ModelTexture texture3;
-    public static ModelTexture texture4;
-    public static ModelTexture texture5;
-    public static TexturedModel testTexturedModel;
-    public static TexturedModel testTexturedModel2;
-    public static TexturedModel testTexturedModel3;
-    public static TexturedModel testTexturedModel4;
-    public static TexturedModel testTexturedModel5;
-    public static RenderEntity testRenderEntity;
-    public static RenderEntity testRenderEntity2;
-    public static RenderEntity testRenderEntity3;
-    public static RenderEntity testRenderEntity4;
-    public static RenderEntity testRenderEntity5;
     public static RenderEntity floor;
     public static List<Light> lights;
     public static Camera camera;
+    public static Character character;
     public static Ship ship;
 
     public CommanderGame3D(boolean debug){
@@ -95,27 +77,8 @@ public class CommanderGame3D extends CommanderGame {
         lights.add(new Light(new Vector3f(-10,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(0,30,-10), new Vector3f(1,1,1)));
 
-        testModel2 = ObjLoader.loadObjModel("characters/stan_b", loader, ObjLoader.TEXTURED);
-        texture2 = new ModelTexture(loader.loadTexture("characters/stan_b")); // TODO untextured model? shaded model?
-        testTexturedModel2 = new TexturedModel(testModel2, texture2);
-        testRenderEntity2 = new RenderEntity(testTexturedModel2, new Vector3f(0,0,0),0,90f,0,1);
-
-//        testModel3 = ObjLoader.loadObjModel("stan_b", loader, ObjLoader.TEXTURED);
-//        texture3 = new ModelTexture(loader.loadTexture("paint_smooth_b")); // TODO untextured model? shaded model?
-//        testTexturedModel3 = new TexturedModel(testModel3, texture3);
-//        testRenderEntity3 = new RenderEntity(testTexturedModel3, new Vector3f(25,0,-75),0,180f,0,1);
-//
-//        testModel4 = ObjLoader.loadObjModel("Gatlinburg_Top", loader, ObjLoader.TEXTURED);
-//        texture4 = new ModelTexture(loader.loadTexture("Gatlinburg_Top")); // TODO untextured model? shaded model?
-//        testTexturedModel4 = new TexturedModel(testModel4, texture4);
-//        testRenderEntity4 = new RenderEntity(testTexturedModel4, new Vector3f(20,20,-75),0,0,0,3);
-//
-//        testModel5 = ObjLoader.loadObjModel("Gatlinburg_Starboard", loader, ObjLoader.TEXTURED);
-//        texture5 = new ModelTexture(loader.loadTexture("Gatlinburg")); // TODO untextured model? shaded model?
-//        testTexturedModel5 = new TexturedModel(testModel5, texture5);
-//        testRenderEntity5 = new RenderEntity(testTexturedModel5, new Vector3f(20,20,-75),0,0,0,3);
-
         floor = new Floor(100, 50); // use default for now
+        character = new Character("stan");
         ship = new Ship("gatlinburg");
 
 //
@@ -139,9 +102,7 @@ public class CommanderGame3D extends CommanderGame {
     }
 
     public void render(){
-//        testRenderEntity.increasePosition(0,0,0); // TODO put these somewhere more accessible. clean up old 2D stuff in new branch and track only one kind of rendering
-        testRenderEntity2.increasePosition(0,0,-0.06f);
-//        testRenderEntity.increaseRotation(0,0,0);
+
         camera.move(); // TODO when i sort everything out, maintain this order
         shader.start();
         for (Iterator<Light> iterator = lights.iterator(); iterator.hasNext(); ) {
@@ -149,19 +110,21 @@ public class CommanderGame3D extends CommanderGame {
             shader.loadLight(next);
         }
         shader.loadViewMatrix(camera);
-//        worldRenderer.render(testRenderEntity, shader);
-        worldRenderer.render(testRenderEntity2, shader);
-//        worldRenderer.render(testRenderEntity3, shader);
-//        worldRenderer.render(testRenderEntity4, shader);
-//        worldRenderer.render(testRenderEntity5, shader);
-        worldRenderer.render(floor, shader);
+
 
         // render ship
         for (Iterator<RenderEntity> it = ship.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
-            RenderEntity renderEntity = it.next();
-            worldRenderer.render(renderEntity, shader);
+            RenderEntity next = it.next();
+            worldRenderer.render(next, shader);
         }
 
+        // render character
+        for (Iterator<RenderEntity> it = character.getVisibleRenderEntities().iterator(); it.hasNext(); ) {
+            RenderEntity next = it.next();
+            worldRenderer.render(next, shader);
+        }
+
+        worldRenderer.render(floor, shader);
 
 
         shader.stop();

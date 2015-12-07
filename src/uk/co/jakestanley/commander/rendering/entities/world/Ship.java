@@ -12,13 +12,12 @@ import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.Mod
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by jake on 05/12/2015.
  */
 @Getter
-public class Ship { // TODO a superclass
+public class Ship extends Renderable { // TODO a superclass
 
     private RenderEntity top;
     private RenderEntity front;
@@ -27,23 +26,17 @@ public class Ship { // TODO a superclass
     private RenderEntity starboard;
     private RenderEntity ballast;
 
-    private String identifier;
-
-    private List<RenderEntity> allRenderEntities;
-    private List<RenderEntity> visibleRenderEntities;
-
     /**
      * identifier should be all lower case and should correspond with res directory structure
      * @param identifier
      */
     public Ship(String identifier){ // TODO make a center point - TODO a render at coordinate
-        this.identifier = identifier; // TODO generate floor property here?
-        allRenderEntities = new ArrayList<RenderEntity>();
-        visibleRenderEntities = new ArrayList<RenderEntity>();
-        loadModels();
+        super(identifier);
+        loadRenderEntities();
     }
 
-    private void loadModels(){
+    @Override
+    protected void loadRenderEntities(){
 
         RawModel topModel = ObjLoader.loadObjModel("ships/"+identifier+"/Top", CommanderGame3D.loader, ObjLoader.TEXTURED);
         RawModel frontModel = ObjLoader.loadObjModel("ships/"+identifier+"/Front", CommanderGame3D.loader, ObjLoader.TEXTURED);
@@ -95,7 +88,7 @@ public class Ship { // TODO a superclass
 
     }
 
-    public void resetRenderEntities(){
+    public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
         switch (CommanderGame3D.camera.getFacing()){
             case Camera.NORTH:
@@ -119,10 +112,6 @@ public class Ship { // TODO a superclass
                 visibleRenderEntities.add(ballast);
                 break;
         }
-    }
-
-    public boolean hasSetRenderEntities() {
-         return visibleRenderEntities != null;
     }
 
 }
