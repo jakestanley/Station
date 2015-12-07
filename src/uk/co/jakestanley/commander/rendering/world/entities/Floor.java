@@ -14,7 +14,14 @@ import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 public class Floor extends RenderEntity {
 
     private static final Vector2f[] DEFAULT_VERTICES = { new Vector2f(2.5f,2.5f), new Vector2f(-2.5f,2.5f), new Vector2f(-2.5f,-2.5f), new Vector2f(2.5f,-2.5f)};
+//    private static final int[]      DEFAULT_INDICES = {
+//            0, 1, 2,    3, 0, 2,    4, 5, 6,    7, 4, 6,
+//            0, 1, 5,    4, 0, 5,    5, 1, 2,    6, 5, 2,
+//            4, 0, 3,    7, 4, 3,    3, 2, 6,    7, 3, 6
+//    };
+
     private static final int[]      DEFAULT_INDICES = { 0, 1, 2, 3, 0, 2 }; // TODO figure out how to generate these
+
 
     private static final float DEFAULT_X = -60.9282f;
     private static final float DEFAULT_Y = 0;
@@ -32,15 +39,14 @@ public class Floor extends RenderEntity {
     public Floor(){
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.UNTEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         rawModel = generateFloorModel(); // generate default floor model
-        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("basic")));
-
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("test/blue")));
     }
 
     public Floor(float width, float height){ // TODO render offset for this and other uk.co.jakestanley.commander2d.map components for loading from file, for example.
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         rawModel = generateFloorModel(width, height);
-        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("unused/grid2")));
+        texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("test/blue")));
     }
 
     public Floor(Vector2f[] vertices, int[] indices){
@@ -76,19 +82,39 @@ public class Floor extends RenderEntity {
     }
 
     /**
-     * Convert 2D vector array to a floor
+     * Convert an array of 2D vectors to a 3d floor
      * @param positions
      * @return
      */
-    private static float[] generateVertexPositions(Vector2f[] positions){
+    private static float[] generateVertexPositions(Vector2f[] positions){ // TODO make this replace the ballast and texture it accordingly
         int positionCount = positions.length;
         float[] vertexPositions = new float[positions.length * 3];
+//        float[] vertexPositions = new float[positions.length * 6];
         for (int i = 0; i < positionCount * 3; i += 3) {
-            vertexPositions[i] = positions[i/3].getX();
+
+            float x = positions[i/3].getX();
+            float z = positions[i/3].getY();
+
+            // generate top floor vertices
+            vertexPositions[i] = x;
             vertexPositions[i+1] = DEFAULT_HEIGHT;
-            vertexPositions[i+2] = positions[i/3].getY();
+            vertexPositions[i+2] = z;
+
+            // generate bottom floor vertices
+//            vertexPositions[(positionCount * 2) + i] = x;
+//            vertexPositions[(positionCount * 2) + i + 1] = DEFAULT_HEIGHT; // TODO get ballast height
+//            vertexPositions[(positionCount * 2) + i + 2] = z;
+
         }
+
+        System.out.println(vertexPositions.toString());
+
         return vertexPositions;
+    }
+
+    private static int[] generateIndicesArray(){
+        // TODO make this work
+        return null;
     }
 
 }

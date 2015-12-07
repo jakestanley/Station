@@ -95,8 +95,8 @@ public class Game3D {
         floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
         ship = new Ship("gatlinburg", new Vector3f(0,0,0));
 
-        // stress testing
-        for(int i = 0; i < 1000; i++){
+        // adding a bunch of randomly placed characters
+        for(int i = 0; i < 10; i++){
             System.out.println("Initialising character: " + (i+1));
             character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(100) - 50));
             renderables.add(character);
@@ -104,7 +104,6 @@ public class Game3D {
 
         // add renderables
         renderables.add(ship);
-        renderables.add(character);
 
         // create camera
         camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
@@ -138,6 +137,8 @@ public class Game3D {
                 worldRenderer.addToRenderQueue(renderEntity);
             }
         }
+
+        worldRenderer.addToRenderQueue(floor);
 
         // run the render
         worldRenderer.render(shader);

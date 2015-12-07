@@ -92,26 +92,23 @@ public class Ship extends Renderable { // TODO a superclass
 
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
+//        visibleRenderEntities.add(ballast);
         switch (Main.getGame().getCamera().getFacing()){
             case Camera.NORTH:
                 visibleRenderEntities.add(front);
                 visibleRenderEntities.add(starboard);
-                visibleRenderEntities.add(ballast);
                 break;
             case Camera.EAST:
                 visibleRenderEntities.add(rear);
                 visibleRenderEntities.add(starboard);
-                visibleRenderEntities.add(ballast);
                 break;
             case Camera.SOUTH:
                 visibleRenderEntities.add(rear);
                 visibleRenderEntities.add(port);
-                visibleRenderEntities.add(ballast);
                 break;
             case Camera.WEST:
                 visibleRenderEntities.add(front);
                 visibleRenderEntities.add(port);
-                visibleRenderEntities.add(ballast);
                 break;
         }
     }
