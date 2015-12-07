@@ -1,9 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world;
 
 import org.lwjgl.opengl.*;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.Graphics;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
@@ -11,21 +9,21 @@ import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 import uk.co.jakestanley.commander.rendering.world.tools.Maths;
+import uk.co.jakestanley.commander.rendering.world.tools.RenderingOptimiser;
 
 /**
  * Created by jp-st on 10/11/2015.
  */
 public class Renderer { // TODO better inheritance
 
-    private int x, y, width, height; // canvas
-
+    private RenderingOptimiser optimiser;
+    private StaticShader shader;
     private Matrix4f projectionMatrix;
 
-    public Renderer(int x, int y, int width, int height, StaticShader shader, int type) { // TODO use these values
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public Renderer(StaticShader shader, int type) { // TODO use these values
+
+        // shader
+        this.shader = shader;
 
         // after this the projection matrix will stay there forever
         if(PERSPECTIVE == type){
@@ -33,13 +31,16 @@ public class Renderer { // TODO better inheritance
         } else {
             projectionMatrix = Maths.createOrthographicProjectionMatrix();
         }
-        shader.start();
-        shader.loadProjectionMatrix(projectionMatrix);
-        shader.stop();
+
+        optimiser = new RenderingOptimiser(null);
+
     }
 
     public void init() {
-
+        // set up the projection matrix
+        shader.start();
+        shader.loadProjectionMatrix(projectionMatrix);
+        shader.stop();
     }
 
     public void update() {

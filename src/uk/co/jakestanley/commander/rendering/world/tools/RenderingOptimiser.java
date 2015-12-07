@@ -1,5 +1,6 @@
-package uk.co.jakestanley.commander.rendering.world;
+package uk.co.jakestanley.commander.rendering.world.tools;
 
+import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.entities.Light;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
@@ -11,7 +12,7 @@ import java.util.*;
 /**
  * Created by jake on 06/12/2015.
  */
-public class MasterRenderer {
+public class RenderingOptimiser {
 
     private List<Light> lights;
 
@@ -19,10 +20,9 @@ public class MasterRenderer {
     private Renderer renderer;
     private Map<TexturedModel, List<RenderEntity>> renderEntities;
 
-    public MasterRenderer(List<Light> lights){
+    public RenderingOptimiser(List<Light> lights){
         this.lights = lights;
         shader = new StaticShader();
-//        renderer = new Renderer(0, 0, Game3D.getDisplayWidth(), Game3D.getDisplayHeight(), shader);
         renderEntities = new HashMap<TexturedModel, List<RenderEntity>>();
     }
 

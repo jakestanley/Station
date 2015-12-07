@@ -71,7 +71,8 @@ public class Game3D {
         DisplayManager.createDisplay();
         loader = new Loader(); // requires the OpenGL context
         shader = new StaticShader();
-        worldRenderer = new Renderer(20, 20, 800, 600, shader, Renderer.ORTHOGRAPHIC);
+        worldRenderer = new Renderer(shader, Renderer.ORTHOGRAPHIC);
+        worldRenderer.init();
 
         // initialise lights - TODO get from scene controller?
         lights = new ArrayList<Light>();
