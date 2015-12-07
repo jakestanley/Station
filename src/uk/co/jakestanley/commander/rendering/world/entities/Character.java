@@ -11,8 +11,8 @@ import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
  */
 public class Character extends Renderable {
 
-    public Character(String identifier, Vector3f position){
-        super(identifier, position);
+    public Character(String identifier, Vector3f position, float rotX, float rotY, float rotZ){
+        super(identifier, position, rotX, rotY, rotZ);
         loadRenderEntities();
     }
 
@@ -21,7 +21,7 @@ public class Character extends Renderable {
         Loader loader = Main.getGame().loader;
         ObjLoader objLoader = Main.getGame().getObjLoader();
         TexturedModel texturedModel = objLoader.loadTexturedModel("characters/stan", loader);
-        RenderEntity renderEntity = new RenderEntity(texturedModel, position,0,90f,0,1);
+        RenderEntity renderEntity = new RenderEntity(texturedModel, position, rotX, rotY, rotZ, DEFAULT_SCALE);
 
         allRenderEntities.add(renderEntity);
         visibleRenderEntities.add(renderEntity);

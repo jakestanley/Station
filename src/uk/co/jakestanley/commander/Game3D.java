@@ -97,7 +97,7 @@ public class Game3D {
 
         // adding a bunch of randomly placed characters
         for(int i = 0; i < 10; i++){
-            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(100) - 50));
+            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(50) - 25), 0, (float) (random.nextInt(360) - 180), 0);
             renderables.add(character);
         }
 
