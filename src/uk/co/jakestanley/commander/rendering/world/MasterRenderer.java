@@ -16,13 +16,13 @@ public class MasterRenderer {
     private List<Light> lights;
 
     private StaticShader shader;
-    private ThreeDimensionalRenderer renderer;
+    private Renderer renderer;
     private Map<TexturedModel, List<RenderEntity>> renderEntities;
 
     public MasterRenderer(List<Light> lights){
         this.lights = lights;
         shader = new StaticShader();
-//        renderer = new ThreeDimensionalRenderer(0, 0, CommanderGame3D.getDisplayWidth(), CommanderGame3D.getDisplayHeight(), shader);
+//        renderer = new Renderer(0, 0, CommanderGame3D.getDisplayWidth(), CommanderGame3D.getDisplayHeight(), shader);
         renderEntities = new HashMap<TexturedModel, List<RenderEntity>>();
     }
 

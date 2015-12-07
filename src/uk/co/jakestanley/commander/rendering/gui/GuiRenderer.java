@@ -2,18 +2,18 @@ package uk.co.jakestanley.commander.rendering.gui;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import uk.co.jakestanley.commander.Main;
-import uk.co.jakestanley.commander.rendering.Renderer;
-
-import java.util.Iterator;
 
 /**
  * Created by jp-st on 09/11/2015.
  */
-public class GuiRenderer extends Renderer { // TODO make it impossible to draw outside the renderable area
+public class GuiRenderer { // TODO make it impossible to draw outside the renderable area
+
+    private int width;
+    private int height;
 
     public GuiRenderer(int width, int height){ // TODO consider that i may need a different renderer for slick and lwjgl
-        super(0, 0, width, height);
+        this.width = width;
+        this.height = height;
     }
 
     public void init() {

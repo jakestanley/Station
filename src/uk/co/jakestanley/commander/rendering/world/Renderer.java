@@ -15,7 +15,7 @@ import uk.co.jakestanley.commander.rendering.world.tools.Maths;
 /**
  * Created by jp-st on 10/11/2015.
  */
-public class ThreeDimensionalRenderer { // TODO better inheritance
+public class Renderer { // TODO better inheritance
 
     private int x, y, width, height; // canvas
 
@@ -27,7 +27,7 @@ public class ThreeDimensionalRenderer { // TODO better inheritance
 
     private Matrix4f projectionMatrix;
 
-    public ThreeDimensionalRenderer(int x, int y, int width, int height, StaticShader shader) { // TODO use these values
+    public Renderer(int x, int y, int width, int height, StaticShader shader) { // TODO use these values
         this.x = x;
         this.y = y;
         this.width = width;
