@@ -1,7 +1,7 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional.models;
+package uk.co.jakestanley.commander.rendering.world.models;
 
 import lombok.Getter;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 
 /**
  * Created by jp-st on 13/11/2015.

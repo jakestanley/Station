@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional.textures;
+package uk.co.jakestanley.commander.rendering.world.textures;
 
 import lombok.Getter;
 import lombok.Setter;

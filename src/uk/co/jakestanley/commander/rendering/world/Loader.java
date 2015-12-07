@@ -1,6 +1,5 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional;
+package uk.co.jakestanley.commander.rendering.world;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TextLoader;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -8,7 +7,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**

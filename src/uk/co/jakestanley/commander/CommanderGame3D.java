@@ -14,13 +14,9 @@ import uk.co.jakestanley.commander.rendering.entities.world.Floor;
 import uk.co.jakestanley.commander.rendering.entities.world.Ship;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.entities.Camera;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.ThreeDimensionalRenderer;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.ObjLoader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.ThreeDimensionalRenderer;
+import uk.co.jakestanley.commander.rendering.world.Loader;
+import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
 

@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional.shaders;
+package uk.co.jakestanley.commander.rendering.world.shaders;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional.models;
+package uk.co.jakestanley.commander.rendering.world.models;
 
 import lombok.Getter;
 

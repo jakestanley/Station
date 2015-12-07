@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional;
+package uk.co.jakestanley.commander.rendering.world;
 
 import org.lwjgl.opengl.*;
 import org.lwjgl.opengl.Display;
@@ -6,11 +6,11 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.Graphics;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.shaders.StaticShader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.tools.Maths;
+import uk.co.jakestanley.commander.rendering.world.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
+import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.tools.Maths;
 
 /**
  * Created by jp-st on 10/11/2015.

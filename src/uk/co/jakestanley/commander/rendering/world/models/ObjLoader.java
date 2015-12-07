@@ -1,8 +1,8 @@
-package uk.co.jakestanley.commander.rendering.world.threedimensional.models;
+package uk.co.jakestanley.commander.rendering.world.models;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
+import uk.co.jakestanley.commander.rendering.world.Loader;
 
 import java.io.BufferedReader;
 import java.io.File;

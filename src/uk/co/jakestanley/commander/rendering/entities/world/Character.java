@@ -3,11 +3,11 @@ package uk.co.jakestanley.commander.rendering.entities.world;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.CommanderGame3D;
 import uk.co.jakestanley.commander.rendering.entities.RenderEntity;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.Loader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.ObjLoader;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.textures.ModelTexture;
+import uk.co.jakestanley.commander.rendering.world.Loader;
+import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
+import uk.co.jakestanley.commander.rendering.world.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
+import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 
 /**
  * Created by jake on 07/12/2015.

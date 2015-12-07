@@ -3,8 +3,8 @@ package uk.co.jakestanley.commander.rendering.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.threedimensional.models.TexturedModel;
+import uk.co.jakestanley.commander.rendering.world.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 
 import java.util.List;
 
