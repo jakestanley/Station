@@ -63,7 +63,7 @@ public class Game3D {
 
         // initialise game logic objects
         random = new Random();
-        objLoader = new ObjLoader(ObjLoader.ENABLE_CACHING);
+        objLoader = new ObjLoader(caching);
         inputController = new InputController();
         sceneController = new SceneController();
         sceneController.addMobileEntity(new Crewman("terry", 0f, 0f, 0f)); // TODO put in method and generate names

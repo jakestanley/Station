@@ -31,15 +31,19 @@ public class ObjLoader {
 
     public TexturedModel loadTexturedModel(String path, Loader loader){
         // check the cache
-        TexturedModel cachedModel = cache.getTexturedModel(path);
-        if(cachedModel != null){
-            return cachedModel;
+        if(ENABLE_CACHING == caching){
+            TexturedModel cachedModel = cache.getTexturedModel(path);
+            if(cachedModel != null){
+                return cachedModel;
+            }
         }
 
         RawModel model = loadObjModel(path, loader, ObjLoader.TEXTURED);
         ModelTexture texture = new ModelTexture(loader.loadTexture(path)); // TODO untextured model? shaded model?
         TexturedModel texturedModel = new TexturedModel(model, texture);
-        cache.storeTexturedModel(path, texturedModel);
+        if(ENABLE_CACHING == caching){
+            cache.storeTexturedModel(path, texturedModel);
+        }
 
         return texturedModel;
     }
