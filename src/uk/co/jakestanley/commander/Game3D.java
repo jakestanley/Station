@@ -107,7 +107,7 @@ public class Game3D {
 //            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(50) - 25), 0, (float) (random.nextInt(360) - 180), 0);
 //            renderables.add(character);
 //        }
-        character = new Character("stan", new Vector3f(0, 0, 0), 0, 0, 1);
+        character = new Character("stan", new Vector3f(0, 0, 0), 0, 0, 1, false);
         renderables.add(character);
 
         // add renderables

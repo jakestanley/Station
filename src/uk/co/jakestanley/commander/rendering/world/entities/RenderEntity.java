@@ -23,6 +23,7 @@ public class RenderEntity { // TODO take a world object as its variable?
     private float scale;
     private int textured;
     private int multiple;
+    private boolean hidden = false;
 
     public RenderEntity(RawModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale){ // TODO make sure this works. i've tried adapting this to use an untextured model
         this.rawModel = model;

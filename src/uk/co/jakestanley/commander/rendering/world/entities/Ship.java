@@ -31,7 +31,7 @@ public class Ship extends Renderable { // TODO a superclass
      * @param identifier
      */
     public Ship(String identifier, Vector3f position){ // TODO make a center point - TODO a render at coordinate
-        super(identifier, position, 0, 0, 0);
+        super(identifier, position, 0, 0, 0, false);
         loadRenderEntities();
     }
 

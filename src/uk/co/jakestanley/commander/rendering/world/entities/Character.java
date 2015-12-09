@@ -11,8 +11,8 @@ import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
  */
 public class Character extends Renderable {
 
-    public Character(String identifier, Vector3f position, float rotX, float rotY, float rotZ){
-        super(identifier, position, rotX, rotY, rotZ);
+    public Character(String identifier, Vector3f position, float rotX, float rotY, float rotZ, boolean hidden){
+        super(identifier, position, rotX, rotY, rotZ, hidden);
         loadRenderEntities();
     }
 
