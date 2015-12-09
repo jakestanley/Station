@@ -1,6 +1,9 @@
 package uk.co.jakestanley.commander;
 
 import lombok.Getter;
+import uk.co.jakestanley.commander.rendering.world.Renderer;
+import uk.co.jakestanley.commander.rendering.world.entities.Camera;
+import uk.co.jakestanley.commander2d.main.Display;
 
 /**
  * Created by jp-st on 13/11/2015.
@@ -18,6 +21,7 @@ public class Main {
 
         boolean caching = DEFAULT_CACHING;
         boolean debug = DEFAULT_DEBUG;
+        int projection = Renderer.ORTHOGRAPHIC;
         int displayWidth = DEFAULT_DISPLAY_WIDTH;
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 
@@ -28,11 +32,20 @@ public class Main {
             } else if(argument.equalsIgnoreCase("-cacheoff")){
                 System.out.println("Caching disabled");
                 caching = false;
+            } else if(argument.equalsIgnoreCase("-perspective")){
+                System.out.println("Setting projection mode to perspective");
+                projection = Renderer.PERSPECTIVE;
             }
         }
 
+        if(Renderer.ORTHOGRAPHIC == projection){
+            System.out.println("Running game in ORTHOGRAPHIC mode");
+        } else {
+            System.out.println("Running game in PERSPECTIVE mode");
+        }
+
         System.out.println("Launching 3D game");
-        game = new Game3D(debug, caching, displayWidth, displayHeight);
+        game = new Game3D(debug, caching, projection, displayWidth, displayHeight);
 
         game.init();
         while(!game.hasCloseCondition()){

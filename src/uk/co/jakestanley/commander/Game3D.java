@@ -31,6 +31,7 @@ public class Game3D {
 
     private boolean debug;
     private boolean caching;
+    private int projection;
     private int displayWidth; // TODO allow these to be changed with arguments
     private int displayHeight;
 
@@ -58,9 +59,10 @@ public class Game3D {
     private Ship ship;
     private Character character;
 
-    public Game3D(boolean debug, boolean caching, int displayWidth, int displayHeight){
+    public Game3D(boolean debug, boolean caching, int projection, int displayWidth, int displayHeight){
         this.debug = debug;
         this.caching = caching;
+        this.projection = projection;
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
 
@@ -83,7 +85,7 @@ public class Game3D {
         loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
         shader = new StaticShader();
         camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
-        worldRenderer = new Renderer(shader, Renderer.PERSPECTIVE);
+        worldRenderer = new Renderer(shader, Main.getGame().projection);
         worldRenderer.init();
         mousePicker = new MousePicker(camera, worldRenderer.getProjectionMatrix());
 
