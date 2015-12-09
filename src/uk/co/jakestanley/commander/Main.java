@@ -21,7 +21,7 @@ public class Main {
 
         boolean caching = DEFAULT_CACHING;
         boolean debug = DEFAULT_DEBUG;
-        int projection = Renderer.ORTHOGRAPHIC;
+        int projection = Renderer.PERSPECTIVE;
         int displayWidth = DEFAULT_DISPLAY_WIDTH;
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 
@@ -32,9 +32,9 @@ public class Main {
             } else if(argument.equalsIgnoreCase("-cacheoff")){
                 System.out.println("Caching disabled");
                 caching = false;
-            } else if(argument.equalsIgnoreCase("-perspective")){
-                System.out.println("Setting projection mode to perspective");
-                projection = Renderer.PERSPECTIVE;
+            } else if(argument.equalsIgnoreCase("-orthographic")){
+                System.out.println("Setting projection mode to orthographic");
+                projection = Renderer.ORTHOGRAPHIC;
             }
         }
 
