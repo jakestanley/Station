@@ -33,6 +33,8 @@ public class Floor extends RenderEntity {
 
     private static final float DEFAULT_HEIGHT = 0f; // TODO make as much stuff as programmatic and procedural as possible. floor could use a model after all
 
+    private float width, height;
+
     /**
      * Constructor to generate the default floor (testing only, pretty much)
      */
@@ -45,6 +47,8 @@ public class Floor extends RenderEntity {
     public Floor(float width, float height){ // TODO render offset for this and other uk.co.jakestanley.commander2d.map components for loading from file, for example.
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
+        this.width = width;
+        this.height = height;
         rawModel = generateFloorModel(width, height);
         texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("test/blue")));
     }
@@ -52,6 +56,17 @@ public class Floor extends RenderEntity {
     public Floor(Vector2f[] vertices, int[] indices){
         super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL); // TODO more arguments
         rawModel = generateFloorModel(vertices, indices);
+    }
+
+    public boolean containsPoint(Vector2f point){
+        float minX = getPosition().getX();
+        float maxX = minX + width;
+        float minY = getPosition().getY();
+        float maxY = minY + height;
+        float pointX = point.getX();
+        float pointY = point.getY() + height/2 + 2; // TODO fix
+
+        return ((pointX > minX) && (pointX < maxX) && (pointY > minY) && (pointY < maxY));
     }
 
     private static RawModel generateFloorModel(){
