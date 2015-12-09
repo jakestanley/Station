@@ -12,11 +12,11 @@ import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 public class Maths {
 
     // view matrix variables
-    private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.01f;
-    private static final float FAR_PLANE = 1000f;
-    private static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
-    private static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
+    public static final float FOV = 70;
+    public static final float NEAR_PLANE = 0.01f;
+    public static final float FAR_PLANE = 1000f;
+    public static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
+    public static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
 
     public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale){ // only good for uniform scale
         Matrix4f matrix = new Matrix4f();
