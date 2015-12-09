@@ -2,10 +2,12 @@ package uk.co.jakestanley.commander;
 
 import lombok.Getter;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
+import uk.co.jakestanley.commander.rendering.exceptions.DoesNotIntersectException;
 import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.entities.*;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
@@ -34,6 +36,7 @@ public class Game3D {
 
     private Random random;
     private InputController inputController;
+    private MousePicker mousePicker;
     private SceneController sceneController;
     private GuiController guiController;
 
@@ -79,8 +82,10 @@ public class Game3D {
         DisplayManager.createDisplay();
         loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
         shader = new StaticShader();
-        worldRenderer = new Renderer(shader, Renderer.ORTHOGRAPHIC);
+        camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
+        worldRenderer = new Renderer(shader, Renderer.PERSPECTIVE);
         worldRenderer.init();
+        mousePicker = new MousePicker(camera, worldRenderer.getProjectionMatrix());
 
         // initialise lights - TODO get from scene controller?
         lights = new ArrayList<Light>();
@@ -96,28 +101,39 @@ public class Game3D {
         ship = new Ship("gatlinburg", new Vector3f(0,0,0));
 
         // adding a bunch of randomly placed characters
-        for(int i = 0; i < 10; i++){
-            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(50) - 25), 0, (float) (random.nextInt(360) - 180), 0);
-            renderables.add(character);
-        }
+//        for(int i = 0; i < 10; i++){
+//            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(50) - 25), 0, (float) (random.nextInt(360) - 180), 0);
+//            renderables.add(character);
+//        }
+        character = new Character("stan", new Vector3f(0, 0, 0), 0, 0, 1);
+        renderables.add(character);
 
         // add renderables
         renderables.add(ship);
 
         // create camera
-        camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
     }
 
     public void update(){
+        camera.move(); // TODO when i sort everything out, maintain this order
         sceneController.update();
         inputController.update();
+        mousePicker.update();
+        try {
+            Vector2f mousePos = mousePicker.getIntersection((Floor) floor);
+            Vector3f cPos = character.getPosition(); // TODO remove after testing
+            Vector3f newPos = new Vector3f(mousePos.getX(), cPos.getZ(), mousePos.getY());
+            character.updatePosition(newPos);
+        } catch (DoesNotIntersectException d){
+            d.printStackTrace(); // TODO put this back in
+        }
         guiController.update();
         worldRenderer.update();
     }
 
     public void render(){
 
-        camera.move(); // TODO when i sort everything out, maintain this order
+
         shader.start();
 
         // load the lights

@@ -1,5 +1,6 @@
 package uk.co.jakestanley.commander.rendering.world;
 
+import lombok.Getter;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.Graphics;
@@ -24,7 +25,7 @@ public class Renderer { // TODO better inheritance
     private Map<TexturedModel, List<RenderEntity>> renderBatches;
 
     private StaticShader shader;
-    private Matrix4f projectionMatrix;
+    @Getter private Matrix4f projectionMatrix;
 
     public Renderer(StaticShader shader, int type) { // TODO use these values
 

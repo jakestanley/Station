@@ -1,9 +1,11 @@
 package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,6 +34,13 @@ public abstract class Renderable {
 
     public boolean hasVisibleRenderEntities(){
         return (visibleRenderEntities.size() > 0);
+    }
+
+    public void updatePosition(Vector3f position){
+        for (Iterator<RenderEntity> iterator = allRenderEntities.iterator(); iterator.hasNext(); ) {
+            RenderEntity next = iterator.next();
+            next.setPosition(position);
+        }
     }
 
     protected abstract void loadRenderEntities();
