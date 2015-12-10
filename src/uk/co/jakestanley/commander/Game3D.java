@@ -1,6 +1,7 @@
 package uk.co.jakestanley.commander;
 
 import lombok.Getter;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -13,6 +14,8 @@ import uk.co.jakestanley.commander.rendering.world.entities.*;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.entities.Character;
+import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Floor;
+import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Wall;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
@@ -51,6 +54,7 @@ public class Game3D {
 
     // entities
     private List<Light> lights;
+    private List<Wall> walls;
     private List<Renderable> renderables;
 
     // entities you should probably keep track of
@@ -58,6 +62,7 @@ public class Game3D {
     private RenderEntity floor;
     private Ship ship;
     private Character character;
+    private Wall wall;
 
     public Game3D(boolean debug, boolean caching, int projection, int displayWidth, int displayHeight){
         this.debug = debug;
@@ -101,38 +106,55 @@ public class Game3D {
         lights.add(new Light(new Vector3f(-10,30,0), new Vector3f(1,1,1)));
         lights.add(new Light(new Vector3f(0,30,-10), new Vector3f(1,1,1)));
 
+        walls = new ArrayList<Wall>();
+
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
         floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
         ship = new Ship("gatlinburg", new Vector3f(0,0,0));
-
-        // adding a bunch of randomly placed characters
-//        for(int i = 0; i < 10; i++){
-//            character = new Character("stan", new Vector3f(random.nextInt(100) - 50,0,random.nextInt(50) - 25), 0, (float) (random.nextInt(360) - 180), 0);
-//            renderables.add(character);
-//        }
         character = new Character("stan", new Vector3f(0, 0, 0), 0, 0, 1, false);
-        renderables.add(character);
 
         // add renderables
         renderables.add(ship);
+        renderables.add(character);
 
         // create camera
     }
 
     public void update(){
         camera.move(); // TODO when i sort everything out, maintain this order
-        sceneController.update();
         inputController.update();
-        mousePicker.update();
-        try {
-            Vector2f mousePos = mousePicker.getIntersection((Floor) floor);
-            Vector3f cPos = character.getPosition(); // TODO remove after testing
-            Vector3f newPos = new Vector3f(mousePos.getX(), cPos.getZ(), mousePos.getY());
-            character.updatePosition(newPos);
+        mousePicker.update(); // TODO turn this off until it's needed
+        sceneController.update();
+        try{
+            Vector2f intersection = mousePicker.getIntersection((Floor) floor); // TODO if detecting mouse, or if in build/select mode
+
+            if(Mouse.isButtonDown(0) && wall == null){ // if left mouse button down // TODO move this into BuildController
+                // if the mouse is down and a wall hasn't been created yet, start a wall
+                wall = new Wall(intersection);
+                wall.setEnd(intersection);
+            } else if(Mouse.isButtonDown(0)) {
+                // if the mouse mutton is down, update the wall end coordinates
+                wall.setEnd(intersection);
+            } else if(wall != null){
+                // if the mouse is not selected and there is a wall set, place the wall and set the reference to null
+                // TODO CONSIDER should I update the wall end here? optimise...
+                wall.place(); // TODO add to an entity list somewhere
+                walls.add(wall);
+                wall = null;
+            }
+
         } catch (DoesNotIntersectException d){
-            d.printStackTrace(); // TODO put this back in
+            // no intersection
         }
+//        try {
+//            Vector2f mousePos = mousePicker.getIntersection((Floor) floor);
+//            Vector3f cPos = character.getPosition(); // TODO remove after testing
+//            Vector3f newPos = new Vector3f(mousePos.getX(), cPos.getZ(), mousePos.getY());
+//            character.updatePosition(newPos);
+//        } catch (DoesNotIntersectException d){
+//            d.printStackTrace(); // TODO put this back in
+//        }
         guiController.update();
         worldRenderer.update();
     }
@@ -160,6 +182,15 @@ public class Game3D {
         }
 
         worldRenderer.addToRenderQueue(floor);
+        for (Iterator<Wall> iterator = walls.iterator(); iterator.hasNext(); ) {
+            Wall nextWall = iterator.next();
+            worldRenderer.addToRenderQueue(nextWall);
+        }
+
+        // add under construction wall
+        if(wall != null){
+            worldRenderer.addToRenderQueue(wall); // TODO use transparency/build shader
+        }
 
         // run the render
         worldRenderer.render(shader);
