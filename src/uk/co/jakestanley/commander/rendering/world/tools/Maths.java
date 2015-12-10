@@ -12,7 +12,6 @@ import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 public class Maths {
 
     // view matrix variables
-    public static final float FOV = 70;
     public static final float NEAR_PLANE = 0.01f;
     public static final float FAR_PLANE = 1000f;
     public static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
@@ -41,12 +40,14 @@ public class Maths {
         return viewMatrix;
     }
 
-    public static Matrix4f createPerspectiveProjectionMatrix() {
+    public static Matrix4f createPerspectiveProjectionMatrix(float fieldOfView) {
+
+
 
         Matrix4f perspectiveProjectionMatrix = new Matrix4f();
 
         float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(fieldOfView / 2f))) * aspectRatio);
         float x_scale = y_scale / aspectRatio;
         float frustum_length = FAR_PLANE - NEAR_PLANE;
 

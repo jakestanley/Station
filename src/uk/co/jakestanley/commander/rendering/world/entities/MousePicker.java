@@ -1,6 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.*;
 import uk.co.jakestanley.commander.rendering.exceptions.DoesNotIntersectException;
@@ -13,7 +14,7 @@ import org.lwjgl.opengl.Display;
 public class MousePicker { // TODO make this abstract and use it for picking other things, e.g placed objects, walls, etc
 
     private Camera camera;
-    private Matrix4f projectionMatrix;
+    @Setter private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
     @Getter private Vector3f currentRay;
 
@@ -47,10 +48,6 @@ public class MousePicker { // TODO make this abstract and use it for picking oth
 
         if(intersectionInRange(0, RAY_RANGE, currentRay)){
             intersectionPoint = binarySearch(0, 0, RAY_RANGE, currentRay);
-
-            System.out.println("Intersection point: " + intersectionPoint.toString());
-
-
             return new Vector2f(intersectionPoint.getX(), intersectionPoint.getZ());
         }
 

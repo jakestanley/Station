@@ -3,6 +3,7 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Game3D;
 import uk.co.jakestanley.commander.Main;
@@ -17,10 +18,12 @@ import java.awt.geom.Point2D;
 @AllArgsConstructor
 public class Camera {
 
+    private Vector3f start;
     private Vector3f position;
     private float pitch; // up or down
     private float yaw; // left or right
     private float roll;
+    private float zoom;
     private int facing; // TODO set accordingly
     private int direction;
     private int cooldown;
@@ -36,6 +39,8 @@ public class Camera {
     }
 
     public Camera(Vector3f position, float pitch, float yaw, float roll){
+        this.zoom = DEFAULT_ZOOM;
+        this.start = position;
         this.position = position;
         this.pitch = pitch;
         this.yaw = yaw;
@@ -166,8 +171,6 @@ public class Camera {
             rotateRight();
         }
 
-
-
     }
 
     private void rotateLeft(){
@@ -223,5 +226,10 @@ public class Camera {
     private static final int RIGHT = 5;
     private static final float SCROLL_SPEED = 1f;
     private static final float YAW_SPEED = 10f;
+
+    private static final float DEFAULT_ZOOM = 1f;
+    private static final float MIN_ZOOM = 0.2f;
+    private static final float MAX_ZOOM = 2.0f;
+    private static final float ZOOM_INCREMENT = 0.1f;
 
 }

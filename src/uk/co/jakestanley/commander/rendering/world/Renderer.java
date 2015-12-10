@@ -1,9 +1,12 @@
 package uk.co.jakestanley.commander.rendering.world;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.Graphics;
+import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
@@ -21,7 +24,9 @@ import java.util.*;
 public class Renderer { // TODO better inheritance
 
     private int frameCount;
+    private int type;
     private int lastTimeInSeconds;
+    @Getter @Setter private float fieldOfView;
     private Map<TexturedModel, List<RenderEntity>> renderBatches;
 
     private StaticShader shader;
@@ -34,13 +39,8 @@ public class Renderer { // TODO better inheritance
 //        GL11.glCullFace(GL11.GL_BACK);
 
         this.shader = shader;
-
-        // projection matrix only needs setting up once
-        if(PERSPECTIVE == type){
-            projectionMatrix = Maths.createPerspectiveProjectionMatrix(); // only needs to be set up once
-        } else {
-            projectionMatrix = Maths.createOrthographicProjectionMatrix();
-        }
+        this.type = type;
+        this.fieldOfView = DEFAULT_FOV; // TODO move this constant into here i think
 
         // initialise render batch map
         renderBatches = new HashMap<TexturedModel, List<RenderEntity>>();
@@ -48,10 +48,8 @@ public class Renderer { // TODO better inheritance
     }
 
     public void init() {
-        // set up the projection matrix
-        shader.start();
-        shader.loadProjectionMatrix(projectionMatrix);
-        shader.stop();
+
+        setProjectionMatrix();
 
         // initialise frame count for fps calculation
         frameCount = 0;
@@ -59,6 +57,7 @@ public class Renderer { // TODO better inheritance
 
     public void update() {
         calculateFps();
+        updateZoom();
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
@@ -126,6 +125,47 @@ public class Renderer { // TODO better inheritance
 
     }
 
+    private void setProjectionMatrix(){
+        // projection matrix only needs setting up once
+        if(PERSPECTIVE == type){
+            projectionMatrix = Maths.createPerspectiveProjectionMatrix(fieldOfView); // only needs to be set up once
+        } else {
+            projectionMatrix = Maths.createOrthographicProjectionMatrix();
+        }
+
+        // set up the projection matrix
+        shader.start();
+        shader.loadProjectionMatrix(projectionMatrix);
+        shader.stop();
+
+    }
+
+    private void updateZoom(){
+
+        boolean changed = false;
+
+        int dWheel = Mouse.getDWheel();
+        if (dWheel < 0) {
+            fieldOfView += INCREMENT_FOV;
+            changed = true;
+        } else if (dWheel > 0){
+            fieldOfView -= INCREMENT_FOV;
+            changed = true;
+        }
+
+        if(fieldOfView < MIN_FOV){
+            fieldOfView = MIN_FOV;
+        } else if(fieldOfView > MAX_FOV){
+            fieldOfView = MAX_FOV;
+        }
+
+        if(changed){
+            setProjectionMatrix();
+            Main.getGame().getMousePicker().setProjectionMatrix(projectionMatrix);
+        }
+
+    }
+
     private void calculateFps(){
         if(lastTimeInSeconds == ((int) System.currentTimeMillis() / 1000)){
             frameCount++;
@@ -137,5 +177,11 @@ public class Renderer { // TODO better inheritance
 
     public static final int ORTHOGRAPHIC = 301;
     public static final int PERSPECTIVE = 302;
+
+    private static final float MIN_FOV = 50f;
+    private static final float DEFAULT_FOV = 90f;
+    private static final float MAX_FOV = 120f;
+    private static final float INCREMENT_FOV = 10f;
+
 
 }
