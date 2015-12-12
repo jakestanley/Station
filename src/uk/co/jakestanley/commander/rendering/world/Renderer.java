@@ -160,10 +160,15 @@ public class Renderer { // TODO better inheritance
         }
 
         if(changed){
+            Main.getGame().getShip().resetVisibleRenderEntities(); // TODO inefficient as this may be being called twice per frame. optimise
             setProjectionMatrix();
             Main.getGame().getMousePicker().setProjectionMatrix(projectionMatrix);
         }
 
+    }
+
+    public boolean isMaxZoom(){
+        return (fieldOfView + INCREMENT_FOV > MAX_FOV);
     }
 
     private void calculateFps(){

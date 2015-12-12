@@ -48,7 +48,7 @@ public class Ship extends Renderable { // TODO a superclass
         RawModel starboardModel = objLoader.loadObjModel("ships/"+identifier+"/Starboard", loader, ObjLoader.TEXTURED);
         RawModel ballastModel = objLoader.loadObjModel("ships/"+identifier+"/Ballast", loader, ObjLoader.TEXTURED);
 
-        ModelTexture topTexture = new ModelTexture(loader.loadTexture("test/yellow"));
+        ModelTexture topTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Top"));
         ModelTexture frontTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Front"));
         ModelTexture rearTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Rear"));
         ModelTexture portTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Port"));
@@ -93,23 +93,31 @@ public class Ship extends Renderable { // TODO a superclass
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
 //        visibleRenderEntities.add(ballast);
-        switch (Main.getGame().getCamera().getFacing()){
-            case Camera.NORTH:
-                visibleRenderEntities.add(front);
-                visibleRenderEntities.add(starboard);
-                break;
-            case Camera.EAST:
-                visibleRenderEntities.add(rear);
-                visibleRenderEntities.add(starboard);
-                break;
-            case Camera.SOUTH:
-                visibleRenderEntities.add(rear);
-                visibleRenderEntities.add(port);
-                break;
-            case Camera.WEST:
-                visibleRenderEntities.add(front);
-                visibleRenderEntities.add(port);
-                break;
+        if(Main.getGame().getWorldRenderer().isMaxZoom()){
+            visibleRenderEntities.add(top);
+            visibleRenderEntities.add(front);
+            visibleRenderEntities.add(starboard);
+            visibleRenderEntities.add(port);
+            visibleRenderEntities.add(rear);
+        } else {
+            switch (Main.getGame().getCamera().getFacing()){
+                case Camera.NORTH:
+                    visibleRenderEntities.add(front);
+                    visibleRenderEntities.add(starboard);
+                    break;
+                case Camera.EAST:
+                    visibleRenderEntities.add(rear);
+                    visibleRenderEntities.add(starboard);
+                    break;
+                case Camera.SOUTH:
+                    visibleRenderEntities.add(rear);
+                    visibleRenderEntities.add(port);
+                    break;
+                case Camera.WEST:
+                    visibleRenderEntities.add(front);
+                    visibleRenderEntities.add(port);
+                    break;
+            }
         }
     }
 
