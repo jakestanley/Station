@@ -74,8 +74,23 @@ public class Wall extends Boundary {
 
     private static Vector2f convertToWallCoordinates(Vector2f realCoordinates, float round){ // TODO consider putting somewhere else?
         Vector2f wallCoordinates = new Vector2f();
-        wallCoordinates.setX((float) (round * (Math.round(Math.abs(realCoordinates.getX() / round))))); // TODO offset if working with negative values
-        wallCoordinates.setY((float) (round * (Math.round(Math.abs(realCoordinates.getY() / round)))));
+        boolean negativeX = (realCoordinates.getX() < 0);
+        boolean negativeY = (realCoordinates.getY() < 0);
+
+        float wallX = round * (Math.round(Math.abs(realCoordinates.getX() / round)));
+        float wallY = round * (Math.round(Math.abs(realCoordinates.getY() / round)));
+
+        if(negativeX){
+            wallX = -wallX;
+        }
+
+        if(negativeY){
+            wallY = -wallY;
+        }
+
+        wallCoordinates.setX(wallX); // TODO offset if working with negative values
+        wallCoordinates.setY(wallY);
+
         return wallCoordinates;
     }
 }
