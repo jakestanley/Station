@@ -185,7 +185,7 @@ public class Renderer { // TODO better inheritance
 
     private static final float MIN_FOV = 50f;
     private static final float DEFAULT_FOV = 90f;
-    private static final float MAX_FOV = 120f;
+    private static final float MAX_FOV = 150f;
     private static final float INCREMENT_FOV = 10f;
 
 }
