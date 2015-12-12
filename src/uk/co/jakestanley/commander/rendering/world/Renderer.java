@@ -34,9 +34,7 @@ public class Renderer { // TODO better inheritance
 
     public Renderer(StaticShader shader, int type) { // TODO use these values
 
-        // enable face culling
-//        GL11.glEnable(GL11.GL_CULL_FACE); // TODO fix as this breaks the floor. need this fixing for performance
-//        GL11.glCullFace(GL11.GL_BACK);
+//        enableFaceCulling(); // TODO fix as this breaks the floor. need this fixing for performance
 
         this.shader = shader;
         this.type = type;
@@ -123,6 +121,11 @@ public class Renderer { // TODO better inheritance
 
     public void renderDebugging(Graphics screen) {
 
+    }
+
+    private void enableFaceCulling(){
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
     }
 
     private void setProjectionMatrix(){
