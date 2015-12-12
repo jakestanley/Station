@@ -213,4 +213,10 @@ public class Game3D {
         DisplayManager.closeDisplay();
     }
 
+    // debugging methods
+    public void clearWalls(){
+        walls.clear();
+    }
+
+
 }

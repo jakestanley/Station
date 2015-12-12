@@ -44,6 +44,12 @@ public class InputController implements KeyListener {
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
             downA();
         }
+
+        if(Main.getGame().isDebug()){
+            if(Keyboard.isKeyDown(Keyboard.KEY_DELETE)){
+                Main.getGame().clearWalls();
+            }
+        }
     } // TODO create a separate abstraction layer
 
     private void downW(){
