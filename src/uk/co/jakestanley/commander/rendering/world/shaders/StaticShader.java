@@ -10,8 +10,8 @@ import uk.co.jakestanley.commander.rendering.world.tools.Maths;
  */
 public class StaticShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE     = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/VertexShader.glsl";
-    private static final String FRAGMENT_FILE   = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/FragmentShader.glsl";
+    private static final String VERTEX_FILE     = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/genericVertexShader.glsl";
+    private static final String FRAGMENT_FILE   = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/genericFragmentShader.glsl";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
