@@ -10,6 +10,7 @@ import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
 import uk.co.jakestanley.commander.rendering.exceptions.DoesNotIntersectException;
 import uk.co.jakestanley.commander.rendering.world.Renderer;
+import uk.co.jakestanley.commander.rendering.world.SkyboxRenderer;
 import uk.co.jakestanley.commander.rendering.world.entities.*;
 import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
@@ -45,6 +46,7 @@ public class Game3D {
     private GuiController guiController;
 
     public Renderer worldRenderer;
+    public SkyboxRenderer skyboxRenderer;
     public GuiRenderer guiRenderer;
 
     public ObjLoader objLoader; // TODO make private with getters only
@@ -94,8 +96,11 @@ public class Game3D {
         } else {
             camera = new Camera(new Vector3f(55, 90, 155), 60, -45, 0);
         }
+
+        // init renderers
         worldRenderer = new Renderer(shader, Main.getGame().projection);
         worldRenderer.init();
+        skyboxRenderer = new SkyboxRenderer(loader, worldRenderer.getProjectionMatrix());
         mousePicker = new MousePicker(camera, worldRenderer.getProjectionMatrix());
 
         // initialise lights - TODO get from scene controller?
@@ -196,6 +201,11 @@ public class Game3D {
         worldRenderer.render(shader);
 
         shader.stop();
+
+        skyboxRenderer.render(camera);
+
+
+
         DisplayManager.updateDisplay(); // last part of update loop
     }
 
