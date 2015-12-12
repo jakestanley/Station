@@ -39,16 +39,6 @@ public class Loader {
         }
     }
 
-    public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoordinates, float[] normals){
-        int vaoID = createVAO();
-        bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, 3, positions); // 2nd value is coordinate size, which is 3 here
-        storeDataInAttributeList(1, 2, textureCoordinates); // 2nd value here is texture mapping values
-        storeDataInAttributeList(2, 3, normals);
-        unbindVAO();
-        return new RawModel(vaoID, indices.length);
-    }
-
     /**
      * Untextured model with no normals
      * @param positions
@@ -59,6 +49,32 @@ public class Loader {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0, 3, positions); // 2nd value is coordinate size, which is 3 here
+        unbindVAO();
+        return new RawModel(vaoID, indices.length);
+    }
+
+    /**
+     * Textured model with no normals
+     * @param positions
+     * @param indices
+     * @param textureCoordinates
+     * @return
+     */
+    public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoordinates){
+        int vaoID = createVAO();
+        bindIndicesBuffer(indices);
+        storeDataInAttributeList(0, 3, positions); // 2nd value is coordinate size, which is 3 here
+        storeDataInAttributeList(1, 2, textureCoordinates); // 2nd value here is texture mapping values
+        unbindVAO();
+        return new RawModel(vaoID, indices.length);
+    }
+
+    public RawModel loadToVAO(float[] positions, int[] indices, float[] textureCoordinates, float[] normals){
+        int vaoID = createVAO();
+        bindIndicesBuffer(indices);
+        storeDataInAttributeList(0, 3, positions); // 2nd value is coordinate size, which is 3 here
+        storeDataInAttributeList(1, 2, textureCoordinates); // 2nd value here is texture mapping values
+        storeDataInAttributeList(2, 3, normals);
         unbindVAO();
         return new RawModel(vaoID, indices.length);
     }
