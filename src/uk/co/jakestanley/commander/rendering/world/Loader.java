@@ -1,18 +1,19 @@
 package uk.co.jakestanley.commander.rendering.world;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 import uk.co.jakestanley.commander.rendering.world.textures.TextureCache;
+import uk.co.jakestanley.commander.rendering.world.textures.TextureData;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -79,6 +80,13 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
+    public RawModel loadToVAO(float[] positions, int dimensions){
+        int vaoID = createVAO();
+        this.storeDataInAttributeList(0, dimensions, positions);
+        unbindVAO();
+        return new RawModel(vaoID, positions.length / dimensions);
+    }
+
     public int loadTexture(String path){ // TODO expand Loader into an abstract class with subclasses for managing loaded components? - could iterate through loaders and start/cleanup/etc
 
         if(ENABLE_CACHING == caching){
@@ -105,6 +113,21 @@ public class Loader {
         return textureID;
     }
 
+    public int loadCubeMap(String[] paths){ // must be in order: right face, left face, top face, bottom face, back face, front face
+        int textureId = GL11.glGenTextures();
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, textureId);
+        for (int i = 0; i < paths.length; i++) {
+            TextureData data = loadTextureData("res/textures/"+paths[i]+".png");
+            GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, data.getWidth(), data.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
+        }
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+
+        textures.add(textureId);
+        return textureId;
+    }
+
     public void cleanup(){
         for (Iterator<Integer> iterator = vaoList.iterator(); iterator.hasNext(); ) {
             Integer next = iterator.next();
@@ -118,6 +141,30 @@ public class Loader {
             Integer next = iterator.next();
             GL11.glDeleteTextures(next);
         }
+    }
+
+    private TextureData loadTextureData(String path){
+        // TODO code...
+        int width = 0;
+        int height = 0;
+        ByteBuffer buffer = null;
+        try{
+            FileInputStream in = new FileInputStream(path);
+            PNGDecoder decoder = new PNGDecoder(in);
+            width = decoder.getWidth();
+            height = decoder.getHeight();
+            buffer = ByteBuffer.allocateDirect(4 * width * height);
+            decoder.decode(buffer, width * 4, de.matthiasmann.twl.utils.PNGDecoder.Format.RGBA);
+            buffer.flip();
+            in.close();
+        } catch (FileNotFoundException f){
+            f.printStackTrace();
+            System.exit(-1);
+        } catch (IOException i){
+            i.printStackTrace();
+            System.exit(-1);
+        }
+        return new TextureData(buffer, width, height);
     }
 
     private int createVAO(){
