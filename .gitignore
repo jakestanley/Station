@@ -1,6 +1,11 @@
 
 .idea/
 libs/
+target/
 out/
-res/fonts
+res/
 *.iml
+
+*.log
+
+.DS_Store
