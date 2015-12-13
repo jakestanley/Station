@@ -114,6 +114,14 @@ public class Maths {
         return sum;
     }
 
+    public static Vector3f addVectors(Vector3f target, Vector3f adder1, Vector3f adder2, Vector3f adder3){
+        Vector3f sum = new Vector3f();
+        sum.setX(target.getX() + adder1.getX() + adder2.getX() + adder3.getX());
+        sum.setY(target.getY() + adder1.getY() + adder2.getY() + adder3.getY());
+        sum.setZ(target.getZ() + adder1.getZ() + adder2.getZ() + adder3.getZ());
+        return sum;
+    }
+
     public static Vector3f scaleVector(Matrix3f scalingMatrix, Vector3f vector){
         Vector3f product = new Vector3f();
         product.setX((scalingMatrix.m00 * vector.getX()) + (scalingMatrix.m10 * vector.getX()) + (scalingMatrix.m20 * vector.getX()));
