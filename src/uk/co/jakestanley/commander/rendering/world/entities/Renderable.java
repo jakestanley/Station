@@ -166,7 +166,6 @@ public abstract class Renderable {
     private void updateGlobalPosition(){
         if(parent != null){
             globalPosition = Maths.addVectors(parent.getGlobalPosition(), localOffset, localPosition);
-            Out.print("new local position", localPosition);
             for (RenderEntity next : allRenderEntities) {
                 next.setPosition(globalPosition);
             }
