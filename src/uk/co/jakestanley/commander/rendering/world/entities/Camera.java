@@ -32,6 +32,11 @@ public class Camera {
     private int rotationCooldown, zoomCooldown, zoomIncrement;
     private boolean rotating, zooming;
 
+    // redoing the camera stuff
+    private Renderable target;
+    private float distance;
+    private float angle;
+
     public Camera(){
         position = new Vector3f(0,0,0);
         facing = NORTH;
@@ -46,7 +51,8 @@ public class Camera {
 //        Game3D.ship.resetVisibleRenderEntities();
     }
 
-    public Camera(Vector3f initialOffset, float pitch, float yaw, float roll){
+    public Camera(Renderable target, Vector3f initialOffset, float pitch, float yaw, float roll){
+        this.target = target;
         this.zoom = DEFAULT_ZOOM;
         this.initialOffset = initialOffset;
         this.playerOffset = new Vector3f(0,0,0);
@@ -224,6 +230,9 @@ public class Camera {
             }
         }
 
+        float horizontalDistance = calculateHorizontalDistance();
+        float verticalDistance = calculateVerticalDistance();
+
         updatePosition();
 
     }
@@ -234,6 +243,23 @@ public class Camera {
 
     public boolean isMaxZoom() {
         return zoom == MAX_ZOOM;
+    }
+
+    private void calculateZoom(){
+
+    }
+
+    private float calculateHorizontalDistance(){
+        return (float) (distance * Math.cos(Math.toRadians(pitch)));
+    }
+
+    private float calculateVerticalDistance(){
+        return (float) (distance * Math.sin(Math.toRadians(pitch)));
+    }
+
+    private Vector3f calculateCameraPosition(float horizontalDistance, float verticalDistance){
+        Vector3f camera = new Vector3f();
+        camera.y = target.getGlobalPosition().y + target.getGlobalPosition() + verticalDistance;
     }
 
     private void rotateLeft(){
@@ -247,11 +273,11 @@ public class Camera {
     }
 
     private void zoomOut(){
-        initialOffset = Maths.scaleVector(zoomOutMatrix, initialOffset);
+        distance -= ZOOM_INCREMENTS;
     }
 
     private void zoomIn(){
-        initialOffset = Maths.scaleVector(zoomInMatrix, initialOffset);
+        distance += ZOOM_INCREMENTS;
     }
 
     private void updatePosition(){
@@ -339,6 +365,7 @@ public class Camera {
     private static final float ZOOM_OUT_X = 1.04f;
     private static final float ZOOM_OUT_Y = 1.04f;
     private static final float ZOOM_OUT_Z = 1.04f;
+    private static final float ZOOM_INCREMENTS = 0.1f;
 
     private static final int ZOOM_DIRECTION_IN = 6;
     private static final int ZOOM_DIRECTION_OUT = 7;
