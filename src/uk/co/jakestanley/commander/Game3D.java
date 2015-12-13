@@ -21,6 +21,7 @@ import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Floor;
 import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Wall;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.world.tools.Maths;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
 import uk.co.jakestanley.commander.testing.AsteroidGenerator;
@@ -121,8 +122,9 @@ public class Game3D {
 
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
-        ship = new Ship("gatlinburg", new Vector3f(0,0,0), new Floor(100, 50));
-        character = new Character("stan", new Vector3f(20, 0, -20), 0, 0, 1, false);
+        Vector3f shipVector = new Vector3f(-2500,0,0);
+        ship = new Ship("gatlinburg", shipVector, new Floor(shipVector, 100, 50));
+        character = new Character("stan", Maths.addVectors(ship.getGlobalPosition(), new Vector3f(20, 0, -20)), 0, 0, 1, false);
         try {
             character.setParent(ship);
         } catch (ParentIsSelfException p){
@@ -140,6 +142,9 @@ public class Game3D {
         }
 
         asteroidGenerator = new AsteroidGenerator(100, objLoader, loader);
+        asteroidGenerator.init();
+
+        camera.init();
 
     }
 
@@ -148,8 +153,8 @@ public class Game3D {
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
+        ship.increasePosition(new Vector3f(5f,0,0));
         asteroidGenerator.update();
-        ship.increasePosition(new Vector3f(0.05f,0,0));
 
         try{
             Vector2f intersection = mousePicker.getIntersection(ship.getFloor()); // TODO if detecting mouse, or if in build/select mode

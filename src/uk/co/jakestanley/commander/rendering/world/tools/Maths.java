@@ -2,6 +2,7 @@ package uk.co.jakestanley.commander.rendering.world.tools;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix;
+import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
@@ -41,8 +42,6 @@ public class Maths {
     }
 
     public static Matrix4f createPerspectiveProjectionMatrix(float fieldOfView) {
-
-
 
         Matrix4f perspectiveProjectionMatrix = new Matrix4f();
 
@@ -113,6 +112,14 @@ public class Maths {
         sum.setY(target.getY() + adder1.getY() + adder2.getY());
         sum.setZ(target.getZ() + adder1.getZ() + adder2.getZ());
         return sum;
+    }
+
+    public static Vector3f scaleVector(Matrix3f scalingMatrix, Vector3f vector){
+        Vector3f product = new Vector3f();
+        product.setX((scalingMatrix.m00 * vector.getX()) + (scalingMatrix.m10 * vector.getX()) + (scalingMatrix.m20 * vector.getX()));
+        product.setY((scalingMatrix.m01 * vector.getY()) + (scalingMatrix.m11 * vector.getY()) + (scalingMatrix.m21 * vector.getY()));
+        product.setZ((scalingMatrix.m02 * vector.getX()) + (scalingMatrix.m12 * vector.getZ()) + (scalingMatrix.m22 * vector.getZ()));
+        return product;
     }
 
 }

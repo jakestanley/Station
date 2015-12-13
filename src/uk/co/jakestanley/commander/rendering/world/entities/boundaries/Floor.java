@@ -36,8 +36,8 @@ public class Floor extends Boundary {
         texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("test/mean")));
     }
 
-    public Floor(float width, float depth){ // TODO render offset for this and other uk.co.jakestanley.commander2d.map components for loading from file, for example.
-        super(new Vector3f(DEFAULT_X, DEFAULT_Y, DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
+    public Floor(Vector3f position, float width, float depth){ // TODO render offset for this and other uk.co.jakestanley.commander2d.map components for loading from file, for example.
+        super(new Vector3f(position.getX() + DEFAULT_X, position.getY() + DEFAULT_Y, position.getZ() + DEFAULT_Z), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.TEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         // TODO just translate model
         this.width = width;
         this.height = depth;

@@ -55,7 +55,6 @@ public class Renderer { // TODO better inheritance
 
     public void update() {
         calculateFps();
-        updateZoom();
         GL11.glEnable(GL11.GL_DEPTH_TEST); // tests which triangles are on top and renders them in the correct order
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); // clear colour for next frame
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT); // clear depth buffer for next frame
@@ -155,37 +154,6 @@ public class Renderer { // TODO better inheritance
 
     }
 
-    private void updateZoom(){
-
-        boolean changed = false;
-
-        int dWheel = Mouse.getDWheel();
-        if (dWheel < 0) {
-            fieldOfView += INCREMENT_FOV;
-            changed = true;
-        } else if (dWheel > 0){
-            fieldOfView -= INCREMENT_FOV;
-            changed = true;
-        }
-
-        if(fieldOfView < MIN_FOV){
-            fieldOfView = MIN_FOV;
-        } else if(fieldOfView > MAX_FOV){
-            fieldOfView = MAX_FOV;
-        }
-
-        if(changed){
-            Main.getGame().getShip().resetVisibleRenderEntities(); // TODO inefficient as this may be being called twice per frame. optimise
-            setProjectionMatrix();
-            Main.getGame().getMousePicker().setProjectionMatrix(projectionMatrix);
-        }
-
-    }
-
-    public boolean isMaxZoom(){
-        return (fieldOfView + INCREMENT_FOV > MAX_FOV);
-    }
-
     private void calculateFps(){
         if(lastTimeInSeconds == ((int) System.currentTimeMillis() / 1000)){
             frameCount++;
@@ -201,6 +169,5 @@ public class Renderer { // TODO better inheritance
     private static final float MIN_FOV = 50f;
     private static final float DEFAULT_FOV = 90f;
     private static final float MAX_FOV = 150f;
-    private static final float INCREMENT_FOV = 10f;
 
 }

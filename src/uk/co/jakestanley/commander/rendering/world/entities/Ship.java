@@ -97,7 +97,7 @@ public class Ship extends Renderable { // TODO a superclass
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
         visibleRenderEntities.add(floor); // TODO remove ballast
-        if(Main.getGame().getWorldRenderer().isMaxZoom()){
+        if(Main.getGame().getCamera().isMaxZoom()){
             visibleRenderEntities.add(top);
             visibleRenderEntities.add(front);
             visibleRenderEntities.add(starboard);
