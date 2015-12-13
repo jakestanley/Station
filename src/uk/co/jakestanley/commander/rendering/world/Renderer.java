@@ -75,6 +75,12 @@ public class Renderer { // TODO better inheritance
         }
     }
 
+    public void addToRenderQueue(Collection<RenderEntity> renderEntities){
+        for (RenderEntity next : renderEntities) {
+            addToRenderQueue(next);
+        }
+    }
+
     public void render(StaticShader shader) { // TODO need models/shapes/objects list or something
         for(TexturedModel texturedModel : renderBatches.keySet()){
 

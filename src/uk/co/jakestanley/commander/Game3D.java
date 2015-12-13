@@ -23,6 +23,7 @@ import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
+import uk.co.jakestanley.commander.testing.AsteroidGenerator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,10 +65,12 @@ public class Game3D {
     // entities you should probably keep track of
     private Camera camera;
     private RenderEntity floor;
-    private RenderEntity asteroid;
     private Ship ship;
     private Character character;
     private Wall wall;
+
+    // Testing
+    private AsteroidGenerator asteroidGenerator;
 
     public Game3D(boolean debug, boolean caching, int projection, int displayWidth, int displayHeight){
         this.debug = debug;
@@ -126,9 +129,6 @@ public class Game3D {
             p.printStackTrace(); // TODO handle better or move this method somewhere else
         }
 
-        // external entities
-        asteroid = new RenderEntity(objLoader.loadTexturedModel("externals/asteroid", loader), new Vector3f(120, 0, 120), 0, 0, 0, 1);
-
         // add renderables
         renderables.add(ship);
         renderables.add(character);
@@ -139,6 +139,8 @@ public class Game3D {
             e.printStackTrace();
         }
 
+        asteroidGenerator = new AsteroidGenerator(100, objLoader, loader);
+
     }
 
     public void update(){
@@ -146,8 +148,7 @@ public class Game3D {
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
-        asteroid.setRotX(asteroid.getRotX()+0.15f);
-        asteroid.setRotY(asteroid.getRotY()+0.1f);
+        asteroidGenerator.update();
         ship.increasePosition(new Vector3f(0.05f,0,0));
 
         try{
@@ -209,7 +210,7 @@ public class Game3D {
             worldRenderer.addToRenderQueue(nextWall);
         }
 
-        worldRenderer.addToRenderQueue(asteroid);
+        worldRenderer.addToRenderQueue(asteroidGenerator.getAsteroids());
 
         // add under construction wall
         if(wall != null){
