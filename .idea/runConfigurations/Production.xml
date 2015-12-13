@@ -3,7 +3,7 @@
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="uk.co.jakestanley.commander.Main" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=libs/natives/windows" />
-    <option name="PROGRAM_PARAMETERS" value="-debug" />
+    <option name="PROGRAM_PARAMETERS" value="-debug -width 1600 -height 900" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
