@@ -149,7 +149,7 @@ public class Game3D {
     }
 
     public void update(){
-        camera.move(); // TODO when i sort everything out, maintain this order
+        camera.update(); // TODO when i sort everything out, maintain this order
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
