@@ -12,6 +12,7 @@ public class Main {
 
     private static final boolean DEFAULT_CACHING = true;
     private static final boolean DEFAULT_DEBUG = false;
+    private static final boolean DEFAULT_FULLSCREEN = false;
     private static final int DEFAULT_DISPLAY_WIDTH = 1280;
     private static final int DEFAULT_DISPLAY_HEIGHT = 720;
 
@@ -21,21 +22,43 @@ public class Main {
 
         boolean caching = DEFAULT_CACHING;
         boolean debug = DEFAULT_DEBUG;
+        boolean fullscreen = DEFAULT_FULLSCREEN;
         int projection = Renderer.PERSPECTIVE;
         int displayWidth = DEFAULT_DISPLAY_WIDTH;
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
+        boolean badResolutionArgs = false;
 
-        for(String argument : args){
-            if(argument.equalsIgnoreCase("-debug")){
+        for(int i = 0; i < args.length; i++){
+            if(args[i].equalsIgnoreCase("-debug")){
                 System.out.println("Launching in debug mode");
                 debug = true;
-            } else if(argument.equalsIgnoreCase("-cacheoff")){
+            } else if(args[i].equalsIgnoreCase("-cacheoff")){
                 System.out.println("Caching disabled");
                 caching = false;
-            } else if(argument.equalsIgnoreCase("-orthographic")){
+            } else if(args[i].equalsIgnoreCase("-orthographic")){
                 System.out.println("Setting projection mode to orthographic");
                 projection = Renderer.ORTHOGRAPHIC;
+            } else if(args[i].equalsIgnoreCase("-width") || args[i].equals("-w")){
+                try {
+                    displayWidth = Integer.parseInt(args[i+1]);
+                } catch(ArrayIndexOutOfBoundsException a){
+                    badResolutionArgs = true;
+                }
+            } else if(args[i].equalsIgnoreCase("-height") || args[i].equals("-h")){
+                try {
+                    displayHeight = Integer.parseInt(args[i+1]);
+                } catch(ArrayIndexOutOfBoundsException a){
+                    badResolutionArgs = true;
+                }
+            } else if(args[i].equalsIgnoreCase("-fullscreen")){
+                fullscreen = true;
             }
+        }
+
+        if(badResolutionArgs){
+            System.err.println("Failed to parse resolution arguments. Using default resolution.");
+            displayWidth = DEFAULT_DISPLAY_WIDTH;
+            displayHeight = DEFAULT_DISPLAY_HEIGHT;
         }
 
         if(Renderer.ORTHOGRAPHIC == projection){
