@@ -13,7 +13,7 @@ public class Maths {
 
     // view matrix variables
     public static final float NEAR_PLANE = 0.01f;
-    public static final float FAR_PLANE = 1000f;
+    public static final float FAR_PLANE = 5000f;
     public static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
     public static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
 

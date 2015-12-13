@@ -49,7 +49,7 @@ public class SkyboxRenderer {
             "skybox/ame_nebula/Bottom",
             "skybox/ame_nebula/Back",
             "skybox/ame_nebula/Front"}; // TODO make less static
-    private static final float SIZE = 500f;
+    private static final float SIZE = 2000f;
     private static final float[] VERTICES = {
             -SIZE,  SIZE, -SIZE,
             -SIZE, -SIZE, -SIZE,
