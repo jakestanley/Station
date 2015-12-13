@@ -52,12 +52,12 @@ public class Boundary extends RenderEntity {
             // generate top floor vertices
             int vertexIndex = (i * 3);
             vertexPositionsTop[vertexIndex] = x;
-            vertexPositionsTop[vertexIndex+1] = 0; // TODO get y start position and add height
+            vertexPositionsTop[vertexIndex+1] = 0; // TODO get y start globalPosition and add height
             vertexPositionsTop[vertexIndex+2] = z;
 
             // generate bottom floor vertices
             vertexPositionsBottom[vertexIndex] = x;
-            vertexPositionsBottom[vertexIndex+1] = -height; // TODO get y start position
+            vertexPositionsBottom[vertexIndex+1] = -height; // TODO get y start globalPosition
             vertexPositionsBottom[vertexIndex+2] = z;
 
         }

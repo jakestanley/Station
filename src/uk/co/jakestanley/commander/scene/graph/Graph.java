@@ -20,7 +20,7 @@ public class Graph {
     }
 
     /**
-     * Add a node and return its index position
+     * Add a node and return its index globalPosition
      * @param node
      * @return
      */

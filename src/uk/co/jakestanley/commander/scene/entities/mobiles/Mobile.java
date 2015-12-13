@@ -51,7 +51,7 @@ public abstract class Mobile extends PhysicalEntity {
     }
 
     public boolean canMoveToHorizontal(float x, float y, float z){ // can only move flat on horizontal
-        return true; // TODO functionality. make sure there is no collision between here and the target position
+        return true; // TODO functionality. make sure there is no collision between here and the target globalPosition
     }
 
     public boolean canMoveToVertical(float x, float y, float z){ // can only move directly up

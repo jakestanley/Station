@@ -27,7 +27,7 @@ public class StaticShader extends ShaderProgram {
 
     @Override
     protected void bindAttributes() {
-        bindAttribute(0, "position"); // 0 is where we stored the position attribute
+        bindAttribute(0, "position"); // 0 is where we stored the globalPosition attribute
         bindAttribute(1, "textureCoordinates");
         bindAttribute(2, "normal");
     }

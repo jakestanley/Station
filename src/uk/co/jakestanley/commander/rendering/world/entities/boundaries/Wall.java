@@ -73,7 +73,7 @@ public class Wall extends Boundary {
         floor2dVertices[2] = new Vector2f(start.getX(), start.getY()); // TODO optimise
         floor2dVertices[3] = new Vector2f(end.getX() + DEFAULT_WIDTH, start.getY());
 
-        Out.print(floor2dVertices);
+        Out.print("2D floor vertices", floor2dVertices);
         return generateModel(floor2dVertices, DEFAULT_INDICES, DEFAULT_HEIGHT);
     }
 

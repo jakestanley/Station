@@ -24,7 +24,7 @@ public class Button extends Widget {
     private Action action;
 
     /**
-     * No position or dimensions constructor for when another component determines size
+     * No globalPosition or dimensions constructor for when another component determines size
      * @param parent
      */
     public Button(Component parent, String text, Action action){

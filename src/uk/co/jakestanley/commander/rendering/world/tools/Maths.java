@@ -99,6 +99,20 @@ public class Maths {
 
     }
 
+    public static Vector3f addVectors(Vector3f target, Vector3f adder){
+        Vector3f sum = new Vector3f();
+        sum.setX(target.getX() + adder.getX());
+        sum.setY(target.getY() + adder.getY());
+        sum.setZ(target.getZ() + adder.getZ());
+        return sum;
+    }
 
+    public static Vector3f addVectors(Vector3f target, Vector3f adder1, Vector3f adder2){
+        Vector3f sum = new Vector3f();
+        sum.setX(target.getX() + adder1.getX() + adder2.getX());
+        sum.setY(target.getY() + adder1.getY() + adder2.getY());
+        sum.setZ(target.getZ() + adder1.getZ() + adder2.getZ());
+        return sum;
+    }
 
 }

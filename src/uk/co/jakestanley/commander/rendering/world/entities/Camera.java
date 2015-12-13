@@ -190,20 +190,20 @@ public class Camera {
 //        rotationMatrix.m01 = (float) Math.sin(rotation);
 //        rotationMatrix.m11 = (float) Math.cos(rotation); // TODO save this from above
 //
-//        float newX = (position.getX() * rotationMatrix.m00) + (position.getZ() * rotationMatrix.m01);
-//        float newZ = (position.getX() * rotationMatrix.m10) + (position.getZ() * rotationMatrix.m11);
-//        Vector3f newPosition = new Vector3f(newX, position.getY(), newZ);
+//        float newX = (globalPosition.getX() * rotationMatrix.m00) + (globalPosition.getZ() * rotationMatrix.m01);
+//        float newZ = (globalPosition.getX() * rotationMatrix.m10) + (globalPosition.getZ() * rotationMatrix.m11);
+//        Vector3f newPosition = new Vector3f(newX, globalPosition.getY(), newZ);
 
 
 //        int centerX = 0;
 //        int centerZ = 0;
 //        float x = -rotation;
-//        float point2x = position.getX();
-//        float point2z = position.getZ();
+//        float point2x = globalPosition.getX();
+//        float point2z = globalPosition.getZ();
 //        double newX = centerX + (point2x-centerX)*Math.cos(x) - (point2z-centerZ)*Math.sin(x);
 //        double newZ = centerZ + (point2x-centerX)*Math.sin(x) + (point2z-centerZ)*Math.cos(x);
 //
-//        Vector3f newPosition = new Vector3f((float) newX, position.getY(), (float) newZ);
+//        Vector3f newPosition = new Vector3f((float) newX, globalPosition.getY(), (float) newZ);
         Point2D origin = new Point2D.Double(position.getX(), position.getZ());
         Point2D result = new Point2D.Double();
         AffineTransform rotation = new AffineTransform();

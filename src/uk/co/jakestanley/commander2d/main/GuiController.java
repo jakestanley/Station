@@ -226,7 +226,7 @@ public class GuiController {
     private void renderDebugComponents(Graphics screen){ // TODO
 
         screen.setColor(Color.white); // TODO non-static colour
-        // screen.drawString("Mouse position: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
+        // screen.drawString("Mouse globalPosition: " + mouseX + ", " + mouseY, 10, Display.MAP_HEIGHT - 50); // TODO change hard coded value
         // screen.drawString("Tick: " + tick, Display.MARGIN, Display.MAP_HEIGHT - 70); // TODO change to another non-hard coded value
 
     }

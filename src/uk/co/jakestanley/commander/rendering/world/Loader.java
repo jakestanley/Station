@@ -101,7 +101,6 @@ public class Loader {
             texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + path + ".png"));
         } catch (IOException e) {
             System.err.println("Failed to load file");
-            e.printStackTrace();
         }
         int textureID = texture.getTextureID();
 

@@ -89,7 +89,7 @@ public class ObjLoader {
             while(true){ // TODO improve
                 line = reader.readLine();
                 String[] currentLine = line.split(" ");
-                if(line.startsWith("v ")){ // if line is a vertex position
+                if(line.startsWith("v ")){ // if line is a vertex globalPosition
                     Vector3f vertex = new Vector3f( Float.parseFloat(currentLine[1]),
                                                     Float.parseFloat(currentLine[2]),
                                                     Float.parseFloat(currentLine[3]));

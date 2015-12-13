@@ -21,7 +21,7 @@ public class Character extends Renderable {
         Loader loader = Main.getGame().loader;
         ObjLoader objLoader = Main.getGame().getObjLoader();
         TexturedModel texturedModel = objLoader.loadTexturedModel("characters/stan", loader);
-        RenderEntity renderEntity = new RenderEntity(texturedModel, position, rotX, rotY, rotZ, DEFAULT_SCALE);
+        RenderEntity renderEntity = new RenderEntity(texturedModel, globalPosition, rotX, rotY, rotZ, DEFAULT_SCALE);
 
         allRenderEntities.add(renderEntity);
         visibleRenderEntities.add(renderEntity);

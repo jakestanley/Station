@@ -2,9 +2,9 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
 import org.lwjgl.util.vector.Vector3f;
-import uk.co.jakestanley.commander.Game3D;
 import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.Loader;
+import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Floor;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
@@ -12,6 +12,7 @@ import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by jake on 05/12/2015.
@@ -25,13 +26,15 @@ public class Ship extends Renderable { // TODO a superclass
     private RenderEntity port;
     private RenderEntity starboard;
     private RenderEntity ballast;
+    private Floor floor;
 
     /**
      * identifier should be all lower case and should correspond with res directory structure
      * @param identifier
      */
-    public Ship(String identifier, Vector3f position){ // TODO make a center point - TODO a render at coordinate
+    public Ship(String identifier, Vector3f position, Floor floor){ // TODO make a center point - TODO a render at coordinate
         super(identifier, position, 0, 0, 0, false);
+        this.floor = floor;
         loadRenderEntities();
     }
 
@@ -62,16 +65,16 @@ public class Ship extends Renderable { // TODO a superclass
         TexturedModel starboardTexturedModel = new TexturedModel(starboardModel, starboardTexture);
         TexturedModel ballastTexturedModel = new TexturedModel(ballastModel, ballastTexture);
 
-        float rotX = 0;
-        float rotY = 0;
-        float rotZ = 0;
+        rotX = 0;
+        rotY = 0;
+        rotZ = 0;
 
-        top = new RenderEntity(topTexturedModel, position, rotX, rotY, rotZ, 1);
-        front = new RenderEntity(frontTexturedModel, position, rotX, rotY, rotZ, 1);
-        rear = new RenderEntity(rearTexturedModel, position, rotX, rotY, rotZ, 1);
-        port = new RenderEntity(portTexturedModel, position, rotX, rotY, rotZ, 1);
-        starboard = new RenderEntity(starboardTexturedModel, position, rotX, rotY, rotZ, 1);
-        ballast = new RenderEntity(ballastTexturedModel, position, rotX, rotY, rotZ, 1);
+        top = new RenderEntity(topTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+        front = new RenderEntity(frontTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+        rear = new RenderEntity(rearTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+        port = new RenderEntity(portTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+        starboard = new RenderEntity(starboardTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+        ballast = new RenderEntity(ballastTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
 
         allRenderEntities.add(top);
         allRenderEntities.add(front);
@@ -79,6 +82,7 @@ public class Ship extends Renderable { // TODO a superclass
         allRenderEntities.add(port);
         allRenderEntities.add(starboard);
         allRenderEntities.add(ballast);
+        allRenderEntities.add(floor);
 
         // set specular values // TODO put somewhere else. tidy this shit up
         for (Iterator<RenderEntity> iterator = allRenderEntities.iterator(); iterator.hasNext(); ) {
@@ -92,7 +96,7 @@ public class Ship extends Renderable { // TODO a superclass
 
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
-//        visibleRenderEntities.add(ballast);
+        visibleRenderEntities.add(floor); // TODO remove ballast
         if(Main.getGame().getWorldRenderer().isMaxZoom()){
             visibleRenderEntities.add(top);
             visibleRenderEntities.add(front);

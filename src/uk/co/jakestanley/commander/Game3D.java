@@ -8,7 +8,9 @@ import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
+import uk.co.jakestanley.commander.rendering.exceptions.ChildIsSelfException;
 import uk.co.jakestanley.commander.rendering.exceptions.DoesNotIntersectException;
+import uk.co.jakestanley.commander.rendering.exceptions.ParentIsSelfException;
 import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.SkyboxRenderer;
 import uk.co.jakestanley.commander.rendering.world.entities.*;
@@ -62,6 +64,7 @@ public class Game3D {
     // entities you should probably keep track of
     private Camera camera;
     private RenderEntity floor;
+    private RenderEntity asteroid;
     private Ship ship;
     private Character character;
     private Wall wall;
@@ -115,15 +118,27 @@ public class Game3D {
 
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
-        floor = new Floor(100, 50); // use default for now // TODO make a proper entity that extends renderable
-        ship = new Ship("gatlinburg", new Vector3f(0,0,0));
-        character = new Character("stan", new Vector3f(0, 0, 0), 0, 0, 1, false);
+        ship = new Ship("gatlinburg", new Vector3f(0,0,0), new Floor(100, 50));
+        character = new Character("stan", new Vector3f(20, 0, -20), 0, 0, 1, false);
+        try {
+            character.setParent(ship);
+        } catch (ParentIsSelfException p){
+            p.printStackTrace(); // TODO handle better or move this method somewhere else
+        }
+
+        // external entities
+        asteroid = new RenderEntity(objLoader.loadTexturedModel("externals/asteroid", loader), new Vector3f(120, 0, 120), 0, 0, 0, 1);
 
         // add renderables
         renderables.add(ship);
         renderables.add(character);
 
-        // create camera
+        try {
+            ship.setChild(character);
+        } catch (ChildIsSelfException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void update(){
@@ -131,8 +146,12 @@ public class Game3D {
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
+        asteroid.setRotX(asteroid.getRotX()+0.15f);
+        asteroid.setRotY(asteroid.getRotY()+0.1f);
+        ship.increasePosition(new Vector3f(0.05f,0,0));
+
         try{
-            Vector2f intersection = mousePicker.getIntersection((Floor) floor); // TODO if detecting mouse, or if in build/select mode
+            Vector2f intersection = mousePicker.getIntersection(ship.getFloor()); // TODO if detecting mouse, or if in build/select mode
 
             if(Mouse.isButtonDown(0) && wall == null){ // if left mouse button down // TODO move this into BuildController
                 // if the mouse is down and a wall hasn't been created yet, start a wall
@@ -154,9 +173,9 @@ public class Game3D {
         }
 //        try {
 //            Vector2f mousePos = mousePicker.getIntersection((Floor) floor);
-//            Vector3f cPos = character.getPosition(); // TODO remove after testing
+//            Vector3f cPos = character.getGlobalPosition(); // TODO remove after testing
 //            Vector3f newPos = new Vector3f(mousePos.getX(), cPos.getZ(), mousePos.getY());
-//            character.updatePosition(newPos);
+//            character.setPosition(newPos);
 //        } catch (DoesNotIntersectException d){
 //            d.printStackTrace(); // TODO put this back in
 //        }
@@ -165,7 +184,6 @@ public class Game3D {
     }
 
     public void render(){
-
 
         shader.start();
 
@@ -186,11 +204,12 @@ public class Game3D {
             }
         }
 
-        worldRenderer.addToRenderQueue(floor);
         for (Iterator<Wall> iterator = walls.iterator(); iterator.hasNext(); ) {
             Wall nextWall = iterator.next();
             worldRenderer.addToRenderQueue(nextWall);
         }
+
+        worldRenderer.addToRenderQueue(asteroid);
 
         // add under construction wall
         if(wall != null){

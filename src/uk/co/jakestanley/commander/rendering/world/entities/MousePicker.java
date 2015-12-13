@@ -41,9 +41,9 @@ public class MousePicker { // TODO make this abstract and use it for picking oth
 
         this.floor = floor;
 
-//        System.out.println("Camera position: " + camera.getPosition().toString());
-//        System.out.println("Ray position: " + currentRay.toString());
-//        System.out.println("Floor position" + floor.getPosition().toString());
+//        System.out.println("Camera globalPosition: " + camera.getGlobalPosition().toString());
+//        System.out.println("Ray globalPosition: " + currentRay.toString());
+//        System.out.println("Floor globalPosition" + floor.getGlobalPosition().toString());
 
         Vector3f intersectionPoint = null;
 

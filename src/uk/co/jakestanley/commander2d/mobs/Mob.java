@@ -140,14 +140,14 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     public void moveTo(Point position){ // TODO always create new points?
 
-//        Room newRoom = GameController.mapController.getRoom(position); // TODO replace with points
+//        Room newRoom = GameController.mapController.getRoom(globalPosition); // TODO replace with points
 
 //        // if entering a new room // TODO remove
 //        if(this.room != newRoom){
 //            this.room = newRoom; // set new room
 //        }
 
-        // setting new position
+        // setting new globalPosition
         previous = this.current;
         this.current = position;
 
