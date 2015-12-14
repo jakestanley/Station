@@ -1,4 +1,4 @@
-#version 400 core
+#version 330 core
 
 // from ThinMatrix tutorials. TODO credit accordingly
 
