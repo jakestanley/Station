@@ -166,7 +166,7 @@ public class Camera {
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-            if (!rotating && rotationCooldown == 0) {
+            if (!rotating && rotationCooldown == 0 && !zooming) {
                 rotateDirection = LEFT;
                 rotating = true;
                 rotationCooldown = COOLDOWN_TICKS;
@@ -178,7 +178,7 @@ public class Camera {
                 rotateLeft();
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            if (!rotating && rotationCooldown == 0) {
+            if (!rotating && rotationCooldown == 0 && !zooming) {
                 rotateDirection = RIGHT;
                 rotating = true;
                 rotationCooldown = COOLDOWN_TICKS;
@@ -192,17 +192,15 @@ public class Camera {
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
-            if (!zooming && zoomCooldown == 0 && !isMinZoom()) {
+            if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
                 zoomDirection = ZOOM_DIRECTION_OUT;
                 zooming = true;
-                zoom--;
                 zoomIncrement = MAX_ZOOM_INCREMENTS;
             }
         } else if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
-            if (!zooming && zoomCooldown == 0 && !isMaxZoom()) {
+            if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
                 zoomDirection = ZOOM_DIRECTION_IN;
                 zooming = true;
-                zoom++;
                 zoomIncrement = MAX_ZOOM_INCREMENTS;
             }
         }
