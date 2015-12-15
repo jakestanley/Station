@@ -54,7 +54,7 @@ public class Camera {
             } else {
                 distance -= zoomLevel;
             }
-            System.out.println("distance: " + distance);
+//            System.out.println("distance: " + distance);
         }
     }
 
@@ -93,23 +93,22 @@ public class Camera {
         zoomCooldown = 0;
         rotating = false;
         zooming = false;
-        updateScrollSpeed();
     }
 
     public void init(){
         updatePosition();
+        updateScrollSpeed();
     }
 
     public void update() {
 
         // calculate stuff
-        calculateZoom();
-        calculatePitch();
-        calculateAngleAroundTarget();
-
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
 
+        calculateZoom();
+        calculatePitch();
+        calculateAngleAroundTarget();
         calculateCameraPosition(horizontalDistance, verticalDistance);
 
         if(rotating){
@@ -237,12 +236,14 @@ public class Camera {
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
             if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
+                zoom--;
                 zoomDirection = ZOOM_DIRECTION_OUT;
                 zoomCooldown = COOLDOWN_TICKS;
                 zooming = true;
             }
         } else if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
             if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
+                zoom++;
                 zoomDirection = ZOOM_DIRECTION_IN;
                 zoomCooldown = COOLDOWN_TICKS;
                 zooming = true;
@@ -253,17 +254,13 @@ public class Camera {
             if(zoomCooldown == 0){
                 System.out.println(zoomCooldown);
                 zooming = false;
+                updateScrollSpeed();
             }
         }
 
-//        float mod = 1;
-
-
         if (rotating && (rotateDirection == LEFT)) {
-            rotateLeft();
 
         } else if (rotating && (rotateDirection == RIGHT)) {
-            rotateRight();
 
         }
         if(rotating && !justFuckingStartedRotating){
@@ -281,6 +278,13 @@ public class Camera {
     }
 
     private void calculateCameraPosition(float hDist, float vDist){
+        if(rotating){
+            if(LEFT == rotateDirection){
+                pYaw -= YAW_SPEED * 0.2f;
+            } else {
+                pYaw += YAW_SPEED * 0.2f;
+            }
+        }
         float theta = target.getRotX() + pYaw + 45; // about y axis
         float offsetX = (float) (hDist * Math.sin(Math.toRadians(theta)));
         float offsetZ = (float) (hDist * Math.cos(Math.toRadians(theta)));
@@ -288,14 +292,9 @@ public class Camera {
         position.z = target.getGlobalPosition().z + offsetZ;
         position.y = target.getGlobalPosition().y + vDist;
         position = Maths.addVectors(position, pOffset);
-    }
 
-    public boolean isMinZoom(){
-        return distance == MAX_DISTANCE;
-    }
 
-    public boolean isMaxZoom() {
-        return distance == MIN_DISTANCE;
+
     }
 
     private float calculateHorizontalDistance(){
@@ -304,22 +303,6 @@ public class Camera {
 
     private float calculateVerticalDistance(){
         return (float) (distance * Math.sin(Math.toRadians(pitch)));
-    }
-
-//    private Vector3f calculateCameraPosition(float horizontalDistance, float verticalDistance){
-//        Vector3f camera = new Vector3f();
-//        camera.y = target.getGlobalPosition().y + target.getGlobalPosition() + verticalDistance;
-//    }
-
-    private void rotateLeft(){
-        pYaw -= YAW_SPEED * 0.2f;
-
-//        position = calculateNewPosition(YAW_SPEED);
-    }
-
-    private void rotateRight(){
-        pYaw += YAW_SPEED * 0.2f;
-//        position = calculateNewPosition(-YAW_SPEED);
     }
 
     private void zoomOut(){
@@ -331,8 +314,19 @@ public class Camera {
     }
 
     private void updateScrollSpeed(){
-        scrollSpeed = (MAX_ZOOM - zoom + 1) * BASE_SCROLL_SPEED; // TODO improve
+        scrollSpeed = (MAX_ZOOM - zoom) * BASE_SCROLL_SPEED; // TODO improve. 1 is so it doesn't ever hit zero
+        if(scrollSpeed < MIN_SCROLL_SPEED){
+            scrollSpeed = MIN_SCROLL_SPEED;
+        }
         System.out.println("New scroll speed is: " + scrollSpeed);
+    }
+
+    public boolean isMinZoom(){
+        return distance >= MAX_DISTANCE;
+    }
+
+    public boolean isMaxZoom() {
+        return distance <= MIN_DISTANCE;
     }
 
     public static final int NORTH = 0;
@@ -344,12 +338,13 @@ public class Camera {
     private static final int RIGHT = 5;
 
     private static final float BASE_SCROLL_SPEED = 0.5f;
+    private static final float MIN_SCROLL_SPEED = 0.25f;
     private static final float YAW_SPEED    = 10f;
     private static final int MIN_ZOOM       = 1;
     private static final int DEFAULT_ZOOM   = 7;
     private static final int MAX_ZOOM       = 10;
 
-    private static final float ZOOM_INCREMENTS = 2f;
+    private static final float ZOOM_INCREMENTS = 0.5f;
     private static final float DEFAULT_ROT_Y_OFFSET = -45f;
 
     private static final int ZOOM_DIRECTION_IN = 6;
