@@ -106,13 +106,15 @@ public class Camera {
         calculateZoom();
         calculatePitch();
         calculateAngleAroundTarget();
+
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
+
         calculateCameraPosition(horizontalDistance, verticalDistance);
+
         if(rotating){
             yaw = 180 - 135 - (target.getRotY() + (angle*2));
         }
-
 
         Ship ship = Main.getGame().getShip();
         if(!ship.hasVisibleRenderEntities()){
@@ -333,65 +335,6 @@ public class Camera {
         System.out.println("New scroll speed is: " + scrollSpeed);
     }
 
-    private Vector3f calculateNewPosition(float rot){ // fuck yea
-//        Matrix2f rotationMatrix = new Matrix2f();
-//        rotationMatrix.m00 = (float) Math.cos(rotation);
-//        rotationMatrix.m10 = (float) -Math.sin(rotation);
-//        rotationMatrix.m01 = (float) Math.sin(rotation);
-//        rotationMatrix.m11 = (float) Math.cos(rotation); // TODO save this from above
-//
-//        float newX = (globalPosition.getX() * rotationMatrix.m00) + (globalPosition.getZ() * rotationMatrix.m01);
-//        float newZ = (globalPosition.getX() * rotationMatrix.m10) + (globalPosition.getZ() * rotationMatrix.m11);
-//        Vector3f newPosition = new Vector3f(newX, globalPosition.getY(), newZ);
-
-
-//        int centerX = 0;
-//        int centerZ = 0;
-//        float x = -rotation;
-//        float point2x = globalPosition.getX();
-//        float point2z = globalPosition.getZ();
-//        double newX = centerX + (point2x-centerX)*Math.cos(x) - (point2z-centerZ)*Math.sin(x);
-//        double newZ = centerZ + (point2x-centerX)*Math.sin(x) + (point2z-centerZ)*Math.cos(x);
-//
-//        Vector3f newPosition = new Vector3f((float) newX, globalPosition.getY(), (float) newZ);
-        Point2D origin = new Point2D.Double(position.getX(), position.getZ());
-        Point2D result = new Point2D.Double();
-        AffineTransform rotation = new AffineTransform();
-        double angleInRadians = (rot * Math.PI / 180);
-        rotation.rotate(angleInRadians, 0, 0);
-        rotation.transform(origin, result);
-        Vector3f shipPosition = Main.getGame().getShip().getGlobalPosition();
-        float newPosX = shipPosition.getX() + (float) result.getX() + position.getX();
-        float newPosY = shipPosition.getY() + position.getY() + position.getY();
-        float newPosZ = shipPosition.getZ() + (float) result.getY() + position.getZ();
-
-
-        Vector3f newPos = new Vector3f(newPosX, newPosY, newPosZ);
-        return newPos;
-
-
-//        return newPosition;
-    }
-
-    private static Matrix3f createZoomInMatrix(){
-        Matrix3f zoom = new Matrix3f();
-        zoom.setIdentity();
-        zoom.m00 = ZOOM_OUT_X;
-        zoom.m11 = ZOOM_OUT_Y;
-        zoom.m22 = ZOOM_OUT_Z;
-        zoom.invert();
-        return zoom;
-    }
-
-    private static Matrix3f createZoomOutMatrix(){
-        Matrix3f zoom = new Matrix3f();
-        zoom.setIdentity();
-        zoom.m00 = ZOOM_OUT_X;
-        zoom.m11 = ZOOM_OUT_Y;
-        zoom.m22 = ZOOM_OUT_Z;
-        return zoom;
-    }
-
     public static final int NORTH = 0;
     public static final int EAST = 1;
     public static final int SOUTH = 2;
@@ -406,9 +349,6 @@ public class Camera {
     private static final int DEFAULT_ZOOM   = 7;
     private static final int MAX_ZOOM       = 10;
 
-    private static final float ZOOM_OUT_X = 1.04f;
-    private static final float ZOOM_OUT_Y = 1.04f;
-    private static final float ZOOM_OUT_Z = 1.04f;
     private static final float ZOOM_INCREMENTS = 2f;
     private static final float DEFAULT_ROT_Y_OFFSET = -45f;
 
