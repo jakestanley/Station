@@ -236,6 +236,14 @@ public class Camera {
         }
     }
 
+    public boolean isMinZoom(){
+        return distance >= MAX_DISTANCE;
+    }
+
+    public boolean isMaxZoom() {
+        return distance <= MIN_DISTANCE;
+    }
+
     private float calculateHorizontalDistance(){
         return (float) (distance * Math.cos(Math.toRadians(pitch)));
     }
@@ -307,14 +315,6 @@ public class Camera {
             scrollSpeed = MIN_SCROLL_SPEED;
         }
         System.out.println("New scroll speed is: " + scrollSpeed);
-    }
-
-    public boolean isMinZoom(){
-        return distance >= MAX_DISTANCE;
-    }
-
-    public boolean isMaxZoom() {
-        return distance <= MIN_DISTANCE;
     }
 
     public static final int NORTH = 0;
