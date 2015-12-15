@@ -19,7 +19,7 @@ import java.awt.geom.Point2D;
 @AllArgsConstructor
 public class Camera {
 
-    private Vector3f offset, pOffset;
+    private Vector3f offset;
     private Vector3f position;
     private float pitch = 20; // up or down
     private float previousYaw = 0, yaw = 0, pYaw = 0; // left or right
@@ -45,6 +45,7 @@ public class Camera {
         this.pitch = pitch;
         this.yaw = DEFAULT_ROT_Y_OFFSET;
         this.roll = roll;
+        offset = new Vector3f(0,0,0);
     }
 
     public Camera(Renderable target, Vector3f offset, float pitch, float yaw, float roll){
@@ -55,7 +56,6 @@ public class Camera {
         this.roll = roll;
         this.zoom = DEFAULT_ZOOM;
         scrollSpeed = BASE_SCROLL_SPEED;
-        pOffset = new Vector3f(0,0,0);
         distance = DEFAULT_DISTANCE;
         rotationCooldown = 0;
         zoomCooldown = 0;
@@ -99,80 +99,80 @@ public class Camera {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             switch (facing) {
                 case NORTH:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case SOUTH:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case EAST:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case WEST:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             switch (facing) {
                 case NORTH:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case SOUTH:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case EAST:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case WEST:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             switch (facing) {
                 case NORTH:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case SOUTH:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case EAST:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case WEST:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             switch (facing) {
                 case NORTH:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case SOUTH:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
                 case EAST:
-                    pOffset.x = pOffset.x - scrollSpeed;
-                    pOffset.z = pOffset.z + scrollSpeed;
+                    offset.x = offset.x - scrollSpeed;
+                    offset.z = offset.z + scrollSpeed;
                     break;
                 case WEST:
-                    pOffset.x = pOffset.x + scrollSpeed;
-                    pOffset.z = pOffset.z - scrollSpeed;
+                    offset.x = offset.x + scrollSpeed;
+                    offset.z = offset.z - scrollSpeed;
                     break;
             }
         }
@@ -292,7 +292,7 @@ public class Camera {
         position.x = target.getGlobalPosition().x + offsetX;
         position.z = target.getGlobalPosition().z + offsetZ;
         position.y = target.getGlobalPosition().y + vDist;
-        position = Maths.addVectors(position, pOffset);
+        position = Maths.addVectors(position, offset);
 
     }
 
