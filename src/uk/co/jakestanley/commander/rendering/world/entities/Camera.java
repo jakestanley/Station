@@ -2,6 +2,7 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Vector3f;
@@ -46,6 +47,10 @@ public class Camera {
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
         calculateCameraPosition(horizontalDistance, verticalDistance);
+        System.out.println("Original yaw: " + yaw);
+        yaw = 180 - 135 - (target.getRotY() + (angle*2));
+        System.out.println("New yaw: " + yaw);
+//        System.exit(0);
     }
 
     private void calculateZoom(){
