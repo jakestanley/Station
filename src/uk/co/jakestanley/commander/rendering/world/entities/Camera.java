@@ -49,11 +49,14 @@ public class Camera {
     }
 
     private void calculateZoom(){
-        float zoomLevel = zoom * 0.1f;
-        if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
-            distance -= zoomLevel;
-        } else if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
-            distance += zoomLevel;
+        if(zooming){
+            float zoomLevel = zoom * 1f;
+            if(ZOOM_DIRECTION_OUT == zoomDirection){
+                distance += zoomLevel;
+            } else {
+                distance -= zoomLevel;
+            }
+            System.out.println("distance: " + distance);
         }
     }
 
@@ -87,7 +90,7 @@ public class Camera {
         this.zoom = DEFAULT_ZOOM;
         scrollSpeed = BASE_SCROLL_SPEED;
         pOffset = new Vector3f(0,0,0);
-        distance = 0f;
+        distance = DEFAULT_DISTANCE;
         rotationCooldown = 0;
         zoomCooldown = 0;
         rotating = false;
@@ -104,12 +107,14 @@ public class Camera {
         if(!ship.hasVisibleRenderEntities()){
             ship.resetVisibleRenderEntities();
         }
+
         if(rotationCooldown > 0){
             rotationCooldown--;
         }
         if(zoomCooldown > 0){
             zoomCooldown--;
         }
+
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             switch (facing) {
                 case NORTH:
@@ -215,15 +220,24 @@ public class Camera {
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
-//            if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
-//                zoomDirection = ZOOM_DIRECTION_OUT;
-//                zooming = true;
-//            }
+            if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
+                zoomDirection = ZOOM_DIRECTION_OUT;
+                zoomCooldown = COOLDOWN_TICKS;
+                zooming = true;
+            }
         } else if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
-//            if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
-//                zoomDirection = ZOOM_DIRECTION_IN;
-//                zooming = true;
-//            }
+            if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
+                zoomDirection = ZOOM_DIRECTION_IN;
+                zoomCooldown = COOLDOWN_TICKS;
+                zooming = true;
+            }
+        }
+
+        if(zooming){
+            if(zoomCooldown == 0){
+                System.out.println(zoomCooldown);
+                zooming = false;
+            }
         }
 
 //        float mod = 1;
@@ -239,22 +253,6 @@ public class Camera {
                 rotating = false;
             }
         }
-        if(zooming){
-//            if(zoomIncrement > 0){
-//                if(ZOOM_DIRECTION_IN == zoomDirection){
-//                    zoomIn();
-//                } else {
-//                    zoomOut();
-//                }
-//            } else {
-//                zooming = false;
-//                updateScrollSpeed();
-//            }
-        }
-
-
-//        updatePosition();
-
     }
 
     public void updatePosition(){
@@ -273,11 +271,11 @@ public class Camera {
     }
 
     public boolean isMinZoom(){
-        return zoom == MIN_ZOOM;
+        return distance == MAX_DISTANCE;
     }
 
     public boolean isMaxZoom() {
-        return zoom == MAX_ZOOM;
+        return distance == MIN_DISTANCE;
     }
 
     private float calculateHorizontalDistance(){
@@ -397,6 +395,9 @@ public class Camera {
 
     private static final int ZOOM_DIRECTION_IN = 6;
     private static final int ZOOM_DIRECTION_OUT = 7;
+    private static final float DEFAULT_DISTANCE = 168;
+    private static final float MIN_DISTANCE = 84;
+    private static final float MAX_DISTANCE = 840;
     private static final int MAX_ZOOM_INCREMENTS = 10;
 
 }
