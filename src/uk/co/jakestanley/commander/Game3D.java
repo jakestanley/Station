@@ -154,12 +154,12 @@ public class Game3D {
     }
 
     public void update(){
-        camera.update(); // TODO when i sort everything out, maintain this order
+
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
-//        ship.increasePosition(new Vector3f(5f,0,0));
-        ship.increasePosition(new Vector3f(0,0,0));
+        ship.increasePosition(new Vector3f(5f,0,0));
+//        ship.increasePosition(new Vector3f(0,0,0));
         asteroidGenerator.update();
 
         try{
@@ -192,6 +192,7 @@ public class Game3D {
 //            d.printStackTrace(); // TODO put this back in
 //        }
         camera.move();
+        camera.update(); // TODO when i sort everything out, maintain this order
         guiController.update();
         worldRenderer.update();
     }

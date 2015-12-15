@@ -22,7 +22,7 @@ public class Camera {
     private Vector3f offset, pOffset;
     private Vector3f position;
     private float pitch = 20; // up or down
-    private float yaw = 0, pYaw = 0; // left or right
+    private float previousYaw = 0, yaw = 0, pYaw = 0; // left or right
     private float roll;
     private float scrollSpeed;
     private float zoom = 5;
@@ -47,9 +47,10 @@ public class Camera {
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
         calculateCameraPosition(horizontalDistance, verticalDistance);
-        System.out.println("Original yaw: " + yaw);
-        yaw = 180 - 135 - (target.getRotY() + (angle*2));
-        System.out.println("New yaw: " + yaw);
+        if(rotating){
+            yaw = 180 - 135 - (target.getRotY() + (angle*2));
+        }
+        System.out.println("Yaw: " + yaw + ", angle: " + angle + ", target.getRotY(): " + target.getRotY());
 //        System.exit(0);
     }
 
@@ -200,6 +201,7 @@ public class Camera {
                     break;
             }
         }
+        boolean justFuckingStartedRotating = false;
         if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
             if (!rotating && rotationCooldown == 0 && !zooming) {
                 rotateDirection = LEFT;
@@ -209,6 +211,7 @@ public class Camera {
                 if(facing > 3){
                     facing = 0;
                 }
+                justFuckingStartedRotating = true;
                 ship.resetVisibleRenderEntities();
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
@@ -220,6 +223,7 @@ public class Camera {
                 if(facing < 0){
                     facing = 3;
                 }
+                justFuckingStartedRotating = true;
                 ship.resetVisibleRenderEntities();
             }
         }
@@ -247,14 +251,18 @@ public class Camera {
 
 //        float mod = 1;
 
+
         if (rotating && (rotateDirection == LEFT)) {
             rotateLeft();
+
         } else if (rotating && (rotateDirection == RIGHT)) {
             rotateRight();
+
         }
-        if(rotating){
-            float mod = pYaw % 90;
+        if(rotating && !justFuckingStartedRotating){
+            float mod = (Math.abs(angle)) % 45;
             if (mod == 0) { // stop rotation if at a locked angle
+                System.out.println("Stopping rotation");
                 rotating = false;
             }
         }
@@ -298,6 +306,7 @@ public class Camera {
 
     private void rotateLeft(){
         pYaw -= YAW_SPEED * 0.2f;
+
 //        position = calculateNewPosition(YAW_SPEED);
     }
 
