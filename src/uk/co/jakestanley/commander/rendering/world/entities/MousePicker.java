@@ -24,6 +24,9 @@ public class MousePicker { // TODO make this abstract and use it for picking oth
     public MousePicker(Camera camera, Matrix4f projectionMatrix){
         this.camera = camera;
         this.projectionMatrix = projectionMatrix;
+    }
+
+    public void init(){
         this.viewMatrix = Maths.createViewMatrix(camera);
     }
 

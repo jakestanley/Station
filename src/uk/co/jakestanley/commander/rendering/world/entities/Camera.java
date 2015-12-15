@@ -18,60 +18,85 @@ import java.awt.geom.Point2D;
 @AllArgsConstructor
 public class Camera {
 
-    private Vector3f initialOffset;
-    private Vector3f playerOffset;
+    private Vector3f offset, pOffset;
     private Vector3f position;
-    private Matrix3f zoomInMatrix, zoomOutMatrix;
-    private float pitch; // up or down
-    private float yaw; // left or right
+    private float pitch = 20; // up or down
+    private float yaw = 0, pYaw = 0; // left or right
     private float roll;
     private float scrollSpeed;
-    private int zoom;
+    private float zoom = 5;
     private int facing; // TODO set accordingly
     private int rotateDirection, zoomDirection;
-    private int rotationCooldown, zoomCooldown, zoomIncrement;
+    private int rotationCooldown, zoomCooldown;
     private boolean rotating, zooming;
 
     // redoing the camera stuff
     private Renderable target;
-    private float distance;
-    private float angle;
+    private float distance = 50;
+    private float angle = 45;
 
-    public Camera(){
-        position = new Vector3f(0,0,0);
-        facing = NORTH;
-        rotating = false;
-        zooming = false;
-        rotateDirection = RIGHT;
-        rotationCooldown = 0;
-        zoomCooldown = 0;
-        zoomInMatrix = createZoomInMatrix();
-        zoomOutMatrix = createZoomOutMatrix();
-        updateScrollSpeed();
-//        Game3D.ship.resetVisibleRenderEntities();
+    public Camera(Renderable target){
+        this.target = target;
     }
 
-    public Camera(Renderable target, Vector3f initialOffset, float pitch, float yaw, float roll){
+    public void move(){
+        calculateZoom();
+        calculatePitch();
+        calculateAngleAroundTarget();
+        float horizontalDistance = calculateHorizontalDistance();
+        float verticalDistance = calculateVerticalDistance();
+        calculateCameraPosition(horizontalDistance, verticalDistance);
+    }
+
+    private void calculateZoom(){
+        float zoomLevel = zoom * 0.1f;
+        if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
+            distance -= zoomLevel;
+        } else if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
+            distance += zoomLevel;
+        }
+    }
+
+    private void calculatePitch(){
+
+    }
+
+    private void calculateAngleAroundTarget(){
+        if(rotating){
+            if(LEFT == rotateDirection){
+                angle -= 1f;
+            } else {
+                angle += 1f;
+            }
+        }
+    }
+
+    public Camera(Renderable target, float pitch, float yaw, float roll){
         this.target = target;
-        this.zoom = DEFAULT_ZOOM;
-        this.initialOffset = initialOffset;
-        this.playerOffset = new Vector3f(0,0,0);
         this.pitch = pitch;
-        this.yaw = yaw;
+        this.yaw = DEFAULT_ROT_Y_OFFSET;
         this.roll = roll;
+    }
+
+    public Camera(Renderable target, Vector3f offset, float pitch, float yaw, float roll){
+        this.target = target;
+        this.offset = offset;
+        this.pitch = pitch;
+        this.yaw = DEFAULT_ROT_Y_OFFSET;
+        this.roll = roll;
+        this.zoom = DEFAULT_ZOOM;
+        scrollSpeed = BASE_SCROLL_SPEED;
+        pOffset = new Vector3f(0,0,0);
+        distance = 0f;
         rotationCooldown = 0;
         zoomCooldown = 0;
         rotating = false;
         zooming = false;
-        zoomInMatrix = createZoomInMatrix();
-        zoomOutMatrix = createZoomOutMatrix();
-        position = Maths.addVectors(new Vector3f(0,0,0), initialOffset, playerOffset);
         updateScrollSpeed();
-//        Game3D.ship.resetVisibleRenderEntities();
     }
 
     public void init(){
-        this.position = Maths.addVectors(Main.getGame().getShip().getGlobalPosition(), initialOffset, playerOffset);
+        updatePosition();
     }
 
     public void update() {
@@ -88,80 +113,80 @@ public class Camera {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             switch (facing) {
                 case NORTH:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case SOUTH:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case EAST:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case WEST:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             switch (facing) {
                 case NORTH:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case SOUTH:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case EAST:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case WEST:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             switch (facing) {
                 case NORTH:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case SOUTH:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case EAST:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case WEST:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
             }
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             switch (facing) {
                 case NORTH:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case SOUTH:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
                 case EAST:
-                    playerOffset.x = playerOffset.x - scrollSpeed;
-                    playerOffset.z = playerOffset.z + scrollSpeed;
+                    pOffset.x = pOffset.x - scrollSpeed;
+                    pOffset.z = pOffset.z + scrollSpeed;
                     break;
                 case WEST:
-                    playerOffset.x = playerOffset.x + scrollSpeed;
-                    playerOffset.z = playerOffset.z - scrollSpeed;
+                    pOffset.x = pOffset.x + scrollSpeed;
+                    pOffset.z = pOffset.z - scrollSpeed;
                     break;
             }
         }
@@ -175,7 +200,6 @@ public class Camera {
                     facing = 0;
                 }
                 ship.resetVisibleRenderEntities();
-                rotateLeft();
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
             if (!rotating && rotationCooldown == 0 && !zooming) {
@@ -187,52 +211,65 @@ public class Camera {
                     facing = 3;
                 }
                 ship.resetVisibleRenderEntities();
-                rotateRight();
             }
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LBRACKET)){
-            if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
-                zoomDirection = ZOOM_DIRECTION_OUT;
-                zooming = true;
-                zoomIncrement = MAX_ZOOM_INCREMENTS;
-            }
+//            if (!zooming && zoomCooldown == 0 && !isMinZoom() && !rotating) {
+//                zoomDirection = ZOOM_DIRECTION_OUT;
+//                zooming = true;
+//            }
         } else if(Keyboard.isKeyDown(Keyboard.KEY_RBRACKET)){
-            if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
-                zoomDirection = ZOOM_DIRECTION_IN;
-                zooming = true;
-                zoomIncrement = MAX_ZOOM_INCREMENTS;
-            }
+//            if (!zooming && zoomCooldown == 0 && !isMaxZoom() && !rotating) {
+//                zoomDirection = ZOOM_DIRECTION_IN;
+//                zooming = true;
+//            }
         }
 
-        float mod = (yaw + 45) % 90;
-        if (mod == 0) { // stop rotation if at a locked angle
-            rotating = false;
-        } else if (rotating && (rotateDirection == LEFT)) {
+//        float mod = 1;
+
+        if (rotating && (rotateDirection == LEFT)) {
             rotateLeft();
         } else if (rotating && (rotateDirection == RIGHT)) {
             rotateRight();
         }
-
-        if(zooming){
-            if(zoomIncrement > 0){
-                if(ZOOM_DIRECTION_IN == zoomDirection){
-                    zoomIn();
-                } else {
-                    zoomOut();
-                }
-                zoomIncrement--;
-            } else {
-                zooming = false;
-                updateScrollSpeed();
+        if(rotating){
+            float mod = pYaw % 90;
+            if (mod == 0) { // stop rotation if at a locked angle
+                rotating = false;
             }
         }
+        if(zooming){
+//            if(zoomIncrement > 0){
+//                if(ZOOM_DIRECTION_IN == zoomDirection){
+//                    zoomIn();
+//                } else {
+//                    zoomOut();
+//                }
+//            } else {
+//                zooming = false;
+//                updateScrollSpeed();
+//            }
+        }
 
-        float horizontalDistance = calculateHorizontalDistance();
-        float verticalDistance = calculateVerticalDistance();
 
-        updatePosition();
+//        updatePosition();
 
+    }
+
+    public void updatePosition(){
+        Vector3f targetPosition = target.getGlobalPosition();
+        position = Maths.addVectors(targetPosition, offset);
+    }
+
+    private void calculateCameraPosition(float hDist, float vDist){
+        float theta = target.getRotX() + pYaw + 45; // about y axis
+        float offsetX = (float) (hDist * Math.sin(Math.toRadians(theta)));
+        float offsetZ = (float) (hDist * Math.cos(Math.toRadians(theta)));
+        position.x = target.getGlobalPosition().x + offsetX;
+        position.z = target.getGlobalPosition().z + offsetZ;
+        position.y = target.getGlobalPosition().y + vDist;
+        position = Maths.addVectors(position, pOffset);
     }
 
     public boolean isMinZoom(){
@@ -243,10 +280,6 @@ public class Camera {
         return zoom == MAX_ZOOM;
     }
 
-    private void calculateZoom(){
-
-    }
-
     private float calculateHorizontalDistance(){
         return (float) (distance * Math.cos(Math.toRadians(pitch)));
     }
@@ -255,19 +288,19 @@ public class Camera {
         return (float) (distance * Math.sin(Math.toRadians(pitch)));
     }
 
-    private Vector3f calculateCameraPosition(float horizontalDistance, float verticalDistance){
-        Vector3f camera = new Vector3f();
-        camera.y = target.getGlobalPosition().y + target.getGlobalPosition() + verticalDistance;
-    }
+//    private Vector3f calculateCameraPosition(float horizontalDistance, float verticalDistance){
+//        Vector3f camera = new Vector3f();
+//        camera.y = target.getGlobalPosition().y + target.getGlobalPosition() + verticalDistance;
+//    }
 
     private void rotateLeft(){
-        yaw += YAW_SPEED;
-        position = calculateNewPosition(YAW_SPEED);
+        pYaw -= YAW_SPEED * 0.2f;
+//        position = calculateNewPosition(YAW_SPEED);
     }
 
     private void rotateRight(){
-        yaw -= YAW_SPEED;
-        position = calculateNewPosition(-YAW_SPEED);
+        pYaw += YAW_SPEED * 0.2f;
+//        position = calculateNewPosition(-YAW_SPEED);
     }
 
     private void zoomOut(){
@@ -276,10 +309,6 @@ public class Camera {
 
     private void zoomIn(){
         distance += ZOOM_INCREMENTS;
-    }
-
-    private void updatePosition(){
-        this.position = Maths.addVectors(Main.getGame().getShip().getGlobalPosition(), initialOffset, playerOffset);
     }
 
     private void updateScrollSpeed(){
@@ -363,7 +392,8 @@ public class Camera {
     private static final float ZOOM_OUT_X = 1.04f;
     private static final float ZOOM_OUT_Y = 1.04f;
     private static final float ZOOM_OUT_Z = 1.04f;
-    private static final float ZOOM_INCREMENTS = 0.1f;
+    private static final float ZOOM_INCREMENTS = 2f;
+    private static final float DEFAULT_ROT_Y_OFFSET = -45f;
 
     private static final int ZOOM_DIRECTION_IN = 6;
     private static final int ZOOM_DIRECTION_OUT = 7;

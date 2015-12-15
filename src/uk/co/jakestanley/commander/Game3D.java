@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
@@ -98,10 +99,17 @@ public class Game3D {
         DisplayManager.createDisplay();
         loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
         shader = new StaticShader();
+//        Vector3f shipVector = new Vector3f(-2500,0,0);
+        Vector3f shipVector = new Vector3f(0,0,0);
+        ship = new Ship("gatlinburg", shipVector, new Floor(shipVector, 100, 50));
+        character = new Character("stan", Maths.addVectors(ship.getGlobalPosition(), new Vector3f(20, 0, -20)), 0, 0, 1, false);
         if(Renderer.ORTHOGRAPHIC == projection){
-            camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
+            Vector3f orthographicOffset = new Vector3f(55,80, 55);
+            camera = new Camera(ship, orthographicOffset, 35, -45, 0);
         } else {
-            camera = new Camera(new Vector3f(55, 90, 155), 60, -45, 0);
+            Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
+//            Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
+            camera = new Camera(ship, perspectiveOffset, 45, 0, 0);
         }
 
         // init renderers
@@ -122,9 +130,6 @@ public class Game3D {
 
         // initialise visible entities
         renderables = new ArrayList<Renderable>();
-        Vector3f shipVector = new Vector3f(-2500,0,0);
-        ship = new Ship("gatlinburg", shipVector, new Floor(shipVector, 100, 50));
-        character = new Character("stan", Maths.addVectors(ship.getGlobalPosition(), new Vector3f(20, 0, -20)), 0, 0, 1, false);
         try {
             character.setParent(ship);
         } catch (ParentIsSelfException p){
@@ -143,8 +148,8 @@ public class Game3D {
 
         asteroidGenerator = new AsteroidGenerator(100, objLoader, loader);
         asteroidGenerator.init();
-
         camera.init();
+        mousePicker.init();
 
     }
 
@@ -153,7 +158,8 @@ public class Game3D {
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
-        ship.increasePosition(new Vector3f(5f,0,0));
+//        ship.increasePosition(new Vector3f(5f,0,0));
+        ship.increasePosition(new Vector3f(0,0,0));
         asteroidGenerator.update();
 
         try{
@@ -185,6 +191,7 @@ public class Game3D {
 //        } catch (DoesNotIntersectException d){
 //            d.printStackTrace(); // TODO put this back in
 //        }
+        camera.move();
         guiController.update();
         worldRenderer.update();
     }
