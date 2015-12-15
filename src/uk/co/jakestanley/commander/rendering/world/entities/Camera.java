@@ -41,16 +41,8 @@ public class Camera {
     }
 
     public void move(){
-        calculateZoom();
-        calculatePitch();
-        calculateAngleAroundTarget();
-        float horizontalDistance = calculateHorizontalDistance();
-        float verticalDistance = calculateVerticalDistance();
-        calculateCameraPosition(horizontalDistance, verticalDistance);
-        if(rotating){
-            yaw = 180 - 135 - (target.getRotY() + (angle*2));
-        }
-        System.out.println("Yaw: " + yaw + ", angle: " + angle + ", target.getRotY(): " + target.getRotY());
+
+//        System.out.println("Yaw: " + yaw + ", angle: " + angle + ", target.getRotY(): " + target.getRotY());
 //        System.exit(0);
     }
 
@@ -109,6 +101,19 @@ public class Camera {
     }
 
     public void update() {
+
+        // calculate stuff
+        calculateZoom();
+        calculatePitch();
+        calculateAngleAroundTarget();
+        float horizontalDistance = calculateHorizontalDistance();
+        float verticalDistance = calculateVerticalDistance();
+        calculateCameraPosition(horizontalDistance, verticalDistance);
+        if(rotating){
+            yaw = 180 - 135 - (target.getRotY() + (angle*2));
+        }
+
+
         Ship ship = Main.getGame().getShip();
         if(!ship.hasVisibleRenderEntities()){
             ship.resetVisibleRenderEntities();

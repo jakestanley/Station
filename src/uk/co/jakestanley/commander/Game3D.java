@@ -191,10 +191,9 @@ public class Game3D {
 //        } catch (DoesNotIntersectException d){
 //            d.printStackTrace(); // TODO put this back in
 //        }
-        camera.move();
+        worldRenderer.update();
         camera.update(); // TODO when i sort everything out, maintain this order
         guiController.update();
-        worldRenderer.update();
     }
 
     public void render(){
