@@ -36,18 +36,6 @@ public class Camera {
     private float distance = 50;
     private float angle = 45;
 
-    public Camera(Renderable target){
-        this.target = target;
-    }
-
-    public Camera(Renderable target, float pitch, float yaw, float roll){
-        this.target = target;
-        this.pitch = pitch;
-        this.yaw = DEFAULT_ROT_Y_OFFSET;
-        this.roll = roll;
-        offset = new Vector3f(0,0,0);
-    }
-
     public Camera(Renderable target, Vector3f offset, float pitch, float yaw, float roll){
         this.target = target;
         this.offset = offset;
