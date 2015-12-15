@@ -40,38 +40,6 @@ public class Camera {
         this.target = target;
     }
 
-    public void move(){
-
-//        System.out.println("Yaw: " + yaw + ", angle: " + angle + ", target.getRotY(): " + target.getRotY());
-//        System.exit(0);
-    }
-
-    private void calculateZoom(){
-        if(zooming){
-            float zoomLevel = zoom * 1f;
-            if(ZOOM_DIRECTION_OUT == zoomDirection){
-                distance += zoomLevel;
-            } else {
-                distance -= zoomLevel;
-            }
-//            System.out.println("distance: " + distance);
-        }
-    }
-
-    private void calculatePitch(){
-
-    }
-
-    private void calculateAngleAroundTarget(){
-        if(rotating){
-            if(LEFT == rotateDirection){
-                angle -= 1f;
-            } else {
-                angle += 1f;
-            }
-        }
-    }
-
     public Camera(Renderable target, float pitch, float yaw, float roll){
         this.target = target;
         this.pitch = pitch;
@@ -123,6 +91,7 @@ public class Camera {
         if(rotationCooldown > 0){
             rotationCooldown--;
         }
+
         if(zoomCooldown > 0){
             zoomCooldown--;
         }
@@ -258,11 +227,6 @@ public class Camera {
             }
         }
 
-        if (rotating && (rotateDirection == LEFT)) {
-
-        } else if (rotating && (rotateDirection == RIGHT)) {
-
-        }
         if(rotating && !justFuckingStartedRotating){
             float mod = (Math.abs(angle)) % 45;
             if (mod == 0) { // stop rotation if at a locked angle
@@ -272,9 +236,38 @@ public class Camera {
         }
     }
 
-    public void updatePosition(){
-        Vector3f targetPosition = target.getGlobalPosition();
-        position = Maths.addVectors(targetPosition, offset);
+    private float calculateHorizontalDistance(){
+        return (float) (distance * Math.cos(Math.toRadians(pitch)));
+    }
+
+    private float calculateVerticalDistance(){
+        return (float) (distance * Math.sin(Math.toRadians(pitch)));
+    }
+
+    private void calculateZoom(){
+        if(zooming){
+            float zoomLevel = zoom * 1f;
+            if(ZOOM_DIRECTION_OUT == zoomDirection){
+                distance += zoomLevel;
+            } else {
+                distance -= zoomLevel;
+            }
+//            System.out.println("distance: " + distance);
+        }
+    }
+
+    private void calculatePitch(){
+
+    }
+
+    private void calculateAngleAroundTarget(){
+        if(rotating){
+            if(LEFT == rotateDirection){
+                angle -= 1f;
+            } else {
+                angle += 1f;
+            }
+        }
     }
 
     private void calculateCameraPosition(float hDist, float vDist){
@@ -293,16 +286,11 @@ public class Camera {
         position.y = target.getGlobalPosition().y + vDist;
         position = Maths.addVectors(position, pOffset);
 
-
-
     }
 
-    private float calculateHorizontalDistance(){
-        return (float) (distance * Math.cos(Math.toRadians(pitch)));
-    }
-
-    private float calculateVerticalDistance(){
-        return (float) (distance * Math.sin(Math.toRadians(pitch)));
+    public void updatePosition(){
+        Vector3f targetPosition = target.getGlobalPosition();
+        position = Maths.addVectors(targetPosition, offset);
     }
 
     private void zoomOut(){
