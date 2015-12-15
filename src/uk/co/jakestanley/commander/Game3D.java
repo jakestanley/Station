@@ -105,11 +105,12 @@ public class Game3D {
         character = new Character("stan", Maths.addVectors(ship.getGlobalPosition(), new Vector3f(20, 0, -20)), 0, 0, 1, false);
         if(Renderer.ORTHOGRAPHIC == projection){
             Vector3f orthographicOffset = new Vector3f(55,80, 55);
-            camera = new Camera(ship, orthographicOffset, 35, -45, 0);
+//            camera = new Camera(ship, orthographicOffset, 35, -45, 0);
         } else {
             Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
 //            Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
-            camera = new Camera(ship, perspectiveOffset, 45, 0, 0);
+//            camera = new Camera(ship, perspectiveOffset, 0, 0, 0);
+            camera = new Camera(ship);
         }
 
         // init renderers
@@ -148,7 +149,6 @@ public class Game3D {
 
         asteroidGenerator = new AsteroidGenerator(100, objLoader, loader);
         asteroidGenerator.init();
-        camera.init();
         mousePicker.init();
 
     }
@@ -158,7 +158,7 @@ public class Game3D {
         inputController.update();
         mousePicker.update(); // TODO turn this off until it's needed
         sceneController.update();
-        ship.increasePosition(new Vector3f(5f,0,0));
+        ship.increasePosition(new Vector3f(2f,0,0));
 //        ship.increasePosition(new Vector3f(0,0,0));
         asteroidGenerator.update();
 
@@ -192,7 +192,8 @@ public class Game3D {
 //            d.printStackTrace(); // TODO put this back in
 //        }
         worldRenderer.update();
-        camera.update(); // TODO when i sort everything out, maintain this order
+//        camera.update(); // TODO when i sort everything out, maintain this order
+        camera.move();
         guiController.update();
     }
 

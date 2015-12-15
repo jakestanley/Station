@@ -97,32 +97,32 @@ public class Ship extends Renderable { // TODO a superclass
     public void resetVisibleRenderEntities(){
         visibleRenderEntities = new ArrayList<RenderEntity>();
         visibleRenderEntities.add(floor); // TODO remove ballast
-        if(Main.getGame().getCamera().isMaxZoom()){
-            visibleRenderEntities.add(top);
+//        if(Main.getGame().getCamera().isMaxZoom()){
+//            visibleRenderEntities.add(top);
             visibleRenderEntities.add(front);
             visibleRenderEntities.add(starboard);
             visibleRenderEntities.add(port);
             visibleRenderEntities.add(rear);
-        } else {
-            switch (Main.getGame().getCamera().getFacing()){
-                case Camera.NORTH:
-                    visibleRenderEntities.add(front);
-                    visibleRenderEntities.add(starboard);
-                    break;
-                case Camera.EAST:
-                    visibleRenderEntities.add(rear);
-                    visibleRenderEntities.add(starboard);
-                    break;
-                case Camera.SOUTH:
-                    visibleRenderEntities.add(rear);
-                    visibleRenderEntities.add(port);
-                    break;
-                case Camera.WEST:
-                    visibleRenderEntities.add(front);
-                    visibleRenderEntities.add(port);
-                    break;
-            }
-        }
+//        } else {
+//            switch (Main.getGame().getCamera().getFacing()){
+//                case Camera.NORTH:
+//                    visibleRenderEntities.add(front);
+//                    visibleRenderEntities.add(starboard);
+//                    break;
+//                case Camera.EAST:
+//                    visibleRenderEntities.add(rear);
+//                    visibleRenderEntities.add(starboard);
+//                    break;
+//                case Camera.SOUTH:
+//                    visibleRenderEntities.add(rear);
+//                    visibleRenderEntities.add(port);
+//                    break;
+//                case Camera.WEST:
+//                    visibleRenderEntities.add(front);
+//                    visibleRenderEntities.add(port);
+//                    break;
+//            }
+//        }
     }
 
 }
