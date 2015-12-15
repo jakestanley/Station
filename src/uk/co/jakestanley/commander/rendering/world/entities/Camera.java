@@ -269,9 +269,9 @@ public class Camera {
     private void calculateCameraPosition(float hDist, float vDist){
         if(rotating){
             if(LEFT == rotateDirection){
-                pYaw -= YAW_SPEED * 0.2f;
+                pYaw -= 2f;
             } else {
-                pYaw += YAW_SPEED * 0.2f;
+                pYaw += 2f;
             }
         }
         float theta = target.getRotX() + pYaw + 45; // about y axis
