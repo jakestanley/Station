@@ -107,10 +107,7 @@ public class Game3D {
             Vector3f orthographicOffset = new Vector3f(55,80, 55);
 //            camera = new Camera(ship, orthographicOffset, 35, -45, 0);
         } else {
-            Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
-//            Vector3f perspectiveOffset = new Vector3f(0, 0, 0);
-//            camera = new Camera(ship, perspectiveOffset, 0, 0, 0);
-            camera = new Camera(ship);
+            camera = new Camera(ship, false);
         }
 
         // init renderers
