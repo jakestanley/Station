@@ -1,17 +1,25 @@
 package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Main;
+import uk.co.jakestanley.commander.rendering.world.tools.Maths;
 
 import java.security.Key;
 
-@Getter
+@Getter @ToString
 public class Camera {
 
-    private float distanceFromPlayer = 200f;
+    // https://github.com/Ritsu95/3D-Game-Engine-ThinMatrix/blob/master/3D%20Game%20Engine/src/entities/Camera.java // TODO adapted from this code, modify
+
+    private static final float MIN_PITCH = 20f;
+    private static final float MAX_PITCH = 70f;
+    private static final float BASE_SCROLL = 1f;
+
+    private float distanceFromPlayer = 100f;
     private float angleAroundPlayer = 0;
 
     private Vector3f position = new Vector3f(0, 0, 0);
@@ -19,11 +27,13 @@ public class Camera {
     private float pitch = 20;
     private float yaw = 0;
     private float roll;
+    private float scroll;
 
     private Renderable player;
 
     public Camera(Renderable player) {
         this.player = player;
+        this.scroll = BASE_SCROLL;
     }
 
     public void move() {
@@ -35,7 +45,10 @@ public class Camera {
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
         calculateCameraPosition(horizontalDistance, verticalDistance);
-        this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+        yaw = Maths.boundAngle(180 - (player.getRotY() + angleAroundPlayer));
+
+//        System.out.println("Yaw: " + yaw);
+//        System.out.println("Pitch: " + pitch);
     }
 
     private void calculateCameraPosition(float horizDistance, float verticDistance) {
@@ -49,7 +62,19 @@ public class Camera {
 
     private void getKeyboardInput(){
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){ // forward
-            offset.x -= 1f;
+//            float modX = (float) (scroll * Math.sin(yaw));
+//            float modZ = (float) (scroll * Math.sin(yaw));
+//            float newX = modX + offset.getX();
+//            float newZ = modZ + offset.getZ();
+//            offset.setX(newX);
+//            offset.setZ(newZ);
+
+            System.out.println("mod yaw: " + yaw % 360);
+
+//            System.out.println("modX: " + modX + ", modZ: " + modZ + ", yaw: " + yaw);
+
+
+
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){ // left
 
@@ -71,7 +96,7 @@ public class Camera {
     }
 
     private void calculateZoom() {
-        float zoomLevel = Mouse.getDWheel() * 0.1f;
+        float zoomLevel = Mouse.getDWheel() * 0.1f; // TODO make constant and reduce scroll speed. set a max/min
         distanceFromPlayer -= zoomLevel;
     }
 
@@ -79,6 +104,11 @@ public class Camera {
         if (Mouse.isButtonDown(0) || Mouse.isButtonDown(1)) {
             float pitchChange = Mouse.getDY() * 0.1f;
             pitch -= pitchChange;
+            if(pitch < MIN_PITCH){
+                pitch = MIN_PITCH;
+            } else if(pitch > MAX_PITCH){
+                pitch = MAX_PITCH;
+            }
         }
     }
 
@@ -86,6 +116,8 @@ public class Camera {
         if (Mouse.isButtonDown(0) || Mouse.isButtonDown(1)) {
             float angleChange = Mouse.getDX() * 0.3f;
             angleAroundPlayer -= angleChange;
+            angleAroundPlayer = Maths.boundAngle(angleAroundPlayer);
+            System.out.println("angle: " + angleAroundPlayer);
         }
     }
 
