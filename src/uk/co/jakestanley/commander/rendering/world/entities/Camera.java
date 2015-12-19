@@ -13,12 +13,6 @@ public class Camera {
 
     // https://github.com/Ritsu95/3D-Game-Engine-ThinMatrix/blob/master/3D%20Game%20Engine/src/entities/Camera.java // TODO adapted from this code, modify
 
-    private static final float MIN_PITCH = 20f;
-    private static final float MAX_PITCH = 70f;
-    private static final float BASE_SCROLL = 1f;
-    private static final float DEFAULT_ROTATE_PITCH = 60f;
-    private static final float DEFAULT_ROTATE_ANGLE = 45f;
-
     private float distance = 100f;
     private float angle = 0;
 
@@ -34,10 +28,10 @@ public class Camera {
 
     public Camera(Renderable target, boolean rotate) {
         this.target = target;
-        this.scroll = BASE_SCROLL;
         this.pitch = DEFAULT_ROTATE_PITCH;
         this.angle = DEFAULT_ROTATE_ANGLE;
         this.rotate = rotate;
+        scroll = (distance * 0.008f);
     }
 
     public void move() {
@@ -64,17 +58,85 @@ public class Camera {
     }
 
     private void getKeyboardInput(){
-        if(Keyboard.isKeyDown(Keyboard.KEY_W)){ // forward
-
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            switch (getFacing()) {
+                case NORTH:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case SOUTH:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case EAST:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case WEST:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+            }
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_A)){ // left
-
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            switch (getFacing()) {
+                case NORTH:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case SOUTH:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case EAST:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case WEST:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+            }
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_S)){ // back
-
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            switch (getFacing()) {
+                case NORTH:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case SOUTH:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case EAST:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case WEST:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+            }
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_D)){ // right
-
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            switch (getFacing()) {
+                case NORTH:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case SOUTH:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+                case EAST:
+                    offset.x = offset.x - scroll;
+                    offset.z = offset.z + scroll;
+                    break;
+                case WEST:
+                    offset.x = offset.x + scroll;
+                    offset.z = offset.z - scroll;
+                    break;
+            }
         }
     }
 
@@ -89,9 +151,16 @@ public class Camera {
     private void calculateZoom() {
         float zoomLevel = Mouse.getDWheel() * 0.1f; // TODO make constant and reduce scroll speed. set a max/min
         distance -= zoomLevel;
+        if(distance > MAX_DISTANCE){
+            distance = MAX_DISTANCE;
+        } else if(distance < MIN_DISTANCE){
+            distance = MIN_DISTANCE;
+        }
+        scroll = (distance * 0.008f);
     }
 
     private void calculatePitch() {
+
         if (Mouse.isButtonDown(1)) {
             float pitchChange = Mouse.getDY() * 0.1f;
             pitch -= pitchChange;
@@ -111,5 +180,21 @@ public class Camera {
             System.out.println("angle: " + angle);
         }
     }
+
+    private int getFacing(){
+        return SOUTH;
+    }
+
+    private static final float MIN_PITCH = 20f;
+    private static final float MAX_PITCH = 70f;
+    private static final float MIN_DISTANCE = 80f;
+    private static final float MAX_DISTANCE = 500f;
+    private static final float DEFAULT_ROTATE_PITCH = 60f;
+    private static final float DEFAULT_ROTATE_ANGLE = 45f;
+
+    private static final int NORTH = 10;
+    private static final int EAST = 11;
+    private static final int SOUTH = 12;
+    private static final int WEST = 13;
 
 }
