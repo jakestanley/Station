@@ -56,14 +56,14 @@ public class Ship extends Renderable { // TODO a superclass
         ModelTexture rearTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Rear"));
         ModelTexture portTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Port"));
         ModelTexture starboardTexture = new ModelTexture(loader.loadTexture("ships/"+identifier+"/Starboard"));
-        ModelTexture ballastTexture = new ModelTexture(loader.loadTexture("test/green"));
+//        ModelTexture ballastTexture = new ModelTexture(loader.loadTexture("test/green"));
 
         TexturedModel topTexturedModel = new TexturedModel(topModel, topTexture);
         TexturedModel frontTexturedModel = new TexturedModel(frontModel, frontTexture);
         TexturedModel rearTexturedModel = new TexturedModel(rearModel, rearTexture);
         TexturedModel portTexturedModel = new TexturedModel(portModel, portTexture);
         TexturedModel starboardTexturedModel = new TexturedModel(starboardModel, starboardTexture);
-        TexturedModel ballastTexturedModel = new TexturedModel(ballastModel, ballastTexture);
+//        TexturedModel ballastTexturedModel = new TexturedModel(ballastModel, ballastTexture);
 
         rotX = 0;
         rotY = 0;
@@ -74,14 +74,14 @@ public class Ship extends Renderable { // TODO a superclass
         rear = new RenderEntity(rearTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
         port = new RenderEntity(portTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
         starboard = new RenderEntity(starboardTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
-        ballast = new RenderEntity(ballastTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
+//        ballast = new RenderEntity(ballastTexturedModel, globalPosition, rotX, rotY, rotZ, 1);
 
         allRenderEntities.add(top);
         allRenderEntities.add(front);
         allRenderEntities.add(rear);
         allRenderEntities.add(port);
         allRenderEntities.add(starboard);
-        allRenderEntities.add(ballast);
+//        allRenderEntities.add(ballast);
         allRenderEntities.add(floor);
 
         // set specular values // TODO put somewhere else. tidy this shit up

@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.shaders.SkyboxShader;
+import uk.co.jakestanley.commander.rendering.shaders.SkyboxShader;
 
 /**
  * Created by jake on 12/12/2015.

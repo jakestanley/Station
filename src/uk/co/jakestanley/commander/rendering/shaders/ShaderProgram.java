@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.shaders;
+package uk.co.jakestanley.commander.rendering.shaders;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -114,5 +114,7 @@ public abstract class ShaderProgram {
         GL20.glDeleteShader(fragmentShaderID);
         GL20.glDeleteProgram(programID);
     }
+
+    protected static final String SHADERS_DIRECTORY = "src/uk/co/jakestanley/commander/rendering/shaders/";
 
 }

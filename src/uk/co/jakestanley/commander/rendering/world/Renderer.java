@@ -2,19 +2,15 @@ package uk.co.jakestanley.commander.rendering.world;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.Graphics;
-import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.shaders.StaticShader;
 import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
 import uk.co.jakestanley.commander.rendering.world.tools.Maths;
-import uk.co.jakestanley.commander.rendering.world.caching.RenderCache;
-import uk.co.jakestanley.commander.scene.entities.Entity;
 
 import java.util.*;
 

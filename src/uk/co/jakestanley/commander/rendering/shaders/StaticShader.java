@@ -1,4 +1,4 @@
-package uk.co.jakestanley.commander.rendering.world.shaders;
+package uk.co.jakestanley.commander.rendering.shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
@@ -9,9 +9,6 @@ import uk.co.jakestanley.commander.rendering.world.tools.Maths;
  * Created by jp-st on 12/11/2015.
  */
 public class StaticShader extends ShaderProgram {
-
-    private static final String VERTEX_FILE     = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/genericVertexShader.glsl";
-    private static final String FRAGMENT_FILE   = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/genericFragmentShader.glsl";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
@@ -65,4 +62,7 @@ public class StaticShader extends ShaderProgram {
         loadFloat(location_shineDamper, damper);
         loadFloat(location_reflectivity, reflectivity);
     }
+
+    private static final String VERTEX_FILE     = SHADERS_DIRECTORY + "glsl/genericVertexShader.glsl";
+    private static final String FRAGMENT_FILE   = SHADERS_DIRECTORY + "glsl/genericFragmentShader.glsl";
 }

@@ -1,10 +1,7 @@
 package uk.co.jakestanley.commander.rendering.world.tools;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Matrix;
-import org.lwjgl.util.vector.Matrix3f;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.*;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
 
 /**
@@ -17,6 +14,14 @@ public class Maths {
     public static final float FAR_PLANE = 5000f;
     public static final float ORTHOGRAPHIC_NEAR_PLANE = 1000f;
     public static final float ORTHOGRAPHIC_FAR_PLANE = 2800f;
+
+    public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
+        Matrix4f matrix = new Matrix4f();
+        matrix.setIdentity();
+        Matrix4f.translate(translation, matrix, matrix);
+        Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
+        return matrix;
+    }
 
     public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale){ // only good for uniform scale
         Matrix4f matrix = new Matrix4f();

@@ -1,11 +1,9 @@
 package uk.co.jakestanley.commander.rendering.world.caching;
 
-import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.entities.Camera;
-import uk.co.jakestanley.commander.rendering.world.entities.Light;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
-import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.shaders.StaticShader;
 
 import java.util.*;
 

@@ -40,6 +40,13 @@ public class Loader {
         }
     }
 
+    public RawModel loadToVAO(float[] positions){
+        int vaoId = createVAO();
+        this.storeDataInAttributeList(0, 2, positions);
+        unbindVAO();
+        return new RawModel(vaoId, positions.length / 2);
+    }
+
     /**
      * Untextured model with no normals
      * @param positions
@@ -101,6 +108,7 @@ public class Loader {
             texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + path + ".png"));
         } catch (IOException e) {
             System.err.println("Failed to load file");
+            e.printStackTrace();
         } catch (UnsupportedOperationException e){
             System.out.println("Failed on path" + path);
         }

@@ -5,7 +5,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import uk.co.jakestanley.commander.gui.GuiController;
 import uk.co.jakestanley.commander.input.InputController;
 import uk.co.jakestanley.commander.rendering.DisplayManager;
@@ -15,13 +14,12 @@ import uk.co.jakestanley.commander.rendering.exceptions.ParentIsSelfException;
 import uk.co.jakestanley.commander.rendering.world.Renderer;
 import uk.co.jakestanley.commander.rendering.world.SkyboxRenderer;
 import uk.co.jakestanley.commander.rendering.world.entities.*;
-import uk.co.jakestanley.commander.rendering.gui.GuiRenderer;
 import uk.co.jakestanley.commander.rendering.world.Loader;
 import uk.co.jakestanley.commander.rendering.world.entities.Character;
 import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Floor;
 import uk.co.jakestanley.commander.rendering.world.entities.boundaries.Wall;
 import uk.co.jakestanley.commander.rendering.world.models.ObjLoader;
-import uk.co.jakestanley.commander.rendering.world.shaders.StaticShader;
+import uk.co.jakestanley.commander.rendering.shaders.StaticShader;
 import uk.co.jakestanley.commander.rendering.world.tools.Maths;
 import uk.co.jakestanley.commander.scene.SceneController;
 import uk.co.jakestanley.commander.scene.entities.mobiles.Crewman;
@@ -52,7 +50,6 @@ public class Game3D {
 
     public Renderer worldRenderer;
     public SkyboxRenderer skyboxRenderer;
-    public GuiRenderer guiRenderer;
 
     public ObjLoader objLoader; // TODO make private with getters only
     public Loader loader;
@@ -87,10 +84,6 @@ public class Game3D {
         inputController = new InputController();
         sceneController = new SceneController();
         sceneController.addMobileEntity(new Crewman("terry", 0f, 0f, 0f)); // TODO put in method and generate names
-        guiController = new GuiController();
-
-        // initialise the renderer objects
-        guiRenderer = new GuiRenderer(displayWidth, displayHeight);
 
     }
 
@@ -98,6 +91,7 @@ public class Game3D {
 
         DisplayManager.createDisplay();
         loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
+        guiController = new GuiController(loader);
         shader = new StaticShader();
 //        Vector3f shipVector = new Vector3f(-2500,0,0);
         Vector3f shipVector = new Vector3f(0,0,0);
@@ -147,6 +141,7 @@ public class Game3D {
         asteroidGenerator = new AsteroidGenerator(100, objLoader, loader);
         asteroidGenerator.init();
         mousePicker.init();
+        guiController.init();
 
     }
 
@@ -227,14 +222,13 @@ public class Game3D {
             worldRenderer.addToRenderQueue(wall); // TODO use transparency/build shader
         }
 
-        // run the render
+        // run the renderers
         worldRenderer.render(shader);
 
         shader.stop();
 
         skyboxRenderer.render(camera);
-
-
+        guiController.render();
 
         DisplayManager.updateDisplay(); // last part of update loop
     }
@@ -248,6 +242,7 @@ public class Game3D {
     }
 
     public void close() {
+        guiController.getRenderer().cleanup();
         shader.cleanup();
         loader.cleanup();
         DisplayManager.closeDisplay();
