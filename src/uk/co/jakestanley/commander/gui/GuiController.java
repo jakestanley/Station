@@ -21,16 +21,18 @@ public class GuiController implements Loopable {
     private Loader loader;
     private GuiRenderer renderer;
     private List<String> messages; // TODO messages, panels, etc
+    private List<Widget> widgets;
     private List<GuiTexture> textures;
 
     public GuiController(Loader loader){
         this.loader = loader;
+        widgets = new ArrayList<Widget>();
         textures = new ArrayList<GuiTexture>();
         renderer = new GuiRenderer(loader);
     }
 
     public void init() {
-        GuiTexture guiTexture = new GuiTexture(loader.loadTexture("test/socuwan"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+        GuiTexture guiTexture = new GuiTexture(loader.loadTexture("ui/buttonEngage"), new Vector2f(-0.9f, 0.9f), new Vector2f(0.1f, 0.05f));
         textures.add(guiTexture);
     }
 
@@ -45,6 +47,15 @@ public class GuiController implements Loopable {
 
     public void render(){
         renderer.render(textures);
+    }
+
+    public boolean isClicked(Vector2f mouse){
+        for(Widget widget : widgets){
+            if(widget.click(mouse)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
