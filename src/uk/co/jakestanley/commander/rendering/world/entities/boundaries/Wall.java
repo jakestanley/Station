@@ -1,10 +1,12 @@
 package uk.co.jakestanley.commander.rendering.world.entities.boundaries;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.Main;
 import uk.co.jakestanley.commander.rendering.world.entities.RenderEntity;
+import uk.co.jakestanley.commander.rendering.world.entities.Renderable;
 import uk.co.jakestanley.commander.rendering.world.models.RawModel;
 import uk.co.jakestanley.commander.rendering.world.models.TexturedModel;
 import uk.co.jakestanley.commander.rendering.world.textures.ModelTexture;
@@ -23,31 +25,37 @@ public class Wall extends Boundary {
     public static final float DEFAULT_WIDTH = 2.5f;
     public static final float DEFAULT_HEIGHT = 20f;
 
-    @Getter private boolean placed;
+    @Getter private boolean placed; // TODO extend entity and use parent
     @Getter private float round;
-    @Getter private Vector2f start;
-    @Getter private Vector2f end;
+    @Setter private Renderable parent;
+    @Setter private Vector2f startOffset;
+    @Setter private Vector2f endOffset;
+    private Vector2f start;
+    private Vector2f end;
 
-    public Wall(Vector2f start){ // TODO check if placement is valid
+    public Wall(Renderable parent, Vector2f startOffset){ // TODO check if placement is valid
         super(new Vector3f(0, DEFAULT_HEIGHT, 0), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.UNTEXTURED_MODEL, RenderEntity.SINGLE_MODEL); // TODO remove untextured/textured model attribute
         this.round = DEFAULT_WIDTH;
         this.placed = false;
-        Vector2f wallCoordinates = convertToWallCoordinates(start, round);
-        this.start = wallCoordinates;
-        setEnd(wallCoordinates);
+        this.parent = parent;
+        this.startOffset = startOffset;
+        this.endOffset = startOffset;
     }
 
-    public Wall(Vector2f start, Vector2f end){
+    public Wall(Renderable parent, Vector2f startOffset, Vector2f endOffset){
         super(new Vector3f(0, DEFAULT_HEIGHT, 0), DEFAULT_ROT_X, DEFAULT_ROT_Y, DEFAULT_ROT_Z, DEFAULT_SCALE, RenderEntity.UNTEXTURED_MODEL, RenderEntity.SINGLE_MODEL);
         this.round = DEFAULT_WIDTH;
         this.placed = true;
-        this.start = convertToWallCoordinates(start, round);
-        setEnd(end);
+        this.parent = parent;
+        this.startOffset = startOffset;
+        this.endOffset = endOffset;
     }
 
-    public void setEnd(Vector2f end){
-        this.end = convertToWallCoordinates(end, round);
-        this.rawModel = generateWallModel(start, this.end);
+    public void update(){
+        Vector2f pPos = parent.getGlobalPosition2D();
+        start = convertToWallCoordinates(new Vector2f(pPos.getX() + startOffset.getX(), pPos.getY() + startOffset.getY()), round);
+        end = convertToWallCoordinates(new Vector2f(pPos.getX() + endOffset.getX(), pPos.getY() + endOffset.getY()), round);
+        this.rawModel = generateWallModel(start, end);
         texturedModel = new TexturedModel(rawModel, new ModelTexture(Main.getGame().loader.loadTexture("test/texturemate-greyscale05")));
     }
 

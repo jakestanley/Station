@@ -2,6 +2,7 @@ package uk.co.jakestanley.commander.rendering.world.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import uk.co.jakestanley.commander.rendering.exceptions.ChildIsSelfException;
 import uk.co.jakestanley.commander.rendering.exceptions.ParentIsSelfException;
@@ -106,6 +107,10 @@ public abstract class Renderable {
         for (Renderable child : children) {
             child.updateGlobalPosition();
         }
+    }
+
+    public Vector2f getGlobalPosition2D(){
+        return new Vector2f(globalPosition.getX(), globalPosition.getZ());
     }
 
     public void increasePosition(Vector3f position){

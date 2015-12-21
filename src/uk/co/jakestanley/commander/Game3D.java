@@ -161,14 +161,17 @@ public class Game3D {
 
         try{
             Vector2f intersection = mousePicker.getIntersection(ship.getFloor()); // TODO if detecting mouse, or if in build/select mode
+            Vector2f intersectionOffset = new Vector2f(intersection.getX() - ship.getGlobalPosition().getX(), intersection.getY() - ship.getGlobalPosition().getY());
 
             if(Mouse.isButtonDown(0) && wall == null){ // if left mouse button down // TODO move this into BuildController
                 // if the mouse is down and a wall hasn't been created yet, start a wall
-                wall = new Wall(intersection);
-                wall.setEnd(intersection);
+                wall = new Wall(ship, intersectionOffset);
+                wall.setEndOffset(intersectionOffset);
+                wall.update();
             } else if(Mouse.isButtonDown(0)) {
                 // if the mouse mutton is down, update the wall end coordinates
-                wall.setEnd(intersection);
+                wall.setEndOffset(intersectionOffset);
+                wall.update();
             } else if(wall != null){
                 // if the mouse is not selected and there is a wall set, place the wall and set the reference to null
                 // TODO CONSIDER should I update the wall end here? optimise...
@@ -188,6 +191,10 @@ public class Game3D {
 //        } catch (DoesNotIntersectException d){
 //            d.printStackTrace(); // TODO put this back in
 //        }
+        for (Iterator<Wall> iterator = walls.iterator(); iterator.hasNext(); ) {
+            Wall next = iterator.next();
+            next.update();
+        }
         worldRenderer.update();
 //        camera.update(); // TODO when i sort everything out, maintain this order
         camera.move();
