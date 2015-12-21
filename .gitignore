@@ -1,10 +1,10 @@
 
 .idea
 !.idea/runConfigurations/
-libs/
+libs
 target/
 out/
-res/
+res
 *.iml
 
 *.log
