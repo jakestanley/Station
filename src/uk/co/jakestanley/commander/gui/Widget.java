@@ -1,5 +1,6 @@
 package uk.co.jakestanley.commander.gui;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import uk.co.jakestanley.commander.rendering.gui.GuiTexture;
 
@@ -29,15 +30,15 @@ public abstract class Widget {
         this.listener = listener;
     }
 
-    public boolean click(Vector2f mouse){
+    public boolean click(){
         boolean clicked = false;
-        if(isClicked(mouse)) {
+        if(isClicked()) {
             clicked = true;
             if (listener != null) {
                 listener.onClick();
             } else {
                 for (Widget child : children) {
-                    if (child.click(mouse)) {
+                    if (child.click()) {
                         break; // break on first child click
                     }
                 }
@@ -46,9 +47,33 @@ public abstract class Widget {
         return clicked;
     }
 
-    private boolean isClicked(Vector2f mouse){
-        // TODO check if this component was clicked
-        return true;
+    private boolean isClicked(){
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        Vector2f widgetStart = getStart();
+        Vector2f widgetEnd = getEnd();
+
+        return (
+                    (mouseX > widgetStart.getX())
+                &&  (mouseX < widgetEnd.getX())
+                &&  (mouseY > widgetStart.getY())
+                &&  (mouseY < widgetEnd.getY())
+        );
+
+    }
+
+    private Vector2f getStart(){
+        Vector2f start = new Vector2f(0,0);
+
+        // TODO get the start of the button and convert the coordinates. use guitexture and division
+        return start; // TODO
+    }
+
+    private Vector2f getEnd(){
+        Vector2f end = new Vector2f(1,1);
+        // TODO get the end of the button and convert the coordinates. use guitexture and division...
+        return end;
     }
 
 }

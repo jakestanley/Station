@@ -49,9 +49,9 @@ public class GuiController implements Loopable {
         renderer.render(textures);
     }
 
-    public boolean isClicked(Vector2f mouse){
+    public boolean click(){
         for(Widget widget : widgets){
-            if(widget.click(mouse)){
+            if(widget.click()){
                 return true;
             }
         }

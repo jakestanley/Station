@@ -154,26 +154,31 @@ public class Game3D {
 //        ship.increasePosition(new Vector3f(0,0,0));
         asteroidGenerator.update();
 
-        try{
-            Vector2f intersection = mousePicker.getIntersection(ship.getFloor()); // TODO if detecting mouse, or if in build/select mode
+        if(Mouse.isButtonDown(0) && guiController.click()){
+            System.out.println("GUI clicked");
+        } else {
 
-            if(Mouse.isButtonDown(0) && wall == null){ // if left mouse button down // TODO move this into BuildController
-                // if the mouse is down and a wall hasn't been created yet, start a wall
-                wall = new Wall(intersection);
-                wall.setEnd(intersection);
-            } else if(Mouse.isButtonDown(0)) {
-                // if the mouse mutton is down, update the wall end coordinates
-                wall.setEnd(intersection);
-            } else if(wall != null){
-                // if the mouse is not selected and there is a wall set, place the wall and set the reference to null
-                // TODO CONSIDER should I update the wall end here? optimise...
-                wall.place(); // TODO add to an entity list somewhere
-                walls.add(wall);
-                wall = null;
+            try {
+                Vector2f intersection = mousePicker.getIntersection(ship.getFloor()); // TODO if detecting mouse, or if in build/select mode
+
+                if (Mouse.isButtonDown(0) && wall == null) { // if left mouse button down // TODO move this into BuildController
+                    // if the mouse is down and a wall hasn't been created yet, start a wall
+                    wall = new Wall(intersection);
+                    wall.setEnd(intersection);
+                } else if (Mouse.isButtonDown(0)) {
+                    // if the mouse mutton is down, update the wall end coordinates
+                    wall.setEnd(intersection);
+                } else if (wall != null) {
+                    // if the mouse is not selected and there is a wall set, place the wall and set the reference to null
+                    // TODO CONSIDER should I update the wall end here? optimise...
+                    wall.place(); // TODO add to an entity list somewhere
+                    walls.add(wall);
+                    wall = null;
+                }
+
+            } catch (DoesNotIntersectException d) {
+                // no intersection
             }
-
-        } catch (DoesNotIntersectException d){
-            // no intersection
         }
 //        try {
 //            Vector2f mousePos = mousePicker.getIntersection((Floor) floor);
