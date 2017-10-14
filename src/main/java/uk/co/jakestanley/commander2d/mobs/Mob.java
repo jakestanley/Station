@@ -203,7 +203,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
         // if there's no oxygen, it's likely to take damage there also, so it can get real bad real quick.
     }
 
-    @Override
     public void refresh(){ // TODO remove
 
     }
@@ -251,7 +250,6 @@ public abstract class Mob extends Loopable implements Interactable, Cacher { // 
 
     }
 
-    @Override
     public void renderDataBox(Graphics screen) {
 
         // initialising variables

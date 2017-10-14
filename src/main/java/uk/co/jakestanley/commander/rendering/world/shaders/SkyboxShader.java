@@ -39,7 +39,7 @@ public class SkyboxShader extends ShaderProgram {
         bindAttribute(0, "position");
     }
 
-    private static final String VERTEX_FILE = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/skyboxVertexShader.glsl";
-    private static final String FRAGMENT_FILE = "src/uk/co/jakestanley/commander/rendering/world/shaders/glsl/skyboxFragmentShader.glsl";
+    private static final String VERTEX_FILE = "src/main/java/uk/co/jakestanley/commander/rendering/world/shaders/glsl/skyboxVertexShader.glsl";
+    private static final String FRAGMENT_FILE = "src/main/java/uk/co/jakestanley/commander/rendering/world/shaders/glsl/skyboxFragmentShader.glsl";
 
 }

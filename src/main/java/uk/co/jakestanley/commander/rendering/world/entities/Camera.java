@@ -16,18 +16,18 @@ import java.awt.geom.Point2D;
  */
 @Getter
 @AllArgsConstructor
-public class Camera {
+public abstract class Camera {
 
-    private Vector3f start;
-    private Vector3f position;
-    private float pitch; // up or down
-    private float yaw; // left or right
-    private float roll;
-    private float zoom;
-    private int facing; // TODO set accordingly
-    private int direction;
-    private int cooldown;
-    private boolean rotating;
+    protected Vector3f start;
+    protected Vector3f position;
+    protected float pitch; // up or down
+    protected float yaw; // left or right
+    protected float roll;
+    protected float zoom;
+    protected int facing; // TODO set accordingly
+    protected int direction;
+    protected int cooldown;
+    protected boolean rotating;
 
     public Camera(){
         position = new Vector3f(0,0,0);
@@ -49,136 +49,14 @@ public class Camera {
 //        Game3D.ship.resetVisibleRenderEntities();
     }
 
-    public void move() {
-        Ship ship = Main.getGame().getShip();
-        if(!ship.hasVisibleRenderEntities()){
-            ship.resetVisibleRenderEntities();
-        }
-        if(cooldown > 0){
-            cooldown--;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            switch (facing) {
-                case NORTH:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case SOUTH:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case EAST:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case WEST:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-            }
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            switch (facing) {
-                case NORTH:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case SOUTH:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case EAST:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case WEST:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-            }
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            switch (facing) {
-                case NORTH:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case SOUTH:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case EAST:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case WEST:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-            }
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            switch (facing) {
-                case NORTH:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case SOUTH:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-                case EAST:
-                    position.x = position.x - SCROLL_SPEED;
-                    position.z = position.z + SCROLL_SPEED;
-                    break;
-                case WEST:
-                    position.x = position.x + SCROLL_SPEED;
-                    position.z = position.z - SCROLL_SPEED;
-                    break;
-            }
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-            if (!rotating && cooldown == 0) {
-                direction = LEFT;
-                rotating = true;
-                cooldown = COOLDOWN_TICKS;
-                facing++;
-                if(facing > 3){
-                    facing = 0;
-                }
-                ship.resetVisibleRenderEntities();
-                rotateLeft();
-            }
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-            if (!rotating && cooldown == 0) {
-                direction = RIGHT;
-                rotating = true;
-                cooldown = COOLDOWN_TICKS;
-                facing--;
-                if(facing < 0){
-                    facing = 3;
-                }
-                ship.resetVisibleRenderEntities();
-                rotateRight();
-            }
-        }
-        float mod = (yaw + 45) % 90;
-        if (mod == 0) { // stop rotation if at a locked angle
-            rotating = false;
-        } else if (rotating && (direction == LEFT)) {
-            rotateLeft();
-        } else if (rotating && (direction == RIGHT)) {
-            rotateRight();
-        }
+    public abstract void move();
 
-    }
-
-    private void rotateLeft(){
+    protected void rotateLeft(){
         yaw += YAW_SPEED;
         position = calculateNewPosition(YAW_SPEED);
     }
 
-    private void rotateRight(){
+    protected void rotateRight(){
         yaw -= YAW_SPEED;
         position = calculateNewPosition(-YAW_SPEED);
     }
@@ -221,15 +99,15 @@ public class Camera {
     public static final int EAST = 1;
     public static final int SOUTH = 2;
     public static final int WEST = 3;
-    private static final int COOLDOWN_TICKS = 12;
-    private static final int LEFT = 4;
-    private static final int RIGHT = 5;
-    private static final float SCROLL_SPEED = 1f;
-    private static final float YAW_SPEED = 10f;
+    protected static final int COOLDOWN_TICKS = 12;
+    protected static final int LEFT = 4;
+    protected static final int RIGHT = 5;
+    protected static final float SCROLL_SPEED = 1f;
+    protected static final float YAW_SPEED = 10f;
 
-    private static final float DEFAULT_ZOOM = 1f;
-    private static final float MIN_ZOOM = 0.2f;
-    private static final float MAX_ZOOM = 2.0f;
-    private static final float ZOOM_INCREMENT = 0.1f;
+    protected static final float DEFAULT_ZOOM = 1f;
+    protected static final float MIN_ZOOM = 0.2f;
+    protected static final float MAX_ZOOM = 2.0f;
+    protected static final float ZOOM_INCREMENT = 0.1f;
 
 }

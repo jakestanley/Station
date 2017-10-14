@@ -12,8 +12,8 @@ public class Main {
 
     private static final boolean DEFAULT_CACHING = true;
     private static final boolean DEFAULT_DEBUG = false;
-    private static final int DEFAULT_DISPLAY_WIDTH = 1280;
-    private static final int DEFAULT_DISPLAY_HEIGHT = 720;
+    private static final int DEFAULT_DISPLAY_WIDTH = 1920;
+    private static final int DEFAULT_DISPLAY_HEIGHT = 1080;
 
     @Getter private static Game3D game;
 
@@ -26,15 +26,18 @@ public class Main {
         int displayHeight = DEFAULT_DISPLAY_HEIGHT;
 
         for(String argument : args){
-            if(argument.equalsIgnoreCase("-debug")){
+            if(argument.equalsIgnoreCase("--debug")){
                 System.out.println("Launching in debug mode");
                 debug = true;
-            } else if(argument.equalsIgnoreCase("-cacheoff")){
+            } else if(argument.equalsIgnoreCase("--cacheoff")){
                 System.out.println("Caching disabled");
                 caching = false;
-            } else if(argument.equalsIgnoreCase("-orthographic")){
+            } else if(argument.equalsIgnoreCase("--orthographic")){
                 System.out.println("Setting projection mode to orthographic");
                 projection = Renderer.ORTHOGRAPHIC;
+            } else if(argument.equalsIgnoreCase("--firstperson")){
+            	System.out.println("Setting projection mode to first person");
+            	projection = Renderer.FIRST_PERSON;
             }
         }
 

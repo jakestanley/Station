@@ -1,15 +1,5 @@
 package uk.co.jakestanley.commander.rendering.world;
 
-import de.matthiasmann.twl.utils.PNGDecoder;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import uk.co.jakestanley.commander.Main;
-import uk.co.jakestanley.commander.rendering.world.models.RawModel;
-import uk.co.jakestanley.commander.rendering.world.textures.TextureCache;
-import uk.co.jakestanley.commander.rendering.world.textures.TextureData;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +9,20 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
+import de.matthiasmann.twl.utils.PNGDecoder;
+import uk.co.jakestanley.commander.rendering.world.models.RawModel;
+import uk.co.jakestanley.commander.rendering.world.textures.TextureCache;
+import uk.co.jakestanley.commander.rendering.world.textures.TextureData;
 
 /**
  * Created by jp-st on 11/11/2015.
@@ -98,7 +102,7 @@ public class Loader {
 
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + path + ".png"));
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("/home/jake/git/madstanners/Station/src/main/resources/textures/" + path + ".png"));
         } catch (IOException e) {
             System.err.println("Failed to load file");
             e.printStackTrace();
@@ -118,7 +122,7 @@ public class Loader {
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, textureId);
         for (int i = 0; i < paths.length; i++) {
-            TextureData data = loadTextureData("res/textures/"+paths[i]+".png");
+            TextureData data = loadTextureData("/home/jake/git/madstanners/Station/src/main/resources/textures/"+paths[i]+".png");
             GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, data.getWidth(), data.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
         }
         GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);

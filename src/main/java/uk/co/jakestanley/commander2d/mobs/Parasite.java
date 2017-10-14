@@ -109,7 +109,6 @@ public class Parasite extends Mob {
         return explored;
     }
 
-    @Override
     public boolean mouseOver(Point mousePoint) {
         return false;
     }

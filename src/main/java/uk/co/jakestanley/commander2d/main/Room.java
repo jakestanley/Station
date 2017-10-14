@@ -213,7 +213,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
 
     }
 
-    @Override
+    
     public void renderHoverBox(Graphics screen){ // TODO remove?
 
 //        int x = this.x * Display.TILE_WIDTH;
@@ -373,7 +373,7 @@ public class Room implements Interactable, Inputtable { // TODO make abstract
         return integrity;
     }
 
-    @Override
+    
     public void input(int i, char c) {
         switch (i) {
             case Input.KEY_Q:

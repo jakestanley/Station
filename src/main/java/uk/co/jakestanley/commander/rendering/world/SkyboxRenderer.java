@@ -43,12 +43,12 @@ public class SkyboxRenderer {
     // TODO move these into a file that's loaded from somewhere
 
     private static final String[] TEXTURE_PATHS = {
-            "skybox/ame_nebula/Right",
-            "skybox/ame_nebula/Left",
-            "skybox/ame_nebula/Top",
-            "skybox/ame_nebula/Bottom",
-            "skybox/ame_nebula/Back",
-            "skybox/ame_nebula/Front"}; // TODO make less static
+            "skybox/ame_nebula/right",
+            "skybox/ame_nebula/left",
+            "skybox/ame_nebula/top",
+            "skybox/ame_nebula/bottom",
+            "skybox/ame_nebula/back",
+            "skybox/ame_nebula/front"}; // TODO make less static
     private static final float SIZE = 500f;
     private static final float[] VERTICES = {
             -SIZE,  SIZE, -SIZE,

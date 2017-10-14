@@ -130,7 +130,7 @@ public class Renderer { // TODO better inheritance
 
     private void setProjectionMatrix(){
         // projection matrix only needs setting up once
-        if(PERSPECTIVE == type){
+        if(type == Renderer.PERSPECTIVE || type == Renderer.FIRST_PERSON){
             projectionMatrix = Maths.createPerspectiveProjectionMatrix(fieldOfView); // only needs to be set up once
         } else {
             projectionMatrix = Maths.createOrthographicProjectionMatrix();
@@ -185,6 +185,7 @@ public class Renderer { // TODO better inheritance
 
     public static final int ORTHOGRAPHIC = 301;
     public static final int PERSPECTIVE = 302;
+    public static final int FIRST_PERSON = 303;
 
     private static final float MIN_FOV = 50f;
     private static final float DEFAULT_FOV = 90f;

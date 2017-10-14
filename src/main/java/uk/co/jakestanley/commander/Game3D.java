@@ -91,10 +91,17 @@ public class Game3D {
         DisplayManager.createDisplay();
         loader = new Loader(Loader.ENABLE_CACHING); // requires the OpenGL context
         shader = new StaticShader();
-        if(Renderer.ORTHOGRAPHIC == projection){
-            camera = new Camera(new Vector3f(55,80,155), 35, -45, 0);
-        } else {
-            camera = new Camera(new Vector3f(55, 90, 155), 60, -45, 0);
+        
+        switch(projection) {
+        	case Renderer.ORTHOGRAPHIC:
+        		camera = new PerspectiveCamera(new Vector3f(55,80,155), 35, -45, 0);
+        		break;
+        	case Renderer.PERSPECTIVE:
+        		camera = new PerspectiveCamera(new Vector3f(55, 90, 155), 60, -45, 0);
+        		break;
+        	case Renderer.FIRST_PERSON:
+        		camera = new FirstPersonCamera(new Vector3f(55, 90, 155), 0, 0, 0);
+        		break;
         }
 
         // init renderers

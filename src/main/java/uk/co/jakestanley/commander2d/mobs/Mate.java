@@ -125,7 +125,6 @@ public class Mate extends Mob implements Inputtable {
         return Values.names[GameController.random.nextInt(Values.names.length)];
     }
 
-    @Override
     public boolean mouseOver(Point mousePoint) {
         return false;
     }
@@ -144,7 +143,6 @@ public class Mate extends Mob implements Inputtable {
 
     }
 
-    @Override
     public void input(int i, char c) {
         // TODO
     }
