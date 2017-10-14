@@ -1,10 +1,12 @@
-
+.project
+.classpath
+.settings
 .idea/
 libs/
 target/
 out/
-res/
 *.iml
+src/main/resources/*
 
 *.log
 
